@@ -1,0 +1,11 @@
+source https://www.nuget.org/api/v2
+github ameier38/fsharp-utilities src/Result.fs
+github ameier38/fsharp-utilities src/SimpleType.fs
+github ameier38/fsharp-utilities src/Env.fs
+nuget Equinox 1.1.0-preview1 preview
+nuget Equinox.EventStore 1.1.0-preview1 preview
+nuget Equinox.MemoryStore 1.1.0-preview1 preview
+nuget FSharp.UMX 1.0.0-preview-001 preview
+nuget OpenAPITypeProvider
+nuget Suave
+nuget Serilog

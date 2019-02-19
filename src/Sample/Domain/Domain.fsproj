@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <WarningLevel>5</WarningLevel>
+    <IsTestProject>false</IsTestProject>
+    <DisableImplicitSystemValueTupleReference>true</DisableImplicitSystemValueTupleReference>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="*.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Equinox" Version="1.0.4-rc1" />
+    <PackageReference Include="FSharp.UMX" Version="1.0.0-preview-001" />
+    <PackageReference Include="TypeShape" Version="6.0.0" />
+  </ItemGroup>
+
+</Project>

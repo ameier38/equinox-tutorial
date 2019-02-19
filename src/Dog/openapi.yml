@@ -1,0 +1,190 @@
+openapi: 3.0.0
+info:
+  title: Ouroboros API
+  description: Ouroboros integration test API
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/ameier38/Ouroboros/1.0.0
+  description: SwaggerHub API Auto Mocking
+paths:
+  /get:
+    post:
+      summary: get the state of a dog
+      description: get the state of a dog at a particular observation date
+      requestBody:
+        description: Dog to retrieve
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetDogRequest'
+      responses:
+        200:
+          description: Successfully retrieved dog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DogState'
+  /reverse:
+    post:
+      summary: reverse a dog event
+      description: reverse a dog event with specified event number
+      requestBody:
+        description: dog event to reverse
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReverseRequest'
+      responses:
+        200:
+          description: Successfully reversed dog event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandResponse'
+  /create:
+    post:
+      summary: create a dog
+      description: create a new dog
+      requestBody:
+        description: Dog to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDogRequest'
+      responses:
+        200:
+          description: Created dog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandResponse'
+  /eat:
+    post:
+      summary: command a dog to eat
+      description: command a dog to eat
+      requestBody:
+        description: Meta for eat command
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommandRequest'
+      responses:
+        200:
+          description: Dog ate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandResponse'
+components:
+  schemas:
+    GetDogRequest:
+      required:
+      - dogId
+      - observationDate
+      - observationType
+      type: object
+      properties:
+        dogId:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        observationDate:
+          type: string
+          format: date-time
+        observationType:
+          type: string
+          example: of
+    ReverseRequest:
+      required:
+      - dogId
+      - effectiveDate
+      - eventNumber
+      - source
+      type: object
+      properties:
+        dogId:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        source:
+          type: string
+          example: test
+        effectiveDate:
+          type: string
+          format: date-time
+        eventNumber:
+          type: integer
+          format: int32
+          example: 1
+    CreateDogRequest:
+      required:
+      - dog
+      - dogId
+      - effectiveDate
+      - source
+      type: object
+      properties:
+        dogId:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        source:
+          type: string
+          example: test
+        effectiveDate:
+          type: string
+          format: date-time
+        dog:
+          $ref: '#/components/schemas/Dog'
+    CommandRequest:
+      required:
+      - dogId
+      - effectiveDate
+      - source
+      type: object
+      properties:
+        dogId:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        source:
+          type: string
+          example: test
+        effectiveDate:
+          type: string
+          format: date-time
+    CommandResponse:
+      required:
+      - committedEvents
+      type: object
+      properties:
+        committedEvents:
+          type: array
+          items:
+            type: string
+    Dog:
+      required:
+      - breed
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          example: Benji
+        breed:
+          type: string
+          example: Maltipoo
+    DogState:
+      required:
+      - dog
+      - state
+      type: object
+      properties:
+        state:
+          type: string
+          example: Bored
+        dog:
+          $ref: '#/components/schemas/Dog'

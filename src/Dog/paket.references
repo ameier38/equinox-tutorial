@@ -1,0 +1,9 @@
+Equinox
+Equinox.EventStore
+Equinox.MemoryStore
+FSharp.UMX
+Suave
+Serilog
+File:Result.fs
+File:SimpleType.fs
+File:Env.fs
