@@ -3,6 +3,7 @@ namespace Dog
 open FSharp.UMX
 open SimpleType
 open System
+open System.Text
 
 [<Measure>] type g
 module Grams =
@@ -16,13 +17,19 @@ module Years =
 
 [<Measure>] type dogId
 
+module String =
+    let toBytes (s:string) = s |> Encoding.UTF8.GetBytes
+    let fromBytes (bytes:byte []) = bytes |> Encoding.UTF8.GetString
+    let lower (s:string) = s.ToLower()
+
 module Guid =
     let inline toStringN (x: Guid) = x.ToString "N"
 
 /// Unique identifier of the dog
 type DogId = Guid<dogId>
 module DogId =
-    let toStringN (value: DogId) = Guid.toStringN %value
+    let toString (value: DogId) = Guid.toStringN %value
+    let fromGuid (value: Guid) = value |> UMX.tag<dogId>
 
 /// Age of the dog
 type Age = private Age of int<yr>

@@ -5,7 +5,7 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.0
+  version: 1.0.1
 servers:
 - url: https://virtserver.swaggerhub.com/ameier38/Ouroboros/1.0.0
   description: SwaggerHub API Auto Mocking
@@ -19,7 +19,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GetDogRequest'
+              $ref: '#/components/schemas/GetRequest'
       responses:
         200:
           description: Successfully retrieved dog
@@ -43,7 +43,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CommandResponse'
+                $ref: '#/components/schemas/DogState'
   /create:
     post:
       summary: create a dog
@@ -53,14 +53,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateDogRequest'
+              $ref: '#/components/schemas/CreateRequest'
       responses:
         200:
           description: Created dog
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CommandResponse'
+                $ref: '#/components/schemas/DogState'
   /eat:
     post:
       summary: command a dog to eat
@@ -70,17 +70,51 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CommandRequest'
+              $ref: '#/components/schemas/EatRequest'
       responses:
         200:
           description: Dog ate
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CommandResponse'
+                $ref: '#/components/schemas/DogState'
+  /sleep:
+    post:
+      summary: command a dog to sleep
+      description: command a dog to sleep
+      requestBody:
+        description: Meta for sleep command
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SleepRequest'
+      responses:
+        200:
+          description: Dog slept
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DogState'
+  /play:
+    post:
+      summary: command a dog to play
+      description: command a dog to play
+      requestBody:
+        description: Meta for play command
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlayRequest'
+      responses:
+        200:
+          description: Dog played
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DogState'
 components:
   schemas:
-    GetDogRequest:
+    GetRequest:
       required:
       - dogId
       - observationDate
@@ -100,73 +134,84 @@ components:
     ReverseRequest:
       required:
       - dogId
-      - effectiveDate
       - eventNumber
-      - source
       type: object
       properties:
         dogId:
           type: string
           format: uuid
           example: d290f1ee-6c54-4b01-90e6-d701748f0851
-        source:
-          type: string
-          example: test
-        effectiveDate:
-          type: string
-          format: date-time
         eventNumber:
           type: integer
           format: int32
           example: 1
-    CreateDogRequest:
+    CreateRequest:
       required:
       - dog
       - dogId
       - effectiveDate
-      - source
       type: object
       properties:
         dogId:
           type: string
           format: uuid
           example: d290f1ee-6c54-4b01-90e6-d701748f0851
-        source:
-          type: string
-          example: test
         effectiveDate:
           type: string
           format: date-time
         dog:
           $ref: '#/components/schemas/Dog'
-    CommandRequest:
+    EatRequest:
       required:
       - dogId
       - effectiveDate
-      - source
+      - weight
       type: object
       properties:
         dogId:
           type: string
           format: uuid
           example: d290f1ee-6c54-4b01-90e6-d701748f0851
-        source:
-          type: string
-          example: test
         effectiveDate:
           type: string
           format: date-time
-    CommandResponse:
+        weight:
+          type: number
+          example: 20.25
+    SleepRequest:
       required:
-      - committedEvents
+      - dogId
+      - effectiveDate
+      - timeSpan
       type: object
       properties:
-        committedEvents:
-          type: array
-          items:
-            type: string
+        dogId:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        effectiveDate:
+          type: string
+          format: date-time
+        timeSpan:
+          type: integer
+          format: int32
+          example: 2
+    PlayRequest:
+      required:
+      - dogId
+      - effectiveDate
+      type: object
+      properties:
+        dogId:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        effectiveDate:
+          type: string
+          format: date-time
     Dog:
       required:
+      - birthDate
       - breed
       - name
       type: object
@@ -177,14 +222,26 @@ components:
         breed:
           type: string
           example: Maltipoo
+        birthDate:
+          type: string
+          format: date-time
     DogState:
       required:
+      - age
       - dog
       - state
+      - weight
       type: object
       properties:
         state:
           type: string
           example: Bored
+        age:
+          type: integer
+          format: int32
+          example: 3
+        weight:
+          type: number
+          example: 20.25
         dog:
           $ref: '#/components/schemas/Dog'

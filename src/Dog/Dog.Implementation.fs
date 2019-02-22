@@ -1,7 +1,6 @@
 module Dog.Implementation
 
 open System
-open Serilog
 
 module Dog =
     let create name breed birthDate : Result<Dog,DogError> =
@@ -28,8 +27,6 @@ module Event =
         | Slept _ -> 3
         | Ate _ -> 4
 
-let initial = NonExistent
-
 let calculateAge (birthDate:DateTime) (effectiveDate:DateTime) =
     effectiveDate.Year - birthDate.Year
     |> Years.fromInt
@@ -49,6 +46,7 @@ module DogState =
         { dogState with Weight = dogState.Weight |> Weight.add difference }
 
 let evolve state = function
+    | Reversed _ -> state
     | Born { Data = dog } ->
         match state with
         | Corrupt err -> Corrupt err
@@ -61,50 +59,56 @@ let evolve state = function
                       Age = age
                       Weight = weight }
             } |> Result.bimap Bored Corrupt
-        | _ -> "dog could not have been born; dog already exists" |> Corrupt
+        | _ -> 
+            "dog could not have been born; dog already exists" 
+            |> DogError
+            |> Corrupt
     | Played { EffectiveDate = effectiveDate } ->
         match state with
-        | Corrupted err -> Corrupted err
+        | Corrupt err -> Corrupt err
         | Bored dogState ->
             dogState
             |> DogState.updateWeight (Weight -1m<g>)
             |> DogState.updateAge effectiveDate
-            |> Result.bimap Tired Corrupted
+            |> Result.mapError DogError
+            |> Result.bimap Tired Corrupt
         | _ ->
             sprintf "dog could not have played in state %A" state
             |> DogError
-            |> Corrupted
+            |> Corrupt
     | Slept { EffectiveDate = effectiveDate } ->
         match state with
-        | Corrupted err -> Corrupted err
+        | Corrupt err -> Corrupt err
         | Tired dogState ->
             dogState
             |> DogState.updateAge effectiveDate
-            |> Result.bimap Hungry Corrupted
+            |> Result.mapError DogError
+            |> Result.bimap Hungry Corrupt
         | _ ->
             sprintf "dog could not have slept in state %A" state
             |> DogError
-            |> Corrupted
+            |> Corrupt
     | Ate { EffectiveDate = effectiveDate; Data = weight } ->
         match state with
-        | Corrupted err -> Corrupted err
+        | Corrupt err -> Corrupt err
         | Hungry dogState ->
             dogState
             |> DogState.updateWeight weight
             |> DogState.updateAge effectiveDate
-            |> Result.bimap Tired Corrupted
+            |> Result.mapError DogError
+            |> Result.bimap Tired Corrupt
         | _ ->
             sprintf "dog could not have ate in state %A" state
             |> DogError
-            |> Corrupted
+            |> Corrupt
 
 let interpret command state =
     match command with
+    | Reverse eventNumber -> [Reversed eventNumber]
     | Create { EffectiveDate = effectiveDate; Data = dog } ->
         match state with
         | NonExistent ->
             { EffectiveDate = effectiveDate
-              EffectiveOrder = 0
               Data = dog }
             |> Born
             |> List.singleton
@@ -112,8 +116,7 @@ let interpret command state =
     | Play { EffectiveDate = effectiveDate } ->
         match state with
         | Bored dogState ->
-            { EffectiveDate = effectiveDate
-              EffectiveOrder = 1 }
+            { EffectiveDate = effectiveDate }
             |> Played
             |> List.singleton
         | _ -> []
@@ -121,7 +124,6 @@ let interpret command state =
         match state with
         | Tired dogState ->
             { EffectiveDate = effectiveDate
-              EffectiveOrder = 1
               Data = timeSpan }
             |> Slept
             |> List.singleton
@@ -130,36 +132,73 @@ let interpret command state =
         match state with
         | Hungry dogState ->
             { EffectiveDate = effectiveDate
-              EffectiveOrder = 1
               Data = weight }
             |> Ate
             |> List.singleton
         | _ -> []
      
-let fold state = Seq.fold evolve state
-
-let isOrigin = function NonExistent -> true | _ -> false
+module Aggregate =
+    let fold state = Seq.fold evolve state
 
 type Handler =
-    { execute: Command -> Async<State>
-      query: unit -> Async<string> }
+    { execute: Command -> AsyncResult<State, DogError>
+      query: unit -> AsyncResult<State, DogError> }
 module Handler =
     let create log stream =
-        let inner = Equinox.Handler(fold, log, stream, maxAttempts = 2)
+        let inner = Equinox.Handler(Aggregate.fold, log, stream, maxAttempts = 2)
         let execute command = 
-            inner.Decide(fun ctx -> 
-                ctx.Execute (interpret command)
-                ctx.State)
+            try
+                inner.Decide(fun ctx -> 
+                    ctx.Execute (interpret command)
+                    ctx.State)
+                |> AsyncResult.ofAsync
+            with 
+            | exn ->
+                sprintf "execute failed: \n%A" exn
+                |> DogError
+                |> AsyncResult.ofError
         let query () = 
-            inner.Query(fun state -> state.ToString())
+            try
+                inner.Query(id)
+                |> AsyncResult.ofAsync
+            with
+            | exn ->
+                sprintf "query failed: \n%A" exn
+                |> DogError
+                |> AsyncResult.ofError
         { execute = execute
           query = query }
 
 type Service =
-    { execute: DogId -> Command -> Async<State> }
+    { execute: DogId -> Command -> AsyncResult<State, DogError>
+      get: DogId -> AsyncResult<State, DogError> }
 module Service =
-    let create log resolve =
-        let (|AggregateId|) (dogId: DogId) = Equinox.AggregateId("Dog", DogId.toStringN dogId)
-        let (|DogHandler|) (AggregateId dogId) = Handler.create log (resolve dogId)
-        let execute (DogHandler handler) command = handler.execute command
-        { execute = execute }
+    let create log resolveStream maxAttempts =
+        let (|AggregateId|) (dogId: DogId) = Equinox.AggregateId("Dog", DogId.toString dogId)
+        let (|Stream|) (AggregateId dogId) = Equinox.Stream(log, resolveStream dogId, defaultArg maxAttempts 3)
+        let handle (Stream stream) command =
+            try
+                stream.Transact(fun state ->
+                    let ctx = Equinox.Accumulator(Aggregate.fold, state)
+                    ctx.Execute(interpret command)
+                    (ctx.State, ctx.Accumulated))
+                |> AsyncResult.ofAsync
+            with
+            | exn ->
+                sprintf "error handling %A:\n%A" command exn
+                |> DogError
+                |> AsyncResult.ofError
+        
+        let read (AggregateId dogId) observationDate = 
+            let fold state (events:seq<Event>) = 
+                events 
+                |> Seq.filter (function
+                    | Born )
+            let ctx = Equinox.Accumulator
+            stream.Load
+        let get (Stream stream) =
+            stream
+        { execute = execute
+          get = get }
+
+module Store

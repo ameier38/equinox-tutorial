@@ -68,7 +68,7 @@ NUGET
     FSharp.Control.Reactive (4.1)
       FSharp.Core (>= 4.2.3)
       System.Reactive (>= 4.0)
-    FSharp.Core (4.6.2)
+    FSharp.Core (4.5)
     Microsoft.Build (15.9.20)
       Microsoft.Build.Framework (>= 15.9.20)
       Microsoft.Win32.Registry (>= 4.3)

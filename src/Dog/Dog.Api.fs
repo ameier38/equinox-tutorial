@@ -2,42 +2,42 @@ module Dog.Api
 
 open Serilog
 open System
+open Suave
+open Suave.Successful
+open Suave.ServerErrors
+open Suave.Operators
 
-/// Equinox store bindings
-module Storage =
-    /// Specifies the store to be used, together with any relevant custom parameters
-    [<RequireQualifiedAccess>]
-    type Config =
-        | Mem
-        | ES of host: string * username: string * password: string * cacheMb: int
+type Handle = byte[] -> AsyncResult<string,DogError>
 
-    /// Holds an initialized/customized/configured of the store as defined by the `Config`
-    type Instance =
-        | MemoryStore of Equinox.MemoryStore.VolatileStore
-        | EventStore of gateway: Equinox.EventStore.GesGateway * cache: Equinox.EventStore.Caching.Cache
+let JSON data =
+    OK data 
+    >=> Writers.setMimeType "application/json; charset=utf-8"
 
-    /// MemoryStore 'wiring', uses Equinox.MemoryStore nuget package
-    module private Memory =
-        open Equinox.MemoryStore
-        let connect () =
-            VolatileStore()
+let createHandler (handle: Handle) : WebPart =
+    fun (ctx:HttpContext) ->
+        let { request = { rawForm = body }} = ctx
+        async {
+            match! handle body with
+            | Ok data -> 
+                return! JSON data ctx
+            | Error err ->
+                let errStr = err.ToString()
+                return! INTERNAL_ERROR errStr ctx
+        }
 
-    /// EventStore wiring, uses Equinox.EventStore nuget package
-    module private ES =
-        open Equinox.EventStore
-        let mkCache mb = Caching.Cache ("ES", mb)
-        let connect host username password =
-            let log = Logger.SerilogNormal (Log.ForContext<Instance>())
-            let c = GesConnector(username,password,reqTimeout=TimeSpan.FromSeconds 5., reqRetries=1, log=log)
-            let conn = c.Establish ("Twin", Discovery.GossipDns host, ConnectionStrategy.ClusterTwinPreferSlaveReads) |> Async.RunSynchronously
-            GesGateway(conn, GesBatchingPolicy(maxBatchSize=500))
-
-    /// Creates and/or connects to a specific store as dictated by the specified config
-    let connect : Config -> Instance = function
-        | Config.Mem ->
-            let store = Memory.connect()
-            Instance.MemoryStore store
-        | Config.ES (host, user, pass, cache) ->
-            let cache = ES.mkCache cache
-            let conn = ES.connect host user pass
-            Instance.EventStore (conn, cache)
+let handleGet : Handle =
+    fun body ->
+        asyncResult {
+            let! getRequest =
+                body
+                |> GetRequestSchema.deserializeFromBytes
+                |> Result.bind GetRequestSchema.toDomain
+                |> AsyncResult.ofResult
+            let! dogStateSchema =
+                getRequest
+                ||> Projection.dogState handler
+            let data =
+                dogStateSchema
+                |> DogStateSchema.serializeToJson
+            return data
+        }
