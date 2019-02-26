@@ -17,13 +17,13 @@
       <Paket>True</Paket>
       <Link>paket-files/Env.fs</Link>
     </Compile>
-    <Compile Include="Dog.Config.fs" />
-    <Compile Include="Dog.SimpleTypes.fs" />
-    <Compile Include="Dog.Domain.fs" />
-    <Compile Include="Dog.Implementation.fs" />
-    <!-- <Compile Include="Dog.Dto.fs" />
-    <Compile Include="Dog.Api.fs" />
-    <Compile Include="Program.fs" /> -->
+    <Compile Include="Lease.Config.fs" />
+    <Compile Include="Lease.SimpleTypes.fs" />
+    <Compile Include="Lease.Domain.fs" />
+    <Compile Include="Lease.Dto.fs" />
+    <Compile Include="Lease.Implementation.fs" />
+    <Compile Include="Lease.Api.fs" />
+    <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ouroboros\Ouroboros.fsproj" />

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\paket-files\ameier38\fsharp-utilities\src\Result.fs">
+      <Paket>True</Paket>
+      <Link>paket-files/Result.fs</Link>
+    </Compile>
+    <Compile Include="..\..\paket-files\ameier38\fsharp-utilities\src\SimpleType.fs">
+      <Paket>True</Paket>
+      <Link>paket-files/SimpleType.fs</Link>
+    </Compile>
+    <Compile Include="Ouroboros.SimpleTypes.fs" />
+    <Compile Include="Ouroboros.PublicTypes.fs" />
+    <Compile Include="Ouroboros.Implementation.fs" />
+  </ItemGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
+</Project>

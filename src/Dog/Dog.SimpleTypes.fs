@@ -1,9 +1,9 @@
 namespace Dog
 
 open FSharp.UMX
+open Ouroboros
 open SimpleType
 open System
-open System.Text
 
 [<Measure>] type g
 module Grams =
@@ -16,14 +16,6 @@ module Years =
     let toInt (years: int<yr>) = years / 1<yr>
 
 [<Measure>] type dogId
-
-module String =
-    let toBytes (s:string) = s |> Encoding.UTF8.GetBytes
-    let fromBytes (bytes:byte []) = bytes |> Encoding.UTF8.GetString
-    let lower (s:string) = s.ToLower()
-
-module Guid =
-    let inline toStringN (x: Guid) = x.ToString "N"
 
 /// Unique identifier of the dog
 type DogId = Guid<dogId>
@@ -60,11 +52,3 @@ module Weight =
     let value (Weight weight) = weight
     let create weight = Weight weight
     let add (Weight w1) (Weight w2) = w1 + w2 |> Weight
-
-/// Dog's current activity
-type Activity = private Activity of String50
-module Activity =
-    let value (Activity activity) = String50.value activity
-    let create activity =
-        String50.create activity
-        |> Result.map Activity

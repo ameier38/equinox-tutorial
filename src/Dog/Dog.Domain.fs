@@ -1,18 +1,7 @@
 namespace Dog
 
 open System
-
-type ObservationDate =
-    | Latest
-    | AsOf of DateTime
-    | AsAt of DateTime
-
-type EmptyEnvelope =
-    { EffectiveDate: DateTime }
-
-type Envelope<'Data> =
-    { EffectiveDate: DateTime
-      Data: 'Data }
+open Ouroboros
 
 type DogError = DogError of string
 
@@ -21,30 +10,31 @@ type Dog =
       Breed: Breed
       BirthDate: DateTime }
 
-type DogState =
+type DogStateData =
     { Dog: Dog
       Age: Age
       Weight: Weight }
 
-type State =
+type DogState =
     | NonExistent
     | Corrupt of DogError
-    | Bored of DogState
-    | Tired of DogState
-    | Hungry of DogState
+    | Bored of DogStateData
+    | Tired of DogStateData
+    | Hungry of DogStateData
 
-type Command =
-    | Reverse of int
-    | Create of Envelope<Dog>
-    | Play of EmptyEnvelope
-    | Sleep of Envelope<TimeSpan>
-    | Eat of Envelope<Weight>
+type DogCommand =
+    | Undo of EventId
+    | Create of Dog
+    | Modify of Dog
+    | Play of TimeSpan
+    | Sleep of TimeSpan
+    | Eat of Weight
 
-type Event =
-    | Reversed of int
-    | Born of Envelope<Dog>
-    | Played of EmptyEnvelope
-    | Slept of Envelope<TimeSpan>
-    | Ate of Envelope<Weight>
+type DogEvent =
+    | Undid of EventId
+    | Born of Dog
+    | Modified of Dog
+    | Played of TimeSpan
+    | Slept of TimeSpan
+    | Ate of Weight
     interface TypeShape.UnionContract.IUnionContract
-

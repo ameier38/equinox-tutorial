@@ -11,7 +11,7 @@ open Fake.DotNet
 open Fake.IO.FileSystemOperators
 
 let paketExe = __SOURCE_DIRECTORY__ </> ".paket" </> "paket.exe"
-let dogSolution = __SOURCE_DIRECTORY__ </> "Dog.sln"
+let solution = __SOURCE_DIRECTORY__ </> "Tutorial.sln"
 
 Target.create "Default" (fun _ ->
     Trace.trace "Equinox Tutorial")
@@ -31,7 +31,7 @@ Target.create "InstallDependencies" (fun _ ->
 
 Target.create "Restore" (fun _ ->
     Trace.trace "Restoring solution..."
-    DotNet.restore id dogSolution)
+    DotNet.restore id solution)
 
 Target.create "Test" (fun _ ->
     Trace.trace "Running tests..."
@@ -39,7 +39,7 @@ Target.create "Test" (fun _ ->
     |> ignore)
 
 Target.create "Serve" (fun _ ->
-    DotNet.exec id "run" "--project src/Dog/Dog.fsproj"
+    DotNet.exec id "run" "--project src/Lease/Lease.fsproj"
     |> ignore)
 
 open Fake.Core.TargetOperators

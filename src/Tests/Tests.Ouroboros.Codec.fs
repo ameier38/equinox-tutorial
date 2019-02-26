@@ -1,8 +1,9 @@
 module Tests.Dog.Codec
 
-open Dog.Codec
-open Dog.Ouroboros
+open Ouroboros
 open Expecto
+open FsCheck
+open System
 
 type Dog = 
     { Name: string
@@ -14,6 +15,12 @@ type DogEvent =
     | Slept
     interface TypeShape.UnionContract.IUnionContract
 
+type public EventIdGenerator() =
+    static member EventId() : Arbitrary<EventId> =
+        Guid.NewGuid() 
+        |> EventId
+        |> Gen.constant
+        |> Arb.fromGen 
 
 let serializationSettings = Newtonsoft.Json.JsonSerializerSettings()
 
@@ -25,7 +32,9 @@ let ``Basic enc/dec round trip`` (event: Event<DogEvent>) =
     let e = encoder.Value
     e.TryDecode(e.Encode event) = Some event
 
+let config = { FsCheckConfig.defaultConfig with arbitrary = [typeof<EventIdGenerator>] }
+
 [<Tests>]
 let testCodec = testList "test Dog.Codec" [
-    testProperty "rount trip" ``Basic enc/dec round trip``
+    testPropertyWithConfig config "round trip" ``Basic enc/dec round trip``
 ]

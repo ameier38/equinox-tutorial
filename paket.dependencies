@@ -7,9 +7,11 @@ nuget Expecto.FsCheck
 nuget FsCheck
 nuget FSharp.Core 4.5.0.0
 nuget Equinox 1.1.0-preview2 preview
+nuget Equinox.Codec 1.1.0-preview2 preview
 nuget Equinox.EventStore 1.1.0-preview2 preview
 nuget Equinox.MemoryStore 1.1.0-preview2 preview
 nuget FSharp.UMX 1.0.0-preview-001 preview
+nuget Jet.JsonNet.Converters
 nuget OpenAPITypeProvider
 nuget Serilog.Sinks.Console
 nuget Suave

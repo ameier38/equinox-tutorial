@@ -1,0 +1,233 @@
+openapi: 3.0.0
+info:
+  title: Ouroboros API
+  description: Ouroboros integration test API
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.1
+servers:
+- url: https://virtserver.swaggerhub.com/ameier38/Ouroboros/1.0.0
+  description: SwaggerHub API Auto Mocking
+paths:
+  /get:
+    post:
+      summary: get lease
+      description: get the state of a lease at a particular observation date
+      requestBody:
+        description: Lease to retrieve
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetRequest'
+      responses:
+        200:
+          description: Successfully retrieved lease
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeaseState'
+  /undo:
+    post:
+      summary: undo event
+      description: undo a lease event
+      requestBody:
+        description: lease event to undo
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UndoRequest'
+      responses:
+        200:
+          description: Successfully undid lease event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeaseState'
+  /create:
+    post:
+      summary: create lease
+      description: create a lease
+      requestBody:
+        description: lease to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lease'
+      responses:
+        200:
+          description: Successfully created lease
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeaseState'
+  /modify:
+    post:
+      summary: modify lease
+      description: modify a lease
+      requestBody:
+        description: lease to modify
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lease'
+      responses:
+        200:
+          description: Successfully modified lease
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeaseState'
+  /schedule-payment:
+    post:
+      summary: schedule payment
+      description: schedule a lease payment
+      requestBody:
+        description: payment to schedule
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payment'
+      responses:
+        200:
+          description: Successfully scheduled payment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeaseState'
+  /receive-payment:
+    post:
+      summary: receive payment
+      description: receive a lease payment
+      requestBody:
+        description: payment to receive
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payment'
+      responses:
+        200:
+          description: Successfully received payment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeaseState'
+  /terminate:
+    post:
+      summary: terminate lease
+      description: terminate a lease
+      requestBody:
+        description: termination request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TerminateRequest'
+      responses:
+        200:
+          description: Successfully terminated lease
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeaseState'
+components:
+  schemas:
+    GetRequest:
+      required:
+      - leaseId
+      - observationDate
+      - observationType
+      type: object
+      properties:
+        leaseId:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        observationDate:
+          type: string
+          format: date-time
+        observationType:
+          type: string
+          example: of
+    UndoRequest:
+      required:
+      - eventId
+      - leaseId
+      type: object
+      properties:
+        leaseId:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        eventId:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+    TerminateRequest:
+      required:
+      - leaseId
+      - terminationDate
+      type: object
+      properties:
+        leaseId:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        terminationDate:
+          type: string
+          format: date-time
+    Payment:
+      required:
+      - paymentAmount
+      - paymentDate
+      type: object
+      properties:
+        paymentDate:
+          type: string
+          format: date-time
+        paymentAmount:
+          type: number
+          example: 25
+    Lease:
+      required:
+      - leaseId
+      - maturityDate
+      - monthlyPaymentAmount
+      - startDate
+      type: object
+      properties:
+        leaseId:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        startDate:
+          type: string
+          format: date-time
+        maturityDate:
+          type: string
+          format: date-time
+        monthlyPaymentAmount:
+          type: number
+          example: 25
+    LeaseState:
+      required:
+      - amountDue
+      - lease
+      - status
+      - totalPaid
+      - totalScheduled
+      type: object
+      properties:
+        lease:
+          $ref: '#/components/schemas/Lease'
+        status:
+          type: string
+          example: Current
+        totalScheduled:
+          type: number
+          example: 25
+        totalPaid:
+          type: number
+          example: 25
+        amountDue:
+          type: number
+          example: 25

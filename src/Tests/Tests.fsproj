@@ -5,11 +5,11 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Tests.Dog.Codec.fs" />
+    <Compile Include="Tests.Ouroboros.Codec.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dog\Dog.fsproj" />
+    <ProjectReference Include="..\Ouroboros\Ouroboros.fsproj" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

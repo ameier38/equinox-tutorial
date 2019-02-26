@@ -1,5 +1,8 @@
 module Dog.Implementation
 
+open Ouroboros
+open Equinox.EventStore
+open Serilog
 open System
 
 module Dog =
@@ -21,7 +24,7 @@ module Dog =
 
 module Event =
     let getEffectiveOrder = function
-        | Reversed _ -> 0
+        | Undid _ -> 0
         | Born _ -> 1
         | Played _ -> 2
         | Slept _ -> 3
@@ -45,98 +48,105 @@ module DogState =
     let updateWeight difference dogState =
         { dogState with Weight = dogState.Weight |> Weight.add difference }
 
-let evolve state = function
-    | Reversed _ -> state
-    | Born { Data = dog } ->
-        match state with
-        | Corrupt err -> Corrupt err
-        | NonExistent -> 
-            result {
-                let age = Age.zero
-                let weight = 300m<g> |> Weight.create
-                return
-                    { Dog = dog
-                      Age = age
-                      Weight = weight }
-            } |> Result.bimap Bored Corrupt
-        | _ -> 
-            "dog could not have been born; dog already exists" 
-            |> DogError
-            |> Corrupt
-    | Played { EffectiveDate = effectiveDate } ->
-        match state with
-        | Corrupt err -> Corrupt err
-        | Bored dogState ->
-            dogState
-            |> DogState.updateWeight (Weight -1m<g>)
-            |> DogState.updateAge effectiveDate
-            |> Result.mapError DogError
-            |> Result.bimap Tired Corrupt
-        | _ ->
-            sprintf "dog could not have played in state %A" state
-            |> DogError
-            |> Corrupt
-    | Slept { EffectiveDate = effectiveDate } ->
-        match state with
-        | Corrupt err -> Corrupt err
-        | Tired dogState ->
-            dogState
-            |> DogState.updateAge effectiveDate
-            |> Result.mapError DogError
-            |> Result.bimap Hungry Corrupt
-        | _ ->
-            sprintf "dog could not have slept in state %A" state
-            |> DogError
-            |> Corrupt
-    | Ate { EffectiveDate = effectiveDate; Data = weight } ->
-        match state with
-        | Corrupt err -> Corrupt err
-        | Hungry dogState ->
-            dogState
-            |> DogState.updateWeight weight
-            |> DogState.updateAge effectiveDate
-            |> Result.mapError DogError
-            |> Result.bimap Tired Corrupt
-        | _ ->
-            sprintf "dog could not have ate in state %A" state
-            |> DogError
-            |> Corrupt
+module Aggregate =
+    let (|DomainEvent|) (event:Event<DogEvent>) = event.DomainEvent
+    let (|EventId|) (event:Event<DogEvent>) = event.EventId
 
-let interpret command state =
-    match command with
-    | Reverse eventNumber -> [Reversed eventNumber]
-    | Create { EffectiveDate = effectiveDate; Data = dog } ->
-        match state with
-        | NonExistent ->
-            { EffectiveDate = effectiveDate
-              Data = dog }
-            |> Born
-            |> List.singleton
-        | _ -> []
-    | Play { EffectiveDate = effectiveDate } ->
-        match state with
-        | Bored dogState ->
-            { EffectiveDate = effectiveDate }
-            |> Played
-            |> List.singleton
-        | _ -> []
-    | Sleep { EffectiveDate = effectiveDate; Data = timeSpan } ->
-        match state with
-        | Tired dogState ->
-            { EffectiveDate = effectiveDate
-              Data = timeSpan }
-            |> Slept
-            |> List.singleton
-        | _ -> []
-    | Eat { EffectiveDate = effectiveDate; Data = weight } ->
-        match state with
-        | Hungry dogState ->
-            { EffectiveDate = effectiveDate
-              Data = weight }
-            |> Ate
-            |> List.singleton
-        | _ -> []
+    let evolve : Evolve<DogEvent> =
+        fun state ((DomainEvent domainEvent) as event) ->
+            match domainEvent with
+            | Undid undoEventId -> state |> List.filter (fun (EventId eventId) -> eventId <> undoEventId )
+            | _ -> event :: state
+
+    let apply 
+        (effectiveDate:EffectiveDate) 
+        : Apply<DogState,DogEvent> =
+        fun state -> function
+            | Played timeSpan ->
+                match state with
+                | Corrupt err -> Corrupt err
+                | Bored dogState ->
+                    dogState
+                    |> DogState.updateWeight (Weight -1m<g>)
+                    |> DogState.updateAge effectiveDate
+                    |> Result.mapError DogError
+                    |> Result.bimap Tired Corrupt
+                | _ ->
+                    sprintf "dog could not have played in state %A" state
+                    |> DogError
+                    |> Corrupt
+            | Slept { EffectiveDate = effectiveDate } ->
+                match state with
+                | Corrupt err -> Corrupt err
+                | Tired dogState ->
+                    dogState
+                    |> DogState.updateAge effectiveDate
+                    |> Result.mapError DogError
+                    |> Result.bimap Hungry Corrupt
+                | _ ->
+                    sprintf "dog could not have slept in state %A" state
+                    |> DogError
+                    |> Corrupt
+            | Ate { EffectiveDate = effectiveDate; Data = weight } ->
+                match state with
+                | Corrupt err -> Corrupt err
+                | Hungry dogState ->
+                    dogState
+                    |> DogState.updateWeight weight
+                    |> DogState.updateAge effectiveDate
+                    |> Result.mapError DogError
+                    |> Result.bimap Tired Corrupt
+                | _ ->
+                    sprintf "dog could not have ate in state %A" state
+                    |> DogError
+                    |> Corrupt
+
+    let interpret command state =
+        match command with
+        | Reverse eventNumber -> [Reversed eventNumber]
+        | Create { EffectiveDate = effectiveDate; Data = dog } ->
+            match state with
+            | NonExistent ->
+                { EffectiveDate = effectiveDate
+                  Data = dog }
+                |> Born
+                |> List.singleton
+            | _ -> []
+        | Play { EffectiveDate = effectiveDate } ->
+            match state with
+            | Bored dogState ->
+                { EffectiveDate = effectiveDate }
+                |> Played
+                |> List.singleton
+            | _ -> []
+        | Sleep { EffectiveDate = effectiveDate; Data = timeSpan } ->
+            match state with
+            | Tired dogState ->
+                { EffectiveDate = effectiveDate
+                  Data = timeSpan }
+                |> Slept
+                |> List.singleton
+            | _ -> []
+        | Eat { EffectiveDate = effectiveDate; Data = weight } ->
+            match state with
+            | Hungry dogState ->
+                { EffectiveDate = effectiveDate
+                  Data = weight }
+                |> Ate
+                |> List.singleton
+            | _ -> []
      
+let aggregate =
+    let isOrigin { DomainEvent = dogEvent } =
+        match dogEvent with
+        | 
+    result {
+        let! entity = "dog" |> Entity.create
+        return
+            { entity = entity
+              initial = NonExistent
+              isOrigin = }
+    }
 module Aggregate =
     let fold state = Seq.fold evolve state
 
@@ -201,4 +211,35 @@ module Service =
         { execute = execute
           get = get }
 
-module Store
+module Log =
+    let log = 
+        Log.Logger
+        |> Logger.SerilogNormal
+
+module Store =
+    let connect (config:EventStoreConfig) (name:string) =
+        let uri = 
+            sprintf "%s://@%s:%d" 
+                config.Protocol 
+                config.Host 
+                config.Port
+            |> Uri
+        let timeout = TimeSpan.FromSeconds 5.0
+        let connector = 
+            GesConnector(
+                config.User, 
+                config.Password, 
+                reqTimeout=timeout, 
+                reqRetries=1, 
+                log=Log.log)
+        let cache = Caching.Cache ("ES", 20)
+        let strategy = ConnectionStrategy.ClusterTwinPreferSlaveReads
+        let conn = 
+            connector.Establish(name, Discovery.Uri uri, strategy)
+            |> Async.RunSynchronously
+        let gateway = GesGateway(conn, GesBatchingPolicy(maxBatchSize=500))
+        (gateway, cache)
+
+module Repository =
+    let create (store:Store) (aggregate:Aggregate<) =
+        
