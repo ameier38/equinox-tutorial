@@ -18,13 +18,14 @@ module Context =
           CreatedDate = %DateTime.UtcNow
           EffectiveDate = effectiveDate }
 
-type Apply<'DomainState,'DomainEvent> =
+type Apply<'DomainEvent,'DomainState> =
     'DomainState
      -> 'DomainEvent
      -> 'DomainState
 
-type Decide<'DomainCommand,'DomainState,'DomainEvent> =
-    'DomainCommand
+type Decide<'DomainCommand,'DomainEvent,'DomainState> =
+    EventId
+     -> 'DomainCommand
      -> 'DomainState
      -> Result<'DomainEvent list,string>
 
@@ -65,23 +66,23 @@ type Projection<'DomainEvent,'View> =
      -> StreamState<'DomainEvent>
      -> 'View
 
-type Query<'EntityId,'DomainEvent,'View,'DomainState> = 
+type Query<'EntityId,'DomainEvent,'View> = 
     'EntityId
      -> ObservationDate 
      -> Projection<'DomainEvent,'View>
-     -> AsyncResult<'DomainState,string>
+     -> AsyncResult<'View,string>
 
-type Aggregate<'DomainState,'DomainCommand,'DomainEvent> =
-    { entity: Entity
+type Aggregate<'DomainCommand,'DomainEvent,'DomainState> =
+    { entity: string
       initial: 'DomainState
       isOrigin: IsOrigin<'DomainEvent>
-      apply: Apply<'DomainState,'DomainEvent>
-      decide: Decide<'DomainCommand,'DomainState,'DomainEvent>
+      apply: Apply<'DomainEvent,'DomainState>
+      decide: Decide<'DomainCommand,'DomainEvent,'DomainState>
       reconstitute: Reconstitute<'DomainEvent,'DomainState>
       compact: Compact<'DomainEvent>
       evolve: Evolve<'DomainEvent>
       interpret: Interpret<'DomainCommand,'DomainEvent> }
 
-type Handler<'EntityId,'DomainCommand,'DomainEvent,'View,'DomainState> =
+type Handler<'EntityId,'DomainCommand,'DomainEvent,'DomainState,'View> =
     { execute: Execute<'EntityId,'DomainCommand>
-      query: Query<'EntityId,'DomainEvent,'View,'DomainState> }
+      query: Query<'EntityId,'DomainEvent,'View> }

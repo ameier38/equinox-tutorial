@@ -1,0 +1,15 @@
+### VS Code ###
+.vscode
+
+### Publish ###
+**/bin
+**/obj
+**/out
+
+### Paket ###
+.paket
+packages
+paket-files
+
+### FAKE ###
+.fake

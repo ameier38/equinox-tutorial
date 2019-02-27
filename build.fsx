@@ -10,7 +10,8 @@ open Fake.IO
 open Fake.DotNet
 open Fake.IO.FileSystemOperators
 
-let paketExe = __SOURCE_DIRECTORY__ </> ".paket" </> "paket.exe"
+let paketFile = if Environment.isLinux then "paket" else "paket.exe"
+let paketExe = __SOURCE_DIRECTORY__ </> ".paket" </> paketFile
 let solution = __SOURCE_DIRECTORY__ </> "Tutorial.sln"
 
 Target.create "Default" (fun _ ->
@@ -38,13 +39,29 @@ Target.create "Test" (fun _ ->
     DotNet.exec id "run" "--project src/Tests/Tests.fsproj"
     |> ignore)
 
+Target.create "Build" (fun _ ->
+    Trace.trace "Building solution..."
+    DotNet.build id solution)
+
+Target.create "Publish" (fun _ ->
+    Trace.trace "Publishing solution..."
+    DotNet.publish 
+        (fun args -> { args with OutputPath = Some "out"})
+        solution)
+
 Target.create "Serve" (fun _ ->
     DotNet.exec id "run" "--project src/Lease/Lease.fsproj"
     |> ignore)
 
 open Fake.Core.TargetOperators
 
+"InstallPaket"
+ ==> "InstallDependencies"
+
 "InstallDependencies"
  ==> "Restore"
+
+"InstallDependencies"
+ ==> "Build"
 
 Target.runOrDefault "Default"

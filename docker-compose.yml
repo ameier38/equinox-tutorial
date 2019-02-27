@@ -1,0 +1,14 @@
+version: '3'
+services:
+  api:
+    build:
+      context: .
+    command: bash -c "./wait-for-it.sh http://localhost:2113/users/admin && dotnet src/Lease/out/Lease.dll"
+    environment:
+      - EVENTSTORE_PROTOCOL=discover
+      - EVENTSTORE_HOST=eventstore
+      - EVENTSTORE_PORT=2113
+      - EVENTSTORE_USER=admin
+      - EVENTSTORE_PASSWORD=changeit
+    ports:
+      - "8080:8080"

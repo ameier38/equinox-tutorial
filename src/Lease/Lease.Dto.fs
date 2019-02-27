@@ -9,13 +9,17 @@ module OpenApi =
     let [<Literal>] LeaseApiSchema = __SOURCE_DIRECTORY__  + "/openapi.yaml"
     type LeaseApi = OpenAPIV3Provider<LeaseApiSchema>
 
-module String =
-    let toBytes (s:string) = s |> Encoding.UTF8.GetBytes
-    let fromBytes (bytes:byte []) = bytes |> Encoding.UTF8.GetString
-    let lower (s:string) = s.ToLower()
-
 type NewLeaseSchema = OpenApi.LeaseApi.Schemas.NewLease
 module NewLeaseSchema =
+    let deserializeFromBytes (bytes:byte[]) =
+        try
+            bytes
+            |> String.fromBytes
+            |> NewLeaseSchema.Parse
+            |> Ok
+        with ex -> 
+            sprintf "could not deserialize NewLeaseSchema:\n%A" ex 
+            |> Error
     let toDomain (schema:NewLeaseSchema) =
         { StartDate = schema.StartDate
           MaturityDate = schema.MaturityDate
@@ -52,6 +56,7 @@ module EventSchema =
         |> Some
     let fromDomain = function
         | Undid _ -> None
+        | Compacted _ -> None
         | Created (_, ctx) -> create "Created" ctx
         | Modified (_, ctx) -> create "Modified" ctx
         | PaymentScheduled (_, ctx) -> create "PaymentScheduled" ctx

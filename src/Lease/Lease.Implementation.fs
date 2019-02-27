@@ -10,6 +10,7 @@ module LeaseEvent =
     let (|Order|) { CreatedDate = createdDate; EffectiveDate = effDate } = (effDate, createdDate)
     let getContext = function
         | Undid _ -> None
+        | Compacted _ -> None
         | Created (_, ctx) -> ctx |> Some
         | Modified (_, ctx) -> ctx |> Some
         | PaymentScheduled (_, ctx) -> ctx |> Some
@@ -25,9 +26,16 @@ module Aggregate =
 
     let (|Order|) leaseEvent = LeaseEvent.getOrder leaseEvent
 
-    let apply : Apply<LeaseState,LeaseEvent> =
+    let isOrigin = function
+        | Compacted _ -> true
+        | _ -> false
+
+    let compact (state:StreamState<LeaseEvent>) = Compacted (Array.ofList state.Events)
+
+    let apply : Apply<LeaseEvent,LeaseState> =
         fun state -> function
             | Undid _ -> "Undid event should be filtered from lease events" |> Corrupt
+            | Compacted _ -> "Compacted event should be filtered from lease events" |> Corrupt
             | Created (lease, _) ->
                 match state with
                 | NonExistent ->
@@ -68,10 +76,8 @@ module Aggregate =
                     LeaseState.Terminated data
                 | _ -> applyError PaymentScheduled state
 
-    let decide 
-        (nextId: EventId)
-        : Decide<LeaseCommand,LeaseState,LeaseEvent> =
-        fun command state ->
+    let decide : Decide<LeaseCommand,LeaseEvent,LeaseState> =
+        fun (nextId: EventId) command state ->
             match command with
             | Undo _ -> Ok []
             | Create ({ StartDate = startDate } as lease) ->
@@ -117,6 +123,9 @@ module Aggregate =
                 { state with 
                     NextId = nextId + %1
                     Events = filteredEvents }
+            | Compacted events ->
+                { state with
+                    Events = List.ofArray events }
             | _ -> 
                 { state with 
                     NextId = nextId + %1
@@ -195,9 +204,10 @@ module Store =
 
 module Handler =
     let create 
-        (aggregate:Aggregate<LeaseState,LeaseCommand,LeaseEvent>) 
+        (aggregate:Aggregate<LeaseCommand,LeaseEvent,LeaseState>) 
         (gateway:GesGateway) 
-        (cache:Caching.Cache) =
+        (cache:Caching.Cache) 
+        : Handler<LeaseId,LeaseCommand,LeaseEvent,LeaseState,'View> =
         let log = LoggerConfiguration().WriteTo.Console().CreateLogger()
         let accessStrategy = Equinox.EventStore.AccessStrategy.RollingSnapshots (aggregate.isOrigin, aggregate.compact)
         let cacheStrategy = Equinox.EventStore.CachingStrategy.SlidingWindow (cache, TimeSpan.FromMinutes 20.)
@@ -206,11 +216,11 @@ module Handler =
         let initial = { NextId = %0; Events = [] }
         let fold = Seq.fold aggregate.evolve
         let resolve = GesResolver(gateway, codec, fold, initial, accessStrategy, cacheStrategy).Resolve
-        let (|AggregateId|) (leaseId: LeaseId) = Equinox.AggregateId(aggregate.entity |> Entity.value, LeaseId.toStringN leaseId)
+        let (|AggregateId|) (leaseId: LeaseId) = Equinox.AggregateId(aggregate.entity, LeaseId.toStringN leaseId)
         let (|Stream|) (AggregateId leaseId) = Equinox.Stream(log, resolve leaseId, 3)
         let execute (Stream stream) command = stream.Transact(aggregate.interpret command)
-        let query =
-            fun (Stream stream) obsDate projection -> 
+        let query : Query<LeaseId,LeaseEvent,'View> =
+            fun (Stream stream) (obsDate:ObservationDate) (projection:Projection<LeaseEvent,'View>) -> 
                 stream.Query(projection obsDate)
                 |> AsyncResult.ofAsync
         { execute = execute

@@ -1,6 +1,7 @@
 namespace Lease
 
 open System
+open Equinox.UnionCodec
 open Ouroboros
 
 type NewLease =
@@ -28,6 +29,7 @@ type LeaseCommand =
 
 type LeaseEvent =
     | Undid of EventId
+    | Compacted of LeaseEvent[]
     | Created of Lease * Context
     | Modified of Lease * Context
     | PaymentScheduled of Payment * Context
