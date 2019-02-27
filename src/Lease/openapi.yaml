@@ -10,171 +10,231 @@ servers:
 - url: https://virtserver.swaggerhub.com/ameier38/Ouroboros/1.0.0
   description: SwaggerHub API Auto Mocking
 paths:
-  /get:
-    post:
-      summary: get lease
-      description: get the state of a lease at a particular observation date
-      requestBody:
-        description: Lease to retrieve
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GetRequest'
+  /lease:
+    get:
+      summary: list leases
+      description: list leases
       responses:
         200:
-          description: Successfully retrieved lease
+          description: lease list response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LeaseState'
-  /undo:
-    post:
-      summary: undo event
-      description: undo a lease event
-      requestBody:
-        description: lease event to undo
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UndoRequest'
-      responses:
-        200:
-          description: Successfully undid lease event
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LeaseState'
-  /create:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lease'
     post:
       summary: create lease
-      description: create a lease
+      description: create lease
       requestBody:
-        description: lease to create
+        description: new lease
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Lease'
+              $ref: '#/components/schemas/NewLease'
       responses:
         200:
-          description: Successfully created lease
+          description: lease state response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LeaseState'
-  /modify:
-    post:
-      summary: modify lease
-      description: modify a lease
-      requestBody:
-        description: lease to modify
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Lease'
+  /lease/{leaseId}:
+    get:
+      summary: get lease
+      description: get lease
+      parameters:
+      - name: leaseId
+        in: path
+        description: lease unique id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      - name: asOf
+        in: query
+        description: As of date
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date-time
+      - name: asAt
+        in: query
+        description: As at date
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date-time
       responses:
         200:
-          description: Successfully modified lease
+          description: lease state response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LeaseState'
-  /schedule-payment:
+    put:
+      summary: update lease
+      description: update lease
+      parameters:
+      - name: leaseId
+        in: path
+        description: lease unique id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      - name: effDate
+        in: query
+        description: update effective date
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date-time
+      requestBody:
+        description: new lease
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewLease'
+      responses:
+        200:
+          description: lease state response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeaseState'
+    delete:
+      summary: terminate lease
+      description: terminate lease
+      parameters:
+      - name: leaseId
+        in: path
+        description: lease unique id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      - name: effDate
+        in: query
+        description: update effective date
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date-time
+      responses:
+        200:
+          description: lease state response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeaseState'
+  /lease/{leaseId}/schedule:
     post:
       summary: schedule payment
-      description: schedule a lease payment
+      description: schedule payment
+      parameters:
+      - name: leaseId
+        in: path
+        description: lease unique id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
       requestBody:
-        description: payment to schedule
+        description: payment request body
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Payment'
       responses:
         200:
-          description: Successfully scheduled payment
+          description: lease state response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LeaseState'
-  /receive-payment:
+  /lease/{leaseId}/payment:
     post:
-      summary: receive payment
-      description: receive a lease payment
+      summary: make payment
+      description: make payment
+      parameters:
+      - name: leaseId
+        in: path
+        description: lease unique id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
       requestBody:
-        description: payment to receive
+        description: payment request body
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Payment'
       responses:
         200:
-          description: Successfully received payment
+          description: lease state response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LeaseState'
-  /terminate:
-    post:
-      summary: terminate lease
-      description: terminate a lease
-      requestBody:
-        description: termination request
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TerminateRequest'
+  /lease/{leaseId}/{eventId}:
+    delete:
+      summary: undo event
+      description: undo event
+      parameters:
+      - name: leaseId
+        in: path
+        description: lease unique id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      - name: eventId
+        in: path
+        description: lease event id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          example: 1
       responses:
         200:
-          description: Successfully terminated lease
+          description: lease state response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LeaseState'
 components:
   schemas:
-    GetRequest:
-      required:
-      - leaseId
-      - observationDate
-      - observationType
-      type: object
-      properties:
-        leaseId:
-          type: string
-          format: uuid
-          example: d290f1ee-6c54-4b01-90e6-d701748f0851
-        observationDate:
-          type: string
-          format: date-time
-        observationType:
-          type: string
-          example: of
-    UndoRequest:
-      required:
-      - eventId
-      - leaseId
-      type: object
-      properties:
-        leaseId:
-          type: string
-          format: uuid
-          example: d290f1ee-6c54-4b01-90e6-d701748f0851
-        eventId:
-          type: integer
-          format: int32
-          example: 1
-    TerminateRequest:
-      required:
-      - leaseId
-      - terminationDate
-      type: object
-      properties:
-        leaseId:
-          type: string
-          format: uuid
-          example: d290f1ee-6c54-4b01-90e6-d701748f0851
-        terminationDate:
-          type: string
-          format: date-time
     Payment:
       required:
       - paymentAmount
@@ -185,6 +245,22 @@ components:
           type: string
           format: date-time
         paymentAmount:
+          type: number
+          example: 25
+    NewLease:
+      required:
+      - maturityDate
+      - monthlyPaymentAmount
+      - startDate
+      type: object
+      properties:
+        startDate:
+          type: string
+          format: date-time
+        maturityDate:
+          type: string
+          format: date-time
+        monthlyPaymentAmount:
           type: number
           example: 25
     Lease:
@@ -208,9 +284,31 @@ components:
         monthlyPaymentAmount:
           type: number
           example: 25
+    Event:
+      required:
+      - createdDate
+      - effectiveDate
+      - eventId
+      - eventType
+      type: object
+      properties:
+        eventId:
+          type: integer
+          format: int32
+          example: 1
+        eventType:
+          type: string
+          example: Created
+        createdDate:
+          type: string
+          format: date-time
+        effectiveDate:
+          type: string
+          format: date-time
     LeaseState:
       required:
       - amountDue
+      - events
       - lease
       - status
       - totalPaid
@@ -231,3 +329,7 @@ components:
         amountDue:
           type: number
           example: 25
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'

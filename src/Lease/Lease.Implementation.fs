@@ -14,7 +14,7 @@ module LeaseEvent =
         | Modified (_, ctx) -> ctx |> Some
         | PaymentScheduled (_, ctx) -> ctx |> Some
         | PaymentReceived (_, ctx) -> ctx |> Some
-        | Terminated ctx -> ctx |> Some
+        | LeaseEvent.Terminated ctx -> ctx |> Some
     let getOrder = getContext >> Option.map (fun (Order order) -> order)
     let getEventId = getContext >> Option.map (fun { EventId = eventId } -> eventId)
 
@@ -44,7 +44,7 @@ module Aggregate =
                         Lease = lease } 
                     |> Outstanding
                 | _ -> applyError Modified state
-            | PaymentScheduled (amount, _) ->
+            | PaymentScheduled ({ PaymentAmount = amount }, _) ->
                 match state with
                 | Outstanding data ->
                     let newTotalScheduled = data.TotalScheduled + amount
@@ -53,7 +53,7 @@ module Aggregate =
                         AmountDue = newTotalScheduled - data.TotalPaid }
                     |> Outstanding
                 | _ -> applyError PaymentScheduled state
-            | PaymentReceived (amount, _) ->
+            | PaymentReceived ({ PaymentAmount = amount }, _) ->
                 match state with
                 | Outstanding data ->
                     let newTotalPaid = data.TotalPaid + amount
@@ -62,7 +62,7 @@ module Aggregate =
                         AmountDue = data.TotalScheduled - newTotalPaid }
                     |> Outstanding
                 | _ -> applyError PaymentScheduled state
-            | Terminated _ ->
+            | LeaseEvent.Terminated _ ->
                 match state with    
                 | Outstanding data ->
                     LeaseState.Terminated data
@@ -86,23 +86,23 @@ module Aggregate =
                     let ctx = Context.create nextId effDate
                     Modified (lease, ctx) |> List.singleton |> Ok
                 | _ -> commandError Modify state
-            | SchedulePayment (amount, effDate) ->
+            | SchedulePayment ({ PaymentDate = pmtDate } as pmt) ->
                 match state with
                 | Outstanding _ -> 
-                    let ctx = Context.create nextId effDate
-                    PaymentScheduled (amount, ctx) |> List.singleton |> Ok
+                    let ctx = Context.create nextId %pmtDate
+                    PaymentScheduled (pmt, ctx) |> List.singleton |> Ok
                 | _ -> commandError SchedulePayment state
-            | ReceivePayment (amount, effDate) ->
+            | ReceivePayment ({ PaymentDate = pmtDate } as pmt) ->
                 match state with
                 | Outstanding _ -> 
-                    let ctx = Context.create nextId effDate
-                    PaymentReceived (amount, ctx) |> List.singleton |> Ok
+                    let ctx = Context.create nextId %pmtDate
+                    PaymentReceived (pmt, ctx) |> List.singleton |> Ok
                 | _ -> commandError ReceivePayment state
             | Terminate effDate ->
                 match state with
                 | Outstanding _ -> 
                     let ctx = Context.create nextId effDate
-                    Terminated ctx |> List.singleton |> Ok
+                    LeaseEvent.Terminated ctx |> List.singleton |> Ok
                 | _ -> commandError Terminate state
 
     let evolve : Evolve<LeaseEvent> =
@@ -164,8 +164,8 @@ module Aggregate =
                     (error, [])
             | Create { StartDate = startDate } -> interpret' %startDate command
             | Modify (_, effDate) -> interpret' effDate command
-            | SchedulePayment (_, effDate) -> interpret' effDate command
-            | ReceivePayment (_, effDate) -> interpret' effDate command
+            | SchedulePayment ({ PaymentDate = pmtDate }) -> interpret' %pmtDate command
+            | ReceivePayment ({ PaymentDate = pmtDate }) -> interpret' %pmtDate command
             | Terminate effDate -> interpret' effDate command
 
 module Store =
@@ -208,12 +208,10 @@ module Handler =
         let resolve = GesResolver(gateway, codec, fold, initial, accessStrategy, cacheStrategy).Resolve
         let (|AggregateId|) (leaseId: LeaseId) = Equinox.AggregateId(aggregate.entity |> Entity.value, LeaseId.toStringN leaseId)
         let (|Stream|) (AggregateId leaseId) = Equinox.Stream(log, resolve leaseId, 3)
-        let execute (Stream stream) command = 
-            stream.Transact(aggregate.interpret command)
+        let execute (Stream stream) command = stream.Transact(aggregate.interpret command)
         let query =
-            fun (Stream stream) obsDate -> 
-                let getState { Events = events } = aggregate.reconstitute obsDate events
-                stream.Query(getState)
+            fun (Stream stream) obsDate projection -> 
+                stream.Query(projection obsDate)
                 |> AsyncResult.ofAsync
         { execute = execute
           query = query }

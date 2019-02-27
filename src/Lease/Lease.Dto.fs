@@ -12,6 +12,14 @@ module OpenApi =
 module String =
     let toBytes (s:string) = s |> Encoding.UTF8.GetBytes
     let fromBytes (bytes:byte []) = bytes |> Encoding.UTF8.GetString
+    let lower (s:string) = s.ToLower()
+
+type NewLeaseSchema = OpenApi.LeaseApi.Schemas.NewLease
+module NewLeaseSchema =
+    let toDomain (schema:NewLeaseSchema) =
+        { StartDate = schema.StartDate
+          MaturityDate = schema.MaturityDate
+          MonthlyPaymentAmount = schema.MonthlyPaymentAmount |> decimal }
 
 type LeaseSchema = OpenApi.LeaseApi.Schemas.Lease
 module LeaseSchema =
@@ -27,6 +35,29 @@ module LeaseSchema =
             maturityDate = lease.MaturityDate,
             monthlyPaymentAmount = (lease.MonthlyPaymentAmount |> float32))
 
+type PaymentSchema = OpenApi.LeaseApi.Schemas.Payment
+module PaymentSchema =
+    let toDomain (schema:PaymentSchema) =
+        { PaymentDate = schema.PaymentDate
+          PaymentAmount = schema.PaymentAmount |> decimal }
+
+type EventSchema = OpenApi.LeaseApi.Schemas.Event
+module EventSchema =
+    let create eventType ctx =
+        EventSchema(
+            eventId = %ctx.EventId,
+            eventType = eventType,
+            createdDate = %ctx.CreatedDate,
+            effectiveDate = %ctx.EffectiveDate)
+        |> Some
+    let fromDomain = function
+        | Undid _ -> None
+        | Created (_, ctx) -> create "Created" ctx
+        | Modified (_, ctx) -> create "Modified" ctx
+        | PaymentScheduled (_, ctx) -> create "PaymentScheduled" ctx
+        | PaymentReceived (_, ctx) -> create "PaymentReceived" ctx
+        | LeaseEvent.Terminated ctx -> create "Terminated" ctx
+
 type LeaseStateSchema = OpenApi.LeaseApi.Schemas.LeaseState
 module LeaseStateSchema =
     let serializeToJson (schema:LeaseStateSchema) =
@@ -35,122 +66,25 @@ module LeaseStateSchema =
         schema
         |> serializeToJson
         |> String.toBytes
-
-type UndoRequestSchema = OpenApi.LeaseApi.Schemas.UndoRequest
-module UndoRequestSchema =
-    let deserializeFromBytes (bytes:byte []) =
-        try
-            bytes
-            |> String.fromBytes
-            |> UndoRequestSchema.Parse
+    let fromDomain (state:LeaseState, events: LeaseEvent list) =
+        match state with
+        | NonExistent -> Error "lease does not exist"
+        | Corrupt err -> Error err
+        | Outstanding data ->
+            LeaseStateSchema(
+                lease = (data.Lease |> LeaseSchema.fromDomain),
+                status = "Outstanding",
+                totalScheduled = (data.TotalScheduled |> float32),
+                totalPaid = (data.TotalPaid |> float32),
+                amountDue = (data.AmountDue |> float32),
+                events = (events |> List.choose EventSchema.fromDomain))
             |> Ok
-        with 
-        | ex ->
-            sprintf "could not parse UndoRequestSchema %A" ex
-            |> Error
-    let toDomain (schema:UndoRequestSchema) : LeaseId * EventId =
-        (%schema.LeaseId, %schema.EventId)
-
-type PlayRequestSchema = OpenApi.DogApi.Schemas.PlayRequest
-module PlayRequestSchema =
-    let deserializeFromBytes (bytes:byte []) =
-        try
-            bytes
-            |> String.fromBytes
-            |> PlayRequestSchema.Parse
+        | Terminated data ->
+            LeaseStateSchema(
+                lease = (data.Lease |> LeaseSchema.fromDomain),
+                status = "Outstanding",
+                totalScheduled = (data.TotalScheduled |> float32),
+                totalPaid = (data.TotalPaid |> float32),
+                amountDue = (data.AmountDue |> float32),
+                events = (events |> List.choose EventSchema.fromDomain))
             |> Ok
-        with 
-        | ex ->
-            sprintf "could not parse PlayRequestSchema %A" ex
-            |> DogError
-            |> Error
-    let toDomain (schema:PlayRequestSchema) =
-        let dogId = 
-            schema.DogId 
-            |> DogId.fromGuid
-        let envelope = { EffectiveDate = schema.EffectiveDate}
-        (dogId, envelope)
-
-type SleepRequestSchema = OpenApi.DogApi.Schemas.SleepRequest
-module SleepRequestSchema =
-    let deserializeFromBytes (bytes:byte []) =
-        try
-            bytes
-            |> String.fromBytes
-            |> SleepRequestSchema.Parse
-            |> Ok
-        with 
-        | ex ->
-            sprintf "could not parse SleepRequestSchema %A" ex
-            |> DogError
-            |> Error
-    let toDomain (schema: SleepRequestSchema) =
-        let dogId = 
-            schema.DogId 
-            |> DogId.fromGuid
-        let envelop =
-            { EffectiveDate = schema.EffectiveDate
-              Data = schema.TimeSpan |> float |> TimeSpan.FromHours }
-        (dogId, envelop)
-
-type EatRequestSchema = OpenApi.DogApi.Schemas.EatRequest
-module EatRequestSchema =
-    let deserializeFromBytes (bytes:byte []) =
-        try
-            bytes
-            |> String.fromBytes
-            |> SleepRequestSchema.Parse
-            |> Ok
-        with 
-        | ex ->
-            sprintf "could not parse EatRequestSchema %A" ex
-            |> DogError
-            |> Error
-    let toDomain (schema: EatRequestSchema) =
-        let dogId = 
-            schema.DogId 
-            |> DogId.fromGuid
-        let envelop =
-            { EffectiveDate = schema.EffectiveDate
-              Data = schema.Weight |> decimal |> Grams.fromDecimal |> Weight.create }
-        (dogId, envelop)
-
-type GetRequestSchema = OpenApi.DogApi.Schemas.GetRequest
-module GetRequestSchema =
-    let deserializeFromBytes (bytes:byte []) = 
-        try
-            bytes
-            |> String.fromBytes
-            |> GetRequestSchema.Parse
-            |> Ok
-        with 
-        | ex ->
-            sprintf "could not parse GetRequestSchema %A" ex
-            |> DogError
-            |> Error
-    let (|Of|At|Invalid|) obsType =
-        match obsType with
-        | s when (s |> String.lower) = "of" -> Of
-        | s when (s |> String.lower) = "at" -> At
-        | _ -> Invalid
-    let toDomain (schema:GetRequestSchema) =
-        result {
-            let dogId = 
-                schema.DogId 
-                |> DogId.fromGuid
-            let! obsDate = 
-                match schema.ObservationType with 
-                | Of -> 
-                    schema.ObservationDate 
-                    |> AsOf 
-                    |> Ok
-                | At ->
-                    schema.ObservationDate 
-                    |> AsAt 
-                    |> Ok
-                | Invalid as obsType ->
-                    sprintf "%s is not a valid observation type; options are 'as' or 'of'" obsType
-                    |> DogError
-                    |> Error
-            return (dogId, obsDate)
-        }

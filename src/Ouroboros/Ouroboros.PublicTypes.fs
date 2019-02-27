@@ -15,7 +15,7 @@ type Context =
 module Context =
     let create eventId effectiveDate =
         { EventId = eventId
-          CreatedDate = % DateTime.UtcNow
+          CreatedDate = %DateTime.UtcNow
           EffectiveDate = effectiveDate }
 
 type Apply<'DomainState,'DomainEvent> =
@@ -28,7 +28,7 @@ type Decide<'DomainCommand,'DomainState,'DomainEvent> =
      -> 'DomainState
      -> Result<'DomainEvent list,string>
 
-type Stream<'DomainEvent> = 
+type StreamState<'DomainEvent> = 
     { NextId: EventId 
       Events: 'DomainEvent list }
 
@@ -38,13 +38,13 @@ type Reconstitute<'DomainEvent,'DomainState> =
      -> 'DomainState
 
 type Evolve<'DomainEvent> = 
-    Stream<'DomainEvent>
+    StreamState<'DomainEvent>
      -> 'DomainEvent
-     -> Stream<'DomainEvent>
+     -> StreamState<'DomainEvent>
 
 type Interpret<'DomainCommand,'DomainEvent> = 
     'DomainCommand 
-     -> Stream<'DomainEvent>
+     -> StreamState<'DomainEvent>
      -> Result<unit,string> * 'DomainEvent list
 
 type IsOrigin<'DomainEvent> = 
@@ -52,7 +52,7 @@ type IsOrigin<'DomainEvent> =
      -> bool
 
 type Compact<'DomainEvent> = 
-    Stream<'DomainEvent>
+    StreamState<'DomainEvent>
      -> 'DomainEvent
 
 type Execute<'EntityId,'DomainCommand> =
@@ -60,7 +60,28 @@ type Execute<'EntityId,'DomainCommand> =
      -> 'DomainCommand 
      -> AsyncResult<unit,string>
 
-type Query<'EntityId,'DomainState> = 
+type Projection<'DomainEvent,'View> =
+    ObservationDate
+     -> StreamState<'DomainEvent>
+     -> 'View
+
+type Query<'EntityId,'DomainEvent,'View,'DomainState> = 
     'EntityId
      -> ObservationDate 
+     -> Projection<'DomainEvent,'View>
      -> AsyncResult<'DomainState,string>
+
+type Aggregate<'DomainState,'DomainCommand,'DomainEvent> =
+    { entity: Entity
+      initial: 'DomainState
+      isOrigin: IsOrigin<'DomainEvent>
+      apply: Apply<'DomainState,'DomainEvent>
+      decide: Decide<'DomainCommand,'DomainState,'DomainEvent>
+      reconstitute: Reconstitute<'DomainEvent,'DomainState>
+      compact: Compact<'DomainEvent>
+      evolve: Evolve<'DomainEvent>
+      interpret: Interpret<'DomainCommand,'DomainEvent> }
+
+type Handler<'EntityId,'DomainCommand,'DomainEvent,'View,'DomainState> =
+    { execute: Execute<'EntityId,'DomainCommand>
+      query: Query<'EntityId,'DomainEvent,'View,'DomainState> }

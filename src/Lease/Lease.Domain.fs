@@ -3,11 +3,37 @@ namespace Lease
 open System
 open Ouroboros
 
+type NewLease =
+    { StartDate: DateTime
+      MaturityDate: DateTime
+      MonthlyPaymentAmount: decimal }
+
 type Lease =
     { LeaseId: LeaseId
       StartDate: DateTime
       MaturityDate: DateTime
       MonthlyPaymentAmount: decimal }
+
+type Payment =
+    { PaymentDate: DateTime
+      PaymentAmount: decimal }
+
+type LeaseCommand =
+    | Undo of EventId
+    | Create of Lease
+    | Modify of Lease * EffectiveDate
+    | SchedulePayment of Payment
+    | ReceivePayment of Payment
+    | Terminate of EffectiveDate
+
+type LeaseEvent =
+    | Undid of EventId
+    | Created of Lease * Context
+    | Modified of Lease * Context
+    | PaymentScheduled of Payment * Context
+    | PaymentReceived of Payment * Context
+    | Terminated of Context
+    interface TypeShape.UnionContract.IUnionContract
 
 type LeaseStateData =
     { Lease: Lease
@@ -20,20 +46,3 @@ type LeaseState =
     | Corrupt of string
     | Outstanding of LeaseStateData
     | Terminated of LeaseStateData
-
-type LeaseCommand =
-    | Undo of EventId
-    | Create of Lease
-    | Modify of Lease * EffectiveDate
-    | SchedulePayment of decimal * EffectiveDate
-    | ReceivePayment of decimal * EffectiveDate 
-    | Terminate of EffectiveDate
-
-type LeaseEvent =
-    | Undid of EventId
-    | Created of Lease * Context
-    | Modified of Lease * Context
-    | PaymentScheduled of decimal * Context
-    | PaymentReceived of decimal * Context
-    | Terminated of Context
-    interface TypeShape.UnionContract.IUnionContract
