@@ -1,83 +1,55 @@
-namespace Dog
+namespace Lease
 
 open OpenAPITypeProvider
-open System
+open FSharp.UMX
+open Ouroboros
+open System.Text
 
 module OpenApi =
-    let [<Literal>] DogApiSchema = __SOURCE_DIRECTORY__  + "/openapi.yaml"
-    type DogApi = OpenAPIV3Provider<DogApiSchema>
+    let [<Literal>] LeaseApiSchema = __SOURCE_DIRECTORY__  + "/openapi.yaml"
+    type LeaseApi = OpenAPIV3Provider<LeaseApiSchema>
 
-type DogSchema = OpenApi.DogApi.Schemas.Dog
-module DogSchema =
-    let toDomain (schema:DogSchema) =
-        result {
-            let! name = schema.Name |> Name.create
-            let! breed = schema.Breed |> Breed.create
-            return
-                { Name = name
-                  Breed = breed
-                  BirthDate = schema.BirthDate }
-        }
-    let fromDomain (dog:Dog) =
-        DogSchema(
-            name = (dog.Name |> Name.value), 
-            breed = (dog.Breed |> Breed.value), 
-            birthDate = dog.BirthDate)
+module String =
+    let toBytes (s:string) = s |> Encoding.UTF8.GetBytes
+    let fromBytes (bytes:byte []) = bytes |> Encoding.UTF8.GetString
 
-type DogStateSchema = OpenApi.DogApi.Schemas.DogState
-module DogStateSchema =
-    let serializeToJson (schema:DogStateSchema) =
+type LeaseSchema = OpenApi.LeaseApi.Schemas.Lease
+module LeaseSchema =
+    let toDomain (schema:LeaseSchema) =
+        { LeaseId = %schema.LeaseId
+          StartDate = schema.StartDate
+          MaturityDate = schema.MaturityDate
+          MonthlyPaymentAmount = schema.MonthlyPaymentAmount |> decimal }
+    let fromDomain (lease:Lease) =
+        LeaseSchema(
+            leaseId = %lease.LeaseId, 
+            startDate = lease.StartDate, 
+            maturityDate = lease.MaturityDate,
+            monthlyPaymentAmount = (lease.MonthlyPaymentAmount |> float32))
+
+type LeaseStateSchema = OpenApi.LeaseApi.Schemas.LeaseState
+module LeaseStateSchema =
+    let serializeToJson (schema:LeaseStateSchema) =
         schema.ToJson()
-    let serializeToBytes (schema:DogStateSchema) = 
+    let serializeToBytes (schema:LeaseStateSchema) = 
         schema
         |> serializeToJson
         |> String.toBytes
 
-type CreateRequestSchema = OpenApi.DogApi.Schemas.CreateRequest
-module CreateDogRequestSchema =
-    let deserializeFromBytes (bytes:byte []) = 
-        try
-            bytes
-            |> String.fromBytes
-            |> CreateRequestSchema.Parse
-            |> Ok
-        with 
-        | ex ->
-            sprintf "could not parse CreateRequestSchema\n%A" ex
-            |> DogError
-            |> Error
-    let toDomain (schema:CreateRequestSchema) =
-        result {
-            let dogId = 
-                schema.DogId 
-                |> DogId.fromGuid
-            let! dog =
-                schema.Dog
-                |> DogSchema.toDomain
-            let envelope =
-                { EffectiveDate = schema.EffectiveDate
-                  Data = dog }
-            return (dogId, envelope)
-        }
-
-type ReverseRequestSchema = OpenApi.DogApi.Schemas.ReverseRequest
-module ReverseRequestSchema =
+type UndoRequestSchema = OpenApi.LeaseApi.Schemas.UndoRequest
+module UndoRequestSchema =
     let deserializeFromBytes (bytes:byte []) =
         try
             bytes
             |> String.fromBytes
-            |> ReverseRequestSchema.Parse
+            |> UndoRequestSchema.Parse
             |> Ok
         with 
         | ex ->
-            sprintf "could not parse ReverseRequestSchema %A" ex
-            |> DogError
+            sprintf "could not parse UndoRequestSchema %A" ex
             |> Error
-    let toDomain (schema:ReverseRequestSchema) =
-        let dogId = 
-            schema.DogId 
-            |> DogId.fromGuid
-        (dogId, schema.EventNumber)
+    let toDomain (schema:UndoRequestSchema) : LeaseId * EventId =
+        (%schema.LeaseId, %schema.EventId)
 
 type PlayRequestSchema = OpenApi.DogApi.Schemas.PlayRequest
 module PlayRequestSchema =

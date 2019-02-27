@@ -159,9 +159,9 @@ components:
           format: uuid
           example: d290f1ee-6c54-4b01-90e6-d701748f0851
         eventId:
-          type: string
-          format: uuid
-          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+          type: integer
+          format: int32
+          example: 1
     TerminateRequest:
       required:
       - leaseId

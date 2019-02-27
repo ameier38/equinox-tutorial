@@ -1,8 +1,8 @@
 module Lease.Implementation
 
-open Ouroboros
 open Equinox.EventStore
 open FSharp.UMX
+open Ouroboros
 open Serilog
 open System
 
@@ -16,6 +16,7 @@ module LeaseEvent =
         | PaymentReceived (_, ctx) -> ctx |> Some
         | Terminated ctx -> ctx |> Some
     let getOrder = getContext >> Option.map (fun (Order order) -> order)
+    let getEventId = getContext >> Option.map (fun { EventId = eventId } -> eventId)
 
 module Aggregate =
     let applyError event state = sprintf "%A cannot be applied to state %A" event state |> Corrupt
@@ -67,131 +68,105 @@ module Aggregate =
                     LeaseState.Terminated data
                 | _ -> applyError PaymentScheduled state
 
-    let decide : Decide<LeaseCommand,LeaseState,LeaseEvent> =
+    let decide 
+        (nextId: EventId)
+        : Decide<LeaseCommand,LeaseState,LeaseEvent> =
         fun command state ->
             match command with
             | Undo _ -> Ok []
             | Create ({ StartDate = startDate } as lease) ->
                 match state with
                 | NonExistent -> 
-                    let meta = EventMeta.create nextId (% startDate)
-                    Created (meta, lease) |> List.singleton |> Ok
+                    let ctx = Context.create nextId (% startDate)
+                    Created (lease, ctx) |> List.singleton |> Ok
                 | _ -> commandError Create state
-            | Modify (effDate, lease) ->
+            | Modify (lease, effDate) ->
                 match state with
                 | Outstanding _ -> 
-                    let meta = EventMeta.create nextId effDate
-                    Modified (meta, lease) |> List.singleton |> Ok
+                    let ctx = Context.create nextId effDate
+                    Modified (lease, ctx) |> List.singleton |> Ok
                 | _ -> commandError Modify state
-            | SchedulePayment ({ PaymentDate = pmtDate } as payment) ->
+            | SchedulePayment (amount, effDate) ->
                 match state with
                 | Outstanding _ -> 
-                    let meta = EventMeta.create nextId (% pmtDate)
-                    PaymentScheduled (meta, payment) |> List.singleton |> Ok
+                    let ctx = Context.create nextId effDate
+                    PaymentScheduled (amount, ctx) |> List.singleton |> Ok
                 | _ -> commandError SchedulePayment state
-            | ReceivePayment ({ PaymentDate = pmtDate } as payment) ->
+            | ReceivePayment (amount, effDate) ->
                 match state with
                 | Outstanding _ -> 
-                    let meta = EventMeta.create nextId (% pmtDate)
-                    PaymentReceived (meta, payment) |> List.singleton |> Ok
+                    let ctx = Context.create nextId effDate
+                    PaymentReceived (amount, ctx) |> List.singleton |> Ok
                 | _ -> commandError ReceivePayment state
             | Terminate effDate ->
                 match state with
                 | Outstanding _ -> 
-                    let meta = EventMeta.create nextId effDate
-                    Terminated meta |> List.singleton |> Ok
+                    let ctx = Context.create nextId effDate
+                    Terminated ctx |> List.singleton |> Ok
                 | _ -> commandError Terminate state
 
     let evolve : Evolve<LeaseEvent> =
-        fun state event ->
+        fun ({ NextId = nextId; Events = events } as state) event ->
             match event with
-            | Undid undoEventId -> { state with Items = state.Items |> List.filter (fun { EventId = eventId } -> eventId <> undoEventId ) }
-            | _ -> event :: state
+            | Undid undoEventId -> 
+                let filteredEvents =
+                    events
+                    |> List.choose (fun e -> LeaseEvent.getEventId e |> Option.map (fun eventId -> (eventId, e)))
+                    |> List.filter (fun (eventId, _) -> eventId <> undoEventId)
+                    |> List.map snd
+                { state with 
+                    NextId = nextId + %1
+                    Events = filteredEvents }
+            | _ -> 
+                { state with 
+                    NextId = nextId + %1
+                    Events = event :: state.Events }
 
     let onOrBeforeObservationDate 
         observationDate 
-        { CreatedDate = createdDate; EffectiveDate = effectiveDate } =
+        (effectiveDate: EffectiveDate, createdDate: CreatedDate) =
         match observationDate with
         | Latest -> true
         | AsOf asOfDate ->
-            createdDate <= % asOfDate
+            createdDate <= %asOfDate
         | AsAt asAtDate ->
-            effectiveDate <= % asAtDate
+            effectiveDate <= %asAtDate
 
     let reconstitute : Reconstitute<LeaseEvent,LeaseState> =
         fun observationDate events ->
             events
-            |> List.filter (onOrBeforeObservationDate observationDate)
-            |> List.sortBy (fun { CreatedDate = created; EffectiveDate = effective } -> (effective, created))
-            |> List.map (fun { DomainEvent = domainEvent } -> domainEvent)
+            |> List.choose (fun e -> LeaseEvent.getOrder e |> Option.map (fun o -> (o, e)))
+            |> List.filter (fun (o, _) -> onOrBeforeObservationDate observationDate o)
+            |> List.sortBy fst
+            |> List.map snd
             |> List.fold apply NonExistent
 
     let interpret : Interpret<LeaseCommand,LeaseEvent> =
         let ok = Ok ()
-        fun { EffectiveDate = effectiveDate; DomainCommand = command } events ->
-            let asAt = % effectiveDate |> AsAt
-            let reconstitute' = reconstitute asAt
+        let onSuccess events = (ok, events)
+        let onError msg = (Error msg, [])
+        fun command { NextId = nextId; Events = events } ->
+            let (|ObsDate|) (effDate: EffectiveDate) = %effDate |> AsAt
+            let interpret' (ObsDate obsDate) command =
+                reconstitute obsDate events
+                |> decide nextId command
+                |> Result.bimap onSuccess onError
             match command with
             | Undo undoEventId ->
-                if events |> List.exists (fun { EventId = eventId} -> eventId = undoEventId)
+                if 
+                    events 
+                    |> List.choose LeaseEvent.getEventId 
+                    |> List.exists (fun eventId -> eventId = undoEventId)
                 then 
-                    let newEvents =
-                        (effectiveDate, Undid undoEventId) 
-                        ||> Event.createSingleton
-                    (ok, newEvents)
+                    (ok, [Undid undoEventId])
                 else
                     let error = sprintf "Event with id %A does not exist" undoEventId |> Error
                     (error, [])
-            | Create lease ->
-                match reconstitute' events with
-                | NonExistent -> 
-                    let newEvents =
-                        (effectiveDate, Created lease) 
-                        ||> Event.createSingleton
-                    (ok, newEvents)
-                | _ as state ->
-                    let error = sprintf "cannot create lease in state %A" state |> Error
-                    (error, [])
-            | Modify lease ->
-                match reconstitute' events with
-                | Outstanding _ ->
-                    let newEvents =
-                        (effectiveDate, Modified lease)
-                        ||> Event.createSingleton
-                    (ok, newEvents)
-                | _ as state ->
-                    let error = sprintf "cannot modify lease in state %A" state |> Error
-                    (error, [])
-            | SchedulePayment amount ->
-                match reconstitute' events with
-                | Outstanding _ ->
-                    let newEvents =
-                        (effectiveDate, PaymentScheduled amount)
-                        ||> Event.createSingleton
-                    (ok, newEvents)
-                | _ as state ->
-                    let error = sprintf "cannot schedule payment in state %A" state |> Error
-                    (error, [])
-            | ReceivePayment amount ->
-                match reconstitute' events with
-                | Outstanding _ ->
-                    let newEvents =
-                        (effectiveDate, PaymentReceived amount)
-                        ||> Event.createSingleton
-                    (ok, newEvents)
-                | _ as state ->
-                    let error = sprintf "cannot receive payment in state %A" state |> Error
-                    (error, [])
-            | Terminate ->
-                match reconstitute' events with
-                | Outstanding _ ->
-                    let newEvents =
-                        (effectiveDate, Terminated)
-                        ||> Event.createSingleton
-                    (ok, newEvents)
-                | _ as state ->
-                    let error = sprintf "cannot receive payment in state %A" state |> Error
-                    (error, [])
+            | Create { StartDate = startDate } -> interpret' %startDate command
+            | Modify (_, effDate) -> interpret' effDate command
+            | SchedulePayment (_, effDate) -> interpret' effDate command
+            | ReceivePayment (_, effDate) -> interpret' effDate command
+            | Terminate effDate -> interpret' effDate command
 
 module Store =
     let connect (config:EventStoreConfig) (name:string) =
@@ -219,38 +194,26 @@ module Store =
         (gateway, cache)
 
 module Handler =
-    let log = LoggerConfiguration().WriteTo.Console().CreateLogger()
-    let (|AggregateId|) (leaseId: LeaseId) = Equinox.AggregateId("lease", LeaseId.toStringN leaseId)
-    let (|Stream|) (AggregateId dogId) = Equinox.Stream(log, resolveStream dogId, defaultArg maxAttempts 3)
     let create 
         (aggregate:Aggregate<LeaseState,LeaseCommand,LeaseEvent>) 
         (gateway:GesGateway) 
         (cache:Caching.Cache) =
+        let log = LoggerConfiguration().WriteTo.Console().CreateLogger()
         let accessStrategy = Equinox.EventStore.AccessStrategy.RollingSnapshots (aggregate.isOrigin, aggregate.compact)
         let cacheStrategy = Equinox.EventStore.CachingStrategy.SlidingWindow (cache, TimeSpan.FromMinutes 20.)
         let serializationSettings = Newtonsoft.Json.JsonSerializerSettings()
         let codec = Equinox.UnionCodec.JsonUtf8.Create<LeaseEvent>(serializationSettings)
-        let resolver = GesResolver(gateway, codec, aggregate.evolve, aggregate.initial, accessStrategy, cacheStrategy)
-        let inner = Equinox.Handler(Aggregate.fold, log, stream, maxAttempts = 2)
-        let execute command = 
-            try
-                inner.Decide(fun ctx -> 
-                    ctx.Execute (interpret command)
-                    ctx.State)
+        let initial = { NextId = %0; Events = [] }
+        let fold = Seq.fold aggregate.evolve
+        let resolve = GesResolver(gateway, codec, fold, initial, accessStrategy, cacheStrategy).Resolve
+        let (|AggregateId|) (leaseId: LeaseId) = Equinox.AggregateId(aggregate.entity |> Entity.value, LeaseId.toStringN leaseId)
+        let (|Stream|) (AggregateId leaseId) = Equinox.Stream(log, resolve leaseId, 3)
+        let execute (Stream stream) command = 
+            stream.Transact(aggregate.interpret command)
+        let query =
+            fun (Stream stream) obsDate -> 
+                let getState { Events = events } = aggregate.reconstitute obsDate events
+                stream.Query(getState)
                 |> AsyncResult.ofAsync
-            with 
-            | exn ->
-                sprintf "execute failed: \n%A" exn
-                |> DogError
-                |> AsyncResult.ofError
-        let query () = 
-            try
-                inner.Query(id)
-                |> AsyncResult.ofAsync
-            with
-            | exn ->
-                sprintf "query failed: \n%A" exn
-                |> DogError
-                |> AsyncResult.ofError
         { execute = execute
           query = query }

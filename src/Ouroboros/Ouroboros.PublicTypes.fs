@@ -1,6 +1,7 @@
 namespace Ouroboros
 
 open System
+open FSharp.UMX
 
 type ObservationDate =
     | Latest
@@ -11,6 +12,11 @@ type Context =
     { EventId: EventId
       CreatedDate: CreatedDate
       EffectiveDate: EffectiveDate }
+module Context =
+    let create eventId effectiveDate =
+        { EventId = eventId
+          CreatedDate = % DateTime.UtcNow
+          EffectiveDate = effectiveDate }
 
 type Apply<'DomainState,'DomainEvent> =
     'DomainState
@@ -24,11 +30,11 @@ type Decide<'DomainCommand,'DomainState,'DomainEvent> =
 
 type Stream<'DomainEvent> = 
     { NextId: EventId 
-      Events: 'DomainEvent list}
+      Events: 'DomainEvent list }
 
 type Reconstitute<'DomainEvent,'DomainState> =
     ObservationDate
-     -> Stream<'DomainEvent>
+     -> 'DomainEvent list
      -> 'DomainState
 
 type Evolve<'DomainEvent> = 
@@ -49,10 +55,12 @@ type Compact<'DomainEvent> =
     Stream<'DomainEvent>
      -> 'DomainEvent
 
-type Execute<'DomainCommand,'DomainError> = 
-    'DomainCommand 
-     -> AsyncResult<unit,'DomainError>
+type Execute<'EntityId,'DomainCommand> =
+    'EntityId
+     -> 'DomainCommand 
+     -> AsyncResult<unit,string>
 
-type Query<'DomainState,'DomainError> = 
-    ObservationDate 
-     -> AsyncResult<'DomainState,'DomainError>
+type Query<'EntityId,'DomainState> = 
+    'EntityId
+     -> ObservationDate 
+     -> AsyncResult<'DomainState,string>
