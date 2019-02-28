@@ -11,18 +11,6 @@ servers:
   description: SwaggerHub API Auto Mocking
 paths:
   /lease:
-    get:
-      summary: list leases
-      description: list leases
-      responses:
-        200:
-          description: lease list response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Lease'
     post:
       summary: create lease
       description: create lease

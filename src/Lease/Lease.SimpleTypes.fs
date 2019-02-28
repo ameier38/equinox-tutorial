@@ -1,14 +1,9 @@
 namespace Lease
 
 open FSharp.UMX
-open Ouroboros
 open SimpleType
 open System
 open System.Text
-
-[<Measure>] type leaseId
-type LeaseId = Guid<leaseId>
-module LeaseId = let toStringN (value: LeaseId) = Guid.toStringN %value
 
 module DateTime =
     let tryParse (s:string) =
@@ -22,7 +17,18 @@ module String =
     let lower (s:string) = s.ToLower()
 
 module Guid =
+    let inline toStringN (x: Guid) = x.ToString "N"
     let tryParse (s:string) =
         match Guid.TryParse(s) with
         | (true, d) -> Some d
         | _ -> None
+
+module Int =
+    let tryParse (s:string) =
+        match Int32.TryParse(s) with
+        | (true, i) -> Some i
+        | _ -> None
+
+[<Measure>] type leaseId
+type LeaseId = Guid<leaseId>
+module LeaseId = let toStringN (value: LeaseId) = Guid.toStringN %value

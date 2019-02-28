@@ -1,8 +1,6 @@
 namespace Lease
 
 open System
-open Equinox.UnionCodec
-open Ouroboros
 
 type NewLease =
     { StartDate: DateTime
@@ -27,13 +25,21 @@ type LeaseCommand =
     | ReceivePayment of Payment
     | Terminate of EffectiveDate
 
+type LeaseInfo =
+    { Lease: Lease
+      Context: Context }
+
+type PaymentInfo =
+    { Payment: Payment
+      Context: Context }
+
 type LeaseEvent =
     | Undid of EventId
     | Compacted of LeaseEvent[]
-    | Created of Lease * Context
-    | Modified of Lease * Context
-    | PaymentScheduled of Payment * Context
-    | PaymentReceived of Payment * Context
+    | Created of LeaseInfo
+    | Modified of LeaseInfo
+    | PaymentScheduled of PaymentInfo
+    | PaymentReceived of PaymentInfo
     | Terminated of Context
     interface TypeShape.UnionContract.IUnionContract
 

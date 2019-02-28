@@ -18,15 +18,13 @@
       <Link>paket-files/Env.fs</Link>
     </Compile>
     <Compile Include="Lease.Config.fs" />
+    <Compile Include="Lease.Equinox.fs" />
     <Compile Include="Lease.SimpleTypes.fs" />
     <Compile Include="Lease.Domain.fs" />
     <Compile Include="Lease.Dto.fs" />
     <Compile Include="Lease.Implementation.fs" />
     <Compile Include="Lease.Api.fs" />
     <Compile Include="Program.fs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Ouroboros\Ouroboros.fsproj" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

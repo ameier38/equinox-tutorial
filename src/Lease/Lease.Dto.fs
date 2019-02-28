@@ -2,8 +2,6 @@ namespace Lease
 
 open OpenAPITypeProvider
 open FSharp.UMX
-open Ouroboros
-open System.Text
 
 module OpenApi =
     let [<Literal>] LeaseApiSchema = __SOURCE_DIRECTORY__  + "/openapi.yaml"
@@ -41,6 +39,15 @@ module LeaseSchema =
 
 type PaymentSchema = OpenApi.LeaseApi.Schemas.Payment
 module PaymentSchema =
+    let deserializeFromBytes (bytes:byte[]) =
+        try
+            bytes
+            |> String.fromBytes
+            |> PaymentSchema.Parse
+            |> Ok
+        with ex -> 
+            sprintf "could not deserialize NewLeaseSchema:\n%A" ex 
+            |> Error
     let toDomain (schema:PaymentSchema) =
         { PaymentDate = schema.PaymentDate
           PaymentAmount = schema.PaymentAmount |> decimal }
@@ -57,10 +64,10 @@ module EventSchema =
     let fromDomain = function
         | Undid _ -> None
         | Compacted _ -> None
-        | Created (_, ctx) -> create "Created" ctx
-        | Modified (_, ctx) -> create "Modified" ctx
-        | PaymentScheduled (_, ctx) -> create "PaymentScheduled" ctx
-        | PaymentReceived (_, ctx) -> create "PaymentReceived" ctx
+        | Created { Context = ctx } -> create "Created" ctx
+        | Modified { Context = ctx } -> create "Modified" ctx
+        | PaymentScheduled { Context = ctx } -> create "PaymentScheduled" ctx
+        | PaymentReceived { Context = ctx } -> create "PaymentReceived" ctx
         | LeaseEvent.Terminated ctx -> create "Terminated" ctx
 
 type LeaseStateSchema = OpenApi.LeaseApi.Schemas.LeaseState

@@ -2,7 +2,6 @@ module Lease.Implementation
 
 open Equinox.EventStore
 open FSharp.UMX
-open Ouroboros
 open Serilog
 open System
 
@@ -11,10 +10,10 @@ module LeaseEvent =
     let getContext = function
         | Undid _ -> None
         | Compacted _ -> None
-        | Created (_, ctx) -> ctx |> Some
-        | Modified (_, ctx) -> ctx |> Some
-        | PaymentScheduled (_, ctx) -> ctx |> Some
-        | PaymentReceived (_, ctx) -> ctx |> Some
+        | Created { Context = ctx } -> ctx |> Some
+        | Modified { Context = ctx } -> ctx |> Some
+        | PaymentScheduled { Context = ctx } -> ctx |> Some
+        | PaymentReceived { Context = ctx } -> ctx |> Some
         | LeaseEvent.Terminated ctx -> ctx |> Some
     let getOrder = getContext >> Option.map (fun (Order order) -> order)
     let getEventId = getContext >> Option.map (fun { EventId = eventId } -> eventId)
@@ -36,7 +35,7 @@ module Aggregate =
         fun state -> function
             | Undid _ -> "Undid event should be filtered from lease events" |> Corrupt
             | Compacted _ -> "Compacted event should be filtered from lease events" |> Corrupt
-            | Created (lease, _) ->
+            | Created { Lease = lease } ->
                 match state with
                 | NonExistent ->
                     { Lease = lease
@@ -45,14 +44,14 @@ module Aggregate =
                       AmountDue = 0m }
                     |> Outstanding
                 | _ -> applyError Created state
-            | Modified (lease, _) ->
+            | Modified { Lease = lease } ->
                 match state with
                 | Outstanding data ->
                     { data with
                         Lease = lease } 
                     |> Outstanding
                 | _ -> applyError Modified state
-            | PaymentScheduled ({ PaymentAmount = amount }, _) ->
+            | PaymentScheduled { Payment = { PaymentAmount = amount } } ->
                 match state with
                 | Outstanding data ->
                     let newTotalScheduled = data.TotalScheduled + amount
@@ -61,7 +60,7 @@ module Aggregate =
                         AmountDue = newTotalScheduled - data.TotalPaid }
                     |> Outstanding
                 | _ -> applyError PaymentScheduled state
-            | PaymentReceived ({ PaymentAmount = amount }, _) ->
+            | PaymentReceived { Payment = { PaymentAmount = amount }} ->
                 match state with
                 | Outstanding data ->
                     let newTotalPaid = data.TotalPaid + amount
@@ -84,25 +83,25 @@ module Aggregate =
                 match state with
                 | NonExistent -> 
                     let ctx = Context.create nextId (% startDate)
-                    Created (lease, ctx) |> List.singleton |> Ok
+                    Created { Lease = lease; Context = ctx } |> List.singleton |> Ok
                 | _ -> commandError Create state
             | Modify (lease, effDate) ->
                 match state with
                 | Outstanding _ -> 
                     let ctx = Context.create nextId effDate
-                    Modified (lease, ctx) |> List.singleton |> Ok
+                    Modified { Lease = lease; Context = ctx } |> List.singleton |> Ok
                 | _ -> commandError Modify state
             | SchedulePayment ({ PaymentDate = pmtDate } as pmt) ->
                 match state with
                 | Outstanding _ -> 
                     let ctx = Context.create nextId %pmtDate
-                    PaymentScheduled (pmt, ctx) |> List.singleton |> Ok
+                    PaymentScheduled { Payment = pmt; Context = ctx } |> List.singleton |> Ok
                 | _ -> commandError SchedulePayment state
             | ReceivePayment ({ PaymentDate = pmtDate } as pmt) ->
                 match state with
                 | Outstanding _ -> 
                     let ctx = Context.create nextId %pmtDate
-                    PaymentReceived (pmt, ctx) |> List.singleton |> Ok
+                    PaymentReceived { Payment = pmt; Context = ctx } |> List.singleton |> Ok
                 | _ -> commandError ReceivePayment state
             | Terminate effDate ->
                 match state with
@@ -178,7 +177,10 @@ module Aggregate =
             | Terminate effDate -> interpret' effDate command
 
 module Store =
-    let connect (config:EventStoreConfig) (name:string) =
+    let connect 
+        (config:EventStoreConfig) 
+        (aggregate:Aggregate<LeaseCommand,LeaseEvent,LeaseState>)
+        (name:string) =
         let uri = 
             sprintf "%s://@%s:%d" 
                 config.Protocol 
@@ -200,28 +202,118 @@ module Store =
             connector.Establish(name, Discovery.Uri uri, strategy)
             |> Async.RunSynchronously
         let gateway = GesGateway(conn, GesBatchingPolicy(maxBatchSize=500))
-        (gateway, cache)
-
-module Handler =
-    let create 
-        (aggregate:Aggregate<LeaseCommand,LeaseEvent,LeaseState>) 
-        (gateway:GesGateway) 
-        (cache:Caching.Cache) 
-        : Handler<LeaseId,LeaseCommand,LeaseEvent,LeaseState,'View> =
-        let log = LoggerConfiguration().WriteTo.Console().CreateLogger()
         let accessStrategy = Equinox.EventStore.AccessStrategy.RollingSnapshots (aggregate.isOrigin, aggregate.compact)
         let cacheStrategy = Equinox.EventStore.CachingStrategy.SlidingWindow (cache, TimeSpan.FromMinutes 20.)
         let serializationSettings = Newtonsoft.Json.JsonSerializerSettings()
         let codec = Equinox.UnionCodec.JsonUtf8.Create<LeaseEvent>(serializationSettings)
         let initial = { NextId = %0; Events = [] }
         let fold = Seq.fold aggregate.evolve
-        let resolve = GesResolver(gateway, codec, fold, initial, accessStrategy, cacheStrategy).Resolve
+        GesResolver(gateway, codec, fold, initial, accessStrategy, cacheStrategy)
+
+type Service =
+    { get: LeaseId -> ObservationDate -> AsyncResult<string,string>
+      create: NewLease -> AsyncResult<string,string>
+      modify: Lease -> EffectiveDate -> AsyncResult<string,string>
+      terminate: LeaseId -> EffectiveDate -> AsyncResult<string,string>
+      schedulePayment: LeaseId -> Payment -> AsyncResult<string,string>
+      receivePayment: LeaseId -> Payment -> AsyncResult<string,string>
+      undo: LeaseId -> EventId -> AsyncResult<string,string> }
+module Service =
+    let stateProjection 
+        (reconstitute: Reconstitute<LeaseEvent,LeaseState>)
+        : Projection<LeaseEvent,Result<string,string>> =
+        fun (obsDate:ObservationDate) ({ Events = events }) ->
+            let leaseState = reconstitute obsDate events
+            (leaseState, events)
+            |> LeaseStateSchema.fromDomain
+            |> Result.map LeaseStateSchema.serializeToJson
+    let executeCommand
+        (aggregate:Aggregate<LeaseCommand,LeaseEvent,LeaseState>)
+        (query: Query<LeaseId,LeaseEvent,Result<string,string>>)
+        (execute: Execute<LeaseId,LeaseCommand>) =
+        fun (leaseId:LeaseId) (command:LeaseCommand) ->
+            asyncResult {
+                let projection = stateProjection aggregate.reconstitute
+                do! execute leaseId command
+                let! newState = query leaseId Latest projection
+                return! newState |> AsyncResult.ofResult
+            }
+    let get 
+        (aggregate:Aggregate<LeaseCommand,LeaseEvent,LeaseState>)
+        (query: Query<LeaseId,LeaseEvent,Result<string,string>>) =
+        fun leaseId observationDate ->
+            asyncResult {
+                let projection = stateProjection aggregate.reconstitute
+                let! state = query leaseId observationDate projection
+                return! state |> AsyncResult.ofResult
+            }
+    let create
+        (executeCommand:LeaseId -> LeaseCommand -> AsyncResult<string,string>) =
+        fun (newLease:NewLease) ->
+            asyncResult {
+                let leaseId = 
+                    Guid.NewGuid() 
+                    |> UMX.tag<leaseId>
+                let command =
+                    { LeaseId = leaseId
+                      StartDate = newLease.StartDate
+                      MaturityDate = newLease.MaturityDate
+                      MonthlyPaymentAmount = newLease.MonthlyPaymentAmount }
+                    |> Create
+                return! executeCommand leaseId command
+            }
+
+    let modify 
+        (executeCommand:LeaseId -> LeaseCommand -> AsyncResult<string,string>) =
+        fun ({ LeaseId = leaseId} as lease) (effDate: EffectiveDate) ->
+            asyncResult {
+                let command = (lease, effDate) |> Modify
+                return! executeCommand leaseId command
+            }
+    let terminate
+        (executeCommand:LeaseId -> LeaseCommand -> AsyncResult<string,string>) =
+        fun (leaseId:LeaseId) (effDate:EffectiveDate) ->
+            asyncResult {
+                let command = effDate |> Terminate    
+                return! executeCommand leaseId command
+            }
+    let schedulePayment 
+        (executeCommand:LeaseId -> LeaseCommand -> AsyncResult<string,string>) =
+        fun (leaseId:LeaseId) (payment:Payment) ->
+            asyncResult {
+                let command = payment |> SchedulePayment    
+                return! executeCommand leaseId command
+            }
+    let receivePayment 
+        (executeCommand:LeaseId -> LeaseCommand -> AsyncResult<string,string>) =
+        fun (leaseId:LeaseId) (payment:Payment) ->
+            asyncResult {
+                let command = payment |> ReceivePayment    
+                return! executeCommand leaseId command
+            }
+    let undo
+        (executeCommand:LeaseId -> LeaseCommand -> AsyncResult<string,string>) =
+        fun (leaseId:LeaseId) (eventId:EventId) ->
+            asyncResult {
+                let command = eventId |> Undo    
+                return! executeCommand leaseId command
+            }
+    let init 
+        (aggregate:Aggregate<LeaseCommand,LeaseEvent,LeaseState>) 
+        (resolver:GesResolver<LeaseEvent,StreamState<LeaseEvent>>) =
+        let log = LoggerConfiguration().WriteTo.Console().CreateLogger()
         let (|AggregateId|) (leaseId: LeaseId) = Equinox.AggregateId(aggregate.entity, LeaseId.toStringN leaseId)
-        let (|Stream|) (AggregateId leaseId) = Equinox.Stream(log, resolve leaseId, 3)
+        let (|Stream|) (AggregateId leaseId) = Equinox.Stream(log, resolver.Resolve leaseId, 3)
         let execute (Stream stream) command = stream.Transact(aggregate.interpret command)
         let query : Query<LeaseId,LeaseEvent,'View> =
             fun (Stream stream) (obsDate:ObservationDate) (projection:Projection<LeaseEvent,'View>) -> 
                 stream.Query(projection obsDate)
                 |> AsyncResult.ofAsync
-        { execute = execute
-          query = query }
+        let executeCommand' = executeCommand aggregate query execute
+        { get = get aggregate query
+          create = create executeCommand'
+          modify = modify executeCommand'
+          terminate = terminate executeCommand'
+          schedulePayment = schedulePayment executeCommand'
+          receivePayment = receivePayment executeCommand'
+          undo = undo executeCommand' }

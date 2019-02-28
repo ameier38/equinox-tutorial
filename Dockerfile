@@ -14,10 +14,6 @@ COPY paket.lock .
 COPY build.fsx .
 COPY build.fsx.lock .
 
-# copy Ouroboros
-COPY src/Ouroboros/Ouroboros.fsproj src/Ouroboros/
-COPY src/Ouroboros/paket.references src/Ouroboros/
-
 # copy Lease
 COPY src/Lease/Lease.fsproj src/Lease/
 COPY src/Lease/paket.references src/Lease/
