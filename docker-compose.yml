@@ -8,7 +8,6 @@ services:
   api:
     build:
       context: .
-    command: bash -c "./wait-for-it.sh http://eventstore:2113/users/admin && dotnet src/Lease/out/Lease.dll"
     environment:
       - EVENTSTORE_PROTOCOL=tcp
       - EVENTSTORE_HOST=eventstore

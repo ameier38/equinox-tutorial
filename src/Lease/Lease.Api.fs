@@ -50,7 +50,7 @@ let handleGetLease
                 leaseIdParam 
                 |> Guid.tryParse
                 |> Option.map UMX.tag<leaseId>
-                |> Result.ofOption "could not parse leaseId"
+                |> Result.ofOption "could not parse get leaseIdParam"
                 |> AsyncResult.ofResult
             let asOf = 
                 req.queryParam "asOf" 
@@ -82,7 +82,7 @@ let handleModifyLease
                 leaseIdParam 
                 |> Guid.tryParse
                 |> Option.map UMX.tag<leaseId>
-                |> Result.ofOption "could not parse leaseId"
+                |> Result.ofOption "could not parse modify leaseIdParam"
                 |> AsyncResult.ofResult
             let! newLease =
                 body
@@ -114,7 +114,7 @@ let handleDeleteLease
                 leaseIdParam 
                 |> Guid.tryParse
                 |> Option.map UMX.tag<leaseId>
-                |> Result.ofOption "could not parse leaseId"
+                |> Result.ofOption "could not parse delete leaseIdParam"
                 |> AsyncResult.ofResult
             let effDate = 
                 req.queryParam "effDate" 
@@ -136,7 +136,7 @@ let handleSchedulePayment
                 leaseIdParam 
                 |> Guid.tryParse
                 |> Option.map UMX.tag<leaseId>
-                |> Result.ofOption "could not parse leaseId"
+                |> Result.ofOption (sprintf "could not parse schedule leaseIdParam %s" leaseIdParam)
                 |> AsyncResult.ofResult
             let! payment =
                 body
@@ -157,7 +157,7 @@ let handleReceivePayment
                 leaseIdParam 
                 |> Guid.tryParse
                 |> Option.map UMX.tag<leaseId>
-                |> Result.ofOption "could not parse leaseId"
+                |> Result.ofOption (sprintf "could not parse receive payment leaseIdParam %s" leaseIdParam)
                 |> AsyncResult.ofResult
             let! payment =
                 body
@@ -179,7 +179,7 @@ let handleUndo
                 leaseIdParam 
                 |> Guid.tryParse
                 |> Option.map UMX.tag<leaseId>
-                |> Result.ofOption "could not parse leaseId"
+                |> Result.ofOption "could not parse undo leaseIdParam"
                 |> AsyncResult.ofResult
             let! eventId = 
                 eventIdParam 
