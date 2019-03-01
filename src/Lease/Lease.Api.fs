@@ -4,6 +4,9 @@ open Lease.Implementation
 open FSharp.UMX
 open System
 open Suave
+open Suave.Operators
+open Suave.RequestErrors
+open Suave.Filters
 
 type Handle = HttpContext -> AsyncResult<string,string>
 type HandlePath<'PathParams> = 'PathParams -> Handle
@@ -187,3 +190,26 @@ let handleUndo
                 |> AsyncResult.ofResult
             return! service.undo leaseId eventId
         }
+
+let api 
+    (service:Service) =
+    let handleGetLease' = handleGetLease service
+    let handleCreateLease' = handleCreateLease service
+    let handleSchedulePayment' = handleSchedulePayment service
+    let handleReceivePayment' = handleReceivePayment service
+    let handleModifyLease' = handleModifyLease service
+    let handleDeleteLease' = handleDeleteLease service
+    let handleUndo' = handleUndo service
+    choose
+        [ GET >=> choose
+            [ pathScan "/lease/%s" (createPathHandler handleGetLease') >=> JSON ]
+          POST >=> choose
+            [ path "/lease" >=> (createHandler handleCreateLease') >=> JSON
+              pathScan "/lease/%s/schedule" (createPathHandler handleSchedulePayment') >=> JSON
+              pathScan "/lease/%s/payment" (createPathHandler handleReceivePayment') >=> JSON ]
+          PUT >=> choose
+            [ pathScan "/lease/%s" (createPathHandler handleModifyLease') >=> JSON ]
+          DELETE >=> choose
+            [ pathScan "/lease/%s" (createPathHandler handleDeleteLease') >=> JSON
+              pathScan "/lease/%s/%s" (createPathHandler handleUndo') >=> JSON ]
+          NOT_FOUND "resource not implemented" ]

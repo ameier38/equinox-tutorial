@@ -18,6 +18,13 @@ module NewLeaseSchema =
         with ex -> 
             sprintf "could not deserialize NewLeaseSchema:\n%A" ex 
             |> Error
+    let serializeToJson (schema:NewLeaseSchema) =
+        schema.ToJson()
+    let fromDomain (newLease:NewLease) =
+        NewLeaseSchema(
+            startDate = newLease.StartDate,
+            maturityDate = newLease.MaturityDate,
+            monthlyPaymentAmount = (newLease.MonthlyPaymentAmount |> float32))
     let toDomain (schema:NewLeaseSchema) =
         { StartDate = schema.StartDate
           MaturityDate = schema.MaturityDate
@@ -78,6 +85,20 @@ module LeaseStateSchema =
         schema
         |> serializeToJson
         |> String.toBytes
+    let deserializeFromBytes (bytes:byte[]) =
+        bytes
+        |> String.fromBytes
+        |> LeaseStateSchema.Parse
+    let toDomain (schema:LeaseStateSchema) =
+        let stateData =
+            { Lease = schema.Lease |> LeaseSchema.toDomain
+              TotalScheduled = schema.TotalScheduled |> decimal
+              TotalPaid = schema.TotalPaid |> decimal
+              AmountDue = schema.AmountDue |> decimal }
+        match schema.Status with
+        | s when s = "Outstanding" -> Outstanding stateData
+        | s when s = "Terminated" -> Terminated stateData
+        | _ -> Corrupt "invalid state"
     let fromDomain (state:LeaseState, events: LeaseEvent list) =
         match state with
         | NonExistent -> Error "lease does not exist"

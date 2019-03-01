@@ -175,6 +175,16 @@ module Aggregate =
             | SchedulePayment ({ PaymentDate = pmtDate }) -> interpret' %pmtDate command
             | ReceivePayment ({ PaymentDate = pmtDate }) -> interpret' %pmtDate command
             | Terminate effDate -> interpret' effDate command
+    let init () =
+        { entity = "lease"
+          initial = NonExistent
+          isOrigin = isOrigin
+          apply = apply
+          decide = decide
+          reconstitute = reconstitute
+          compact = compact
+          evolve = evolve
+          interpret = interpret }
 
 module Store =
     let connect 
