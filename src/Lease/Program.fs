@@ -21,40 +21,26 @@ let main argv =
           interpret = Aggregate.interpret }
     let resolver = Store.connect config aggregate "lease"
     let service = Service.init aggregate resolver
-    let handleGetLease' leaseIdParam = 
-        handleGetLease service leaseIdParam
-        |> createHandler
-    let handleCreateLease' =
-        handleCreateLease service
-        |> createHandler
-    let handleModifyLease' leaseIdParam = 
-        handleModifyLease service leaseIdParam
-        |> createHandler
-    let handleDeleteLease' leaseIdParam =
-        handleDeleteLease service leaseIdParam
-        |> createHandler
-    let handleSchedulePayment' leaseIdParam =
-        handleSchedulePayment service leaseIdParam
-        |> createHandler
-    let handleReceivePayment' leaseIdParam =
-        handleReceivePayment service leaseIdParam
-        |> createHandler
-    let handleUndo' (leaseIdParam, eventIdParam) =
-        handleUndo service leaseIdParam eventIdParam
-        |> createHandler
+    let handleGetLease' = handleGetLease service
+    let handleCreateLease' = handleCreateLease service
+    let handleSchedulePayment' = handleSchedulePayment service
+    let handleReceivePayment' = handleReceivePayment service
+    let handleModifyLease' = handleModifyLease service
+    let handleDeleteLease' = handleDeleteLease service
+    let handleUndo' = handleUndo service
     let api = 
         choose
             [ GET >=> choose
-                [ pathScan "/lease/%s" handleGetLease' ]
+                [ pathScan "/lease/%s" (createPathHandler handleGetLease') >=> JSON ]
               POST >=> choose
-                [ path "/lease" >=> handleCreateLease'
-                  pathScan "/lease/%s/schedule" handleSchedulePayment'
-                  pathScan "/lease/%s/payment" handleReceivePayment' ]
+                [ path "/lease" >=> (createHandler handleCreateLease') >=> JSON
+                  pathScan "/lease/%s/schedule" (createPathHandler handleSchedulePayment') >=> JSON
+                  pathScan "/lease/%s/payment" (createPathHandler handleReceivePayment') >=> JSON ]
               PUT >=> choose
-                [ pathScan "/lease/%s" handleModifyLease' ]
+                [ pathScan "/lease/%s" (createPathHandler handleModifyLease') >=> JSON ]
               DELETE >=> choose
-                [ pathScan "/lease/%s" handleDeleteLease'
-                  pathScan "/lease/%s/%s" handleUndo' ]
+                [ pathScan "/lease/%s" (createPathHandler handleDeleteLease') >=> JSON
+                  pathScan "/lease/%s/%s" (createPathHandler handleUndo') >=> JSON ]
               NOT_FOUND "resource not implemented" ]
     let config =
         { defaultConfig with

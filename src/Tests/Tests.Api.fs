@@ -1,5 +1,7 @@
 module Tests.Api
 
+open Expecto
+open Lease.Api
 open Suave
 open System
 

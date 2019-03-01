@@ -68,12 +68,12 @@ module Aggregate =
                         TotalPaid = newTotalPaid
                         AmountDue = data.TotalScheduled - newTotalPaid }
                     |> Outstanding
-                | _ -> applyError PaymentScheduled state
+                | _ -> applyError PaymentReceived state
             | LeaseEvent.Terminated _ ->
                 match state with    
                 | Outstanding data ->
                     LeaseState.Terminated data
-                | _ -> applyError PaymentScheduled state
+                | _ -> applyError LeaseEvent.Terminated state
 
     let decide : Decide<LeaseCommand,LeaseEvent,LeaseState> =
         fun (nextId: EventId) command state ->

@@ -4,26 +4,32 @@ open Lease.Implementation
 open FSharp.UMX
 open System
 open Suave
-open Suave.Successful
-open Suave.ServerErrors
-open Suave.Operators
 
 type Handle = HttpContext -> AsyncResult<string,string>
+type HandlePath<'PathParams> = 'PathParams -> Handle
 
-let JSON data =
-    OK data 
-    >=> Writers.setMimeType "application/json; charset=utf-8"
+let ok s =
+    fun (ctx:HttpContext) -> 
+        { ctx with 
+            response = 
+                { ctx.response with 
+                    status = HTTP_200.status
+                    content = UTF8.bytes s |> Bytes }}
 
-let createHandler (handle: Handle) : WebPart =
+let JSON = Writers.setMimeType "application/json; charset=utf-8"
+
+let createHandler 
+    (handle:Handle) =
     fun (ctx:HttpContext) ->
-        async {
-            match! handle ctx with
-            | Ok data -> 
-                return! JSON data ctx
-            | Error err ->
-                let errStr = err.ToString()
-                return! INTERNAL_ERROR errStr ctx
-        }
+        let onSuccess data = ok data ctx |> Some
+        let onFailure err = failwith err
+        handle ctx |> AsyncResult.bimap onSuccess onFailure
+
+let createPathHandler 
+    (handlePath:HandlePath<'PathParams>) = 
+    fun (pathParams:'PathParams) ->
+        handlePath pathParams
+        |> createHandler
 
 let handleCreateLease
     (service:Service)
@@ -41,9 +47,8 @@ let handleCreateLease
 
 let handleGetLease 
     (service:Service)
-    (leaseIdParam: string) 
-    : Handle =
-    fun (ctx:HttpContext) ->
+    : HandlePath<string> =
+    fun leaseIdParam (ctx:HttpContext) ->
         let { request = req } = ctx
         asyncResult {
             let! leaseId = 
@@ -73,9 +78,8 @@ let handleGetLease
 
 let handleModifyLease 
     (service:Service)
-    (leaseIdParam: string) 
-    : Handle =
-    fun (ctx:HttpContext) ->
+    : HandlePath<string> =
+    fun leaseIdParam (ctx:HttpContext) ->
         let { request = { rawForm = body } as req } = ctx
         asyncResult {
             let! leaseId = 
@@ -105,9 +109,8 @@ let handleModifyLease
 
 let handleDeleteLease
     (service:Service)
-    (leaseIdParam: string) 
-    : Handle =
-    fun (ctx:HttpContext) ->
+    : HandlePath<string> =
+    fun leaseIdParam (ctx:HttpContext) ->
         let { request = req } = ctx
         asyncResult {
             let! leaseId = 
@@ -127,9 +130,8 @@ let handleDeleteLease
 
 let handleSchedulePayment
     (service:Service)
-    (leaseIdParam: string) 
-    : Handle =
-    fun (ctx:HttpContext) ->
+    : HandlePath<string> =
+    fun leaseIdParam (ctx:HttpContext) ->
         let { request = { rawForm = body } } = ctx
         asyncResult {
             let! leaseId = 
@@ -148,9 +150,8 @@ let handleSchedulePayment
 
 let handleReceivePayment
     (service:Service)
-    (leaseIdParam: string) 
-    : Handle =
-    fun (ctx:HttpContext) ->
+    : HandlePath<string> =
+    fun leaseIdParam (ctx:HttpContext) ->
         let { request = { rawForm = body } } = ctx
         asyncResult {
             let! leaseId = 
@@ -169,11 +170,8 @@ let handleReceivePayment
 
 let handleUndo
     (service:Service)
-    (leaseIdParam: string) 
-    (eventIdParam: string) 
-    : Handle =
-    fun (ctx:HttpContext) ->
-        let { request = { rawForm = body } } = ctx
+    : HandlePath<string * string> =
+    fun (leaseIdParam, eventIdParam) (ctx:HttpContext) ->
         asyncResult {
             let! leaseId = 
                 leaseIdParam 

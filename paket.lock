@@ -979,6 +979,6 @@ NUGET
     YamlDotNet (5.4) - restriction: || (>= net45) (>= netstandard2.0)
 GITHUB
   remote: ameier38/fsharp-utilities
-    src/Env.fs (aa35903dfe9c2d0f96a209d4b43817c640868cfe)
-    src/Result.fs (aa35903dfe9c2d0f96a209d4b43817c640868cfe)
-    src/SimpleType.fs (aa35903dfe9c2d0f96a209d4b43817c640868cfe)
+    src/Env.fs (b80d9209611901451b48368182fb10c091acd58a)
+    src/Result.fs (b80d9209611901451b48368182fb10c091acd58a)
+    src/SimpleType.fs (b80d9209611901451b48368182fb10c091acd58a)
