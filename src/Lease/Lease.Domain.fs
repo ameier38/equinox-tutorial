@@ -1,11 +1,17 @@
 namespace Lease
 
 open System
+open FSharp.UMX
 
-type NewLease =
-    { StartDate: DateTime
-      MaturityDate: DateTime
-      MonthlyPaymentAmount: decimal }
+type Context =
+    { EventId: EventId
+      CreatedDate: CreatedDate
+      EffectiveDate: EffectiveDate }
+module Context =
+    let create eventId effectiveDate =
+        { EventId = eventId
+          CreatedDate = %DateTime.UtcNow
+          EffectiveDate = effectiveDate }
 
 type Lease =
     { LeaseId: LeaseId
@@ -42,12 +48,26 @@ type LeaseEvent =
     | PaymentReceived of PaymentInfo
     | Terminated of Context
     interface TypeShape.UnionContract.IUnionContract
+module LeaseEvent =
+    let (|Order|) { CreatedDate = createdDate; EffectiveDate = effDate } = (effDate, createdDate)
+    let getContext = function
+        | Undid _ -> None
+        | Compacted _ -> None
+        | Created { Context = ctx } -> ctx |> Some
+        | Modified { Context = ctx } -> ctx |> Some
+        | PaymentScheduled { Context = ctx } -> ctx |> Some
+        | PaymentReceived { Context = ctx } -> ctx |> Some
+        | LeaseEvent.Terminated ctx -> ctx |> Some
+    let getOrder = getContext >> Option.map (fun (Order order) -> order)
+    let getEventId = getContext >> Option.map (fun { EventId = eventId } -> eventId)
 
 type LeaseStateData =
     { Lease: Lease
       TotalScheduled: decimal
       TotalPaid: decimal
-      AmountDue: decimal }
+      AmountDue: decimal
+      CreatedDate: DateTime
+      ModifiedDate: DateTime }
 
 type LeaseState =
     | NonExistent

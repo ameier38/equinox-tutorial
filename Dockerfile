@@ -35,4 +35,10 @@ RUN fake build -t Restore
 COPY . .
 RUN fake build -t Publish
 
-CMD ["dotnet", "src/Lease/out/Lease.dll"]
+FROM mcr.microsoft.com/dotnet/core/runtime:2.2 as runtime
+
+WORKDIR /app
+
+COPY --from=builder /app/src/Lease/out .
+
+CMD ["dotnet", "Lease.dll"]

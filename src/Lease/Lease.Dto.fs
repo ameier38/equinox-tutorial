@@ -1,36 +1,12 @@
-namespace Lease
+module Lease.Dto
 
 open OpenAPITypeProvider
 open FSharp.UMX
 
-module OpenApi =
-    let [<Literal>] LeaseApiSchema = __SOURCE_DIRECTORY__  + "/openapi.yaml"
-    type LeaseApi = OpenAPIV3Provider<LeaseApiSchema>
+let [<Literal>] LeaseApiSchemaPath = __SOURCE_DIRECTORY__  + "/openapi.yaml"
+type LeaseApiProvider = OpenAPIV3Provider<LeaseApiSchemaPath>
 
-type NewLeaseSchema = OpenApi.LeaseApi.Schemas.NewLease
-module NewLeaseSchema =
-    let deserializeFromBytes (bytes:byte[]) =
-        try
-            bytes
-            |> String.fromBytes
-            |> NewLeaseSchema.Parse
-            |> Ok
-        with ex -> 
-            sprintf "could not deserialize NewLeaseSchema:\n%A" ex 
-            |> Error
-    let serializeToJson (schema:NewLeaseSchema) =
-        schema.ToJson()
-    let fromDomain (newLease:NewLease) =
-        NewLeaseSchema(
-            startDate = newLease.StartDate,
-            maturityDate = newLease.MaturityDate,
-            monthlyPaymentAmount = (newLease.MonthlyPaymentAmount |> float32))
-    let toDomain (schema:NewLeaseSchema) =
-        { StartDate = schema.StartDate
-          MaturityDate = schema.MaturityDate
-          MonthlyPaymentAmount = schema.MonthlyPaymentAmount |> decimal }
-
-type LeaseSchema = OpenApi.LeaseApi.Schemas.Lease
+type LeaseSchema = LeaseApiProvider.Schemas.Lease
 module LeaseSchema =
     let toDomain (schema:LeaseSchema) =
         { LeaseId = %schema.LeaseId
@@ -43,8 +19,43 @@ module LeaseSchema =
             startDate = lease.StartDate, 
             maturityDate = lease.MaturityDate,
             monthlyPaymentAmount = (lease.MonthlyPaymentAmount |> float32))
+    let deserializeFromBytes (bytes:byte[]) =
+        try
+            bytes
+            |> String.fromBytes
+            |> LeaseSchema.Parse
+            |> Ok
+        with ex -> 
+            sprintf "could not deserialize LeaseSchema:\n%A" ex 
+            |> Error
+    let serializeToJson (schema:LeaseSchema) =
+        schema.ToJson()
 
-type PaymentSchema = OpenApi.LeaseApi.Schemas.Payment
+type ModifiedLeaseSchema = LeaseApiProvider.Schemas.ModifiedLease
+module ModifiedLeaseSchema =
+    let serializeToJson (schema:ModifiedLeaseSchema) =
+        schema.ToJson()
+    let deserializeFromBytes (bytes:byte[]) =
+        try
+            bytes
+            |> String.fromBytes
+            |> ModifiedLeaseSchema.Parse
+            |> Ok
+        with ex -> 
+            sprintf "could not deserialize ModifiedLeaseSchema:\n%A" ex 
+            |> Error
+    let toDomain (leaseId:LeaseId) (schema:ModifiedLeaseSchema) =
+        { LeaseId = leaseId
+          StartDate = schema.StartDate
+          MaturityDate = schema.MaturityDate
+          MonthlyPaymentAmount = schema.MonthlyPaymentAmount |> decimal }
+    let fromDomain (lease:Lease) =
+        ModifiedLeaseSchema(
+            startDate = lease.StartDate,
+            maturityDate = lease.MaturityDate,
+            monthlyPaymentAmount = (lease.MonthlyPaymentAmount |> float32))
+
+type PaymentSchema = LeaseApiProvider.Schemas.Payment
 module PaymentSchema =
     let deserializeFromBytes (bytes:byte[]) =
         try
@@ -53,13 +64,13 @@ module PaymentSchema =
             |> PaymentSchema.Parse
             |> Ok
         with ex -> 
-            sprintf "could not deserialize NewLeaseSchema:\n%A" ex 
+            sprintf "could not deserialize PaymentSchema:\n%A" ex 
             |> Error
     let toDomain (schema:PaymentSchema) =
         { PaymentDate = schema.PaymentDate
           PaymentAmount = schema.PaymentAmount |> decimal }
 
-type EventSchema = OpenApi.LeaseApi.Schemas.Event
+type EventSchema = LeaseApiProvider.Schemas.Event
 module EventSchema =
     let create eventType ctx =
         EventSchema(
@@ -77,7 +88,7 @@ module EventSchema =
         | PaymentReceived { Context = ctx } -> create "PaymentReceived" ctx
         | LeaseEvent.Terminated ctx -> create "Terminated" ctx
 
-type LeaseStateSchema = OpenApi.LeaseApi.Schemas.LeaseState
+type LeaseStateSchema = LeaseApiProvider.Schemas.LeaseState
 module LeaseStateSchema =
     let serializeToJson (schema:LeaseStateSchema) =
         schema.ToJson()
@@ -94,11 +105,13 @@ module LeaseStateSchema =
             { Lease = schema.Lease |> LeaseSchema.toDomain
               TotalScheduled = schema.TotalScheduled |> decimal
               TotalPaid = schema.TotalPaid |> decimal
-              AmountDue = schema.AmountDue |> decimal }
+              AmountDue = schema.AmountDue |> decimal
+              CreatedDate = schema.CreatedDate
+              UpdatedDate = schema.UpdatedDate }
         match schema.Status with
-        | s when s = "Outstanding" -> Outstanding stateData
-        | s when s = "Terminated" -> Terminated stateData
-        | _ -> Corrupt "invalid state"
+        | s when s = "Outstanding" -> Outstanding stateData |> Ok
+        | s when s = "Terminated" -> Terminated stateData |> Ok
+        | s -> sprintf "cannot convert to domain in state %s" s |> Error
     let fromDomain (state:LeaseState, events: LeaseEvent list) =
         match state with
         | NonExistent -> Error "lease does not exist"
@@ -110,6 +123,8 @@ module LeaseStateSchema =
                 totalScheduled = (data.TotalScheduled |> float32),
                 totalPaid = (data.TotalPaid |> float32),
                 amountDue = (data.AmountDue |> float32),
+                createdDate = data.CreatedDate,
+                updatedDate = data.UpdatedDate,
                 events = (events |> List.choose EventSchema.fromDomain))
             |> Ok
         | Terminated data ->
@@ -119,5 +134,7 @@ module LeaseStateSchema =
                 totalScheduled = (data.TotalScheduled |> float32),
                 totalPaid = (data.TotalPaid |> float32),
                 amountDue = (data.AmountDue |> float32),
+                createdDate = data.CreatedDate,
+                updatedDate = data.UpdatedDate,
                 events = (events |> List.choose EventSchema.fromDomain))
             |> Ok

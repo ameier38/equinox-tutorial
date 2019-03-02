@@ -29,6 +29,20 @@ module Int =
         | (true, i) -> Some i
         | _ -> None
 
+type Entity = private Entity of String50
+module Entity =
+    let value (Entity entity) = entity |> String50.value
+    let create entity = entity |> String50.create |> Result.map Entity
+
 [<Measure>] type leaseId
 type LeaseId = Guid<leaseId>
 module LeaseId = let toStringN (value: LeaseId) = Guid.toStringN %value
+
+type [<Measure>] eventId
+type EventId = int<eventId>
+
+type [<Measure>] createdDate
+type CreatedDate = DateTime<createdDate>
+
+type [<Measure>] effectiveDate
+type EffectiveDate = DateTime<effectiveDate>

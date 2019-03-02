@@ -1,6 +1,6 @@
 module Lease.Api
 
-open Lease.Implementation
+open Dto
 open FSharp.UMX
 open System
 open Suave
@@ -42,8 +42,8 @@ let handleCreateLease
         asyncResult {
             let! newLease =
                 body
-                |> NewLeaseSchema.deserializeFromBytes
-                |> Result.map NewLeaseSchema.toDomain
+                |> LeaseSchema.deserializeFromBytes
+                |> Result.map LeaseSchema.toDomain
                 |> AsyncResult.ofResult
             return! service.create newLease
         }
@@ -93,8 +93,8 @@ let handleModifyLease
                 |> AsyncResult.ofResult
             let! newLease =
                 body
-                |> NewLeaseSchema.deserializeFromBytes
-                |> Result.map NewLeaseSchema.toDomain
+                |> ModifiedLeaseSchema.deserializeFromBytes
+                |> Result.map (ModifiedLeaseSchema.toDomain leaseId)
                 |> AsyncResult.ofResult
             let lease =
                 { LeaseId = leaseId
@@ -191,8 +191,7 @@ let handleUndo
             return! service.undo leaseId eventId
         }
 
-let api 
-    (service:Service) =
+let init (service:Service) =
     let handleGetLease' = handleGetLease service
     let handleCreateLease' = handleCreateLease service
     let handleSchedulePayment' = handleSchedulePayment service
