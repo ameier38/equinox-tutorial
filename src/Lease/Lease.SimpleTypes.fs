@@ -8,7 +8,7 @@ open System.Text
 module DateTime =
     let tryParse (s:string) =
         match DateTime.TryParse(s) with
-        | (true, d) -> Some d
+        | (true, d) -> d.ToUniversalTime() |> Some
         | _ -> None
 
 module String =

@@ -5,6 +5,8 @@ open Expecto.Flip
 open FSharp.UMX
 open Lease
 open Suave
+open Suave.Filters
+open Suave.Successful
 open System
 
 let config = EventStoreConfig.load()
@@ -31,49 +33,39 @@ let getState ({ response = { content = res }}) =
 
 let getStatus { response = { status = { code = code } }} = code
 
-let getRequest endpoint =
+let makeRequest endpoint method query body =
     let req = 
         { HttpRequest.empty with 
             rawPath = endpoint
-            rawMethod = "GET" }
-    { HttpContext.empty with request = req }
-
-let postRequest endpoint body =
-    let req = 
-        { HttpRequest.empty with 
-            rawPath = endpoint
-            rawForm = UTF8.bytes body
-            rawMethod = "POST" }
-    { HttpContext.empty with request = req }
-
-let putRequest endpoint body =
-    let req = 
-        { HttpRequest.empty with 
-            rawPath = endpoint
-            rawForm = UTF8.bytes body
-            rawMethod = "PUT" }
+            rawQuery = query
+            rawMethod = method
+            rawForm = body |> UTF8.bytes }
     { HttpContext.empty with request = req }
 
 let getLease (leaseId:LeaseId) (query:string) =
-    let leaseIdStr = %leaseId |> Guid.toStringN
-    sprintf "/lease/%s%s" leaseIdStr query
-    |> getRequest
-    |> api
+    let endpoint = 
+        %leaseId |> Guid.toStringN
+        |> sprintf "/lease/%s"
+    let req = makeRequest endpoint "GET" query ""
+    api req
 
 let createLease newLease =
-    newLease
-    |> Dto.LeaseSchema.fromDomain
-    |> Dto.LeaseSchema.serializeToJson
-    |> postRequest "/lease"
-    |> api
+    let body =
+        newLease
+        |> Dto.LeaseSchema.fromDomain
+        |> Dto.LeaseSchema.serializeToJson
+    let req = makeRequest "/lease" "POST" "" body
+    api req
 
 let modifyLease modifiedLease =
     let leaseId = modifiedLease.LeaseId |> LeaseId.toStringN
-    modifiedLease
-    |> Dto.ModifiedLeaseSchema.fromDomain
-    |> Dto.ModifiedLeaseSchema.serializeToJson
-    |> putRequest (sprintf "/lease/%s" leaseId)
-    |> api
+    let endpoint = sprintf "/lease/%s" leaseId
+    let body =
+        modifiedLease
+        |> Dto.ModifiedLeaseSchema.fromDomain
+        |> Dto.ModifiedLeaseSchema.serializeToJson
+    let req = makeRequest endpoint "PUT" "" body
+    api req
 
 let testCreate =
     testAsync "should successfully create lease" {
@@ -98,31 +90,32 @@ let testModify =
         let leaseId = createLeaseId ()
         let newLease =
             { LeaseId = leaseId
-              StartDate = DateTime(2018, 1, 1)
-              MaturityDate = DateTime(2018, 5, 31)
+              StartDate = DateTime(2018, 1, 1).ToUniversalTime()
+              MaturityDate = DateTime(2018, 5, 31).ToUniversalTime()
               MonthlyPaymentAmount = 25m }
         let modifiedLease =
             { LeaseId = leaseId
-              StartDate = DateTime(2018, 1, 1)
-              MaturityDate = DateTime(2018, 12, 31)
+              StartDate = DateTime(2018, 1, 1).ToUniversalTime()
+              MaturityDate = DateTime(2018, 12, 31).ToUniversalTime()
               MonthlyPaymentAmount = 20m }
-        let! createResponse = createLease newLease |> Async.map expectSome
-        createResponse |> getStatus |> Expect.equal "should return 200" HTTP_200.code
+        let! createCtx = createLease newLease |> Async.map expectSome
+        createCtx |> getStatus |> Expect.equal "should return 200" HTTP_200.code
         let createdState = 
-            match createResponse |> getState with
+            match createCtx |> getState with
             | Outstanding leaseState -> leaseState
             | _ -> failwith "lease should be outstanding"
-        createdState.Lease |> Expect.equal "lease should match created" newLease
-        let! modifyResponse = modifyLease modifiedLease |> Async.map expectSome
-        match modifyResponse |> getState with
+        createdState.Lease |> Expect.equal "create lease should match newLease" newLease
+        let! modifyCtx = modifyLease modifiedLease |> Async.map expectSome
+        match modifyCtx |> getState with
         | Outstanding leaseState ->
             leaseState.Lease |> Expect.equal "lease should match modified" modifiedLease
         | _ -> failwith "lease should be outstanding"
         let createdDate = createdState.CreatedDate.ToString("o")
-        let! getResponse = sprintf "?asAt=%s" createdDate |> getLease leaseId |> Async.map expectSome
-        match getResponse |> getState with
+        let asAtQuery = sprintf "asAt=%s" createdDate
+        let! getCtx = getLease leaseId asAtQuery |> Async.map expectSome
+        match getCtx |> getState with
         | Outstanding leaseState ->
-            leaseState.Lease |> Expect.equal "lease should match created" newLease
+            leaseState.Lease |> Expect.equal "get lease should match newLease" newLease
         | _ -> failwith "lease should be outstanding"
     }
 

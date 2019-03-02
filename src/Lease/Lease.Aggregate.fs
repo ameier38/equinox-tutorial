@@ -143,7 +143,7 @@ module Aggregate =
             | Create ({ StartDate = startDate } as lease) ->
                 match state with
                 | NonExistent -> 
-                    let ctx = Context.create nextId (% startDate)
+                    let ctx = Context.create nextId %startDate
                     Created { Lease = lease; Context = ctx } |> List.singleton |> Ok
                 | _ -> commandError Create state
             | Modify (lease, effDate) ->
@@ -197,9 +197,9 @@ module Aggregate =
         match observationDate with
         | Latest -> true
         | AsOf asOfDate ->
-            createdDate <= %asOfDate
+            effectiveDate <= %asOfDate
         | AsAt asAtDate ->
-            effectiveDate <= %asAtDate
+            createdDate <= %asAtDate
 
     let reconstitute : Reconstitute<LeaseEvent,LeaseState> =
         fun observationDate events ->
@@ -215,7 +215,7 @@ module Aggregate =
         let onSuccess events = (ok, events)
         let onError msg = (Error msg, [])
         fun command { NextId = nextId; Events = events } ->
-            let (|ObsDate|) (effDate: EffectiveDate) = %effDate |> AsAt
+            let (|ObsDate|) (effDate: EffectiveDate) = %effDate |> AsOf
             let interpret' (ObsDate obsDate) command =
                 reconstitute obsDate events
                 |> decide nextId command

@@ -58,18 +58,22 @@ let handleGetLease
                 leaseIdParam 
                 |> Guid.tryParse
                 |> Option.map UMX.tag<leaseId>
-                |> Result.ofOption "could not parse get leaseIdParam"
+                |> Result.ofOption (sprintf "could not parse get leaseIdParam %s" leaseIdParam)
                 |> AsyncResult.ofResult
             let asOf = 
-                req.queryParam "asOf" 
-                |> Option.ofChoice
-                |> Option.bind DateTime.tryParse
-                |> Option.map AsOf
+                match req.queryParam "asOf" with
+                | Choice1Of2 asOfStr ->
+                    asOfStr
+                    |> DateTime.tryParse
+                    |> Option.map AsOf
+                | _ -> None
             let asAt = 
-                req.queryParam "asAt" 
-                |> Option.ofChoice
-                |> Option.bind DateTime.tryParse
-                |> Option.map AsAt
+                match req.queryParam "asAt" with
+                | Choice1Of2 asOfStr ->
+                    asOfStr
+                    |> DateTime.tryParse
+                    |> Option.map AsAt
+                | _ -> None
             let! result =
                 match (asOf, asAt) with
                 | (None, None) -> service.get leaseId Latest
@@ -102,10 +106,12 @@ let handleModifyLease
                   MaturityDate = newLease.MaturityDate
                   MonthlyPaymentAmount = newLease.MonthlyPaymentAmount }
             let effDate = 
-                req.queryParam "effDate" 
-                |> Option.ofChoice
-                |> Option.bind DateTime.tryParse
-                |> Option.map UMX.tag<effectiveDate>
+                match req.queryParam "effDate" with
+                | Choice1Of2 effDateStr ->
+                    effDateStr
+                    |> DateTime.tryParse
+                    |> Option.map UMX.tag<effectiveDate>
+                | _ -> None
                 |> Option.defaultValue %newLease.StartDate 
             return! service.modify lease effDate
         }

@@ -67,7 +67,7 @@ type LeaseStateData =
       TotalPaid: decimal
       AmountDue: decimal
       CreatedDate: DateTime
-      ModifiedDate: DateTime }
+      UpdatedDate: DateTime }
 
 type LeaseState =
     | NonExistent
