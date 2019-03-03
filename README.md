@@ -22,6 +22,7 @@ Lease
 ## Dependencies
 - [`dotnet` CLI](https://andrewcmeier.com/win-dev#dotnet)
 - [Docker](https://andrewcmeier.com/win-dev#docker)
+- [FAKE](https://andrewcmeier.com/how-to-fake)
 
 ## Running
 Start Event Store and the API.
@@ -44,6 +45,17 @@ curl -X POST \
   "maturityDate": "2018-07-21T17:32:28Z",
   "monthlyPaymentAmount": 25
 }'
+```
+
+## Testing
+Start Event Store.
+```shell
+docker-compose up -d eventstore
+```
+
+Run the test suite.
+```
+fake build -t Test
 ```
 
 ## Resources
