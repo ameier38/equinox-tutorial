@@ -66,6 +66,12 @@ module PaymentSchema =
         with ex -> 
             sprintf "could not deserialize PaymentSchema:\n%A" ex 
             |> Error
+    let serializeToJson (schema:PaymentSchema) =
+        schema.ToJson()
+    let fromDomain (payment:Payment) =
+        PaymentSchema(
+            paymentDate = payment.PaymentDate,
+            paymentAmount = (payment.PaymentAmount |> float32))
     let toDomain (schema:PaymentSchema) =
         { PaymentDate = schema.PaymentDate
           PaymentAmount = schema.PaymentAmount |> decimal }
@@ -130,7 +136,7 @@ module LeaseStateSchema =
         | Terminated data ->
             LeaseStateSchema(
                 lease = (data.Lease |> LeaseSchema.fromDomain),
-                status = "Outstanding",
+                status = "Terminated",
                 totalScheduled = (data.TotalScheduled |> float32),
                 totalPaid = (data.TotalPaid |> float32),
                 amountDue = (data.AmountDue |> float32),

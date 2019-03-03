@@ -116,7 +116,7 @@ let handleModifyLease
             return! service.modify lease effDate
         }
 
-let handleDeleteLease
+let handleTerminateLease
     (service:Service)
     : HandlePath<string> =
     fun leaseIdParam (ctx:HttpContext) ->
@@ -129,10 +129,12 @@ let handleDeleteLease
                 |> Result.ofOption "could not parse delete leaseIdParam"
                 |> AsyncResult.ofResult
             let effDate = 
-                req.queryParam "effDate" 
-                |> Option.ofChoice
-                |> Option.bind DateTime.tryParse
-                |> Option.map UMX.tag<effectiveDate>
+                match req.queryParam "effDate" with
+                | Choice1Of2 effDateStr ->
+                    effDateStr
+                    |> DateTime.tryParse
+                    |> Option.map UMX.tag<effectiveDate>
+                | _ -> None
                 |> Option.defaultValue %DateTime.UtcNow
             return! service.terminate leaseId effDate
         }
@@ -203,18 +205,18 @@ let init (service:Service) =
     let handleSchedulePayment' = handleSchedulePayment service
     let handleReceivePayment' = handleReceivePayment service
     let handleModifyLease' = handleModifyLease service
-    let handleDeleteLease' = handleDeleteLease service
+    let handleTerminateLease' = handleTerminateLease service
     let handleUndo' = handleUndo service
     choose
-        [ GET >=> choose
-            [ pathScan "/lease/%s" (createPathHandler handleGetLease') >=> JSON ]
-          POST >=> choose
-            [ path "/lease" >=> (createHandler handleCreateLease') >=> JSON
-              pathScan "/lease/%s/schedule" (createPathHandler handleSchedulePayment') >=> JSON
-              pathScan "/lease/%s/payment" (createPathHandler handleReceivePayment') >=> JSON ]
-          PUT >=> choose
-            [ pathScan "/lease/%s" (createPathHandler handleModifyLease') >=> JSON ]
-          DELETE >=> choose
-            [ pathScan "/lease/%s" (createPathHandler handleDeleteLease') >=> JSON
-              pathScan "/lease/%s/%s" (createPathHandler handleUndo') >=> JSON ]
-          NOT_FOUND "resource not implemented" ]
+        [ path "/lease" >=> choose 
+            [ POST >=> (createHandler handleCreateLease') >=> JSON ]
+          pathRegex "/lease/[^/]+?$" >=> choose
+            [ GET >=> pathScan "/lease/%s" (createPathHandler handleGetLease') >=> JSON
+              PUT >=> pathScan "/lease/%s" (createPathHandler handleModifyLease') >=> JSON
+              DELETE >=> pathScan "/lease/%s" (createPathHandler handleTerminateLease') >=> JSON ]
+          pathRegex "/lease/[^/]+?/[^/]+?$" >=> choose
+            [ POST >=> choose
+                  [ pathScan "/lease/%s/schedule" (createPathHandler handleSchedulePayment') >=> JSON
+                    pathScan "/lease/%s/payment" (createPathHandler handleReceivePayment') >=> JSON ]
+              DELETE >=> pathScan "/lease/%s/%s" (createPathHandler handleUndo') >=> JSON ]
+          NOT_FOUND "handler not implemented" ]
