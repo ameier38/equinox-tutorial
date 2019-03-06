@@ -12,13 +12,13 @@ module LeaseSchema =
         { LeaseId = %schema.LeaseId
           StartDate = schema.StartDate
           MaturityDate = schema.MaturityDate
-          MonthlyPaymentAmount = schema.MonthlyPaymentAmount |> decimal }
+          MonthlyPaymentAmount = schema.MonthlyPaymentAmount |> decimal |> UMX.tag<monthlyPaymentAmount> }
     let fromDomain (lease:Lease) =
         LeaseSchema(
             leaseId = %lease.LeaseId, 
             startDate = lease.StartDate, 
             maturityDate = lease.MaturityDate,
-            monthlyPaymentAmount = (lease.MonthlyPaymentAmount |> float32))
+            monthlyPaymentAmount = (lease.MonthlyPaymentAmount |> UMX.untag |> float32))
     let deserializeFromBytes (bytes:byte[]) =
         try
             bytes
@@ -48,12 +48,12 @@ module ModifiedLeaseSchema =
         { LeaseId = leaseId
           StartDate = schema.StartDate
           MaturityDate = schema.MaturityDate
-          MonthlyPaymentAmount = schema.MonthlyPaymentAmount |> decimal }
+          MonthlyPaymentAmount = schema.MonthlyPaymentAmount |> decimal |> UMX.tag<monthlyPaymentAmount> }
     let fromDomain (lease:Lease) =
         ModifiedLeaseSchema(
             startDate = lease.StartDate,
             maturityDate = lease.MaturityDate,
-            monthlyPaymentAmount = (lease.MonthlyPaymentAmount |> float32))
+            monthlyPaymentAmount = (lease.MonthlyPaymentAmount |> UMX.untag |> float32))
 
 type PaymentSchema = LeaseApiProvider.Schemas.Payment
 module PaymentSchema =
@@ -68,13 +68,20 @@ module PaymentSchema =
             |> Error
     let serializeToJson (schema:PaymentSchema) =
         schema.ToJson()
-    let fromDomain (payment:Payment) =
+    let fromScheduledPayment (pmt:ScheduledPayment) =
         PaymentSchema(
-            paymentDate = payment.PaymentDate,
-            paymentAmount = (payment.PaymentAmount |> float32))
-    let toDomain (schema:PaymentSchema) =
-        { PaymentDate = schema.PaymentDate
-          PaymentAmount = schema.PaymentAmount |> decimal }
+            paymentDate = %pmt.ScheduledPaymentDate,
+            paymentAmount = (pmt.ScheduledPaymentAmount |> UMX.untag |> float32))
+    let fromPayment (pmt:Payment) =
+        PaymentSchema(
+            paymentDate = %pmt.PaymentDate,
+            paymentAmount = (pmt.PaymentAmount |> UMX.untag |> float32))
+    let toScheduledPayment (schema:PaymentSchema) =
+        { ScheduledPaymentDate = %schema.PaymentDate
+          ScheduledPaymentAmount = schema.PaymentAmount |> decimal |> UMX.tag<scheduledPaymentAmount> }
+    let toPayment (schema:PaymentSchema) =
+        { PaymentDate = %schema.PaymentDate
+          PaymentAmount = schema.PaymentAmount |> decimal |> UMX.tag<paymentAmount> }
 
 type EventSchema = LeaseApiProvider.Schemas.Event
 module EventSchema =
@@ -82,17 +89,16 @@ module EventSchema =
         EventSchema(
             eventId = %ctx.EventId,
             eventType = eventType,
-            createdDate = %ctx.CreatedDate,
-            effectiveDate = %ctx.EffectiveDate)
+            createdDate = %ctx.EventCreatedDate,
+            effectiveDate = %ctx.EventEffectiveDate)
         |> Some
     let fromDomain = function
         | Undid _ -> None
-        | Compacted _ -> None
-        | Created { Context = ctx } -> create "Created" ctx
-        | Modified { Context = ctx } -> create "Modified" ctx
-        | PaymentScheduled { Context = ctx } -> create "PaymentScheduled" ctx
-        | PaymentReceived { Context = ctx } -> create "PaymentReceived" ctx
-        | LeaseEvent.Terminated ctx -> create "Terminated" ctx
+        | Created e -> create "Created" e.Context
+        | Modified e -> create "Modified" e.Context
+        | PaymentScheduled e -> create "PaymentScheduled" e.Context
+        | PaymentReceived e -> create "PaymentReceived" e.Context
+        | LeaseEvent.Terminated e -> create "Terminated" e.Context
 
 type LeaseStateSchema = LeaseApiProvider.Schemas.LeaseState
 module LeaseStateSchema =
@@ -108,9 +114,10 @@ module LeaseStateSchema =
         |> LeaseStateSchema.Parse
     let toDomain (schema:LeaseStateSchema) =
         let stateData =
-            { Lease = schema.Lease |> LeaseSchema.toDomain
-              TotalScheduled = schema.TotalScheduled |> decimal
-              TotalPaid = schema.TotalPaid |> decimal
+            { NextId = %schema.NextId
+              Lease = schema.Lease |> LeaseSchema.toDomain
+              TotalScheduled = schema.TotalScheduled |> decimal |> UMX.tag<scheduledPaymentAmount>
+              TotalPaid = schema.TotalPaid |> decimal |> UMX.tag<paymentAmount>
               AmountDue = schema.AmountDue |> decimal
               CreatedDate = schema.CreatedDate
               UpdatedDate = schema.UpdatedDate }
@@ -124,10 +131,11 @@ module LeaseStateSchema =
         | Corrupt err -> Error err
         | Outstanding data ->
             LeaseStateSchema(
+                nextId = %data.NextId,
                 lease = (data.Lease |> LeaseSchema.fromDomain),
                 status = "Outstanding",
-                totalScheduled = (data.TotalScheduled |> float32),
-                totalPaid = (data.TotalPaid |> float32),
+                totalScheduled = (data.TotalScheduled |> UMX.untag |> float32),
+                totalPaid = (data.TotalPaid |> UMX.untag |> float32),
                 amountDue = (data.AmountDue |> float32),
                 createdDate = data.CreatedDate,
                 updatedDate = data.UpdatedDate,
@@ -135,10 +143,11 @@ module LeaseStateSchema =
             |> Ok
         | Terminated data ->
             LeaseStateSchema(
+                nextId = %data.NextId,
                 lease = (data.Lease |> LeaseSchema.fromDomain),
                 status = "Terminated",
-                totalScheduled = (data.TotalScheduled |> float32),
-                totalPaid = (data.TotalPaid |> float32),
+                totalScheduled = (data.TotalScheduled |> UMX.untag |> float32),
+                totalPaid = (data.TotalPaid |> UMX.untag |> float32),
                 amountDue = (data.AmountDue |> float32),
                 createdDate = data.CreatedDate,
                 updatedDate = data.UpdatedDate,

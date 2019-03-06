@@ -212,7 +212,6 @@ paths:
         explode: false
         schema:
           type: integer
-          format: int32
           example: 1
       responses:
         200:
@@ -282,7 +281,6 @@ components:
       properties:
         eventId:
           type: integer
-          format: int32
           example: 1
         eventType:
           type: string
@@ -299,12 +297,16 @@ components:
       - createdDate
       - events
       - lease
+      - nextId
       - status
       - totalPaid
       - totalScheduled
       - updatedDate
       type: object
       properties:
+        nextId:
+          type: integer
+          example: 1
         lease:
           $ref: '#/components/schemas/Lease'
         status:

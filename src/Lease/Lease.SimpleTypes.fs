@@ -10,6 +10,19 @@ module DateTime =
         match DateTime.TryParse(s) with
         | (true, d) -> d.ToUniversalTime() |> Some
         | _ -> None
+    let replaceDay (day:int) (d:DateTime) = DateTime(d.Year, d.Month, day)
+    let addMonths (months:int) (d:DateTime) = d.AddMonths(months)
+    let addDays (days:int) (d:DateTime) = d.AddDays(days |> float)
+    let toMonthEnd (d:DateTime) = d |> replaceDay 1 |> addMonths 1 |> addDays -1
+    let isMonthEnd (d:DateTime) = d = (d |> toMonthEnd)
+    let monthRange (startDate:DateTime) (endDate:DateTime) =
+        let addDaysToStartDate i = startDate |> addDays i
+        let atOrBeforeEndDate d = d <= endDate
+        let isMonthEnd d = d |> isMonthEnd
+        Seq.initInfinite id
+        |> Seq.map addDaysToStartDate
+        |> Seq.takeWhile atOrBeforeEndDate
+        |> Seq.filter isMonthEnd
 
 module String =
     let toBytes (s:string) = s |> Encoding.UTF8.GetBytes
@@ -41,8 +54,17 @@ module LeaseId = let toStringN (value: LeaseId) = Guid.toStringN %value
 type [<Measure>] eventId
 type EventId = int<eventId>
 
-type [<Measure>] createdDate
-type CreatedDate = DateTime<createdDate>
+type [<Measure>] eventCreatedDate
+type EventCreatedDate = DateTime<eventCreatedDate>
 
-type [<Measure>] effectiveDate
-type EffectiveDate = DateTime<effectiveDate>
+type [<Measure>] eventEffectiveDate
+type EventEffectiveDate = DateTime<eventEffectiveDate>
+
+type [<Measure>] scheduledPaymentAmount
+type ScheduledPaymentAmount = decimal<scheduledPaymentAmount>
+
+type [<Measure>] paymentAmount
+type PaymentAmount = decimal<paymentAmount>
+
+type [<Measure>] monthlyPaymentAmount
+type MonthlyPaymentAmount = decimal<monthlyPaymentAmount>
