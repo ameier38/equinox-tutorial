@@ -8,57 +8,17 @@ type ObservationDate =
     | AsOf of DateTime
     | AsAt of DateTime
 
-type EvolveDomain<'DomainEvent,'DomainState> =
-    'DomainState
-     -> 'DomainEvent
-     -> 'DomainState
+type EffectiveLeaseEvents = LeaseEvent list
 
-type InterpretDomain<'DomainCommand,'DomainEvent,'DomainState> =
-    'DomainCommand
-     -> 'DomainState
-     -> Result<'DomainEvent list,string>
-
-type EffectiveEvents<'DomainEvent> = 'DomainEvent list
-
-type Reconstitute<'DomainEvent,'DomainState> =
-    ObservationDate
-     -> EffectiveEvents<'DomainEvent>
-     -> 'DomainState
-
-type Evolve<'DomainEvent> = 
-    EffectiveEvents<'DomainEvent>
-     -> 'DomainEvent
-     -> EffectiveEvents<'DomainEvent>
-
-type Interpret<'DomainCommand,'DomainEvent> = 
-    'DomainCommand 
-     -> EffectiveEvents<'DomainEvent>
-     -> Result<unit,string> * 'DomainEvent list
-
-type Execute<'EntityId,'DomainCommand> =
-    'EntityId
-     -> 'DomainCommand 
-     -> AsyncResult<unit,string>
-
-type Projection<'DomainEvent,'View> =
-    ObservationDate
-     -> EffectiveEvents<'DomainEvent>
-     -> 'View
-
-type Query<'EntityId,'DomainEvent,'View> = 
-    'EntityId
-     -> ObservationDate 
-     -> Projection<'DomainEvent,'View>
-     -> AsyncResult<'View,string>
-
-type Aggregate<'DomainCommand,'DomainEvent,'DomainState> =
+type Aggregate =
     { entity: string
-      initial: 'DomainState
-      evolveDomain: EvolveDomain<'DomainEvent,'DomainState>
-      interpretDomain: InterpretDomain<'DomainCommand,'DomainEvent,'DomainState>
-      reconstitute: Reconstitute<'DomainEvent,'DomainState>
-      evolve: Evolve<'DomainEvent>
-      interpret: Interpret<'DomainCommand,'DomainEvent> }
+      initial: LeaseState
+      evolveDomain: LeaseState -> LeaseEvent -> LeaseState
+      interpretDomain: LeaseCommand -> LeaseState -> Result<LeaseEvent list,string>
+      filterAtOrBefore: ObservationDate -> EffectiveLeaseEvents -> EffectiveLeaseEvents
+      reconstitute: EffectiveLeaseEvents -> LeaseState
+      evolve: EffectiveLeaseEvents -> LeaseEvent -> EffectiveLeaseEvents
+      interpret: LeaseCommand -> EffectiveLeaseEvents -> Result<unit,string> * LeaseEvent list }
 module Aggregate =
 
     module Context =
@@ -72,7 +32,6 @@ module Aggregate =
         let tryGetContext = function
             | Undid _ -> None
             | Created e -> e.Context |> Some
-            | Modified e -> e.Context |> Some
             | PaymentScheduled e -> e.Context |> Some
             | PaymentReceived e -> e.Context |> Some
             | LeaseEvent.Terminated e -> e.Context |> Some
@@ -117,7 +76,8 @@ module Aggregate =
 
     let (|Order|) leaseEvent = LeaseEvent.tryGetOrder leaseEvent
 
-    let evolveDomain : EvolveDomain<LeaseEvent,LeaseState> =
+    let evolveDomain 
+        : LeaseState -> LeaseEvent -> LeaseState =
         fun state -> function
             | Undid _ -> "Undid event should be filtered from effective events" |> Corrupt
             | Created e ->
@@ -126,14 +86,6 @@ module Aggregate =
                     LeaseStateData.init e.Context e.Lease
                     |> Outstanding
                 | _ -> applyError Created state
-            | Modified e ->
-                match state with
-                | Outstanding data ->
-                    data
-                    |> LeaseStateData.updateLease e.Lease
-                    |> LeaseStateData.updateContext e.Context
-                    |> Outstanding
-                | _ -> applyError Modified state
             | PaymentScheduled e ->
                 match state with
                 | Outstanding data ->
@@ -158,7 +110,8 @@ module Aggregate =
                     |> LeaseState.Terminated
                 | _ -> applyError LeaseEvent.Terminated state
 
-    let interpretDomain : InterpretDomain<LeaseCommand,LeaseEvent,LeaseState> =
+    let interpretDomain 
+        : LeaseCommand -> LeaseState -> Result<LeaseEvent list, string> =
         fun command state ->
             let ok e = e |> List.singleton |> Ok
             match command with
@@ -169,36 +122,21 @@ module Aggregate =
                     let createdCtx = Context.create %0 %lease.StartDate
                     let paymentsScheduled =
                         DateTime.monthRange lease.StartDate lease.MaturityDate 
-                        |> Seq.imap (fun (idx, d) ->
+                        |> Seq.mapi (fun idx d ->
+                            let eventId = idx + 1
                             let pmt =
                                 { ScheduledPaymentDate = d
                                   ScheduledPaymentAmount = %lease.MonthlyPaymentAmount }
-                            let ctx = Context.create %d 
-                            {| ScheduledPayment = pmt|}}
+                            let ctx = Context.create %eventId %d 
+                            {| ScheduledPayment = pmt; Context = ctx |}
                             |> PaymentScheduled)
                         |> Seq.toList
-                    {| Lease = lease
-                       ScheduledPayments = scheduledPayments
-                       Context = ctx |}
-                    |> Created 
-                    |> ok
+                    let created =
+                        {| Lease = lease; Context = createdCtx |}
+                        |> Created 
+                    created :: paymentsScheduled
+                    |> Ok
                 | _ -> commandError Create state
-            | Modify (lease, effDate) ->
-                match state with
-                | Outstanding { NextId = nextId } -> 
-                    let ctx = Context.create nextId effDate
-                    let scheduledPayments =
-                        DateTime.monthRange lease.StartDate lease.MaturityDate 
-                        |> Seq.map (fun d ->
-                            { ScheduledPaymentDate = d
-                              ScheduledPaymentAmount = %lease.MonthlyPaymentAmount })
-                        |> Seq.toList
-                    {| Lease = lease
-                       ScheduledPayments = scheduledPayments
-                       Context = ctx |} 
-                    |> Modified
-                    |> ok
-                | _ -> commandError Modify state
             | SchedulePayment scheduledPayment ->
                 match state with
                 | Outstanding { NextId = nextId } -> 
@@ -224,13 +162,14 @@ module Aggregate =
                     LeaseEvent.Terminated {| Context = ctx |} |> ok
                 | _ -> commandError Terminate state
 
-    let evolve : Evolve<LeaseEvent> =
+    let evolve 
+        : EffectiveLeaseEvents -> LeaseEvent -> EffectiveLeaseEvents =
         fun effectiveEvents event ->
             match event with
-            | Undid undoEventId -> 
+            | Undid e -> 
                 effectiveEvents
                 |> List.choose (fun e -> LeaseEvent.tryGetEventId e |> Option.map (fun eventId -> (eventId, e)))
-                |> List.filter (fun (eventId, _) -> eventId <> undoEventId)
+                |> List.filter (fun (eventId, _) -> eventId <> e.EventId)
                 |> List.map snd
             | _ -> effectiveEvents
 
@@ -244,23 +183,34 @@ module Aggregate =
         | AsAt asAtDate ->
             createdDate <= %asAtDate
 
-    let reconstitute : Reconstitute<LeaseEvent,LeaseState> =
+    let filterAtOrBefore
+        : ObservationDate -> LeaseEvent list -> EffectiveLeaseEvents =
         fun observationDate effectiveEvents ->
             effectiveEvents
             |> List.choose (fun e -> LeaseEvent.tryGetOrder e |> Option.map (fun o -> (o, e)))
             |> List.filter (fun (o, _) -> onOrBeforeObservationDate observationDate o)
+            |> List.map snd
+
+    let reconstitute 
+        : EffectiveLeaseEvents -> LeaseState =
+        fun effectiveEvents ->
+            effectiveEvents
+            |> List.choose (fun e -> LeaseEvent.tryGetOrder e |> Option.map (fun o -> (o, e)))
             |> List.sortBy fst
             |> List.map snd
             |> List.fold evolveDomain NonExistent
 
-    let interpret : Interpret<LeaseCommand,LeaseEvent> =
+    let interpret 
+        : LeaseCommand -> EffectiveLeaseEvents -> Result<unit,string> * LeaseEvent list =
         let ok = Ok ()
         let onSuccess events = (ok, events)
         let onError msg = (Error msg, [])
         fun command effectiveEvents ->
             let (|ObsDate|) (effDate: EventEffectiveDate) = %effDate |> AsOf
             let decide (ObsDate obsDate) command =
-                reconstitute obsDate effectiveEvents
+                effectiveEvents
+                |> filterAtOrBefore obsDate
+                |> reconstitute
                 |> interpretDomain command
                 |> Result.bimap onSuccess onError
             match command with
@@ -270,12 +220,11 @@ module Aggregate =
                     |> List.choose LeaseEvent.tryGetEventId 
                     |> List.exists (fun eventId -> eventId = undoEventId)
                 then 
-                    (ok, [Undid undoEventId])
+                    (ok, [Undid {| EventId = undoEventId |}])
                 else
                     let error = sprintf "Event with id %A does not exist" undoEventId |> Error
                     (error, [])
             | Create { StartDate = startDate } -> decide %startDate command
-            | Modify (_, effDate) -> decide effDate command
             | SchedulePayment { ScheduledPaymentDate = pmtDate } -> decide %pmtDate command
             | ReceivePayment { PaymentDate = pmtDate } -> decide %pmtDate command
             | Terminate effDate -> decide effDate command
@@ -285,6 +234,7 @@ module Aggregate =
           initial = NonExistent
           evolveDomain = evolveDomain
           interpretDomain = interpretDomain
+          filterAtOrBefore = filterAtOrBefore
           reconstitute = reconstitute
           evolve = evolve
           interpret = interpret }

@@ -31,30 +31,6 @@ module LeaseSchema =
     let serializeToJson (schema:LeaseSchema) =
         schema.ToJson()
 
-type ModifiedLeaseSchema = LeaseApiProvider.Schemas.ModifiedLease
-module ModifiedLeaseSchema =
-    let serializeToJson (schema:ModifiedLeaseSchema) =
-        schema.ToJson()
-    let deserializeFromBytes (bytes:byte[]) =
-        try
-            bytes
-            |> String.fromBytes
-            |> ModifiedLeaseSchema.Parse
-            |> Ok
-        with ex -> 
-            sprintf "could not deserialize ModifiedLeaseSchema:\n%A" ex 
-            |> Error
-    let toDomain (leaseId:LeaseId) (schema:ModifiedLeaseSchema) =
-        { LeaseId = leaseId
-          StartDate = schema.StartDate
-          MaturityDate = schema.MaturityDate
-          MonthlyPaymentAmount = schema.MonthlyPaymentAmount |> decimal |> UMX.tag<monthlyPaymentAmount> }
-    let fromDomain (lease:Lease) =
-        ModifiedLeaseSchema(
-            startDate = lease.StartDate,
-            maturityDate = lease.MaturityDate,
-            monthlyPaymentAmount = (lease.MonthlyPaymentAmount |> UMX.untag |> float32))
-
 type PaymentSchema = LeaseApiProvider.Schemas.Payment
 module PaymentSchema =
     let deserializeFromBytes (bytes:byte[]) =
@@ -95,7 +71,6 @@ module EventSchema =
     let fromDomain = function
         | Undid _ -> None
         | Created e -> create "Created" e.Context
-        | Modified e -> create "Modified" e.Context
         | PaymentScheduled e -> create "PaymentScheduled" e.Context
         | PaymentReceived e -> create "PaymentReceived" e.Context
         | LeaseEvent.Terminated e -> create "Terminated" e.Context

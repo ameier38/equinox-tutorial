@@ -24,15 +24,13 @@ type Payment =
 type LeaseCommand =
     | Undo of EventId
     | Create of Lease
-    | Modify of Lease * EventEffectiveDate
     | SchedulePayment of ScheduledPayment
     | ReceivePayment of Payment
     | Terminate of EventEffectiveDate
 
 type LeaseEvent =
-    | Undid of EventId
+    | Undid of {| EventId: EventId |}
     | Created of {| Lease: Lease; Context: EventContext |}
-    | Modified of {| Lease: Lease; Context: EventContext |}
     | PaymentScheduled of {| ScheduledPayment: ScheduledPayment; Context: EventContext |}
     | PaymentReceived of {| Payment: Payment; Context: EventContext |}
     | Terminated of {| Context: EventContext |}
