@@ -8,8 +8,6 @@ type ObservationDate =
     | AsOf of DateTime
     | AsAt of DateTime
 
-type EffectiveLeaseEvents = LeaseEvent list
-
 type Aggregate =
     { entity: string
       initial: LeaseState
@@ -70,14 +68,9 @@ module Aggregate =
                     TotalPaid = totalPaid
                     AmountDue = amountDue }
 
-    let applyError event state = sprintf "%A cannot be applied to state %A" event state |> Corrupt
-
-    let commandError command state = sprintf "cannot execte %A in state %A" command state |> Error
-
-    let (|Order|) leaseEvent = LeaseEvent.tryGetOrder leaseEvent
-
     let evolveDomain 
         : LeaseState -> LeaseEvent -> LeaseState =
+        let error event state = sprintf "%A cannot be applied to state %A" event state |> Corrupt
         fun state -> function
             | Undid _ -> "Undid event should be filtered from effective events" |> Corrupt
             | Created e ->
@@ -85,7 +78,7 @@ module Aggregate =
                 | NonExistent ->
                     LeaseStateData.init e.Context e.Lease
                     |> Outstanding
-                | _ -> applyError Created state
+                | _ -> error Created state
             | PaymentScheduled e ->
                 match state with
                 | Outstanding data ->
@@ -93,7 +86,7 @@ module Aggregate =
                     |> LeaseStateData.updateAmounts e.ScheduledPayment.ScheduledPaymentAmount %0m
                     |> LeaseStateData.updateContext e.Context
                     |> Outstanding
-                | _ -> applyError PaymentScheduled state
+                | _ -> error PaymentScheduled state
             | PaymentReceived e ->
                 match state with
                 | Outstanding data ->
@@ -101,17 +94,18 @@ module Aggregate =
                     |> LeaseStateData.updateAmounts %0m e.Payment.PaymentAmount
                     |> LeaseStateData.updateContext e.Context
                     |> Outstanding
-                | _ -> applyError PaymentReceived state
+                | _ -> error PaymentReceived state
             | LeaseEvent.Terminated e ->
                 match state with    
                 | Outstanding data ->
                     data
                     |> LeaseStateData.updateContext e.Context
                     |> LeaseState.Terminated
-                | _ -> applyError LeaseEvent.Terminated state
+                | _ -> error LeaseEvent.Terminated state
 
     let interpretDomain 
         : LeaseCommand -> LeaseState -> Result<LeaseEvent list, string> =
+        let error command state = sprintf "cannot execute %A in state %A" command state |> Error
         fun command state ->
             let ok e = e |> List.singleton |> Ok
             match command with
@@ -136,7 +130,7 @@ module Aggregate =
                         |> Created 
                     created :: paymentsScheduled
                     |> Ok
-                | _ -> commandError Create state
+                | _ -> error Create state
             | SchedulePayment scheduledPayment ->
                 match state with
                 | Outstanding { NextId = nextId } -> 
@@ -145,7 +139,7 @@ module Aggregate =
                        Context = ctx |} 
                     |> PaymentScheduled
                     |> ok
-                | _ -> commandError SchedulePayment state
+                | _ -> error SchedulePayment state
             | ReceivePayment payment ->
                 match state with
                 | Outstanding { NextId = nextId } -> 
@@ -154,13 +148,13 @@ module Aggregate =
                        Context = ctx |} 
                     |> PaymentReceived
                     |> ok
-                | _ -> commandError ReceivePayment state
+                | _ -> error ReceivePayment state
             | Terminate effDate ->
                 match state with
                 | Outstanding { NextId = nextId } -> 
                     let ctx = Context.create nextId effDate
                     LeaseEvent.Terminated {| Context = ctx |} |> ok
-                | _ -> commandError Terminate state
+                | _ -> error Terminate state
 
     let evolve 
         : EffectiveLeaseEvents -> LeaseEvent -> EffectiveLeaseEvents =

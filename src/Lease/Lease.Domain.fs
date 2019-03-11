@@ -36,6 +36,8 @@ type LeaseEvent =
     | Terminated of {| Context: EventContext |}
     interface TypeShape.UnionContract.IUnionContract
 
+type EffectiveLeaseEvents = LeaseEvent list
+
 type LeaseStateData =
     { NextId: EventId
       Lease: Lease

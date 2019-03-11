@@ -1,14 +1,13 @@
 namespace Lease
 
 open Equinox.EventStore
-open FSharp.UMX
 open Serilog
 open System
 
 module Store =
     let connect 
         (config:EventStoreConfig) 
-        (aggregate:Aggregate<LeaseCommand,LeaseEvent,LeaseState>) =
+        (aggregate:Aggregate) =
         let uri = 
             sprintf "%s://@%s:%d" 
                 config.Protocol 
@@ -30,10 +29,9 @@ module Store =
             connector.Establish("lease", Discovery.Uri uri, strategy)
             |> Async.RunSynchronously
         let gateway = GesGateway(conn, GesBatchingPolicy(maxBatchSize=500))
-        let accessStrategy = Equinox.EventStore.AccessStrategy.RollingSnapshots (aggregate.isOrigin, aggregate.compact)
         let cacheStrategy = Equinox.EventStore.CachingStrategy.SlidingWindow (cache, TimeSpan.FromMinutes 20.)
         let serializationSettings = Newtonsoft.Json.JsonSerializerSettings()
         let codec = Equinox.UnionCodec.JsonUtf8.Create<LeaseEvent>(serializationSettings)
-        let initial = { NextId = %0; Events = [] }
+        let initial = List.empty
         let fold = Seq.fold aggregate.evolve
-        GesResolver(gateway, codec, fold, initial, accessStrategy, cacheStrategy)
+        GesResolver(gateway, codec, fold, initial, caching=cacheStrategy)

@@ -34,18 +34,16 @@ let createPathHandler
         handlePath pathParams
         |> createHandler
 
-let handleCreateLease
-    (service:Service)
-    : Handle =
-    fun (ctx:HttpContext) ->
-        let { request = { rawForm = body }} = ctx
+let getLeaseStateResponse
+    (service:Service) =
+    fun (leaseId:LeaseId) (obsDate:ObservationDate) ->
         asyncResult {
-            let! newLease =
-                body
-                |> LeaseSchema.deserializeFromBytes
-                |> Result.map LeaseSchema.toDomain
+            let! ``state * events`` = service.query leaseId obsDate
+            return!
+                ``state * events``
+                |> LeaseStateSchema.fromDomain
+                |> Result.map LeaseStateSchema.serializeToJson
                 |> AsyncResult.ofResult
-            return! service.create newLease
         }
 
 let handleGetLease 
@@ -76,44 +74,27 @@ let handleGetLease
                 | _ -> None
             let! result =
                 match (asOf, asAt) with
-                | (None, None) -> service.get leaseId Latest
-                | (Some asOfDate, None) -> service.get leaseId asOfDate
-                | (None, Some asAtDate) -> service.get leaseId asAtDate
+                | (None, None) -> getLeaseStateResponse service leaseId Latest
+                | (Some asOfDate, None) -> getLeaseStateResponse service leaseId asOfDate
+                | (None, Some asAtDate) -> getLeaseStateResponse service leaseId asAtDate
                 | (Some _, Some _) -> "only specify asOf or asAt, not both" |> AsyncResult.ofError
             return result
         }
 
-let handleModifyLease 
+let handleCreateLease
     (service:Service)
-    : HandlePath<string> =
-    fun leaseIdParam (ctx:HttpContext) ->
-        let { request = { rawForm = body } as req } = ctx
+    : Handle =
+    fun (ctx:HttpContext) ->
+        let { request = { rawForm = body }} = ctx
         asyncResult {
-            let! leaseId = 
-                leaseIdParam 
-                |> Guid.tryParse
-                |> Option.map UMX.tag<leaseId>
-                |> Result.ofOption "could not parse modify leaseIdParam"
-                |> AsyncResult.ofResult
             let! newLease =
                 body
-                |> ModifiedLeaseSchema.deserializeFromBytes
-                |> Result.map (ModifiedLeaseSchema.toDomain leaseId)
+                |> LeaseSchema.deserializeFromBytes
+                |> Result.map LeaseSchema.toDomain
                 |> AsyncResult.ofResult
-            let lease =
-                { LeaseId = leaseId
-                  StartDate = newLease.StartDate
-                  MaturityDate = newLease.MaturityDate
-                  MonthlyPaymentAmount = newLease.MonthlyPaymentAmount }
-            let effDate = 
-                match req.queryParam "effDate" with
-                | Choice1Of2 effDateStr ->
-                    effDateStr
-                    |> DateTime.tryParse
-                    |> Option.map UMX.tag<effectiveDate>
-                | _ -> None
-                |> Option.defaultValue %newLease.StartDate 
-            return! service.modify lease effDate
+            let command = Create newLease
+            do! service.execute newLease.LeaseId command
+            return! getLeaseStateResponse service newLease.LeaseId Latest
         }
 
 let handleTerminateLease
@@ -133,10 +114,12 @@ let handleTerminateLease
                 | Choice1Of2 effDateStr ->
                     effDateStr
                     |> DateTime.tryParse
-                    |> Option.map UMX.tag<effectiveDate>
+                    |> Option.map UMX.tag<eventEffectiveDate>
                 | _ -> None
                 |> Option.defaultValue %DateTime.UtcNow
-            return! service.terminate leaseId effDate
+            let command = Terminate effDate
+            do! service.execute leaseId command
+            return! getLeaseStateResponse service leaseId Latest
         }
 
 let handleSchedulePayment
@@ -154,9 +137,11 @@ let handleSchedulePayment
             let! payment =
                 body
                 |> PaymentSchema.deserializeFromBytes
-                |> Result.map PaymentSchema.toDomain
+                |> Result.map PaymentSchema.toScheduledPayment
                 |> AsyncResult.ofResult
-            return! service.schedulePayment leaseId payment
+            let command = SchedulePayment payment
+            do! service.execute leaseId command
+            return! getLeaseStateResponse service leaseId Latest
         }
 
 let handleReceivePayment
@@ -174,9 +159,11 @@ let handleReceivePayment
             let! payment =
                 body
                 |> PaymentSchema.deserializeFromBytes
-                |> Result.map PaymentSchema.toDomain
+                |> Result.map PaymentSchema.toPayment
                 |> AsyncResult.ofResult
-            return! service.receivePayment leaseId payment
+            let command = ReceivePayment payment
+            do! service.execute leaseId command
+            return! getLeaseStateResponse service leaseId Latest
         }
 
 let handleUndo
@@ -196,7 +183,9 @@ let handleUndo
                 |> Option.map UMX.tag<eventId>
                 |> Result.ofOption "could not parse eventId"
                 |> AsyncResult.ofResult
-            return! service.undo leaseId eventId
+            let command = Undo eventId
+            do! service.execute leaseId command
+            return! getLeaseStateResponse service leaseId Latest
         }
 
 let init (service:Service) =
@@ -204,7 +193,6 @@ let init (service:Service) =
     let handleCreateLease' = handleCreateLease service
     let handleSchedulePayment' = handleSchedulePayment service
     let handleReceivePayment' = handleReceivePayment service
-    let handleModifyLease' = handleModifyLease service
     let handleTerminateLease' = handleTerminateLease service
     let handleUndo' = handleUndo service
     choose
@@ -212,7 +200,6 @@ let init (service:Service) =
             [ POST >=> (createHandler handleCreateLease') >=> JSON ]
           pathRegex "/lease/[^/]+?$" >=> choose
             [ GET >=> pathScan "/lease/%s" (createPathHandler handleGetLease') >=> JSON
-              PUT >=> pathScan "/lease/%s" (createPathHandler handleModifyLease') >=> JSON
               DELETE >=> pathScan "/lease/%s" (createPathHandler handleTerminateLease') >=> JSON ]
           pathRegex "/lease/[^/]+?/[^/]+?$" >=> choose
             [ POST >=> choose
