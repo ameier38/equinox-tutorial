@@ -13,10 +13,10 @@ type Aggregate =
       initial: LeaseState
       evolveDomain: LeaseState -> LeaseEvent -> LeaseState
       interpretDomain: LeaseCommand -> LeaseState -> Result<LeaseEvent list,string>
-      filterAtOrBefore: ObservationDate -> EffectiveLeaseEvents -> EffectiveLeaseEvents
-      reconstitute: EffectiveLeaseEvents -> LeaseState
-      evolve: EffectiveLeaseEvents -> LeaseEvent -> EffectiveLeaseEvents
-      interpret: LeaseCommand -> EffectiveLeaseEvents -> Result<unit,string> * LeaseEvent list }
+      filterOnOrBefore: ObservationDate -> RecordedLeaseEvents -> RecordedLeaseEvents
+      reconstitute: RecordedLeaseEvents -> LeaseState
+      evolve: RecordedLeaseEvents -> LeaseEvent -> RecordedLeaseEvents
+      interpret: LeaseCommand -> RecordedLeaseEvents -> Result<unit,string> * LeaseEvent list }
 module Aggregate =
 
     module Context =
