@@ -54,6 +54,9 @@ module LeaseId = let toStringN (value: LeaseId) = Guid.toStringN %value
 type [<Measure>] eventId
 type EventId = int<eventId>
 
+type [<Measure>] eventType
+type EventType = string<eventType>
+
 type [<Measure>] eventCreatedDate
 type EventCreatedDate = DateTime<eventCreatedDate>
 

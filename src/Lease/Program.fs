@@ -4,7 +4,7 @@ open Suave
 [<EntryPoint>]
 let main argv =
     let config = EventStoreConfig.load()
-    let aggregate = Aggregate.leaseAggregate
+    let aggregate = Aggregate.init()
     let resolver = Store.connect config aggregate
     let service = Service.init aggregate resolver
     let api = Api.init service

@@ -37,10 +37,10 @@ let createPathHandler
 let getLeaseStateResponse
     (service:Service) =
     fun (leaseId:LeaseId) (obsDate:ObservationDate) ->
-        asyncResult {
-            let! ``state * events`` = service.query leaseId obsDate
+        async {
+            let! state = service.query leaseId obsDate
             return!
-                ``state * events``
+                state
                 |> LeaseStateSchema.fromDomain
                 |> Result.map LeaseStateSchema.serializeToJson
                 |> AsyncResult.ofResult
@@ -166,35 +166,12 @@ let handleReceivePayment
             return! getLeaseStateResponse service leaseId Latest
         }
 
-let handleUndo
-    (service:Service)
-    : HandlePath<string * string> =
-    fun (leaseIdParam, eventIdParam) (ctx:HttpContext) ->
-        asyncResult {
-            let! leaseId = 
-                leaseIdParam 
-                |> Guid.tryParse
-                |> Option.map UMX.tag<leaseId>
-                |> Result.ofOption "could not parse undo leaseIdParam"
-                |> AsyncResult.ofResult
-            let! eventId = 
-                eventIdParam 
-                |> Int.tryParse
-                |> Option.map UMX.tag<eventId>
-                |> Result.ofOption "could not parse eventId"
-                |> AsyncResult.ofResult
-            let command = Undo eventId
-            do! service.execute leaseId command
-            return! getLeaseStateResponse service leaseId Latest
-        }
-
 let init (service:Service) =
     let handleGetLease' = handleGetLease service
     let handleCreateLease' = handleCreateLease service
     let handleSchedulePayment' = handleSchedulePayment service
     let handleReceivePayment' = handleReceivePayment service
     let handleTerminateLease' = handleTerminateLease service
-    let handleUndo' = handleUndo service
     choose
         [ path "/lease" >=> choose 
             [ POST >=> (createHandler handleCreateLease') >=> JSON ]
@@ -204,6 +181,5 @@ let init (service:Service) =
           pathRegex "/lease/[^/]+?/[^/]+?$" >=> choose
             [ POST >=> choose
                   [ pathScan "/lease/%s/schedule" (createPathHandler handleSchedulePayment') >=> JSON
-                    pathScan "/lease/%s/payment" (createPathHandler handleReceivePayment') >=> JSON ]
-              DELETE >=> pathScan "/lease/%s/%s" (createPathHandler handleUndo') >=> JSON ]
+                    pathScan "/lease/%s/payment" (createPathHandler handleReceivePayment') >=> JSON ] ]
           NOT_FOUND "handler not implemented" ]

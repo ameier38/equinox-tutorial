@@ -22,7 +22,6 @@ type Payment =
       PaymentAmount: PaymentAmount }
 
 type LeaseCommand =
-    | Undo of EventId
     | Create of Lease
     | SchedulePayment of ScheduledPayment
     | ReceivePayment of Payment
@@ -33,28 +32,13 @@ type LeaseEvent =
     | PaymentScheduled of {| ScheduledPayment: ScheduledPayment; Context: EventContext |}
     | PaymentReceived of {| Payment: Payment; Context: EventContext |}
     | Terminated of {| Context: EventContext |}
-
-type StreamEvent = 
-    | Undid of {| EventId: EventId; Context: EventContext |}
-    | Reset of {| Context: EventContext |}
-
-type Event =
-    // stream events
-    | Undid of {| EventId: EventId; Context: EventContext |}
-    | Reset of {| Context: EventContext |}
-    // domain events
-    | Created of {| Lease: Lease; Context: EventContext |}
-    | PaymentScheduled of {| ScheduledPayment: ScheduledPayment; Context: EventContext |}
-    | PaymentReceived of {| Payment: Payment; Context: EventContext |}
-    | Terminated of {| Context: EventContext |}
     interface TypeShape.UnionContract.IUnionContract
 
-type StreamState =
-    { DomainEvents: LeaseEvent list
-      StreamEvents: StreamEvent list }
+type LeaseEvents = LeaseEvent list
 
 type LeaseStateData =
     { NextId: EventId
+      Events: (EventType * EventContext) list
       Lease: Lease
       TotalScheduled: ScheduledPaymentAmount
       TotalPaid: PaymentAmount

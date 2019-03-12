@@ -153,37 +153,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LeaseState'
-  /lease/{leaseId}/{eventId}:
-    delete:
-      summary: undo event
-      description: undo event
-      parameters:
-      - name: leaseId
-        in: path
-        description: lease unique id
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: d290f1ee-6c54-4b01-90e6-d701748f0851
-      - name: eventId
-        in: path
-        description: lease event id
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: integer
-          example: 1
-      responses:
-        200:
-          description: lease state response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LeaseState'
 components:
   schemas:
     Payment:

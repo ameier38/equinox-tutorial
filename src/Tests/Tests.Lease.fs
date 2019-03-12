@@ -8,12 +8,18 @@ open Suave
 open System
 
 let config = EventStoreConfig.load()
-let aggregate = Aggregate.leaseAggregate
+let aggregate = Aggregate.init()
 let resolver = Store.connect config aggregate
 let service = Service.init aggregate resolver
 let api = Api.init service
 
-let createLeaseId () = Guid.NewGuid() |> UMX.tag<leaseId>
+let makeLeaseId () = Guid.NewGuid() |> UMX.tag<leaseId>
+
+let makeLease leaseId =
+    { LeaseId = leaseId
+      StartDate = DateTime(2018, 1, 1)
+      MaturityDate = DateTime(2018, 12, 31)
+      MonthlyPaymentAmount = 10m<monthlyPaymentAmount> }
 
 let expectSome (ctxOpt:HttpContext option) =
     match ctxOpt with
@@ -47,9 +53,9 @@ let getLease (leaseId:LeaseId) (query:string) =
     let req = makeRequest endpoint "GET" query ""
     api req
 
-let createLease newLease =
+let createLease lease =
     let body =
-        newLease
+        lease
         |> Dto.LeaseSchema.fromDomain
         |> Dto.LeaseSchema.serializeToJson
     let req = makeRequest "/lease" "POST" "" body
@@ -81,20 +87,10 @@ let terminate (leaseId:LeaseId) =
     let req = makeRequest endpoint "DELETE" "" ""
     api req
 
-let undo (leaseId:LeaseId) (eventId:EventId) =
-    let leaseIdStr = leaseId |> LeaseId.toStringN
-    let endpoint = sprintf "/lease/%s/%d" leaseIdStr eventId
-    let req = makeRequest endpoint "DELETE" "" ""
-    api req
-
-let newLease =
-    { LeaseId = createLeaseId ()
-      StartDate = DateTime(2018, 1, 1)
-      MaturityDate = DateTime(2018, 12, 31)
-      MonthlyPaymentAmount = 10m<monthlyPaymentAmount> }
-
 let testCreate =
     testAsync "should successfully create lease" {
+        let leaseId = makeLeaseId ()
+        let newLease = makeLease leaseId
         let! response = createLease newLease |> Async.map expectSome
         response |> getStatus |> Expect.equal "should return 200" HTTP_200.code
         match response |> getState with
@@ -108,7 +104,8 @@ let testCreate =
 
 let testSchedulePayment =
     testAsync "should successfully create a lease and schedule another payment" {
-        let leaseId = createLeaseId ()
+        let leaseId = makeLeaseId ()
+        let newLease = makeLease leaseId
         let! createCtx = createLease newLease |> Async.map expectSome
         createCtx |> getStatus |> Expect.equal "should return 200" HTTP_200.code
         let createdState = 
@@ -119,7 +116,7 @@ let testSchedulePayment =
         let payment =
             { ScheduledPaymentDate = DateTime(2019, 1, 31).ToUniversalTime()
               ScheduledPaymentAmount = 10m<scheduledPaymentAmount> }
-        let! scheduleCtx = schedulePayment leaseId payment |> Async.map expectSome
+        let! scheduleCtx = schedulePayment newLease.LeaseId payment |> Async.map expectSome
         match scheduleCtx |> getState with
         | Outstanding leaseState ->
             leaseState.Lease |> Expect.equal "lease should match new lease" newLease
@@ -131,7 +128,8 @@ let testSchedulePayment =
 
 let testReceivePayment =
     testAsync "should successfully create a lease and receive a payment" {
-        let leaseId = createLeaseId ()
+        let leaseId = makeLeaseId ()
+        let newLease = makeLease leaseId
         let! createCtx = createLease newLease |> Async.map expectSome
         createCtx |> getStatus |> Expect.equal "should return 200" HTTP_200.code
         let createdState = 
@@ -142,19 +140,20 @@ let testReceivePayment =
         let receivedPayment =
             { PaymentDate = DateTime(2018, 1, 31).ToUniversalTime()
               PaymentAmount = 10m<paymentAmount> }
-        let! receiveCtx = receivePayment leaseId receivedPayment |> Async.map expectSome
+        let! receiveCtx = receivePayment newLease.LeaseId receivedPayment |> Async.map expectSome
         match receiveCtx |> getState with
         | Outstanding leaseState ->
             leaseState.Lease |> Expect.equal "lease should match new lease" newLease
-            leaseState.TotalScheduled |> Expect.equal "total scheduled should equal scheduled payment amount" 130m<scheduledPaymentAmount>
+            leaseState.TotalScheduled |> Expect.equal "total scheduled should equal scheduled payment amount" 120m<scheduledPaymentAmount>
             leaseState.TotalPaid |> Expect.equal "total paid should equal received payment amount" receivedPayment.PaymentAmount
-            leaseState.AmountDue |> Expect.equal "amount due should equal zero" 120m
+            leaseState.AmountDue |> Expect.equal "amount due should equal zero" 110m
         | _ -> failwith "lease should be outstanding"
     }
 
 let testTerminate =
     testAsync "should successfully create a lease and then terminate it" {
-        let leaseId = createLeaseId ()
+        let leaseId = makeLeaseId ()
+        let newLease = makeLease leaseId
         let! createCtx = createLease newLease |> Async.map expectSome
         createCtx |> getStatus |> Expect.equal "should return 200" HTTP_200.code
         let createdState = 
@@ -162,7 +161,7 @@ let testTerminate =
             | Outstanding leaseState -> leaseState
             | _ -> failwith "lease should be outstanding"
         createdState.Lease |> Expect.equal "lease should match new lease" newLease
-        let! terminateCtx = terminate leaseId |> Async.map expectSome
+        let! terminateCtx = terminate newLease.LeaseId |> Async.map expectSome
         match terminateCtx |> getState with
         | Terminated leaseState ->
             leaseState.Lease |> Expect.equal "lease should match new lease" newLease
@@ -172,44 +171,11 @@ let testTerminate =
         | _ -> failwith "lease should be terminated"
     }
 
-let testUndo =
-    testAsync "should successfully create a lease, receive a payment, and undo a payment" {
-        let leaseId = createLeaseId ()
-        let! createCtx = createLease newLease |> Async.map expectSome
-        createCtx |> getStatus |> Expect.equal "should return 200" HTTP_200.code
-        let createdState = 
-            match createCtx |> getState with
-            | Outstanding leaseState -> leaseState
-            | _ -> failwith "lease should be outstanding"
-        createdState.Lease |> Expect.equal "lease should match new lease" newLease
-        let receivedPayment =
-            { PaymentDate = DateTime(2018, 1, 31).ToUniversalTime()
-              PaymentAmount = 10m<paymentAmount> }
-        let! receiveCtx = receivePayment leaseId receivedPayment |> Async.map expectSome
-        match receiveCtx |> getState with
-        | Outstanding leaseState ->
-            leaseState.Lease |> Expect.equal "lease should match new lease" newLease
-            leaseState.TotalScheduled |> Expect.equal "total scheduled should equal scheduled payment amount" 120m<scheduledPaymentAmount>
-            leaseState.TotalPaid |> Expect.equal "total paid should equal received payment amount" receivedPayment.PaymentAmount
-            leaseState.AmountDue |> Expect.equal "amount due should equal zero" 110m
-        | _ -> failwith "lease should be outstanding"
-        let! undoCtx = undo leaseId %2 |> Async.map expectSome
-        match undoCtx |> getState with
-        | Outstanding leaseState ->
-            leaseState.Lease |> Expect.equal "lease should match new lease" newLease
-            leaseState.TotalScheduled |> Expect.equal "total scheduled should equal scheduled payment amount" 120m<scheduledPaymentAmount>
-            leaseState.TotalPaid |> Expect.equal "total paid should equal zero" 0m
-            leaseState.AmountDue |> Expect.equal "amount due should equal scheduled payment amount" scheduledPayment.PaymentAmount
-        | _ -> failwith "lease should be outstanding"
-    }
-
 [<Tests>]
 let testApi =
     testList "test Lease" [
         testCreate
-        testModify
         testSchedulePayment
         testReceivePayment
         testTerminate
-        testUndo
     ]

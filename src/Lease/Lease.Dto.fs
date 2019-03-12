@@ -61,19 +61,19 @@ module PaymentSchema =
 
 type EventSchema = LeaseApiProvider.Schemas.Event
 module EventSchema =
-    let create eventType ctx =
+    let fromDomain (eventType:EventType, ctx:EventContext) =
         EventSchema(
+            eventType = %eventType,
             eventId = %ctx.EventId,
-            eventType = eventType,
             createdDate = %ctx.EventCreatedDate,
             effectiveDate = %ctx.EventEffectiveDate)
-        |> Some
-    let fromDomain = function
-        | Undid _ -> None
-        | Created e -> create "Created" e.Context
-        | PaymentScheduled e -> create "PaymentScheduled" e.Context
-        | PaymentReceived e -> create "PaymentReceived" e.Context
-        | LeaseEvent.Terminated e -> create "Terminated" e.Context
+    let toDomain (schema:EventSchema) : EventType * EventContext =
+        let eventType = schema.EventType |> UMX.tag<eventType>
+        let ctx =
+            { EventId = %schema.EventId 
+              EventCreatedDate = %schema.CreatedDate 
+              EventEffectiveDate = %schema.EffectiveDate }
+        (eventType, ctx)
 
 type LeaseStateSchema = LeaseApiProvider.Schemas.LeaseState
 module LeaseStateSchema =
@@ -90,6 +90,7 @@ module LeaseStateSchema =
     let toDomain (schema:LeaseStateSchema) =
         let stateData =
             { NextId = %schema.NextId
+              Events = schema.Events |> List.map EventSchema.toDomain
               Lease = schema.Lease |> LeaseSchema.toDomain
               TotalScheduled = schema.TotalScheduled |> decimal |> UMX.tag<scheduledPaymentAmount>
               TotalPaid = schema.TotalPaid |> decimal |> UMX.tag<paymentAmount>
@@ -100,7 +101,7 @@ module LeaseStateSchema =
         | s when s = "Outstanding" -> Outstanding stateData |> Ok
         | s when s = "Terminated" -> Terminated stateData |> Ok
         | s -> sprintf "cannot convert to domain in state %s" s |> Error
-    let fromDomain (state:LeaseState, events: LeaseEvent list) =
+    let fromDomain (state:LeaseState) =
         match state with
         | NonExistent -> Error "lease does not exist"
         | Corrupt err -> Error err
@@ -114,7 +115,7 @@ module LeaseStateSchema =
                 amountDue = (data.AmountDue |> float32),
                 createdDate = data.CreatedDate,
                 updatedDate = data.UpdatedDate,
-                events = (events |> List.choose EventSchema.fromDomain))
+                events = (data.Events |> List.map EventSchema.fromDomain))
             |> Ok
         | Terminated data ->
             LeaseStateSchema(
@@ -126,5 +127,5 @@ module LeaseStateSchema =
                 amountDue = (data.AmountDue |> float32),
                 createdDate = data.CreatedDate,
                 updatedDate = data.UpdatedDate,
-                events = (events |> List.choose EventSchema.fromDomain))
+                events = (data.Events |> List.map EventSchema.fromDomain))
             |> Ok
