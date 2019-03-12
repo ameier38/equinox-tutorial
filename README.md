@@ -14,23 +14,44 @@ Lease
 ├── Lease.Dto.fs            --> Data transfer objects
 ├── Lease.Aggregate.fs      --> Main business logic
 ├── Lease.Store.fs          --> Set up for Event Store
-├── Lease.Service.fs        --> Interfaces consumed by API
+├── Lease.Service.fs        --> Interfaces executing commands and running queries
 ├── Lease.Api.fs            --> Route handlers
 └── Program.fs              --> Application entry point
 ```
 
 ## Dependencies
-- [`dotnet` CLI](https://andrewcmeier.com/win-dev#dotnet)
+- [dotnet CLI](https://github.com/dotnet/core-sdk#installers-and-binaries)
+> You will need version 2.1.6 for anonymous record support.
 - [Docker](https://andrewcmeier.com/win-dev#docker)
 - [FAKE](https://andrewcmeier.com/how-to-fake)
 
-## Running
+## Testing
+Start Event Store.
+```shell
+docker-compose up -d eventstore
+```
+
+Build test image.
+```shell
+docker-compose build test
+```
+
+Run the test image.
+```shell
+docker-compose run --rm test
+```
+
+Alternatively you can run the test scripts yourself.
+```shell
+fake build -t test
+```
+
+## Usage
 Start Event Store and the API.
 ```shell
 docker-compose up -d
 ```
 
-## Usage
 All the available endpoints are documented via SwaggerHub 
 [here](https://app.swaggerhub.com/apis-docs/ameier38/Lease/1.0.0).
 
@@ -47,19 +68,5 @@ curl -X POST \
 }'
 ```
 
-## Testing
-Start Event Store.
-```shell
-docker-compose up -d eventstore
-```
-
-Run the test suite.
-```
-fake build -t Test
-```
-
 ## Resources
 - [Equinox](https://github.com/jet/equinox)
-
-## Improvements
-- Upgrade to F# 4.6
