@@ -2,6 +2,12 @@ version: '1.0'
 stages:
   - test
 steps:
+  build_api:
+    stage: build
+    type: build
+    title: Build Lease API
+    image_name: lease-api
+    target: test-runtime
   test_api:
     stage: test
     type: composition
@@ -13,9 +19,7 @@ steps:
           image: eventstore/eventstore
     composition_candidates:
       test:
-        build:
-          context: .
-          target: test-runtime
+        image: ${{build_api}}
         environment:
           - EVENTSTORE_PROTOCOL=tcp
           - EVENTSTORE_HOST=eventstore
