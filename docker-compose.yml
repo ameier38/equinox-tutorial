@@ -17,13 +17,3 @@ services:
       - EVENTSTORE_PASSWORD=changeit
     ports:
       - "8080:8080"
-  test:
-    build:
-      context: .
-      target: test-runtime
-    environment:
-      - EVENTSTORE_PROTOCOL=tcp
-      - EVENTSTORE_HOST=eventstore
-      - EVENTSTORE_PORT=1113
-      - EVENTSTORE_USER=admin
-      - EVENTSTORE_PASSWORD=changeit
