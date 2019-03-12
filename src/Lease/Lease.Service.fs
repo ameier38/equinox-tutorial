@@ -4,7 +4,6 @@ open FSharp.UMX
 open Lease.Dto
 open Lease.Aggregate
 open Lease.Store
-open Equinox.EventStore
 open Serilog.Core
 open Suave
 open System
