@@ -21,7 +21,7 @@ steps:
     composition_candidates:
       test:
         image: ${{build_api}}
-        command: bash -c "./wait-for-it.sh http://eventstore:2113/users/admin && dotnet Tests.dll"
+        command: bash -c "./wait-for.sh http://eventstore:2113/users/admin && dotnet Tests.dll"
         environment:
           - EVENTSTORE_PROTOCOL=tcp
           - EVENTSTORE_HOST=eventstore

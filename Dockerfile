@@ -40,7 +40,7 @@ FROM mcr.microsoft.com/dotnet/core/runtime:2.1 as test-runtime
 WORKDIR /app
 
 COPY --from=builder /app/src/Tests/out .
-COPY --from=builder /app/wait-for-it.sh .
+COPY --from=builder /app/wait-for.sh .
 
 CMD ["dotnet", "Tests.dll"]
 
