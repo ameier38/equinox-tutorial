@@ -10,7 +10,7 @@ open Fake.IO
 open Fake.DotNet
 open Fake.IO.FileSystemOperators
 
-let paketFile = if Environment.isLinux then "paket" else "paket.exe"
+let paketFile = if (Environment.isLinux || Environment.isMacOS) then "paket" else "paket.exe"
 let paketExe = __SOURCE_DIRECTORY__ </> ".paket" </> paketFile
 let solution = __SOURCE_DIRECTORY__ </> "Tutorial.sln"
 
