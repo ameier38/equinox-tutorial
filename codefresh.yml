@@ -1,5 +1,6 @@
 version: '1.0'
 stages:
+  - build
   - test
 steps:
   build_api:
