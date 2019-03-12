@@ -14,7 +14,7 @@ Lease
 ├── Lease.Dto.fs            --> Data transfer objects
 ├── Lease.Aggregate.fs      --> Main business logic
 ├── Lease.Store.fs          --> Set up for Event Store
-├── Lease.Service.fs        --> Interfaces executing commands and running queries
+├── Lease.Service.fs        --> Interfaces for executing commands and running queries
 ├── Lease.Api.fs            --> Route handlers
 └── Program.fs              --> Application entry point
 ```

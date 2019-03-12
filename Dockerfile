@@ -33,7 +33,7 @@ RUN fake build -t Restore
 
 # copy everything else and build
 COPY . .
-RUN dotnet publish -o out
+RUN fake build -t Publish
 
 FROM mcr.microsoft.com/dotnet/core/runtime:2.1 as test-runtime
 
