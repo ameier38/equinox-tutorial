@@ -1,5 +1,5 @@
 # use build image to compile
-FROM ameier38/dotnet-mono:2.2 as builder
+FROM ameier38/dotnet-mono-sdk:2.1 as builder
 
 # prevent sending metrics to microsoft
 ENV DOTNET_CLI_TELEMETRY_OPTOUT 1
@@ -35,7 +35,16 @@ RUN fake build -t Restore
 COPY . .
 RUN fake build -t Publish
 
-FROM mcr.microsoft.com/dotnet/core/runtime:2.2 as runtime
+FROM mcr.microsoft.com/dotnet/core/runtime:2.1 as test-runtime
+
+WORKDIR /app
+
+COPY --from=builder /app/src/Tests/out .
+COPY --from=builder /app/wait-for.sh .
+
+CMD ["dotnet", "Tests.dll"]
+
+FROM mcr.microsoft.com/dotnet/core/runtime:2.1 as runtime
 
 WORKDIR /app
 

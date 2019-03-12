@@ -1,0 +1,30 @@
+version: '1.0'
+stages:
+  - build
+  - test
+steps:
+  build_api:
+    stage: build
+    type: build
+    title: Build Lease API
+    image_name: lease-api
+    target: test-runtime
+  test_api:
+    stage: test
+    type: composition
+    title: Test Lease API
+    composition:
+      version: '3'
+      services:
+        eventstore:
+          image: eventstore/eventstore
+    composition_candidates:
+      test:
+        image: ${{build_api}}
+        command: bash -c "./wait-for.sh http://eventstore:2113/users/admin && dotnet Tests.dll"
+        environment:
+          - EVENTSTORE_PROTOCOL=tcp
+          - EVENTSTORE_HOST=eventstore
+          - EVENTSTORE_PORT=1113
+          - EVENTSTORE_USER=admin
+          - EVENTSTORE_PASSWORD=changeit

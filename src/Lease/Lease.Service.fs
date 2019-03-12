@@ -1,109 +1,145 @@
-namespace Lease
+module Lease.Service
 
-open Equinox.EventStore
-open Serilog
+open FSharp.UMX
+open Lease.Dto
+open Lease.Aggregate
+open Lease.Store
+open Serilog.Core
+open Suave
+open System
 
-type Service =
-    { get: LeaseId -> ObservationDate -> AsyncResult<string,string>
-      create: Lease -> AsyncResult<string,string>
-      modify: Lease -> EffectiveDate -> AsyncResult<string,string>
-      terminate: LeaseId -> EffectiveDate -> AsyncResult<string,string>
-      schedulePayment: LeaseId -> Payment -> AsyncResult<string,string>
-      receivePayment: LeaseId -> Payment -> AsyncResult<string,string>
-      undo: LeaseId -> EventId -> AsyncResult<string,string> }
-module Service =
-    let stateProjection 
-        (reconstitute: Reconstitute<LeaseEvent,LeaseState>)
-        : Projection<LeaseEvent,Result<string,string>> =
-        fun (obsDate:ObservationDate) ({ Events = events }) ->
-            let leaseState = reconstitute obsDate events
-            (leaseState, events)
-            |> Dto.LeaseStateSchema.fromDomain
-            |> Result.map Dto.LeaseStateSchema.serializeToJson
-    let executeCommand
-        (aggregate:Aggregate<LeaseCommand,LeaseEvent,LeaseState>)
-        (query: Query<LeaseId,LeaseEvent,Result<string,string>>)
-        (execute: Execute<LeaseId,LeaseCommand>) =
-        fun (leaseId:LeaseId) (command:LeaseCommand) ->
+type Service(aggregate:Aggregate, store:Store, logger:Logger) =
+    let (|AggregateId|) (leaseId: LeaseId) = Equinox.AggregateId(aggregate.Entity, LeaseId.toStringN leaseId)
+    let (|Stream|) (AggregateId leaseId) = Equinox.Stream(logger, store.Resolve leaseId, 3)
+    let execute (Stream stream) command = stream.Transact(aggregate.Interpret command)
+    let query (Stream stream) (obsDate:ObservationDate) =
+        stream.Query(fun leaseEvents -> 
+            leaseEvents 
+            |> aggregate.Reconstitute obsDate)
+
+    let getLeaseStateResponse =
+        fun (leaseId:LeaseId) (obsDate:ObservationDate) ->
+            async {
+                let! state = query leaseId obsDate
+                return!
+                    state
+                    |> LeaseStateSchema.fromDomain
+                    |> Result.map LeaseStateSchema.serializeToJson
+                    |> AsyncResult.ofResult
+            }
+
+    member __.Get
+        : string -> HttpContext -> AsyncResult<string,string> =
+        fun leaseIdParam (ctx:HttpContext) ->
+            let { request = req } = ctx
             asyncResult {
-                let projection = stateProjection aggregate.reconstitute
+                let! leaseId = 
+                    leaseIdParam 
+                    |> Guid.tryParse
+                    |> Option.map UMX.tag<leaseId>
+                    |> Result.ofOption (sprintf "could not parse get leaseIdParam %s" leaseIdParam)
+                    |> AsyncResult.ofResult
+                let asOf = 
+                    match req.queryParam "asOf" with
+                    | Choice1Of2 asOfStr ->
+                        asOfStr
+                        |> DateTime.tryParse
+                        |> Option.map AsOf
+                    | _ -> None
+                let asAt = 
+                    match req.queryParam "asAt" with
+                    | Choice1Of2 asOfStr ->
+                        asOfStr
+                        |> DateTime.tryParse
+                        |> Option.map AsAt
+                    | _ -> None
+                let! result =
+                    match (asOf, asAt) with
+                    | (None, None) -> getLeaseStateResponse leaseId Latest
+                    | (Some asOfDate, None) -> getLeaseStateResponse leaseId asOfDate
+                    | (None, Some asAtDate) -> getLeaseStateResponse leaseId asAtDate
+                    | (Some _, Some _) -> "only specify asOf or asAt, not both" |> AsyncResult.ofError
+                return result
+            }
+
+    member __.Create
+        : HttpContext -> AsyncResult<string,string> =
+        fun (ctx:HttpContext) ->
+            let { request = { rawForm = body }} = ctx
+            asyncResult {
+                let! newLease =
+                    body
+                    |> LeaseSchema.deserializeFromBytes
+                    |> Result.map LeaseSchema.toDomain
+                    |> AsyncResult.ofResult
+                let command = Create newLease
+                do! execute newLease.LeaseId command
+                return! getLeaseStateResponse newLease.LeaseId Latest
+            }
+
+    member __.Terminate
+        : string -> HttpContext -> AsyncResult<string,string> =
+        fun leaseIdParam (ctx:HttpContext) ->
+            let { request = req } = ctx
+            asyncResult {
+                let! leaseId = 
+                    leaseIdParam 
+                    |> Guid.tryParse
+                    |> Option.map UMX.tag<leaseId>
+                    |> Result.ofOption "could not parse delete leaseIdParam"
+                    |> AsyncResult.ofResult
+                let effDate = 
+                    match req.queryParam "effDate" with
+                    | Choice1Of2 effDateStr ->
+                        effDateStr
+                        |> DateTime.tryParse
+                        |> Option.map UMX.tag<eventEffectiveDate>
+                    | _ -> None
+                    |> Option.defaultValue %DateTime.UtcNow
+                let command = Terminate effDate
                 do! execute leaseId command
-                let! newState = query leaseId Latest projection
-                return! newState |> AsyncResult.ofResult
-            }
-    let get 
-        (aggregate:Aggregate<LeaseCommand,LeaseEvent,LeaseState>)
-        (query: Query<LeaseId,LeaseEvent,Result<string,string>>) =
-        fun leaseId observationDate ->
-            asyncResult {
-                let projection = stateProjection aggregate.reconstitute
-                let! state = query leaseId observationDate projection
-                return! state |> AsyncResult.ofResult
-            }
-    let create
-        (executeCommand:LeaseId -> LeaseCommand -> AsyncResult<string,string>) =
-        fun (newLease:Lease) ->
-            asyncResult {
-                let command =
-                    { LeaseId = newLease.LeaseId
-                      StartDate = newLease.StartDate
-                      MaturityDate = newLease.MaturityDate
-                      MonthlyPaymentAmount = newLease.MonthlyPaymentAmount }
-                    |> Create
-                return! executeCommand newLease.LeaseId command
+                return! getLeaseStateResponse leaseId Latest
             }
 
-    let modify 
-        (executeCommand:LeaseId -> LeaseCommand -> AsyncResult<string,string>) =
-        fun ({ LeaseId = leaseId} as lease) (effDate: EffectiveDate) ->
+    member __.SchedulePayment
+        : string -> HttpContext -> AsyncResult<string,string> =
+        fun leaseIdParam (ctx:HttpContext) ->
+            let { request = { rawForm = body } } = ctx
             asyncResult {
-                let command = (lease, effDate) |> Modify
-                return! executeCommand leaseId command
+                let! leaseId = 
+                    leaseIdParam 
+                    |> Guid.tryParse
+                    |> Option.map UMX.tag<leaseId>
+                    |> Result.ofOption (sprintf "could not parse schedule leaseIdParam %s" leaseIdParam)
+                    |> AsyncResult.ofResult
+                let! payment =
+                    body
+                    |> PaymentSchema.deserializeFromBytes
+                    |> Result.map PaymentSchema.toScheduledPayment
+                    |> AsyncResult.ofResult
+                let command = SchedulePayment payment
+                do! execute leaseId command
+                return! getLeaseStateResponse leaseId Latest
             }
-    let terminate
-        (executeCommand:LeaseId -> LeaseCommand -> AsyncResult<string,string>) =
-        fun (leaseId:LeaseId) (effDate:EffectiveDate) ->
+
+    member __.ReceivePayment
+        : string -> HttpContext -> AsyncResult<string,string> =
+        fun leaseIdParam (ctx:HttpContext) ->
+            let { request = { rawForm = body } } = ctx
             asyncResult {
-                let command = effDate |> Terminate    
-                return! executeCommand leaseId command
+                let! leaseId = 
+                    leaseIdParam 
+                    |> Guid.tryParse
+                    |> Option.map UMX.tag<leaseId>
+                    |> Result.ofOption (sprintf "could not parse receive payment leaseIdParam %s" leaseIdParam)
+                    |> AsyncResult.ofResult
+                let! payment =
+                    body
+                    |> PaymentSchema.deserializeFromBytes
+                    |> Result.map PaymentSchema.toPayment
+                    |> AsyncResult.ofResult
+                let command = ReceivePayment payment
+                do! execute leaseId command
+                return! getLeaseStateResponse leaseId Latest
             }
-    let schedulePayment 
-        (executeCommand:LeaseId -> LeaseCommand -> AsyncResult<string,string>) =
-        fun (leaseId:LeaseId) (payment:Payment) ->
-            asyncResult {
-                let command = payment |> SchedulePayment    
-                return! executeCommand leaseId command
-            }
-    let receivePayment 
-        (executeCommand:LeaseId -> LeaseCommand -> AsyncResult<string,string>) =
-        fun (leaseId:LeaseId) (payment:Payment) ->
-            asyncResult {
-                let command = payment |> ReceivePayment    
-                return! executeCommand leaseId command
-            }
-    let undo
-        (executeCommand:LeaseId -> LeaseCommand -> AsyncResult<string,string>) =
-        fun (leaseId:LeaseId) (eventId:EventId) ->
-            asyncResult {
-                let command = eventId |> Undo    
-                return! executeCommand leaseId command
-            }
-    let init 
-        (aggregate:Aggregate<LeaseCommand,LeaseEvent,LeaseState>) 
-        (resolver:GesResolver<LeaseEvent,StreamState<LeaseEvent>>) =
-        let log = LoggerConfiguration().WriteTo.Console().CreateLogger()
-        let (|AggregateId|) (leaseId: LeaseId) = Equinox.AggregateId(aggregate.entity, LeaseId.toStringN leaseId)
-        let (|Stream|) (AggregateId leaseId) = Equinox.Stream(log, resolver.Resolve leaseId, 3)
-        let execute (Stream stream) command = stream.Transact(aggregate.interpret command)
-        let query : Query<LeaseId,LeaseEvent,'View> =
-            fun (Stream stream) (obsDate:ObservationDate) (projection:Projection<LeaseEvent,'View>) -> 
-                stream.Query(projection obsDate)
-                |> AsyncResult.ofAsync
-        let executeCommand' = executeCommand aggregate query execute
-        { get = get aggregate query
-          create = create executeCommand'
-          modify = modify executeCommand'
-          terminate = terminate executeCommand'
-          schedulePayment = schedulePayment executeCommand'
-          receivePayment = receivePayment executeCommand'
-          undo = undo executeCommand' }
+

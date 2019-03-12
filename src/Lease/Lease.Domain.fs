@@ -1,70 +1,52 @@
 namespace Lease
 
 open System
-open FSharp.UMX
 
-type Context =
+type ObservationDate =
+    | Latest
+    | AsOf of DateTime
+    | AsAt of DateTime
+
+type EventContext =
     { EventId: EventId
-      CreatedDate: CreatedDate
-      EffectiveDate: EffectiveDate }
-module Context =
-    let create eventId effectiveDate =
-        { EventId = eventId
-          CreatedDate = %DateTime.UtcNow
-          EffectiveDate = effectiveDate }
+      EventCreatedDate: EventCreatedDate
+      EventEffectiveDate: EventEffectiveDate }
 
 type Lease =
     { LeaseId: LeaseId
       StartDate: DateTime
       MaturityDate: DateTime
-      MonthlyPaymentAmount: decimal }
+      MonthlyPaymentAmount: MonthlyPaymentAmount }
+
+type ScheduledPayment =
+    { ScheduledPaymentDate: DateTime
+      ScheduledPaymentAmount: ScheduledPaymentAmount }
 
 type Payment =
     { PaymentDate: DateTime
-      PaymentAmount: decimal }
+      PaymentAmount: PaymentAmount }
 
 type LeaseCommand =
-    | Undo of EventId
     | Create of Lease
-    | Modify of Lease * EffectiveDate
-    | SchedulePayment of Payment
+    | SchedulePayment of ScheduledPayment
     | ReceivePayment of Payment
-    | Terminate of EffectiveDate
-
-type LeaseInfo =
-    { Lease: Lease
-      Context: Context }
-
-type PaymentInfo =
-    { Payment: Payment
-      Context: Context }
+    | Terminate of EventEffectiveDate
 
 type LeaseEvent =
-    | Undid of EventId
-    | Compacted of LeaseEvent[]
-    | Created of LeaseInfo
-    | Modified of LeaseInfo
-    | PaymentScheduled of PaymentInfo
-    | PaymentReceived of PaymentInfo
-    | Terminated of Context
+    | Created of {| Lease: Lease; Context: EventContext |}
+    | PaymentScheduled of {| ScheduledPayment: ScheduledPayment; Context: EventContext |}
+    | PaymentReceived of {| Payment: Payment; Context: EventContext |}
+    | Terminated of {| Context: EventContext |}
     interface TypeShape.UnionContract.IUnionContract
-module LeaseEvent =
-    let (|Order|) { CreatedDate = createdDate; EffectiveDate = effDate } = (effDate, createdDate)
-    let getContext = function
-        | Undid _ -> None
-        | Compacted _ -> None
-        | Created { Context = ctx } -> ctx |> Some
-        | Modified { Context = ctx } -> ctx |> Some
-        | PaymentScheduled { Context = ctx } -> ctx |> Some
-        | PaymentReceived { Context = ctx } -> ctx |> Some
-        | LeaseEvent.Terminated ctx -> ctx |> Some
-    let getOrder = getContext >> Option.map (fun (Order order) -> order)
-    let getEventId = getContext >> Option.map (fun { EventId = eventId } -> eventId)
+
+type LeaseEvents = LeaseEvent list
 
 type LeaseStateData =
-    { Lease: Lease
-      TotalScheduled: decimal
-      TotalPaid: decimal
+    { NextId: EventId
+      Events: (EventType * EventContext) list
+      Lease: Lease
+      TotalScheduled: ScheduledPaymentAmount
+      TotalPaid: PaymentAmount
       AmountDue: decimal
       CreatedDate: DateTime
       UpdatedDate: DateTime }
