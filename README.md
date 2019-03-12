@@ -1,4 +1,6 @@
 # Equinox Tutorial
+[![Codefresh build status]( https://g.codefresh.io/api/badges/pipeline/ameier38/ameier38%2Fequinox-tutorial%2Fequinox-tutorial?type=cf-1)]( https://g.codefresh.io/public/accounts/ameier38/pipelines/ameier38/equinox-tutorial/equinox-tutorial)
+___
 Practical example for learning how to use the Jet.com Equinox library.
 
 Features
