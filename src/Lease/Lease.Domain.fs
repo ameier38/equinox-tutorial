@@ -2,6 +2,11 @@ namespace Lease
 
 open System
 
+type ObservationDate =
+    | Latest
+    | AsOf of DateTime
+    | AsAt of DateTime
+
 type EventContext =
     { EventId: EventId
       EventCreatedDate: EventCreatedDate

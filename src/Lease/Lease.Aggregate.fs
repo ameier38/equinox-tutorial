@@ -1,95 +1,82 @@
-namespace Lease
+module Lease.Aggregate
 
 open FSharp.UMX
 open System
 
-type ObservationDate =
-    | Latest
-    | AsOf of DateTime
-    | AsAt of DateTime
+module EventContext =
+    let create eventId effDate =
+        { EventId = eventId
+          EventCreatedDate = %DateTime.UtcNow
+          EventEffectiveDate = effDate }
+    let extractEventId (ctx:EventContext) = ctx.EventId
+    let extractOrder (ctx:EventContext) = (ctx.EventEffectiveDate, ctx.EventCreatedDate)
 
-type Aggregate =
-    { entity: string
-      initial: LeaseState
-      evolveDomain: LeaseState -> LeaseEvent -> LeaseState
-      interpretDomain: LeaseCommand -> LeaseState -> Result<LeaseEvent list,string>
-      reconstitute: ObservationDate -> LeaseEvents -> LeaseState
-      interpret: LeaseCommand -> LeaseEvents -> Result<unit,string> * LeaseEvent list
-      fold: LeaseEvents -> seq<LeaseEvent> -> LeaseEvents }
-module Aggregate =
+module LeaseEvent =
+    let extractType : LeaseEvent -> EventType = function
+        | Created _ -> %"Created"
+        | PaymentScheduled _ -> %"PaymentScheduled" 
+        | PaymentReceived _ -> %"PaymentReceived"
+        | LeaseEvent.Terminated _ -> %"Terminated"
+    let extractContext = function
+        | Created e -> e.Context
+        | PaymentScheduled e -> e.Context
+        | PaymentReceived e -> e.Context
+        | LeaseEvent.Terminated e -> e.Context
+    let extractOrder = extractContext >> EventContext.extractOrder
+    let extractEventId = extractContext >> EventContext.extractEventId
+    let onOrBefore 
+        observationDate 
+        (leaseEvent:LeaseEvent) =
+        let { EventEffectiveDate = effDate; EventCreatedDate = createdDate } = 
+            leaseEvent |> extractContext
+        match observationDate with
+        | Latest -> true
+        | AsOf asOfDate ->
+            effDate <= %asOfDate
+        | AsAt asAtDate ->
+            createdDate <= %asAtDate
 
-    module EventContext =
-        let create eventId effDate =
-            { EventId = eventId
-              EventCreatedDate = %DateTime.UtcNow
-              EventEffectiveDate = effDate }
-        let extractEventId (ctx:EventContext) = ctx.EventId
-        let extractOrder (ctx:EventContext) = (ctx.EventEffectiveDate, ctx.EventCreatedDate)
+module LeaseStateData =
+    let init (ctx:EventContext) (lease:Lease) =
+        { NextId = ctx.EventId + %1
+          Events = []
+          Lease = lease
+          TotalScheduled = %0m
+          TotalPaid = %0m
+          AmountDue = 0m
+          CreatedDate = %ctx.EventCreatedDate
+          UpdatedDate = %ctx.EventCreatedDate }
+    let updateContext
+        (ctx:EventContext) =
+        fun (data:LeaseStateData) ->
+            { data with
+                NextId = ctx.EventId + %1
+                UpdatedDate = %ctx.EventCreatedDate }
+    let updateEvents
+        (event:LeaseEvent) =
+        let eventType = event |> LeaseEvent.extractType
+        let ctx = event |> LeaseEvent.extractContext
+        fun (data:LeaseStateData) ->
+            { data with
+                Events = (eventType, ctx) :: data.Events }
+    let updateLease 
+        (lease:Lease) =
+        fun (data:LeaseStateData) ->
+            { data with
+                Lease = lease }
+    let updateAmounts
+        (scheduledPaymentAmount:ScheduledPaymentAmount)
+        (paymentAmount:PaymentAmount) =
+        fun (data:LeaseStateData) ->
+            let totalScheduled = data.TotalScheduled + scheduledPaymentAmount
+            let totalPaid = data.TotalPaid + paymentAmount
+            let amountDue = %totalScheduled - %totalPaid
+            { data with
+                TotalScheduled = totalScheduled
+                TotalPaid = totalPaid
+                AmountDue = amountDue }
 
-    module LeaseEvent =
-        let extractType : LeaseEvent -> EventType = function
-            | Created _ -> %"Created"
-            | PaymentScheduled _ -> %"PaymentScheduled" 
-            | PaymentReceived _ -> %"PaymentReceived"
-            | LeaseEvent.Terminated _ -> %"Terminated"
-        let extractContext = function
-            | Created e -> e.Context
-            | PaymentScheduled e -> e.Context
-            | PaymentReceived e -> e.Context
-            | LeaseEvent.Terminated e -> e.Context
-        let extractOrder = extractContext >> EventContext.extractOrder
-        let extractEventId = extractContext >> EventContext.extractEventId
-        let onOrBefore 
-            observationDate 
-            (leaseEvent:LeaseEvent) =
-            let { EventEffectiveDate = effDate; EventCreatedDate = createdDate } = 
-                leaseEvent |> extractContext
-            match observationDate with
-            | Latest -> true
-            | AsOf asOfDate ->
-                effDate <= %asOfDate
-            | AsAt asAtDate ->
-                createdDate <= %asAtDate
-
-    module LeaseStateData =
-        let init (ctx:EventContext) (lease:Lease) =
-            { NextId = ctx.EventId + %1
-              Events = []
-              Lease = lease
-              TotalScheduled = %0m
-              TotalPaid = %0m
-              AmountDue = 0m
-              CreatedDate = %ctx.EventCreatedDate
-              UpdatedDate = %ctx.EventCreatedDate }
-        let updateContext
-            (ctx:EventContext) =
-            fun (data:LeaseStateData) ->
-                { data with
-                    NextId = ctx.EventId + %1
-                    UpdatedDate = %ctx.EventCreatedDate }
-        let updateEvents
-            (event:LeaseEvent) =
-            let eventType = event |> LeaseEvent.extractType
-            let ctx = event |> LeaseEvent.extractContext
-            fun (data:LeaseStateData) ->
-                { data with
-                    Events = (eventType, ctx) :: data.Events }
-        let updateLease 
-            (lease:Lease) =
-            fun (data:LeaseStateData) ->
-                { data with
-                    Lease = lease }
-        let updateAmounts
-            (scheduledPaymentAmount:ScheduledPaymentAmount)
-            (paymentAmount:PaymentAmount) =
-            fun (data:LeaseStateData) ->
-                let totalScheduled = data.TotalScheduled + scheduledPaymentAmount
-                let totalPaid = data.TotalPaid + paymentAmount
-                let amountDue = %totalScheduled - %totalPaid
-                { data with
-                    TotalScheduled = totalScheduled
-                    TotalPaid = totalPaid
-                    AmountDue = amountDue }
+type Aggregate() =
 
     let evolveDomain 
         : LeaseState -> LeaseEvent -> LeaseState =
@@ -181,7 +168,7 @@ module Aggregate =
                     LeaseEvent.Terminated {| Context = ctx |} |> ok
                 | _ -> error "Terminate" state
 
-    let reconstitute 
+    let reconstitute
         : ObservationDate -> LeaseEvents -> LeaseState =
         fun obsDate leaseEvents ->
             leaseEvents
@@ -189,7 +176,11 @@ module Aggregate =
             |> List.sortBy LeaseEvent.extractOrder
             |> List.fold evolveDomain NonExistent
 
-    let interpret 
+    member __.Entity = "lease"
+    
+    member __.Reconstitute = reconstitute
+
+    member __.Interpret 
         : LeaseCommand -> LeaseEvents -> Result<unit,string> * LeaseEvent list =
         let ok = Ok ()
         let onSuccess events = (ok, events)
@@ -207,15 +198,6 @@ module Aggregate =
             | ReceivePayment { PaymentDate = pmtDate } -> decide %pmtDate command
             | Terminate effDate -> decide effDate command
 
-    let fold
+    member __.Fold
         : LeaseEvents -> seq<LeaseEvent> -> LeaseEvents =
         Seq.fold (fun events event -> event :: events)
-
-    let init () =
-        { entity = "lease"
-          initial = NonExistent
-          evolveDomain = evolveDomain
-          interpretDomain = interpretDomain
-          reconstitute = reconstitute
-          interpret = interpret
-          fold = fold }

@@ -4,13 +4,18 @@ open Expecto
 open Expecto.Flip
 open FSharp.UMX
 open Lease
+open Lease.Aggregate
+open Lease.Store
+open Lease.Service
+open Serilog
 open Suave
 open System
 
 let config = EventStoreConfig.load()
-let aggregate = Aggregate.init()
-let resolver = Store.connect config aggregate
-let service = Service.init aggregate resolver
+let logger = LoggerConfiguration().WriteTo.Console().CreateLogger()
+let aggregate = Aggregate()
+let store = Store(config, aggregate)
+let service = Service(aggregate, store, logger)
 let api = Api.init service
 
 let makeLeaseId () = Guid.NewGuid() |> UMX.tag<leaseId>
