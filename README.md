@@ -1,7 +1,19 @@
 # Equinox Tutorial
-Tutorial for Jet.com Equinox library.
+Practical example for learning how to use the Jet.com Equinox library.
+
+Features
+- Working API using [Jet.com's Equinox library](https://github.com/jet/equinox)
+- Bi-Temporal domain
+- Fully Dockerized
+- Integration tests and example CI using Codefresh
+- Fully documented API at https://app.swaggerhub.com/apis-docs/ameier38/Lease/1.0.0
+- Type safe DTOs using [OpenAPI Type Provider](https://github.com/fsprojects/OpenAPITypeProvider)
+- Build automation using [FAKE](https://github.com/fsharp/FAKE)
 
 The domain model is a lease, such as a car lease.
+
+A more detailed explanation about the motivation for modeling a bi-temporal domain
+can be found in this [blog post](https://andrewcmeier.com/bi-temporal-event-sourcing).
 
 ## Structure
 ```
@@ -20,9 +32,12 @@ Lease
 ```
 
 ## Dependencies
+For running the API:
+- [Docker](https://andrewcmeier.com/win-dev#docker)
+
+For development:
 - [dotnet CLI](https://github.com/dotnet/core-sdk#installers-and-binaries)
 > You will need version 2.1.6 for anonymous record support.
-- [Docker](https://andrewcmeier.com/win-dev#docker)
 - [FAKE](https://andrewcmeier.com/how-to-fake)
 
 ## Testing
@@ -45,6 +60,7 @@ Alternatively you can run the test scripts yourself.
 ```shell
 fake build -t test
 ```
+> You will need to install the dev dependencies first listed above.
 
 ## Usage
 Start Event Store and the API.
@@ -62,11 +78,13 @@ curl -X POST \
   -H 'Content-Type: application/json' \
   -d '{
   "leaseId": "d290f1ee-6c54-4b01-90e6-d701748f0851",
-  "startDate": "2017-07-21T17:32:28Z",
-  "maturityDate": "2018-07-21T17:32:28Z",
+  "startDate": "2017-07-21Z",
+  "maturityDate": "2018-07-21Z",
   "monthlyPaymentAmount": 25
 }'
 ```
 
 ## Resources
 - [Equinox](https://github.com/jet/equinox)
+- [Event Sourcing Basics](https://eventstore.org/docs/event-sourcing-basics/index.html)
+- [12 Things You Should Know About Event Sourcing](https://blog.leifbattermann.de/2017/04/21/12-things-you-should-know-about-event-sourcing/)
