@@ -1,14 +1,11 @@
-#r "paket:
-nuget Fake.DotNet.Cli
-nuget Fake.IO.FileSystem
-nuget Fake.Core.Target 
-nuget FSharp.Core 4.5.0.0 //"
+#r "paket: groupref Fake //"
 #load "./.fake/build.fsx/intellisense.fsx"
 
 open Fake.Core
 open Fake.IO
 open Fake.DotNet
 open Fake.IO.FileSystemOperators
+open Fake.JavaScript
 
 let paketFile = if (Environment.isLinux || Environment.isMacOS) then "paket" else "paket.exe"
 let paketExe = __SOURCE_DIRECTORY__ </> ".paket" </> paketFile
@@ -34,24 +31,36 @@ Target.create "Restore" (fun _ ->
     Trace.trace "Restoring solution..."
     DotNet.restore id solution)
 
-Target.create "Test" (fun _ ->
+Target.create "TestApi" (fun _ ->
     Trace.trace "Running tests..."
     DotNet.exec id "run" "--project src/Tests/Tests.fsproj"
     |> ignore)
 
-Target.create "Build" (fun _ ->
+Target.create "BuildApi" (fun _ ->
     Trace.trace "Building solution..."
     DotNet.build id solution)
 
-Target.create "Publish" (fun _ ->
+Target.create "PublishApi" (fun _ ->
     Trace.trace "Publishing solution..."
     DotNet.publish 
         (fun args -> { args with OutputPath = Some "out"})
         solution)
 
-Target.create "Serve" (fun _ ->
+Target.create "ServeApi" (fun _ ->
     DotNet.exec id "run" "--project src/Lease/Lease.fsproj"
     |> ignore)
+
+Target.create "YarnInstall" (fun _ ->
+    Yarn.install (fun o -> { o with WorkingDirectory = "./src/Client" })
+)
+
+Target.create "BuildClient" (fun _ ->
+    Yarn.exec "webpack" (fun o -> { o with WorkingDirectory = "./src/Client" })
+)
+
+Target.create "ServeClient" (fun _ ->
+    Yarn.exec "webpack-dev-server" (fun o -> { o with WorkingDirectory = "./src/Client" })
+)
 
 open Fake.Core.TargetOperators
 
@@ -62,6 +71,12 @@ open Fake.Core.TargetOperators
  ==> "Restore"
 
 "InstallDependencies"
- ==> "Build"
+ ==> "BuildApi"
+
+"YarnInstall"
+ ==> "BuildClient"
+
+"YarnInstall"
+ ==> "ServeClient"
 
 Target.runOrDefault "Default"

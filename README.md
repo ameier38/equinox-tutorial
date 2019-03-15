@@ -38,7 +38,7 @@ For running the API:
 - [Docker](https://andrewcmeier.com/win-dev#docker)
 
 For development:
-- [dotnet CLI](https://github.com/dotnet/core-sdk#installers-and-binaries)
+- [dotnet CLI](https://github.com/dotnet/core-sdk)
 > You will need version 2.1.6 for anonymous record support.
 - [FAKE](https://andrewcmeier.com/how-to-fake)
 

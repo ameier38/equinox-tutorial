@@ -1,0 +1,41 @@
+version 5.198.0
+
+source https://www.nuget.org/api/v2
+storage: none
+github ameier38/fsharp-utilities src/Result.fs
+github ameier38/fsharp-utilities src/SimpleType.fs
+github ameier38/fsharp-utilities src/Env.fs
+nuget FSharp.Core
+
+nuget Equinox 2.0.0-preview1 preview
+nuget Equinox.Codec 2.0.0-preview1 preview
+nuget Equinox.EventStore 2.0.0-preview1 preview
+nuget Equinox.MemoryStore 2.0.0-preview1 preview
+nuget Fable.Remoting.Suave
+nuget FSharp.UMX 1.0.0-preview-001 preview
+nuget Jet.JsonNet.Converters
+nuget OpenAPITypeProvider
+nuget Serilog.Sinks.Console
+nuget Suave
+nuget Serilog
+nuget TypeShape
+
+nuget Fable.Elmish.HMR
+nuget Fable.Core
+nuget Fable.Elmish.React
+nuget Fable.Elmish.Browser
+nuget Fable.Elmish.Debugger
+nuget Fable.MaterialUI
+nuget Fable.Remoting.Client
+
+nuget Expecto
+nuget Expecto.FsCheck
+nuget FsCheck
+
+group Fake
+    storage: none
+    source https://www.nuget.org/api/v2
+    nuget Fake.DotNet.Cli
+    nuget Fake.IO.FileSystem
+    nuget Fake.Core.Target 
+    nuget Fake.JavaScript.Yarn

@@ -1,6 +1,7 @@
+FSharp.Core
 Expecto
 Expecto.FsCheck
 FsCheck
-Newtonsoft.Json
+FSharp.UMX
 Suave
-TypeShape
+Serilog

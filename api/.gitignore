@@ -6,4 +6,5 @@ build
 obj
 bin
 scratch.fsx
-
+public/bundle.js*
+node_modules/
