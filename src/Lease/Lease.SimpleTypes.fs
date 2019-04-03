@@ -47,27 +47,40 @@ module Entity =
     let value (Entity entity) = entity |> String50.value
     let create entity = entity |> String50.create |> Result.map Entity
 
+[<Measure>] type month
+
+[<Measure>] type usd
+type USD = decimal<usd>
+
+[<Measure>] type userId
+type UserId = Guid<userId>
+module UserId = let toStringN (value: UserId) = Guid.toStringN %value
+
 [<Measure>] type leaseId
 type LeaseId = Guid<leaseId>
 module LeaseId = let toStringN (value: LeaseId) = Guid.toStringN %value
 
-type [<Measure>] eventId
-type EventId = int<eventId>
+[<Measure>] type paymentId
+type PaymentId = Guid<paymentId>
+module PaymentId = let toStringN (value: PaymentId) = Guid.toStringN %value
 
-type [<Measure>] eventType
-type EventType = string<eventType>
-
-type [<Measure>] eventCreatedDate
-type EventCreatedDate = DateTime<eventCreatedDate>
-
-type [<Measure>] eventEffectiveDate
+[<Measure>] type eventEffectiveDate
 type EventEffectiveDate = DateTime<eventEffectiveDate>
 
-type [<Measure>] scheduledPaymentAmount
-type ScheduledPaymentAmount = decimal<scheduledPaymentAmount>
+[<Measure>] type eventEffectiveOrder
+type EventEffectiveOrder = int<eventEffectiveOrder>
 
-type [<Measure>] paymentAmount
-type PaymentAmount = decimal<paymentAmount>
+[<Measure>] type eventCreatedDate
+type EventCreatedDate = DateTime<eventCreatedDate>
 
-type [<Measure>] monthlyPaymentAmount
-type MonthlyPaymentAmount = decimal<monthlyPaymentAmount>
+[<Measure>] type asOnDate
+type AsOnDate = DateTime<asOnDate>
+
+[<Measure>] type asAtDate
+type AsAtDate = DateTime<asAtDate>
+
+[<Measure>] type leaseStartDate
+type LeaseStartDate = DateTime<leaseStartDate>
+
+[<Measure>] type leaseMaturityDate
+type LeaseMaturityDate = DateTime<leaseMaturityDate>

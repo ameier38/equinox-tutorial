@@ -1,0 +1,47 @@
+syntax = "proto3";
+package lease;
+
+option csharp_namespace = "Lease.Proto";
+
+import "google/protobuf/timestamp.proto";
+
+service LeaseService {
+    rpc Execute(LeaseCommand) returns (ExecuteResponse) {}
+    rpc Query(LeaseQuery) returns (LeaseState) {}
+}
+
+message AsOfDate {
+    oneof as_of_date {
+        google.protobuf.Timestamp as_on = 1;
+        google.protobuf.Timestamp as_at = 2;
+        bool latest = 3;
+    }
+}
+
+message LeaseQuery {
+    string lease_id = 1;
+    AsOfDate as_of_date = 2;
+}
+
+message Lease {
+    string user_id = 1;
+    google.protobuf.Timestamp start_date = 2;
+    google.protobuf.Timestamp maturity_date = 3;
+    float monthly_payment_amount = 4;
+}
+
+message Payment {
+    string payment_id = 1;
+    float payment_amount = 2;
+}
+
+message LeaseCommand {
+    string lease_id = 1;
+    google.protobuf.Timestamp effective_date = 2;
+    oneof command {
+        Lease create_lease = 3;
+        Payment schedule_payment = 4;
+        Payment receive_payment = 5;
+        bool terminate_lease = 5;
+    }
+}

@@ -1,58 +1,49 @@
 namespace Lease
 
-open System
-
-type ObservationDate =
-    | Latest
-    | AsOf of DateTime
-    | AsAt of DateTime
+type AsOfDate =
+    | AsOn of AsOnDate
+    | AsAt of AsAtDate
 
 type EventContext =
-    { EventId: EventId
-      EventCreatedDate: EventCreatedDate
-      EventEffectiveDate: EventEffectiveDate }
+    { EventEffectiveDate: EventEffectiveDate
+      EventCreatedDate: EventCreatedDate }
 
 type Lease =
     { LeaseId: LeaseId
-      StartDate: DateTime
-      MaturityDate: DateTime
-      MonthlyPaymentAmount: MonthlyPaymentAmount }
-
-type ScheduledPayment =
-    { ScheduledPaymentDate: DateTime
-      ScheduledPaymentAmount: ScheduledPaymentAmount }
+      UserId: UserId
+      StartDate: LeaseStartDate
+      MaturityDate: LeaseMaturityDate
+      MonthlyPaymentAmount: decimal<usd/month> }
 
 type Payment =
-    { PaymentDate: DateTime
-      PaymentAmount: PaymentAmount }
+    { PaymentId: PaymentId
+      PaymentAmount: USD }
 
 type LeaseCommand =
-    | Create of Lease
-    | SchedulePayment of ScheduledPayment
-    | ReceivePayment of Payment
-    | Terminate of EventEffectiveDate
+    | CreateLease of EventEffectiveDate * Lease
+    | SchedulePayment of EventEffectiveDate * Payment
+    | ReceivePayment of EventEffectiveDate * Payment
+    | TerminateLease of EventEffectiveDate
 
 type LeaseEvent =
-    | Created of {| Lease: Lease; Context: EventContext |}
-    | PaymentScheduled of {| ScheduledPayment: ScheduledPayment; Context: EventContext |}
-    | PaymentReceived of {| Payment: Payment; Context: EventContext |}
-    | Terminated of {| Context: EventContext |}
+    | LeaseCreated of {| Context: EventContext; Lease: Lease |}
+    | PaymentScheduled of {| Context: EventContext; Payment: Payment |}
+    | PaymentReceived of {| Context: EventContext; Payment: Payment |}
+    | LeaseTerminated of {| Context: EventContext |}
     interface TypeShape.UnionContract.IUnionContract
 
 type LeaseEvents = LeaseEvent list
 
-type LeaseStateData =
-    { NextId: EventId
-      Events: (EventType * EventContext) list
-      Lease: Lease
-      TotalScheduled: ScheduledPaymentAmount
-      TotalPaid: PaymentAmount
-      AmountDue: decimal
-      CreatedDate: DateTime
-      UpdatedDate: DateTime }
+type LeaseObservation =
+    { Lease: Lease
+      TotalScheduled: USD
+      TotalPaid: USD
+      AmountDue: USD
+      ScheduledPaymentIds: PaymentId list
+      ReceivedPaymentIds: PaymentId list }
 
 type LeaseState =
-    | NonExistent
+    | Nonexistent
     | Corrupt of string
-    | Outstanding of LeaseStateData
-    | Terminated of LeaseStateData
+    | Outstanding of LeaseObservation
+    | Terminated of LeaseObservation
