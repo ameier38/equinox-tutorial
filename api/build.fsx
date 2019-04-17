@@ -1,8 +1,4 @@
-#r "paket:
-nuget Fake.DotNet.Cli
-nuget Fake.IO.FileSystem
-nuget Fake.Core.Target 
-nuget FSharp.Core 4.5.0.0 //"
+#r "paket: groupref Fake //"
 #load "./.fake/build.fsx/intellisense.fsx"
 
 open Fake.Core
@@ -12,7 +8,7 @@ open Fake.IO.FileSystemOperators
 
 let paketFile = if (Environment.isLinux || Environment.isMacOS) then "paket" else "paket.exe"
 let paketExe = __SOURCE_DIRECTORY__ </> ".paket" </> paketFile
-let solution = __SOURCE_DIRECTORY__ </> "Tutorial.sln"
+let solution = __SOURCE_DIRECTORY__ </> "Lease.sln"
 
 Target.create "Default" (fun _ ->
     Trace.trace "Equinox Tutorial")

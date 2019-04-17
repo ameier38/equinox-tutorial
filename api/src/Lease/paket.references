@@ -1,10 +1,7 @@
 Equinox
 Equinox.EventStore
-Equinox.MemoryStore
 FSharp.UMX
 Jet.JsonNet.Converters
-OpenAPITypeProvider
-Suave
 Serilog
 Serilog.Sinks.Console
 File:Result.fs

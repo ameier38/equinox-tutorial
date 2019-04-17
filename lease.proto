@@ -10,12 +10,15 @@ service LeaseService {
     rpc Query(LeaseQuery) returns (LeaseState) {}
 }
 
+enum LeaseStatus {
+    current = 0;
+    delinquent = 1;
+    terminated = 2;
+}
+
 message AsOfDate {
-    oneof as_of_date {
-        google.protobuf.Timestamp as_on = 1;
-        google.protobuf.Timestamp as_at = 2;
-        bool latest = 3;
-    }
+    google.protobuf.Timestamp effective_date = 1;
+    google.protobuf.Timestamp created_date = 2;
 }
 
 message LeaseQuery {
@@ -36,7 +39,6 @@ message Payment {
 }
 
 message LeaseCommand {
-    string lease_id = 1;
     google.protobuf.Timestamp effective_date = 2;
     oneof command {
         Lease create_lease = 3;
@@ -44,4 +46,32 @@ message LeaseCommand {
         Payment receive_payment = 5;
         bool terminate_lease = 5;
     }
+}
+
+message Command {
+    string lease_id = 1;
+    oneof command {
+        int32 delete_event = 2;
+        LeaseCommand lease_command = 3;
+    }
+}
+
+message ExecuteResponse {
+    oneof response {
+        string success = 1;
+        string failure = 2;
+    }
+}
+
+message LeaseObservation {
+    google.protobuf.Timestamp observation_date = 1;
+    string lease_id = 2;
+    string user_id = 3;
+    google.protobuf.Timestamp start_date = 4;
+    google.protobuf.Timestamp maturity_date = 5;
+    float monthly_payment_amount = 6;
+    float total_scheduled = 7;
+    float total_paid = 8;
+    float amount_due = 9;
+    LeaseStatus lease_status = 10;
 }

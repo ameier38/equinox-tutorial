@@ -20,11 +20,9 @@
     <Compile Include="Lease.Config.fs" />
     <Compile Include="Lease.SimpleTypes.fs" />
     <Compile Include="Lease.Domain.fs" />
-    <Compile Include="Lease.Dto.fs" />
     <Compile Include="Lease.Aggregate.fs" />
     <Compile Include="Lease.Store.fs" />
     <Compile Include="Lease.Service.fs" />
-    <Compile Include="Lease.Api.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />

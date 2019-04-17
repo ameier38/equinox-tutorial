@@ -1,4 +1,8 @@
+version 5.196.2
+
 source https://www.nuget.org/api/v2
+storage: none
+
 github ameier38/fsharp-utilities src/Result.fs
 github ameier38/fsharp-utilities src/SimpleType.fs
 github ameier38/fsharp-utilities src/Env.fs
@@ -6,13 +10,17 @@ nuget Expecto
 nuget Expecto.FsCheck
 nuget FsCheck
 nuget FSharp.Core 4.5.0.0
-nuget Equinox 1.1.0-preview2 preview
-nuget Equinox.Codec 1.1.0-preview2 preview
-nuget Equinox.EventStore 1.1.0-preview2 preview
-nuget Equinox.MemoryStore 1.1.0-preview2 preview
+nuget Equinox 2.0.0-preview4 preview
+nuget Equinox.Codec 2.0.0-preview4 preview
+nuget Equinox.EventStore 2.0.0-preview4 preview
 nuget FSharp.UMX 1.0.0-preview-001 preview
 nuget Jet.JsonNet.Converters
-nuget OpenAPITypeProvider
 nuget Serilog.Sinks.Console
-nuget Suave
 nuget Serilog
+
+group Fake
+    source https://www.nuget.org/api/v2
+    storage: none
+    nuget Fake.DotNet.Cli
+    nuget Fake.IO.FileSystem
+    nuget Fake.Core.Target 

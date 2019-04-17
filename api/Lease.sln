@@ -1,0 +1,69 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26124.0
+MinimumVisualStudioVersion = 15.0.26124.0
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2A425D88-925C-4D54-9E1F-3F26AE9ABE57}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Lease", "src\Lease\Lease.fsproj", "{FDA8B313-0BE8-4CFE-9B2B-C08A1A85A9C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proto", "src\Proto\Proto.csproj", "{9153D29C-5AAD-47B4-8945-10B31DC8DAC5}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Tests", "src\Tests\Tests.fsproj", "{6B1028D5-D9C3-4F59-A838-29446750CC2D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FDA8B313-0BE8-4CFE-9B2B-C08A1A85A9C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDA8B313-0BE8-4CFE-9B2B-C08A1A85A9C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDA8B313-0BE8-4CFE-9B2B-C08A1A85A9C9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FDA8B313-0BE8-4CFE-9B2B-C08A1A85A9C9}.Debug|x64.Build.0 = Debug|Any CPU
+		{FDA8B313-0BE8-4CFE-9B2B-C08A1A85A9C9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FDA8B313-0BE8-4CFE-9B2B-C08A1A85A9C9}.Debug|x86.Build.0 = Debug|Any CPU
+		{FDA8B313-0BE8-4CFE-9B2B-C08A1A85A9C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDA8B313-0BE8-4CFE-9B2B-C08A1A85A9C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDA8B313-0BE8-4CFE-9B2B-C08A1A85A9C9}.Release|x64.ActiveCfg = Release|Any CPU
+		{FDA8B313-0BE8-4CFE-9B2B-C08A1A85A9C9}.Release|x64.Build.0 = Release|Any CPU
+		{FDA8B313-0BE8-4CFE-9B2B-C08A1A85A9C9}.Release|x86.ActiveCfg = Release|Any CPU
+		{FDA8B313-0BE8-4CFE-9B2B-C08A1A85A9C9}.Release|x86.Build.0 = Release|Any CPU
+		{9153D29C-5AAD-47B4-8945-10B31DC8DAC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9153D29C-5AAD-47B4-8945-10B31DC8DAC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9153D29C-5AAD-47B4-8945-10B31DC8DAC5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9153D29C-5AAD-47B4-8945-10B31DC8DAC5}.Debug|x64.Build.0 = Debug|Any CPU
+		{9153D29C-5AAD-47B4-8945-10B31DC8DAC5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9153D29C-5AAD-47B4-8945-10B31DC8DAC5}.Debug|x86.Build.0 = Debug|Any CPU
+		{9153D29C-5AAD-47B4-8945-10B31DC8DAC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9153D29C-5AAD-47B4-8945-10B31DC8DAC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9153D29C-5AAD-47B4-8945-10B31DC8DAC5}.Release|x64.ActiveCfg = Release|Any CPU
+		{9153D29C-5AAD-47B4-8945-10B31DC8DAC5}.Release|x64.Build.0 = Release|Any CPU
+		{9153D29C-5AAD-47B4-8945-10B31DC8DAC5}.Release|x86.ActiveCfg = Release|Any CPU
+		{9153D29C-5AAD-47B4-8945-10B31DC8DAC5}.Release|x86.Build.0 = Release|Any CPU
+		{6B1028D5-D9C3-4F59-A838-29446750CC2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B1028D5-D9C3-4F59-A838-29446750CC2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B1028D5-D9C3-4F59-A838-29446750CC2D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6B1028D5-D9C3-4F59-A838-29446750CC2D}.Debug|x64.Build.0 = Debug|Any CPU
+		{6B1028D5-D9C3-4F59-A838-29446750CC2D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6B1028D5-D9C3-4F59-A838-29446750CC2D}.Debug|x86.Build.0 = Debug|Any CPU
+		{6B1028D5-D9C3-4F59-A838-29446750CC2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B1028D5-D9C3-4F59-A838-29446750CC2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B1028D5-D9C3-4F59-A838-29446750CC2D}.Release|x64.ActiveCfg = Release|Any CPU
+		{6B1028D5-D9C3-4F59-A838-29446750CC2D}.Release|x64.Build.0 = Release|Any CPU
+		{6B1028D5-D9C3-4F59-A838-29446750CC2D}.Release|x86.ActiveCfg = Release|Any CPU
+		{6B1028D5-D9C3-4F59-A838-29446750CC2D}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FDA8B313-0BE8-4CFE-9B2B-C08A1A85A9C9} = {2A425D88-925C-4D54-9E1F-3F26AE9ABE57}
+		{9153D29C-5AAD-47B4-8945-10B31DC8DAC5} = {2A425D88-925C-4D54-9E1F-3F26AE9ABE57}
+		{6B1028D5-D9C3-4F59-A838-29446750CC2D} = {2A425D88-925C-4D54-9E1F-3F26AE9ABE57}
+	EndGlobalSection
+EndGlobal

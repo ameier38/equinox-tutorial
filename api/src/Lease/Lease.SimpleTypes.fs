@@ -52,6 +52,8 @@ module Entity =
 [<Measure>] type usd
 type USD = decimal<usd>
 
+type MonthlyPaymentAmount = decimal<usd/month>
+
 [<Measure>] type userId
 type UserId = Guid<userId>
 module UserId = let toStringN (value: UserId) = Guid.toStringN %value
@@ -63,6 +65,9 @@ module LeaseId = let toStringN (value: LeaseId) = Guid.toStringN %value
 [<Measure>] type paymentId
 type PaymentId = Guid<paymentId>
 module PaymentId = let toStringN (value: PaymentId) = Guid.toStringN %value
+
+[<Measure>] type eventId
+type EventId = int<eventId>
 
 [<Measure>] type eventEffectiveDate
 type EventEffectiveDate = DateTime<eventEffectiveDate>
