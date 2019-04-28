@@ -5,7 +5,11 @@ open Fake.Core
 open Fake.IO
 open Fake.DotNet
 open Fake.IO.FileSystemOperators
+open Fake.IO.Globbing.Operators
 
+let rootDir = 
+    __SOURCE_DIRECTORY__    // lease-api
+    |> Path.getDirectory    // equinox-tutorial  
 let paketFile = if (Environment.isLinux || Environment.isMacOS) then "paket" else "paket.exe"
 let paketExe = __SOURCE_DIRECTORY__ </> ".paket" </> paketFile
 let solution = __SOURCE_DIRECTORY__ </> "Lease.sln"
@@ -25,6 +29,23 @@ Target.create "InstallDependencies" (fun _ ->
         CreateProcess.fromRawCommand paketExe ["install"]
         |> Proc.run
     if result.ExitCode <> 0 then failwith "Failed to install dependencies")
+
+Target.create "CleanProto" (fun _ ->
+    let directories =
+        !! "**/Proto/out"
+        ++ "**/Proto/bin"
+        ++ "**/Proto/obj"
+    Shell.cleanDirs directories)
+
+Target.create "CopyProto" (fun _ ->
+    let leaseProto = rootDir </> "protobuf" </> "lease.proto"
+    File.checkExists leaseProto
+    let targetDir = __SOURCE_DIRECTORY__ </> "src" </> "Proto"
+    leaseProto |> Shell.copyFile targetDir)
+
+Target.create "BuildProto" (fun _ ->
+    let protoProj = __SOURCE_DIRECTORY__ </> "src" </> "Proto" </> "Proto.csproj"
+    DotNet.build id protoProj)
 
 Target.create "Restore" (fun _ ->
     Trace.trace "Restoring solution..."
@@ -54,10 +75,22 @@ open Fake.Core.TargetOperators
 "InstallPaket"
  ==> "InstallDependencies"
 
+"CleanProto"
+ ==> "BuildProto"
+
+"CopyProto"
+ ==> "BuildProto"
+
 "InstallDependencies"
  ==> "Restore"
 
+"Restore"
+ ==> "Test"
+
 "InstallDependencies"
  ==> "Build"
+
+"InstallDependencies"
+ ==> "Publish"
 
 Target.runOrDefault "Default"

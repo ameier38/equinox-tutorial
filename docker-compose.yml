@@ -1,0 +1,21 @@
+version: '3.4'
+services:
+  eventstore:
+    image: eventstore/eventstore
+    ports:
+      - "2113:2113"
+      - "1113:1113"
+  lease-api:
+    build:
+      context: ./lease-api
+      target: runner
+    environment:
+      DEBUG: "true"
+      PORT: 50051
+      EVENTSTORE_PROTOCOL: tcp
+      EVENTSTORE_HOST: eventstore
+      EVENTSTORE_PORT: 1113
+      EVENTSTORE_USER: admin
+      EVENTSTORE_PASSWORD: changeit
+    ports:
+      - "50051:50051"

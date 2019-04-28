@@ -1,6 +1,8 @@
 namespace Lease
 
-type AsOfDate = AsOfDate of EventEffectiveDate * EventCreatedDate
+type AsOfDate =
+    { AsAt: EventCreatedDate
+      AsOn: EventEffectiveDate }
 
 type LeaseEventContext =
     { EventId: EventId
@@ -13,25 +15,22 @@ type NewLease =
       MaturityDate: LeaseMaturityDate
       MonthlyPaymentAmount: MonthlyPaymentAmount }
 
-type UpdatedLease =
-    { LeaseId: LeaseId
-      MaturityDate: LeaseMaturityDate option
-      MonthlyPaymentAmount: MonthlyPaymentAmount option }
-
 type LeaseStatus =
     | Outstanding
     | Terminated
 
 type LeaseCommand =
     | CreateLease of EventEffectiveDate * NewLease
-    | UpdateLease of EventEffectiveDate * UpdatedLease
     | SchedulePayment of EventEffectiveDate * USD
     | ReceivePayment of EventEffectiveDate * USD
     | TerminateLease of EventEffectiveDate
 
+type Command =
+    | LeaseCommand of LeaseCommand
+    | DeleteEvent of EventId
+
 type LeaseEvent =
     | LeaseCreated of LeaseEventContext * NewLease
-    | LeaseUpdated of LeaseEventContext * UpdatedLease
     | PaymentScheduled of LeaseEventContext * USD
     | PaymentReceived of LeaseEventContext * USD
     | LeaseTerminated of LeaseEventContext
@@ -39,7 +38,6 @@ type LeaseEvent =
 type StoredEvent =
     | EventDeleted of {| EventContext: {| EventCreatedDate: EventCreatedDate |}; EventId: EventId |}
     | LeaseCreated of {| EventContext: LeaseEventContext; NewLease: NewLease |}
-    | LeaseUpdated of {| EventContext: LeaseEventContext; UpdatedLease: UpdatedLease |}
     | PaymentScheduled of {| EventContext: LeaseEventContext; ScheduledAmount: USD |}
     | PaymentReceived of {| EventContext: LeaseEventContext; ReceivedAmount: USD |}
     | LeaseTerminated of {| EventContext: LeaseEventContext |}
@@ -56,10 +54,7 @@ type LeaseObservation =
       AmountDue: USD
       LeaseStatus: LeaseStatus }
 
-type LeaseState =
-    | Nonexistent
-    | Corrupt of string
-    | Exists of LeaseObservation
+type LeaseState = Result<LeaseObservation option, string>
 
 type StreamState =
     { NextEventId: EventId

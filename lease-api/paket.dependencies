@@ -14,6 +14,8 @@ nuget Equinox 2.0.0-preview4 preview
 nuget Equinox.Codec 2.0.0-preview4 preview
 nuget Equinox.EventStore 2.0.0-preview4 preview
 nuget FSharp.UMX 1.0.0-preview-001 preview
+nuget Grpc.Core.Testing
+nuget Grpc.HealthCheck
 nuget Jet.JsonNet.Converters
 nuget Serilog.Sinks.Console
 nuget Serilog

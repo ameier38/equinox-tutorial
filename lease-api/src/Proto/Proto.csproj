@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="../../lease.proto" Link="lease.proto" />
+    <Protobuf Include="lease.proto" Link="lease.proto" />
   </ItemGroup>
 
 </Project>

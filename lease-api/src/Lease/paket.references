@@ -1,6 +1,7 @@
 Equinox
 Equinox.EventStore
 FSharp.UMX
+Grpc.HealthCheck
 Jet.JsonNet.Converters
 Serilog
 Serilog.Sinks.Console

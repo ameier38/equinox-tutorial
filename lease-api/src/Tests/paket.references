@@ -1,5 +1,6 @@
 Expecto
 Expecto.FsCheck
 FsCheck
+Grpc.Core.Testing
 Newtonsoft.Json
 TypeShape
