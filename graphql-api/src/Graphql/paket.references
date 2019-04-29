@@ -1,0 +1,5 @@
+FSharp.Data.GraphQL.Server
+Suave
+Newtonsoft.Json
+File:Result.fs
+File:Env.fs
