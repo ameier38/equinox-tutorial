@@ -34,42 +34,42 @@ namespace Tutorial.Lease.V1 {
             "ZWFzZVJlcXVlc3QSEAoIbGVhc2VfaWQYASABKAkSLwoKYXNfb2ZfZGF0ZRgC",
             "IAEoCzIbLnR1dG9yaWFsLmxlYXNlLnYxLkFzT2ZEYXRlIkYKEEdldExlYXNl",
             "UmVzcG9uc2USMgoFbGVhc2UYASABKAsyIy50dXRvcmlhbC5sZWFzZS52MS5M",
-            "ZWFzZU9ic2VydmF0aW9uIloKFUdldExlYXNlRXZlbnRzUmVxdWVzdBIQCghs",
-            "ZWFzZV9pZBgBIAEoCRIvCgphc19vZl9kYXRlGAIgASgLMhsudHV0b3JpYWwu",
-            "bGVhc2UudjEuQXNPZkRhdGUiWQoWR2V0TGVhc2VFdmVudHNSZXNwb25zZRIQ",
-            "CghsZWFzZV9pZBgBIAEoCRItCgZldmVudHMYAiADKAsyHS50dXRvcmlhbC5s",
-            "ZWFzZS52MS5MZWFzZUV2ZW50ImsKEkNyZWF0ZUxlYXNlUmVxdWVzdBIpCg5l",
-            "ZmZlY3RpdmVfZGF0ZRgBIAEoCzIRLmdvb2dsZS50eXBlLkRhdGUSKgoFbGVh",
-            "c2UYAiABKAsyGy50dXRvcmlhbC5sZWFzZS52MS5OZXdMZWFzZSI4ChNDcmVh",
-            "dGVMZWFzZVJlc3BvbnNlEhAKCGxlYXNlX2lkGAEgASgJEg8KB21lc3NhZ2UY",
-            "AiABKAkiQgoVVGVybWluYXRlTGVhc2VSZXF1ZXN0EikKDmVmZmVjdGl2ZV9k",
-            "YXRlGAEgASgLMhEuZ29vZ2xlLnR5cGUuRGF0ZSIpChZUZXJtaW5hdGVMZWFz",
-            "ZVJlc3BvbnNlEg8KB21lc3NhZ2UYASABKAkicAoWU2NoZWR1bGVQYXltZW50",
-            "UmVxdWVzdBIpCg5lZmZlY3RpdmVfZGF0ZRgBIAEoCzIRLmdvb2dsZS50eXBl",
-            "LkRhdGUSKwoHcGF5bWVudBgCIAEoCzIaLnR1dG9yaWFsLmxlYXNlLnYxLlBh",
-            "eW1lbnQiKgoXU2NoZWR1bGVQYXltZW50UmVzcG9uc2USDwoHbWVzc2FnZRgB",
-            "IAEoCSJvChVSZWNlaXZlUGF5bWVudFJlcXVlc3QSKQoOZWZmZWN0aXZlX2Rh",
-            "dGUYASABKAsyES5nb29nbGUudHlwZS5EYXRlEisKB3BheW1lbnQYAiABKAsy",
-            "Gi50dXRvcmlhbC5sZWFzZS52MS5QYXltZW50IikKFlJlY2VpdmVQYXltZW50",
-            "UmVzcG9uc2USDwoHbWVzc2FnZRgBIAEoCTK3BQoITGVhc2VBUEkSWQoKTGlz",
-            "dExlYXNlcxIkLnR1dG9yaWFsLmxlYXNlLnYxLkxpc3RMZWFzZXNSZXF1ZXN0",
-            "GiUudHV0b3JpYWwubGVhc2UudjEuTGlzdExlYXNlc1Jlc3BvbnNlElMKCEdl",
-            "dExlYXNlEiIudHV0b3JpYWwubGVhc2UudjEuR2V0TGVhc2VSZXF1ZXN0GiMu",
-            "dHV0b3JpYWwubGVhc2UudjEuR2V0TGVhc2VSZXNwb25zZRJlCg5HZXRMZWFz",
-            "ZUV2ZW50cxIoLnR1dG9yaWFsLmxlYXNlLnYxLkdldExlYXNlRXZlbnRzUmVx",
-            "dWVzdBopLnR1dG9yaWFsLmxlYXNlLnYxLkdldExlYXNlRXZlbnRzUmVzcG9u",
-            "c2USXAoLQ3JlYXRlTGVhc2USJS50dXRvcmlhbC5sZWFzZS52MS5DcmVhdGVM",
-            "ZWFzZVJlcXVlc3QaJi50dXRvcmlhbC5sZWFzZS52MS5DcmVhdGVMZWFzZVJl",
-            "c3BvbnNlEmUKDlRlcm1pbmF0ZUxlYXNlEigudHV0b3JpYWwubGVhc2UudjEu",
-            "VGVybWluYXRlTGVhc2VSZXF1ZXN0GikudHV0b3JpYWwubGVhc2UudjEuVGVy",
-            "bWluYXRlTGVhc2VSZXNwb25zZRJoCg9TY2hlZHVsZVBheW1lbnQSKS50dXRv",
-            "cmlhbC5sZWFzZS52MS5TY2hlZHVsZVBheW1lbnRSZXF1ZXN0GioudHV0b3Jp",
-            "YWwubGVhc2UudjEuU2NoZWR1bGVQYXltZW50UmVzcG9uc2USZQoOUmVjZWl2",
-            "ZVBheW1lbnQSKC50dXRvcmlhbC5sZWFzZS52MS5SZWNlaXZlUGF5bWVudFJl",
-            "cXVlc3QaKS50dXRvcmlhbC5sZWFzZS52MS5SZWNlaXZlUGF5bWVudFJlc3Bv",
-            "bnNlQl8KFWNvbS50dXRvcmlhbC5sZWFzZS52MUINTGVhc2VBcGlQcm90b1AB",
-            "WgdsZWFzZXYxogIDVExYqgIRVHV0b3JpYWwuTGVhc2UuVjHKAhFUdXRvcmlh",
-            "bFxMZWFzZVxWMWIGcHJvdG8z"));
+            "ZWFzZU9ic2VydmF0aW9uIlsKFkxpc3RMZWFzZUV2ZW50c1JlcXVlc3QSEAoI",
+            "bGVhc2VfaWQYASABKAkSLwoKYXNfb2ZfZGF0ZRgCIAEoCzIbLnR1dG9yaWFs",
+            "LmxlYXNlLnYxLkFzT2ZEYXRlIloKF0xpc3RMZWFzZUV2ZW50c1Jlc3BvbnNl",
+            "EhAKCGxlYXNlX2lkGAEgASgJEi0KBmV2ZW50cxgCIAMoCzIdLnR1dG9yaWFs",
+            "LmxlYXNlLnYxLkxlYXNlRXZlbnQiawoSQ3JlYXRlTGVhc2VSZXF1ZXN0EikK",
+            "DmVmZmVjdGl2ZV9kYXRlGAEgASgLMhEuZ29vZ2xlLnR5cGUuRGF0ZRIqCgVs",
+            "ZWFzZRgCIAEoCzIbLnR1dG9yaWFsLmxlYXNlLnYxLk5ld0xlYXNlIjgKE0Ny",
+            "ZWF0ZUxlYXNlUmVzcG9uc2USEAoIbGVhc2VfaWQYASABKAkSDwoHbWVzc2Fn",
+            "ZRgCIAEoCSJCChVUZXJtaW5hdGVMZWFzZVJlcXVlc3QSKQoOZWZmZWN0aXZl",
+            "X2RhdGUYASABKAsyES5nb29nbGUudHlwZS5EYXRlIikKFlRlcm1pbmF0ZUxl",
+            "YXNlUmVzcG9uc2USDwoHbWVzc2FnZRgBIAEoCSJwChZTY2hlZHVsZVBheW1l",
+            "bnRSZXF1ZXN0EikKDmVmZmVjdGl2ZV9kYXRlGAEgASgLMhEuZ29vZ2xlLnR5",
+            "cGUuRGF0ZRIrCgdwYXltZW50GAIgASgLMhoudHV0b3JpYWwubGVhc2UudjEu",
+            "UGF5bWVudCIqChdTY2hlZHVsZVBheW1lbnRSZXNwb25zZRIPCgdtZXNzYWdl",
+            "GAEgASgJIm8KFVJlY2VpdmVQYXltZW50UmVxdWVzdBIpCg5lZmZlY3RpdmVf",
+            "ZGF0ZRgBIAEoCzIRLmdvb2dsZS50eXBlLkRhdGUSKwoHcGF5bWVudBgCIAEo",
+            "CzIaLnR1dG9yaWFsLmxlYXNlLnYxLlBheW1lbnQiKQoWUmVjZWl2ZVBheW1l",
+            "bnRSZXNwb25zZRIPCgdtZXNzYWdlGAEgASgJMroFCghMZWFzZUFQSRJZCgpM",
+            "aXN0TGVhc2VzEiQudHV0b3JpYWwubGVhc2UudjEuTGlzdExlYXNlc1JlcXVl",
+            "c3QaJS50dXRvcmlhbC5sZWFzZS52MS5MaXN0TGVhc2VzUmVzcG9uc2USaAoP",
+            "TGlzdExlYXNlRXZlbnRzEikudHV0b3JpYWwubGVhc2UudjEuTGlzdExlYXNl",
+            "RXZlbnRzUmVxdWVzdBoqLnR1dG9yaWFsLmxlYXNlLnYxLkxpc3RMZWFzZUV2",
+            "ZW50c1Jlc3BvbnNlElMKCEdldExlYXNlEiIudHV0b3JpYWwubGVhc2UudjEu",
+            "R2V0TGVhc2VSZXF1ZXN0GiMudHV0b3JpYWwubGVhc2UudjEuR2V0TGVhc2VS",
+            "ZXNwb25zZRJcCgtDcmVhdGVMZWFzZRIlLnR1dG9yaWFsLmxlYXNlLnYxLkNy",
+            "ZWF0ZUxlYXNlUmVxdWVzdBomLnR1dG9yaWFsLmxlYXNlLnYxLkNyZWF0ZUxl",
+            "YXNlUmVzcG9uc2USZQoOVGVybWluYXRlTGVhc2USKC50dXRvcmlhbC5sZWFz",
+            "ZS52MS5UZXJtaW5hdGVMZWFzZVJlcXVlc3QaKS50dXRvcmlhbC5sZWFzZS52",
+            "MS5UZXJtaW5hdGVMZWFzZVJlc3BvbnNlEmgKD1NjaGVkdWxlUGF5bWVudBIp",
+            "LnR1dG9yaWFsLmxlYXNlLnYxLlNjaGVkdWxlUGF5bWVudFJlcXVlc3QaKi50",
+            "dXRvcmlhbC5sZWFzZS52MS5TY2hlZHVsZVBheW1lbnRSZXNwb25zZRJlCg5S",
+            "ZWNlaXZlUGF5bWVudBIoLnR1dG9yaWFsLmxlYXNlLnYxLlJlY2VpdmVQYXlt",
+            "ZW50UmVxdWVzdBopLnR1dG9yaWFsLmxlYXNlLnYxLlJlY2VpdmVQYXltZW50",
+            "UmVzcG9uc2VCXwoVY29tLnR1dG9yaWFsLmxlYXNlLnYxQg1MZWFzZUFwaVBy",
+            "b3RvUAFaB2xlYXNldjGiAgNUTFiqAhFUdXRvcmlhbC5MZWFzZS5WMcoCEVR1",
+            "dG9yaWFsXExlYXNlXFYxYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Type.DateReflection.Descriptor, global::Tutorial.Lease.V1.LeaseReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -77,8 +77,8 @@ namespace Tutorial.Lease.V1 {
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ListLeasesResponse), global::Tutorial.Lease.V1.ListLeasesResponse.Parser, new[]{ "Leases", "NextPageToken" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.GetLeaseRequest), global::Tutorial.Lease.V1.GetLeaseRequest.Parser, new[]{ "LeaseId", "AsOfDate" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.GetLeaseResponse), global::Tutorial.Lease.V1.GetLeaseResponse.Parser, new[]{ "Lease" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.GetLeaseEventsRequest), global::Tutorial.Lease.V1.GetLeaseEventsRequest.Parser, new[]{ "LeaseId", "AsOfDate" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.GetLeaseEventsResponse), global::Tutorial.Lease.V1.GetLeaseEventsResponse.Parser, new[]{ "LeaseId", "Events" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ListLeaseEventsRequest), global::Tutorial.Lease.V1.ListLeaseEventsRequest.Parser, new[]{ "LeaseId", "AsOfDate" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ListLeaseEventsResponse), global::Tutorial.Lease.V1.ListLeaseEventsResponse.Parser, new[]{ "LeaseId", "Events" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.CreateLeaseRequest), global::Tutorial.Lease.V1.CreateLeaseRequest.Parser, new[]{ "EffectiveDate", "Lease" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.CreateLeaseResponse), global::Tutorial.Lease.V1.CreateLeaseResponse.Parser, new[]{ "LeaseId", "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.TerminateLeaseRequest), global::Tutorial.Lease.V1.TerminateLeaseRequest.Parser, new[]{ "EffectiveDate" }, null, null, null),
@@ -731,11 +731,11 @@ namespace Tutorial.Lease.V1 {
 
   }
 
-  public sealed partial class GetLeaseEventsRequest : pb::IMessage<GetLeaseEventsRequest> {
-    private static readonly pb::MessageParser<GetLeaseEventsRequest> _parser = new pb::MessageParser<GetLeaseEventsRequest>(() => new GetLeaseEventsRequest());
+  public sealed partial class ListLeaseEventsRequest : pb::IMessage<ListLeaseEventsRequest> {
+    private static readonly pb::MessageParser<ListLeaseEventsRequest> _parser = new pb::MessageParser<ListLeaseEventsRequest>(() => new ListLeaseEventsRequest());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<GetLeaseEventsRequest> Parser { get { return _parser; } }
+    public static pb::MessageParser<ListLeaseEventsRequest> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -748,22 +748,22 @@ namespace Tutorial.Lease.V1 {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GetLeaseEventsRequest() {
+    public ListLeaseEventsRequest() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GetLeaseEventsRequest(GetLeaseEventsRequest other) : this() {
+    public ListLeaseEventsRequest(ListLeaseEventsRequest other) : this() {
       leaseId_ = other.leaseId_;
       asOfDate_ = other.asOfDate_ != null ? other.asOfDate_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GetLeaseEventsRequest Clone() {
-      return new GetLeaseEventsRequest(this);
+    public ListLeaseEventsRequest Clone() {
+      return new ListLeaseEventsRequest(this);
     }
 
     /// <summary>Field number for the "lease_id" field.</summary>
@@ -790,11 +790,11 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as GetLeaseEventsRequest);
+      return Equals(other as ListLeaseEventsRequest);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(GetLeaseEventsRequest other) {
+    public bool Equals(ListLeaseEventsRequest other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -853,7 +853,7 @@ namespace Tutorial.Lease.V1 {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(GetLeaseEventsRequest other) {
+    public void MergeFrom(ListLeaseEventsRequest other) {
       if (other == null) {
         return;
       }
@@ -894,11 +894,11 @@ namespace Tutorial.Lease.V1 {
 
   }
 
-  public sealed partial class GetLeaseEventsResponse : pb::IMessage<GetLeaseEventsResponse> {
-    private static readonly pb::MessageParser<GetLeaseEventsResponse> _parser = new pb::MessageParser<GetLeaseEventsResponse>(() => new GetLeaseEventsResponse());
+  public sealed partial class ListLeaseEventsResponse : pb::IMessage<ListLeaseEventsResponse> {
+    private static readonly pb::MessageParser<ListLeaseEventsResponse> _parser = new pb::MessageParser<ListLeaseEventsResponse>(() => new ListLeaseEventsResponse());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<GetLeaseEventsResponse> Parser { get { return _parser; } }
+    public static pb::MessageParser<ListLeaseEventsResponse> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -911,22 +911,22 @@ namespace Tutorial.Lease.V1 {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GetLeaseEventsResponse() {
+    public ListLeaseEventsResponse() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GetLeaseEventsResponse(GetLeaseEventsResponse other) : this() {
+    public ListLeaseEventsResponse(ListLeaseEventsResponse other) : this() {
       leaseId_ = other.leaseId_;
       events_ = other.events_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GetLeaseEventsResponse Clone() {
-      return new GetLeaseEventsResponse(this);
+    public ListLeaseEventsResponse Clone() {
+      return new ListLeaseEventsResponse(this);
     }
 
     /// <summary>Field number for the "lease_id" field.</summary>
@@ -952,11 +952,11 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as GetLeaseEventsResponse);
+      return Equals(other as ListLeaseEventsResponse);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(GetLeaseEventsResponse other) {
+    public bool Equals(ListLeaseEventsResponse other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -1010,7 +1010,7 @@ namespace Tutorial.Lease.V1 {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(GetLeaseEventsResponse other) {
+    public void MergeFrom(ListLeaseEventsResponse other) {
       if (other == null) {
         return;
       }

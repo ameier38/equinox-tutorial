@@ -37,22 +37,21 @@ namespace Tutorial.Lease.V1 {
             "X2RhdGUYAyABKAsyES5nb29nbGUudHlwZS5EYXRlEjIKFm1vbnRobHlfcGF5",
             "bWVudF9hbW91bnQYBCABKAsyEi5nb29nbGUudHlwZS5Nb25leSJJCgdQYXlt",
             "ZW50EhIKCnBheW1lbnRfaWQYASABKAkSKgoOcGF5bWVudF9hbW91bnQYAiAB",
-            "KAsyEi5nb29nbGUudHlwZS5Nb25leSKyAQoKTGVhc2VFdmVudBIQCghldmVu",
+            "KAsyEi5nb29nbGUudHlwZS5Nb25leSKbAQoKTGVhc2VFdmVudBIQCghldmVu",
             "dF9pZBgBIAEoBRI2ChJldmVudF9jcmVhdGVkX3RpbWUYAiABKAsyGi5nb29n",
             "bGUucHJvdG9idWYuVGltZXN0YW1wEi8KFGV2ZW50X2VmZmVjdGl2ZV9kYXRl",
             "GAMgASgLMhEuZ29vZ2xlLnR5cGUuRGF0ZRISCgpldmVudF90eXBlGAQgASgJ",
-            "EhUKDWV2ZW50X3BheWxvYWQYBSABKAkimwIKEExlYXNlT2JzZXJ2YXRpb24S",
-            "KwoQb2JzZXJ2YXRpb25fZGF0ZRgBIAEoCzIRLmdvb2dsZS50eXBlLkRhdGUS",
-            "JwoFbGVhc2UYAiABKAsyGC50dXRvcmlhbC5sZWFzZS52MS5MZWFzZRIrCg90",
-            "b3RhbF9zY2hlZHVsZWQYAyABKAsyEi5nb29nbGUudHlwZS5Nb25leRImCgp0",
-            "b3RhbF9wYWlkGAQgASgLMhIuZ29vZ2xlLnR5cGUuTW9uZXkSJgoKYW1vdW50",
-            "X2R1ZRgFIAEoCzISLmdvb2dsZS50eXBlLk1vbmV5EjQKDGxlYXNlX3N0YXR1",
-            "cxgGIAEoDjIeLnR1dG9yaWFsLmxlYXNlLnYxLkxlYXNlU3RhdHVzKmIKC0xl",
-            "YXNlU3RhdHVzEhgKFExFQVNFX1NUQVRVU19JTlZBTElEEAASHAoYTEVBU0Vf",
-            "U1RBVFVTX09VVFNUQU5ESU5HEAESGwoXTEVBU0VfU1RBVFVTX1RFUk1JTkFU",
-            "RUQQAkJcChVjb20udHV0b3JpYWwubGVhc2UudjFCCkxlYXNlUHJvdG9QAVoH",
-            "bGVhc2V2MaICA1RMWKoCEVR1dG9yaWFsLkxlYXNlLlYxygIRVHV0b3JpYWxc",
-            "TGVhc2VcVjFiBnByb3RvMw=="));
+            "IpsCChBMZWFzZU9ic2VydmF0aW9uEisKEG9ic2VydmF0aW9uX2RhdGUYASAB",
+            "KAsyES5nb29nbGUudHlwZS5EYXRlEicKBWxlYXNlGAIgASgLMhgudHV0b3Jp",
+            "YWwubGVhc2UudjEuTGVhc2USKwoPdG90YWxfc2NoZWR1bGVkGAMgASgLMhIu",
+            "Z29vZ2xlLnR5cGUuTW9uZXkSJgoKdG90YWxfcGFpZBgEIAEoCzISLmdvb2ds",
+            "ZS50eXBlLk1vbmV5EiYKCmFtb3VudF9kdWUYBSABKAsyEi5nb29nbGUudHlw",
+            "ZS5Nb25leRI0CgxsZWFzZV9zdGF0dXMYBiABKA4yHi50dXRvcmlhbC5sZWFz",
+            "ZS52MS5MZWFzZVN0YXR1cypiCgtMZWFzZVN0YXR1cxIYChRMRUFTRV9TVEFU",
+            "VVNfSU5WQUxJRBAAEhwKGExFQVNFX1NUQVRVU19PVVRTVEFORElORxABEhsK",
+            "F0xFQVNFX1NUQVRVU19URVJNSU5BVEVEEAJCXAoVY29tLnR1dG9yaWFsLmxl",
+            "YXNlLnYxQgpMZWFzZVByb3RvUAFaB2xlYXNldjGiAgNUTFiqAhFUdXRvcmlh",
+            "bC5MZWFzZS5WMcoCEVR1dG9yaWFsXExlYXNlXFYxYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, global::Google.Type.DateReflection.Descriptor, global::Google.Type.MoneyReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Tutorial.Lease.V1.LeaseStatus), }, new pbr::GeneratedClrTypeInfo[] {
@@ -60,7 +59,7 @@ namespace Tutorial.Lease.V1 {
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.Lease), global::Tutorial.Lease.V1.Lease.Parser, new[]{ "LeaseId", "UserId", "StartDate", "MaturityDate", "MonthlyPaymentAmount" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.NewLease), global::Tutorial.Lease.V1.NewLease.Parser, new[]{ "UserId", "MaturityDate", "MonthlyPaymentAmount" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.Payment), global::Tutorial.Lease.V1.Payment.Parser, new[]{ "PaymentId", "PaymentAmount" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.LeaseEvent), global::Tutorial.Lease.V1.LeaseEvent.Parser, new[]{ "EventId", "EventCreatedTime", "EventEffectiveDate", "EventType", "EventPayload" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.LeaseEvent), global::Tutorial.Lease.V1.LeaseEvent.Parser, new[]{ "EventId", "EventCreatedTime", "EventEffectiveDate", "EventType" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.LeaseObservation), global::Tutorial.Lease.V1.LeaseObservation.Parser, new[]{ "ObservationDate", "Lease", "TotalScheduled", "TotalPaid", "AmountDue", "LeaseStatus" }, null, null, null)
           }));
     }
@@ -912,7 +911,6 @@ namespace Tutorial.Lease.V1 {
       eventCreatedTime_ = other.eventCreatedTime_ != null ? other.eventCreatedTime_.Clone() : null;
       eventEffectiveDate_ = other.eventEffectiveDate_ != null ? other.eventEffectiveDate_.Clone() : null;
       eventType_ = other.eventType_;
-      eventPayload_ = other.eventPayload_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -965,17 +963,6 @@ namespace Tutorial.Lease.V1 {
       }
     }
 
-    /// <summary>Field number for the "event_payload" field.</summary>
-    public const int EventPayloadFieldNumber = 5;
-    private string eventPayload_ = "";
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string EventPayload {
-      get { return eventPayload_; }
-      set {
-        eventPayload_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as LeaseEvent);
@@ -993,7 +980,6 @@ namespace Tutorial.Lease.V1 {
       if (!object.Equals(EventCreatedTime, other.EventCreatedTime)) return false;
       if (!object.Equals(EventEffectiveDate, other.EventEffectiveDate)) return false;
       if (EventType != other.EventType) return false;
-      if (EventPayload != other.EventPayload) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1004,7 +990,6 @@ namespace Tutorial.Lease.V1 {
       if (eventCreatedTime_ != null) hash ^= EventCreatedTime.GetHashCode();
       if (eventEffectiveDate_ != null) hash ^= EventEffectiveDate.GetHashCode();
       if (EventType.Length != 0) hash ^= EventType.GetHashCode();
-      if (EventPayload.Length != 0) hash ^= EventPayload.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1034,10 +1019,6 @@ namespace Tutorial.Lease.V1 {
         output.WriteRawTag(34);
         output.WriteString(EventType);
       }
-      if (EventPayload.Length != 0) {
-        output.WriteRawTag(42);
-        output.WriteString(EventPayload);
-      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1057,9 +1038,6 @@ namespace Tutorial.Lease.V1 {
       }
       if (EventType.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(EventType);
-      }
-      if (EventPayload.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(EventPayload);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1089,9 +1067,6 @@ namespace Tutorial.Lease.V1 {
       }
       if (other.EventType.Length != 0) {
         EventType = other.EventType;
-      }
-      if (other.EventPayload.Length != 0) {
-        EventPayload = other.EventPayload;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1124,10 +1099,6 @@ namespace Tutorial.Lease.V1 {
           }
           case 34: {
             EventType = input.ReadString();
-            break;
-          }
-          case 42: {
-            EventPayload = input.ReadString();
             break;
           }
         }

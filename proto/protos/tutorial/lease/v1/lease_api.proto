@@ -17,10 +17,10 @@ import "tutorial/lease/v1/lease.proto";
 service LeaseAPI {
   // List the leases that have been created.
   rpc ListLeases(ListLeasesRequest) returns (ListLeasesResponse);
+  // List the lease events that have occurred as of a point in time.
+  rpc ListLeaseEvents(ListLeaseEventsRequest) returns (ListLeaseEventsResponse);
   // Get a lease as of a point in time.
   rpc GetLease(GetLeaseRequest) returns (GetLeaseResponse);
-  // Get the lease events that have occurred as of a point in time.
-  rpc GetLeaseEvents(GetLeaseEventsRequest) returns (GetLeaseEventsResponse);
   // Create a new lease.
   rpc CreateLease(CreateLeaseRequest) returns (CreateLeaseResponse);
   // Terminate an existing lease.
@@ -51,12 +51,12 @@ message GetLeaseResponse {
   LeaseObservation lease = 1;
 }
 
-message GetLeaseEventsRequest {
+message ListLeaseEventsRequest {
   string lease_id = 1;
   AsOfDate as_of_date = 2;
 }
 
-message GetLeaseEventsResponse {
+message ListLeaseEventsResponse {
   string lease_id = 1;
   repeated LeaseEvent events = 2;
 }

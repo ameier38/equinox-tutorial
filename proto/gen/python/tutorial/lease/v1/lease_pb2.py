@@ -24,7 +24,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='tutorial.lease.v1',
   syntax='proto3',
   serialized_options=_b('\n\025com.tutorial.lease.v1B\nLeaseProtoP\001Z\007leasev1\242\002\003TLX\252\002\021Tutorial.Lease.V1\312\002\021Tutorial\\Lease\\V1'),
-  serialized_pb=_b('\n\x1dtutorial/lease/v1/lease.proto\x12\x11tutorial.lease.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16google/type/date.proto\x1a\x17google/type/money.proto\"a\n\x08\x41sOfDate\x12.\n\nas_at_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12%\n\nas_on_date\x18\x02 \x01(\x0b\x32\x11.google.type.Date\"\xaf\x01\n\x05Lease\x12\x10\n\x08lease_id\x18\x01 \x01(\t\x12\x0f\n\x07user_id\x18\x02 \x01(\t\x12%\n\nstart_date\x18\x03 \x01(\x0b\x32\x11.google.type.Date\x12(\n\rmaturity_date\x18\x04 \x01(\x0b\x32\x11.google.type.Date\x12\x32\n\x16monthly_payment_amount\x18\x05 \x01(\x0b\x32\x12.google.type.Money\"y\n\x08NewLease\x12\x0f\n\x07user_id\x18\x01 \x01(\t\x12(\n\rmaturity_date\x18\x03 \x01(\x0b\x32\x11.google.type.Date\x12\x32\n\x16monthly_payment_amount\x18\x04 \x01(\x0b\x32\x12.google.type.Money\"I\n\x07Payment\x12\x12\n\npayment_id\x18\x01 \x01(\t\x12*\n\x0epayment_amount\x18\x02 \x01(\x0b\x32\x12.google.type.Money\"\xb2\x01\n\nLeaseEvent\x12\x10\n\x08\x65vent_id\x18\x01 \x01(\x05\x12\x36\n\x12\x65vent_created_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x14\x65vent_effective_date\x18\x03 \x01(\x0b\x32\x11.google.type.Date\x12\x12\n\nevent_type\x18\x04 \x01(\t\x12\x15\n\revent_payload\x18\x05 \x01(\t\"\x9b\x02\n\x10LeaseObservation\x12+\n\x10observation_date\x18\x01 \x01(\x0b\x32\x11.google.type.Date\x12\'\n\x05lease\x18\x02 \x01(\x0b\x32\x18.tutorial.lease.v1.Lease\x12+\n\x0ftotal_scheduled\x18\x03 \x01(\x0b\x32\x12.google.type.Money\x12&\n\ntotal_paid\x18\x04 \x01(\x0b\x32\x12.google.type.Money\x12&\n\namount_due\x18\x05 \x01(\x0b\x32\x12.google.type.Money\x12\x34\n\x0clease_status\x18\x06 \x01(\x0e\x32\x1e.tutorial.lease.v1.LeaseStatus*b\n\x0bLeaseStatus\x12\x18\n\x14LEASE_STATUS_INVALID\x10\x00\x12\x1c\n\x18LEASE_STATUS_OUTSTANDING\x10\x01\x12\x1b\n\x17LEASE_STATUS_TERMINATED\x10\x02\x42\\\n\x15\x63om.tutorial.lease.v1B\nLeaseProtoP\x01Z\x07leasev1\xa2\x02\x03TLX\xaa\x02\x11Tutorial.Lease.V1\xca\x02\x11Tutorial\\Lease\\V1b\x06proto3')
+  serialized_pb=_b('\n\x1dtutorial/lease/v1/lease.proto\x12\x11tutorial.lease.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16google/type/date.proto\x1a\x17google/type/money.proto\"a\n\x08\x41sOfDate\x12.\n\nas_at_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12%\n\nas_on_date\x18\x02 \x01(\x0b\x32\x11.google.type.Date\"\xaf\x01\n\x05Lease\x12\x10\n\x08lease_id\x18\x01 \x01(\t\x12\x0f\n\x07user_id\x18\x02 \x01(\t\x12%\n\nstart_date\x18\x03 \x01(\x0b\x32\x11.google.type.Date\x12(\n\rmaturity_date\x18\x04 \x01(\x0b\x32\x11.google.type.Date\x12\x32\n\x16monthly_payment_amount\x18\x05 \x01(\x0b\x32\x12.google.type.Money\"y\n\x08NewLease\x12\x0f\n\x07user_id\x18\x01 \x01(\t\x12(\n\rmaturity_date\x18\x03 \x01(\x0b\x32\x11.google.type.Date\x12\x32\n\x16monthly_payment_amount\x18\x04 \x01(\x0b\x32\x12.google.type.Money\"I\n\x07Payment\x12\x12\n\npayment_id\x18\x01 \x01(\t\x12*\n\x0epayment_amount\x18\x02 \x01(\x0b\x32\x12.google.type.Money\"\x9b\x01\n\nLeaseEvent\x12\x10\n\x08\x65vent_id\x18\x01 \x01(\x05\x12\x36\n\x12\x65vent_created_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x14\x65vent_effective_date\x18\x03 \x01(\x0b\x32\x11.google.type.Date\x12\x12\n\nevent_type\x18\x04 \x01(\t\"\x9b\x02\n\x10LeaseObservation\x12+\n\x10observation_date\x18\x01 \x01(\x0b\x32\x11.google.type.Date\x12\'\n\x05lease\x18\x02 \x01(\x0b\x32\x18.tutorial.lease.v1.Lease\x12+\n\x0ftotal_scheduled\x18\x03 \x01(\x0b\x32\x12.google.type.Money\x12&\n\ntotal_paid\x18\x04 \x01(\x0b\x32\x12.google.type.Money\x12&\n\namount_due\x18\x05 \x01(\x0b\x32\x12.google.type.Money\x12\x34\n\x0clease_status\x18\x06 \x01(\x0e\x32\x1e.tutorial.lease.v1.LeaseStatus*b\n\x0bLeaseStatus\x12\x18\n\x14LEASE_STATUS_INVALID\x10\x00\x12\x1c\n\x18LEASE_STATUS_OUTSTANDING\x10\x01\x12\x1b\n\x17LEASE_STATUS_TERMINATED\x10\x02\x42\\\n\x15\x63om.tutorial.lease.v1B\nLeaseProtoP\x01Z\x07leasev1\xa2\x02\x03TLX\xaa\x02\x11Tutorial.Lease.V1\xca\x02\x11Tutorial\\Lease\\V1b\x06proto3')
   ,
   dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,google_dot_type_dot_date__pb2.DESCRIPTOR,google_dot_type_dot_money__pb2.DESCRIPTOR,])
 
@@ -49,8 +49,8 @@ _LEASESTATUS = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1076,
-  serialized_end=1174,
+  serialized_start=1053,
+  serialized_end=1151,
 )
 _sym_db.RegisterEnumDescriptor(_LEASESTATUS)
 
@@ -276,13 +276,6 @@ _LEASEEVENT = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='event_payload', full_name='tutorial.lease.v1.LeaseEvent.event_payload', index=4,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -296,7 +289,7 @@ _LEASEEVENT = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=610,
-  serialized_end=788,
+  serialized_end=765,
 )
 
 
@@ -361,8 +354,8 @@ _LEASEOBSERVATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=791,
-  serialized_end=1074,
+  serialized_start=768,
+  serialized_end=1051,
 )
 
 _ASOFDATE.fields_by_name['as_at_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP

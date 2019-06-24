@@ -19,15 +19,15 @@ class LeaseAPIStub(object):
         request_serializer=tutorial_dot_lease_dot_v1_dot_lease__api__pb2.ListLeasesRequest.SerializeToString,
         response_deserializer=tutorial_dot_lease_dot_v1_dot_lease__api__pb2.ListLeasesResponse.FromString,
         )
+    self.ListLeaseEvents = channel.unary_unary(
+        '/tutorial.lease.v1.LeaseAPI/ListLeaseEvents',
+        request_serializer=tutorial_dot_lease_dot_v1_dot_lease__api__pb2.ListLeaseEventsRequest.SerializeToString,
+        response_deserializer=tutorial_dot_lease_dot_v1_dot_lease__api__pb2.ListLeaseEventsResponse.FromString,
+        )
     self.GetLease = channel.unary_unary(
         '/tutorial.lease.v1.LeaseAPI/GetLease',
         request_serializer=tutorial_dot_lease_dot_v1_dot_lease__api__pb2.GetLeaseRequest.SerializeToString,
         response_deserializer=tutorial_dot_lease_dot_v1_dot_lease__api__pb2.GetLeaseResponse.FromString,
-        )
-    self.GetLeaseEvents = channel.unary_unary(
-        '/tutorial.lease.v1.LeaseAPI/GetLeaseEvents',
-        request_serializer=tutorial_dot_lease_dot_v1_dot_lease__api__pb2.GetLeaseEventsRequest.SerializeToString,
-        response_deserializer=tutorial_dot_lease_dot_v1_dot_lease__api__pb2.GetLeaseEventsResponse.FromString,
         )
     self.CreateLease = channel.unary_unary(
         '/tutorial.lease.v1.LeaseAPI/CreateLease',
@@ -62,15 +62,15 @@ class LeaseAPIServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
-  def GetLease(self, request, context):
-    """Get a lease as of a point in time.
+  def ListLeaseEvents(self, request, context):
+    """List the lease events that have occurred as of a point in time.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
-  def GetLeaseEvents(self, request, context):
-    """Get the lease events that have occurred as of a point in time.
+  def GetLease(self, request, context):
+    """Get a lease as of a point in time.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -112,15 +112,15 @@ def add_LeaseAPIServicer_to_server(servicer, server):
           request_deserializer=tutorial_dot_lease_dot_v1_dot_lease__api__pb2.ListLeasesRequest.FromString,
           response_serializer=tutorial_dot_lease_dot_v1_dot_lease__api__pb2.ListLeasesResponse.SerializeToString,
       ),
+      'ListLeaseEvents': grpc.unary_unary_rpc_method_handler(
+          servicer.ListLeaseEvents,
+          request_deserializer=tutorial_dot_lease_dot_v1_dot_lease__api__pb2.ListLeaseEventsRequest.FromString,
+          response_serializer=tutorial_dot_lease_dot_v1_dot_lease__api__pb2.ListLeaseEventsResponse.SerializeToString,
+      ),
       'GetLease': grpc.unary_unary_rpc_method_handler(
           servicer.GetLease,
           request_deserializer=tutorial_dot_lease_dot_v1_dot_lease__api__pb2.GetLeaseRequest.FromString,
           response_serializer=tutorial_dot_lease_dot_v1_dot_lease__api__pb2.GetLeaseResponse.SerializeToString,
-      ),
-      'GetLeaseEvents': grpc.unary_unary_rpc_method_handler(
-          servicer.GetLeaseEvents,
-          request_deserializer=tutorial_dot_lease_dot_v1_dot_lease__api__pb2.GetLeaseEventsRequest.FromString,
-          response_serializer=tutorial_dot_lease_dot_v1_dot_lease__api__pb2.GetLeaseEventsResponse.SerializeToString,
       ),
       'CreateLease': grpc.unary_unary_rpc_method_handler(
           servicer.CreateLease,
