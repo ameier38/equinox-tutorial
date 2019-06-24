@@ -70,4 +70,6 @@ type LeaseStream =
       LeaseEvents: LeaseEvent list
       DeletedEvents: (EventCreatedTime * EventId) list }
 
-type LeaseCreatedList = (EventContext * NewLease) list
+type LeaseList = (EventContext * NewLease) list
+
+type LeaseEventList = LeaseEvent list

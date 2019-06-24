@@ -6,155 +6,139 @@ open Grpc.Core
 open Serilog.Core
 open System.Threading.Tasks
 
-module AsOfDate =
-    let fromProto (proto:Proto.Lease.AsOfDate) =
-        { AsAt = %proto.AsAt.ToDateTime()
-          AsOn = %proto.AsOn.ToDateTime() }
+let (!!) (value:decimal<'u>) = %value |> Money.fromUSD
+let (!@) (value:DateTime<'u>) = %value |> Google.Type.Date.FromDateTime
+let (!@@) (value:DateTime<'u>) = %value |> DateTime.toUtc |> Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime
 
-module LeaseQuery =
-    let fromProto (proto:Proto.Lease.Query) =
-        result {
-            let! leaseId = proto.LeaseId |> LeaseId.tryParse |> Result.ofOption "could not parse leaseId"
-            let asOfDate = proto.AsOfDate |> AsOfDate.fromProto
-            return leaseId, asOfDate
-        }
+module PageToken =
+    let decode (t:PageToken) : int =
+        match %t with
+        | "" -> 1
+        | token -> token |> String.fromBase64 |> int 
+    let encode (cursor:int) : PageToken =
+        cursor |> string |> String.toBase64 |> UMX.tag<pageToken>
+
+module Pagination =
+    let getPage (pageToken:PageToken) (pageSize:PageSize) (s:seq<'T>) =
+        let cursor = pageToken |> PageToken.decode
+        let total = s |> Seq.length
+        let toSkip = cursor - 1
+        let remaining = total - toSkip
+        let toTake = min remaining %pageSize
+        let page = s |> Seq.skip toSkip |> Seq.take toTake
+        let nextPageToken = 
+            match cursor + %pageSize with
+            | newCursor when newCursor > total ->
+                "" |> UMX.tag<pageToken>
+            | newCursor ->
+                newCursor |> PageToken.encode
+        nextPageToken, page
+
+module AsOfDate =
+    let fromProto (proto:Tutorial.Lease.V1.AsOfDate) =
+        { AsAt = %proto.AsAtTime.ToDateTime()
+          AsOn = %proto.AsOnDate.ToDateTime() }
 
 module NewLease =
-    let fromProto leaseId (proto:Proto.Lease.NewLease) =
-        result {
-            let! userId = proto.UserId |> UserId.tryParse |> Result.ofOption "could not parse userId"
-            return
-                { LeaseId = leaseId
-                  UserId = userId
-                  MaturityDate = proto.MaturityDate.ToDateTime() |> UMX.tag<leaseMaturityDate>
-                  MonthlyPaymentAmount = proto.MonthlyPaymentAmount |> decimal |> UMX.tag<usd/month> }
-        }
-
-module LeaseCommand =
-    type CommandCase = Proto.Lease.LeaseCommand.CommandOneofCase
-    let fromProto leaseId (proto:Proto.Lease.LeaseCommand) =
-        let effDate = proto.EffectiveDate.ToDateTime() |> UMX.tag<eventEffectiveDate>
-        match proto.CommandCase with
-        | CommandCase.CreateLease ->
-            result {
-                let! newLease =
-                    proto.CreateLease
-                    |> NewLease.fromProto leaseId
-                return CreateLease (effDate, newLease)
-            }
-        | CommandCase.SchedulePayment ->
-            let paymentAmount = proto.SchedulePayment |> decimal |> UMX.tag<usd>
-            SchedulePayment (effDate, paymentAmount) |> Ok
-        | CommandCase.ReceivePayment ->
-            let paymentAmount = proto.ReceivePayment |> decimal |> UMX.tag<usd>
-            ReceivePayment (effDate, paymentAmount) |> Ok
-        | CommandCase.TerminateLease ->
-            TerminateLease effDate |> Ok
-        | other -> sprintf "invalid command %A" other |> Error
-
-module Command =
-    type CommandCase = Proto.Lease.Command.CommandOneofCase
-    let fromProto leaseId (proto:Proto.Lease.Command) =
-        match proto.CommandCase with
-        | CommandCase.DeleteEvent ->
-            proto.DeleteEvent |> UMX.tag<eventId> |> DeleteEvent |> Ok
-        | CommandCase.LeaseCommand ->
-            proto.LeaseCommand |> LeaseCommand.fromProto leaseId |> Result.map LeaseCommand
-        | other -> sprintf "invalid command %A" other |> Error
+    let fromProto leaseId (proto:Tutorial.Lease.V1.NewLease) =
+        let userId = proto.UserId |> UserId.parse
+        { LeaseId = leaseId
+          UserId = userId
+          MaturityDate = proto.MaturityDate.ToDateTime() |> UMX.tag<leaseMaturityDate>
+          MonthlyPaymentAmount = proto.MonthlyPaymentAmount.DecimalValue |> UMX.tag<usd/month> }
 
 module LeaseEvent =
     let toProto (leaseEvent:LeaseEvent) =
         let { EventId = eventId 
-              EventCreatedDate = createdDate 
+              EventCreatedTime = createdTime 
               EventEffectiveDate = effDate } = leaseEvent |> Aggregate.LeaseEvent.getEventContext
         let eventType = leaseEvent |> Aggregate.LeaseEvent.getEventType
-        Proto.Lease.LeaseEvent(
-            EventId = (eventId |> UMX.untag),
-            EventCreatedDate = (createdDate |> UMX.untag |> DateTime.toTimestamp),
-            EventEffectiveDate = (effDate |> UMX.untag |> DateTime.toTimestamp),
-            EventType = (eventType |> UMX.untag))
+        Tutorial.Lease.V1.LeaseEvent(
+            EventId = %eventId,
+            EventCreatedTime = !@@createdTime,
+            EventEffectiveDate = !@effDate,
+            EventType = %eventType)
 
 module LeaseStatus =
-    let fromProto (proto:Proto.Lease.LeaseStatus) =
+    let fromProto (proto:Tutorial.Lease.V1.LeaseStatus) =
         match proto with
-        | Proto.Lease.LeaseStatus.Outstanding -> LeaseStatus.Outstanding |> Ok
-        | Proto.Lease.LeaseStatus.Terminated -> LeaseStatus.Terminated |> Ok
+        | Tutorial.Lease.V1.LeaseStatus.Outstanding -> Outstanding |> Ok
+        | Tutorial.Lease.V1.LeaseStatus.Terminated -> Terminated |> Ok
         | other -> sprintf "invalid LeaseStatus %A" other |> Error
     let toProto (leaseStatus:LeaseStatus) =
         match leaseStatus with
-        | LeaseStatus.Outstanding -> Proto.Lease.LeaseStatus.Outstanding
-        | LeaseStatus.Terminated -> Proto.Lease.LeaseStatus.Terminated
+        | Outstanding -> Tutorial.Lease.V1.LeaseStatus.Outstanding
+        | Terminated -> Tutorial.Lease.V1.LeaseStatus.Terminated
 
 module LeaseObservation =
     let toProto (obsDate:EventEffectiveDate) (leaseObs:LeaseObservation) =
-        Proto.Lease.LeaseObservation(
-            ObservationDate = (obsDate |> UMX.untag |> DateTime.toTimestamp),
-            LeaseId = (leaseObs.LeaseId |> LeaseId.toStringN),
-            UserId = (leaseObs.UserId |> UserId.toStringN),
-            StartDate = (leaseObs.StartDate |> UMX.untag |> DateTime.toTimestamp),
-            MaturityDate = (leaseObs.MaturityDate |> UMX.untag |> DateTime.toTimestamp),
-            MonthlyPaymentAmount = (leaseObs.MonthlyPaymentAmount |> UMX.untag |> Decimal.round 2 |> float32),
-            TotalScheduled = (leaseObs.TotalScheduled |> UMX.untag |> Decimal.round 2 |> float32),
-            TotalPaid = (leaseObs.TotalPaid |> UMX.untag |> Decimal.round 2 |> float32),
-            AmountDue = (leaseObs.AmountDue |> UMX.untag |> Decimal.round 2 |> float32),
+        let lease = 
+            Tutorial.Lease.V1.Lease(
+                LeaseId = (leaseObs.LeaseId |> LeaseId.toStringN),
+                UserId = (leaseObs.UserId |> UserId.toStringN),
+                StartDate = !@leaseObs.StartDate,
+                MaturityDate = !@leaseObs.MaturityDate,
+                MonthlyPaymentAmount = !!leaseObs.MonthlyPaymentAmount)
+        Tutorial.Lease.V1.LeaseObservation(
+            ObservationDate = !@obsDate,
+            Lease = lease,
+            TotalScheduled = !!leaseObs.TotalScheduled,
+            TotalPaid = !!leaseObs.TotalPaid,
+            AmountDue = !!leaseObs.AmountDue,
             LeaseStatus = (leaseObs.LeaseStatus |> LeaseStatus.toProto))
 
-type LeaseServiceImpl(store:Store, logger:Logger) =
-    inherit Proto.Lease.LeaseService.LeaseServiceBase()
+type LeaseAPIImpl
+    (   getUtcNow:unit -> System.DateTime,
+        leaseResolver:StreamResolver<StoredEvent,LeaseStream>,
+        leaseEventListResolver:StreamResolver<StoredEvent,LeaseEventList>,
+        leaseListResolver:StreamResolver<StoredEvent,LeaseList>,
+        logger:Logger) =
+    inherit Tutorial.Lease.V1.LeaseAPI.LeaseAPIBase()
 
-    let (|AggregateId|) (leaseId: LeaseId) = Equinox.AggregateId("lease", LeaseId.toStringN leaseId)
-    let (|Stream|) (AggregateId leaseId) = Equinox.Stream(logger, store.Resolve leaseId, 3)
-    let execute (Stream stream) command = stream.Transact(Aggregate.decide command)
-    let queryState (Stream stream) (asOfDate:AsOfDate) = stream.Query(Aggregate.reconstitute asOfDate None)
-    let queryEvents (Stream stream) (asOfDate:AsOfDate) = stream.Query(Aggregate.StreamState.getEffectiveLeaseEvents asOfDate None)
+    let leaseListStreamId = Equinox.DeprecatedRawName("leases")
+    let leaseListStream = Equinox.Stream(logger, leaseListResolver.Resolve leaseListStreamId, 3)
+    let (|LeaseStreamId|) (leaseId: LeaseId) = Equinox.AggregateId("lease", LeaseId.toStringN leaseId)
+    let (|LeaseStream|) (LeaseStreamId leaseId) = Equinox.Stream(logger, leaseResolver.Resolve leaseId, 3)
+    let (|LeaseEventListStream|) (LeaseStreamId leaseId) = Equinox.Stream(logger, leaseEventListResolver.Resolve leaseId, 3)
+    let listLeases (asOfDate:AsOfDate) =
+        leaseListStream.Query(fun leaseList ->
+            leaseList
+            |> List.filter (fun (ctx, _) ->
+                (ctx.EventCreatedTime <= asOfDate.AsAt) && (ctx.EventEffectiveDate <= asOfDate.AsOn))
+            |> List.map snd)
+    let listLeaseEvents (LeaseEventListStream stream) (asOfDate:AsOfDate) =
+        stream.Query(fun leaseEventList -> 
+            leaseEventList 
+            |> List.filter (Aggregate.LeaseEvent.asOfOrBefore asOfDate None))
+    let getLease ((LeaseStream stream) as leaseId) (asOfDate:AsOfDate) =
+        stream.Query(Aggregate.reconstitute leaseId asOfDate None)
+    let execute ((LeaseStream stream) as leaseId) (command:Command) =
+        stream.Transact(Aggregate.interpret getUtcNow leaseId command)
 
-    override __.Execute(request:Proto.Lease.Command, context:ServerCallContext)
-        : Task<Proto.Lease.ExecuteResponse> =
-        let success () = Proto.Lease.ExecuteResponse(Ok="Success!")
-        let failure err = Proto.Lease.ExecuteResponse(Error=err)
-        asyncResult {
-            let! leaseId = 
-                request.LeaseId 
-                |> LeaseId.tryParse 
-                |> Result.ofOption "cannot parse leaseId"
-                |> AsyncResult.ofResult
-            let! command = 
-                request 
-                |> Command.fromProto leaseId 
-                |> AsyncResult.ofResult
-            do! execute leaseId command
-        }
-        |> AsyncResult.bimap success failure
-        |> Async.StartAsTask
+    override __.ListLeases(req:Tutorial.Lease.V1.ListLeasesRequest, ctx:ServerCallContext) 
+        : Task<Tutorial.Lease.V1.ListLeasesResponse> =
+        ""
 
-    override __.QueryState(request:Proto.Lease.Query, context:ServerCallContext)
-        : Task<Proto.Lease.QueryStateResponse> =
-        let success res = Proto.Lease.QueryStateResponse(Ok=res)
-        let failure err = Proto.Lease.QueryStateResponse(Error=err)
-        asyncResult {
-            let! (userId, asOfDate) = request |> LeaseQuery.fromProto |> AsyncResult.ofResult
-            let! leaseObsOpt = queryState userId asOfDate
-            return
-                match leaseObsOpt with
-                | Some leaseObs ->
-                    let leaseObsProto = leaseObs |> LeaseObservation.toProto asOfDate.AsOn
-                    Proto.Lease.QueryStateResponse.Types.LeaseState(Observation=leaseObsProto)
-                | None ->
-                    Proto.Lease.QueryStateResponse.Types.LeaseState()
-        } 
-        |> AsyncResult.bimap success failure
-        |> Async.StartAsTask
+    override __.ListLeaseEvents(req:Tutorial.Lease.V1.ListLeaseEventsRequest, ctx:ServerCallContext) 
+        : Task<Tutorial.Lease.V1.ListLeaseEventsResponse> =
+        ""
+    
+    override __.GetLease(req:Tutorial.Lease.V1.GetLeaseRequest, ctx:ServerCallContext) 
+        : Task<Tutorial.Lease.V1.GetLeaseResponse> =
+        ""
+    
+    override __.CreateLease(req:Tutorial.Lease.V1.CreateLeaseRequest, ctx:ServerCallContext)
+        : Task<Tutorial.Lease.V1.CreateLeaseResponse> =
+        ""
 
-    override __.QueryEvents(request:Proto.Lease.Query, context:ServerCallContext)
-        : Task<Proto.Lease.QueryEventsResponse> =
-        let success events = Proto.Lease.QueryEventsResponse(Ok=events)
-        let failure err = Proto.Lease.QueryEventsResponse(Error=err)
-        asyncResult {
-            let! (userId, asOfDate) = request |> LeaseQuery.fromProto |> AsyncResult.ofResult
-            let! leaseEvents = queryEvents userId asOfDate |> AsyncResult.ofAsync
-            let leaseEventsProto = Proto.Lease.QueryEventsResponse.Types.LeaseEvents()
-            leaseEventsProto.Events.AddRange(leaseEvents |> List.map LeaseEvent.toProto)
-            return leaseEventsProto
-        } 
-        |> AsyncResult.bimap success failure
-        |> Async.StartAsTask
+    override __.TerminateLease(req:Tutorial.Lease.V1.TerminateLeaseRequest, ctx:ServerCallContext)
+        : Task<Tutorial.Lease.V1.TerminateLeaseResponse> =
+        ""
+
+    override __.SchedulePayment(req:Tutorial.Lease.V1.SchedulePaymentRequest, ctx:ServerCallContext)
+        : Task<Tutorial.Lease.V1.SchedulePaymentResponse> =
+        ""
+
+    override __.ReceivePayment(req:Tutorial.Lease.V1.ReceivePaymentRequest, ctx:ServerCallContext)
+        : Task<Tutorial.Lease.V1.ReceivePaymentResponse> =
+        ""

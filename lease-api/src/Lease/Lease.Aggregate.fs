@@ -298,23 +298,43 @@ let initialLeaseStream =
       LeaseEvents = []
       DeletedEvents = [] }
 
-let evolveLeaseCreatedList
-    : LeaseCreatedList -> StoredEvent -> LeaseCreatedList =
-    fun leaseCreatedList storedEvent ->
+let evolveLeaseList
+    : LeaseList -> StoredEvent -> LeaseList =
+    fun leaseList storedEvent ->
         let (|LeaseEvent|_|) = StoredEvent.tryToLeaseEvent
         let (|DeletedEvent|_|) = StoredEvent.tryToDeletedEvent
         match storedEvent with
         | LeaseEvent leaseEvent ->
             match leaseEvent with
             | LeaseEvent.LeaseCreated (ctx, newLease) ->
-                (ctx, newLease) :: leaseCreatedList
-            | _ -> leaseCreatedList
+                (ctx, newLease) :: leaseList
+            | _ -> leaseList
         | DeletedEvent (_, deletedEventId) ->
-            leaseCreatedList
+            leaseList
             |> List.filter (fun (ctx, _) -> ctx.EventId <> deletedEventId)
-        | _ -> leaseCreatedList
+        | _ -> leaseList
 
-let foldLeaseCreatedList
-    : LeaseCreatedList -> seq<StoredEvent> -> LeaseCreatedList =
-    fun leaseCreatedList storedEvents ->
-        storedEvents |> Seq.fold evolveLeaseCreatedList leaseCreatedList
+let foldLeaseList
+    : LeaseList -> seq<StoredEvent> -> LeaseList =
+    fun leaseList storedEvents ->
+        storedEvents |> Seq.fold evolveLeaseList leaseList
+
+let evolveLeaseEventList
+    : LeaseEventList -> StoredEvent -> LeaseEventList =
+    fun leaseEventList storedEvent ->
+        let (|LeaseEvent|_|) = StoredEvent.tryToLeaseEvent
+        let (|DeletedEvent|_|) = StoredEvent.tryToDeletedEvent
+        match storedEvent with
+        | LeaseEvent leaseEvent ->
+            leaseEvent :: leaseEventList
+        | DeletedEvent (_, deletedEventId) ->
+            leaseEventList
+            |> List.filter (fun leaseEvent -> 
+                let ctx = leaseEvent |> LeaseEvent.getEventContext
+                ctx.EventId <> deletedEventId)
+        | _ -> leaseEventList
+
+let foldLeaseEventList
+    : LeaseEventList -> seq<StoredEvent> -> LeaseEventList =
+    fun leaseEventList storedEvents ->
+        storedEvents |> Seq.fold evolveLeaseEventList leaseEventList

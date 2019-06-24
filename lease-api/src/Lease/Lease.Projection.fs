@@ -22,7 +22,6 @@ type ProjectionManager(config:Config) =
     let log = SerilogAdapter(serilog)
     let endpoint = DnsEndPoint(config.EventStore.Host, config.EventStore.HttpPort)
     let creds = UserCredentials(config.EventStore.User, config.EventStore.Password)
-    do printfn "__SOURCE_DIRECTORY: %s" __SOURCE_DIRECTORY__
     let projectionsDir = Path.Combine(__SOURCE_DIRECTORY__,  "projections")
     let projectionManager = ProjectionsManager(log, endpoint, TimeSpan.FromSeconds(5.0))
     let projections = [ "created-memberships" ]

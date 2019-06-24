@@ -17,10 +17,10 @@ namespace Tutorial.Lease.V1 {
 
     static readonly grpc::Marshaller<global::Tutorial.Lease.V1.ListLeasesRequest> __Marshaller_tutorial_lease_v1_ListLeasesRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Lease.V1.ListLeasesRequest.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::Tutorial.Lease.V1.ListLeasesResponse> __Marshaller_tutorial_lease_v1_ListLeasesResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Lease.V1.ListLeasesResponse.Parser.ParseFrom);
+    static readonly grpc::Marshaller<global::Tutorial.Lease.V1.ListLeaseEventsRequest> __Marshaller_tutorial_lease_v1_ListLeaseEventsRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Lease.V1.ListLeaseEventsRequest.Parser.ParseFrom);
+    static readonly grpc::Marshaller<global::Tutorial.Lease.V1.ListLeaseEventsResponse> __Marshaller_tutorial_lease_v1_ListLeaseEventsResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Lease.V1.ListLeaseEventsResponse.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::Tutorial.Lease.V1.GetLeaseRequest> __Marshaller_tutorial_lease_v1_GetLeaseRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Lease.V1.GetLeaseRequest.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::Tutorial.Lease.V1.GetLeaseResponse> __Marshaller_tutorial_lease_v1_GetLeaseResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Lease.V1.GetLeaseResponse.Parser.ParseFrom);
-    static readonly grpc::Marshaller<global::Tutorial.Lease.V1.GetLeaseEventsRequest> __Marshaller_tutorial_lease_v1_GetLeaseEventsRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Lease.V1.GetLeaseEventsRequest.Parser.ParseFrom);
-    static readonly grpc::Marshaller<global::Tutorial.Lease.V1.GetLeaseEventsResponse> __Marshaller_tutorial_lease_v1_GetLeaseEventsResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Lease.V1.GetLeaseEventsResponse.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::Tutorial.Lease.V1.CreateLeaseRequest> __Marshaller_tutorial_lease_v1_CreateLeaseRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Lease.V1.CreateLeaseRequest.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::Tutorial.Lease.V1.CreateLeaseResponse> __Marshaller_tutorial_lease_v1_CreateLeaseResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Lease.V1.CreateLeaseResponse.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::Tutorial.Lease.V1.TerminateLeaseRequest> __Marshaller_tutorial_lease_v1_TerminateLeaseRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Lease.V1.TerminateLeaseRequest.Parser.ParseFrom);
@@ -37,19 +37,19 @@ namespace Tutorial.Lease.V1 {
         __Marshaller_tutorial_lease_v1_ListLeasesRequest,
         __Marshaller_tutorial_lease_v1_ListLeasesResponse);
 
+    static readonly grpc::Method<global::Tutorial.Lease.V1.ListLeaseEventsRequest, global::Tutorial.Lease.V1.ListLeaseEventsResponse> __Method_ListLeaseEvents = new grpc::Method<global::Tutorial.Lease.V1.ListLeaseEventsRequest, global::Tutorial.Lease.V1.ListLeaseEventsResponse>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "ListLeaseEvents",
+        __Marshaller_tutorial_lease_v1_ListLeaseEventsRequest,
+        __Marshaller_tutorial_lease_v1_ListLeaseEventsResponse);
+
     static readonly grpc::Method<global::Tutorial.Lease.V1.GetLeaseRequest, global::Tutorial.Lease.V1.GetLeaseResponse> __Method_GetLease = new grpc::Method<global::Tutorial.Lease.V1.GetLeaseRequest, global::Tutorial.Lease.V1.GetLeaseResponse>(
         grpc::MethodType.Unary,
         __ServiceName,
         "GetLease",
         __Marshaller_tutorial_lease_v1_GetLeaseRequest,
         __Marshaller_tutorial_lease_v1_GetLeaseResponse);
-
-    static readonly grpc::Method<global::Tutorial.Lease.V1.GetLeaseEventsRequest, global::Tutorial.Lease.V1.GetLeaseEventsResponse> __Method_GetLeaseEvents = new grpc::Method<global::Tutorial.Lease.V1.GetLeaseEventsRequest, global::Tutorial.Lease.V1.GetLeaseEventsResponse>(
-        grpc::MethodType.Unary,
-        __ServiceName,
-        "GetLeaseEvents",
-        __Marshaller_tutorial_lease_v1_GetLeaseEventsRequest,
-        __Marshaller_tutorial_lease_v1_GetLeaseEventsResponse);
 
     static readonly grpc::Method<global::Tutorial.Lease.V1.CreateLeaseRequest, global::Tutorial.Lease.V1.CreateLeaseResponse> __Method_CreateLease = new grpc::Method<global::Tutorial.Lease.V1.CreateLeaseRequest, global::Tutorial.Lease.V1.CreateLeaseResponse>(
         grpc::MethodType.Unary,
@@ -101,23 +101,23 @@ namespace Tutorial.Lease.V1 {
       }
 
       /// <summary>
+      /// List the lease events that have occurred as of a point in time.
+      /// </summary>
+      /// <param name="request">The request received from the client.</param>
+      /// <param name="context">The context of the server-side call handler being invoked.</param>
+      /// <returns>The response to send back to the client (wrapped by a task).</returns>
+      public virtual global::System.Threading.Tasks.Task<global::Tutorial.Lease.V1.ListLeaseEventsResponse> ListLeaseEvents(global::Tutorial.Lease.V1.ListLeaseEventsRequest request, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
+      /// <summary>
       /// Get a lease as of a point in time.
       /// </summary>
       /// <param name="request">The request received from the client.</param>
       /// <param name="context">The context of the server-side call handler being invoked.</param>
       /// <returns>The response to send back to the client (wrapped by a task).</returns>
       public virtual global::System.Threading.Tasks.Task<global::Tutorial.Lease.V1.GetLeaseResponse> GetLease(global::Tutorial.Lease.V1.GetLeaseRequest request, grpc::ServerCallContext context)
-      {
-        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
-      }
-
-      /// <summary>
-      /// Get the lease events that have occurred as of a point in time.
-      /// </summary>
-      /// <param name="request">The request received from the client.</param>
-      /// <param name="context">The context of the server-side call handler being invoked.</param>
-      /// <returns>The response to send back to the client (wrapped by a task).</returns>
-      public virtual global::System.Threading.Tasks.Task<global::Tutorial.Lease.V1.GetLeaseEventsResponse> GetLeaseEvents(global::Tutorial.Lease.V1.GetLeaseEventsRequest request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
@@ -236,6 +236,50 @@ namespace Tutorial.Lease.V1 {
         return CallInvoker.AsyncUnaryCall(__Method_ListLeases, null, options, request);
       }
       /// <summary>
+      /// List the lease events that have occurred as of a point in time.
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The response received from the server.</returns>
+      public virtual global::Tutorial.Lease.V1.ListLeaseEventsResponse ListLeaseEvents(global::Tutorial.Lease.V1.ListLeaseEventsRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return ListLeaseEvents(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      /// <summary>
+      /// List the lease events that have occurred as of a point in time.
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The response received from the server.</returns>
+      public virtual global::Tutorial.Lease.V1.ListLeaseEventsResponse ListLeaseEvents(global::Tutorial.Lease.V1.ListLeaseEventsRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_ListLeaseEvents, null, options, request);
+      }
+      /// <summary>
+      /// List the lease events that have occurred as of a point in time.
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The call object.</returns>
+      public virtual grpc::AsyncUnaryCall<global::Tutorial.Lease.V1.ListLeaseEventsResponse> ListLeaseEventsAsync(global::Tutorial.Lease.V1.ListLeaseEventsRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return ListLeaseEventsAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      /// <summary>
+      /// List the lease events that have occurred as of a point in time.
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The call object.</returns>
+      public virtual grpc::AsyncUnaryCall<global::Tutorial.Lease.V1.ListLeaseEventsResponse> ListLeaseEventsAsync(global::Tutorial.Lease.V1.ListLeaseEventsRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_ListLeaseEvents, null, options, request);
+      }
+      /// <summary>
       /// Get a lease as of a point in time.
       /// </summary>
       /// <param name="request">The request to send to the server.</param>
@@ -278,50 +322,6 @@ namespace Tutorial.Lease.V1 {
       public virtual grpc::AsyncUnaryCall<global::Tutorial.Lease.V1.GetLeaseResponse> GetLeaseAsync(global::Tutorial.Lease.V1.GetLeaseRequest request, grpc::CallOptions options)
       {
         return CallInvoker.AsyncUnaryCall(__Method_GetLease, null, options, request);
-      }
-      /// <summary>
-      /// Get the lease events that have occurred as of a point in time.
-      /// </summary>
-      /// <param name="request">The request to send to the server.</param>
-      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
-      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
-      /// <param name="cancellationToken">An optional token for canceling the call.</param>
-      /// <returns>The response received from the server.</returns>
-      public virtual global::Tutorial.Lease.V1.GetLeaseEventsResponse GetLeaseEvents(global::Tutorial.Lease.V1.GetLeaseEventsRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-      {
-        return GetLeaseEvents(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-      }
-      /// <summary>
-      /// Get the lease events that have occurred as of a point in time.
-      /// </summary>
-      /// <param name="request">The request to send to the server.</param>
-      /// <param name="options">The options for the call.</param>
-      /// <returns>The response received from the server.</returns>
-      public virtual global::Tutorial.Lease.V1.GetLeaseEventsResponse GetLeaseEvents(global::Tutorial.Lease.V1.GetLeaseEventsRequest request, grpc::CallOptions options)
-      {
-        return CallInvoker.BlockingUnaryCall(__Method_GetLeaseEvents, null, options, request);
-      }
-      /// <summary>
-      /// Get the lease events that have occurred as of a point in time.
-      /// </summary>
-      /// <param name="request">The request to send to the server.</param>
-      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
-      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
-      /// <param name="cancellationToken">An optional token for canceling the call.</param>
-      /// <returns>The call object.</returns>
-      public virtual grpc::AsyncUnaryCall<global::Tutorial.Lease.V1.GetLeaseEventsResponse> GetLeaseEventsAsync(global::Tutorial.Lease.V1.GetLeaseEventsRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-      {
-        return GetLeaseEventsAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-      }
-      /// <summary>
-      /// Get the lease events that have occurred as of a point in time.
-      /// </summary>
-      /// <param name="request">The request to send to the server.</param>
-      /// <param name="options">The options for the call.</param>
-      /// <returns>The call object.</returns>
-      public virtual grpc::AsyncUnaryCall<global::Tutorial.Lease.V1.GetLeaseEventsResponse> GetLeaseEventsAsync(global::Tutorial.Lease.V1.GetLeaseEventsRequest request, grpc::CallOptions options)
-      {
-        return CallInvoker.AsyncUnaryCall(__Method_GetLeaseEvents, null, options, request);
       }
       /// <summary>
       /// Create a new lease.
@@ -512,8 +512,8 @@ namespace Tutorial.Lease.V1 {
     {
       return grpc::ServerServiceDefinition.CreateBuilder()
           .AddMethod(__Method_ListLeases, serviceImpl.ListLeases)
+          .AddMethod(__Method_ListLeaseEvents, serviceImpl.ListLeaseEvents)
           .AddMethod(__Method_GetLease, serviceImpl.GetLease)
-          .AddMethod(__Method_GetLeaseEvents, serviceImpl.GetLeaseEvents)
           .AddMethod(__Method_CreateLease, serviceImpl.CreateLease)
           .AddMethod(__Method_TerminateLease, serviceImpl.TerminateLease)
           .AddMethod(__Method_SchedulePayment, serviceImpl.SchedulePayment)
@@ -527,8 +527,8 @@ namespace Tutorial.Lease.V1 {
     public static void BindService(grpc::ServiceBinderBase serviceBinder, LeaseAPIBase serviceImpl)
     {
       serviceBinder.AddMethod(__Method_ListLeases, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Tutorial.Lease.V1.ListLeasesRequest, global::Tutorial.Lease.V1.ListLeasesResponse>(serviceImpl.ListLeases));
+      serviceBinder.AddMethod(__Method_ListLeaseEvents, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Tutorial.Lease.V1.ListLeaseEventsRequest, global::Tutorial.Lease.V1.ListLeaseEventsResponse>(serviceImpl.ListLeaseEvents));
       serviceBinder.AddMethod(__Method_GetLease, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Tutorial.Lease.V1.GetLeaseRequest, global::Tutorial.Lease.V1.GetLeaseResponse>(serviceImpl.GetLease));
-      serviceBinder.AddMethod(__Method_GetLeaseEvents, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Tutorial.Lease.V1.GetLeaseEventsRequest, global::Tutorial.Lease.V1.GetLeaseEventsResponse>(serviceImpl.GetLeaseEvents));
       serviceBinder.AddMethod(__Method_CreateLease, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Tutorial.Lease.V1.CreateLeaseRequest, global::Tutorial.Lease.V1.CreateLeaseResponse>(serviceImpl.CreateLease));
       serviceBinder.AddMethod(__Method_TerminateLease, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Tutorial.Lease.V1.TerminateLeaseRequest, global::Tutorial.Lease.V1.TerminateLeaseResponse>(serviceImpl.TerminateLease));
       serviceBinder.AddMethod(__Method_SchedulePayment, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Tutorial.Lease.V1.SchedulePaymentRequest, global::Tutorial.Lease.V1.SchedulePaymentResponse>(serviceImpl.SchedulePayment));
