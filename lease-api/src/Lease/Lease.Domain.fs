@@ -1,12 +1,17 @@
 namespace Lease
 
+open System
+
+type DuplicateCommandException (msg:string) =
+    inherit Exception(msg)
+
 type AsOfDate =
-    { AsAt: EventCreatedDate
+    { AsAt: EventCreatedTime
       AsOn: EventEffectiveDate }
 
-type LeaseEventContext =
+type EventContext =
     { EventId: EventId
-      EventCreatedDate: EventCreatedDate 
+      EventCreatedTime: EventCreatedTime
       EventEffectiveDate: EventEffectiveDate }
 
 type NewLease =
@@ -19,10 +24,14 @@ type LeaseStatus =
     | Outstanding
     | Terminated
 
+type Payment =
+    { PaymentId: PaymentId
+      PaymentAmount: USD }
+
 type LeaseCommand =
     | CreateLease of EventEffectiveDate * NewLease
-    | SchedulePayment of EventEffectiveDate * USD
-    | ReceivePayment of EventEffectiveDate * USD
+    | SchedulePayment of EventEffectiveDate * Payment
+    | ReceivePayment of EventEffectiveDate * Payment
     | TerminateLease of EventEffectiveDate
 
 type Command =
@@ -30,17 +39,17 @@ type Command =
     | DeleteEvent of EventId
 
 type LeaseEvent =
-    | LeaseCreated of LeaseEventContext * NewLease
-    | PaymentScheduled of LeaseEventContext * USD
-    | PaymentReceived of LeaseEventContext * USD
-    | LeaseTerminated of LeaseEventContext
+    | LeaseCreated of EventContext * NewLease
+    | PaymentScheduled of EventContext * Payment
+    | PaymentReceived of EventContext * Payment
+    | LeaseTerminated of EventContext
 
 type StoredEvent =
-    | EventDeleted of {| EventContext: {| EventCreatedDate: EventCreatedDate |}; EventId: EventId |}
-    | LeaseCreated of {| EventContext: LeaseEventContext; NewLease: NewLease |}
-    | PaymentScheduled of {| EventContext: LeaseEventContext; ScheduledAmount: USD |}
-    | PaymentReceived of {| EventContext: LeaseEventContext; ReceivedAmount: USD |}
-    | LeaseTerminated of {| EventContext: LeaseEventContext |}
+    | EventDeleted of {| EventContext: {| EventCreatedDate: EventCreatedTime |}; EventId: EventId |}
+    | LeaseCreated of {| EventContext: EventContext; NewLease: NewLease |}
+    | PaymentScheduled of {| EventContext: EventContext; Payment: Payment |}
+    | PaymentReceived of {| EventContext: EventContext; Payment: Payment |}
+    | LeaseTerminated of {| EventContext: EventContext |}
     interface TypeShape.UnionContract.IUnionContract
 
 type LeaseObservation =
@@ -54,9 +63,11 @@ type LeaseObservation =
       AmountDue: USD
       LeaseStatus: LeaseStatus }
 
-type LeaseState = Result<LeaseObservation option, string>
+type LeaseState = LeaseObservation option
 
-type StreamState =
+type LeaseStream =
     { NextEventId: EventId
       LeaseEvents: LeaseEvent list
-      DeletedEvents: (EventCreatedDate * EventId) list }
+      DeletedEvents: (EventCreatedTime * EventId) list }
+
+type LeaseCreatedList = (EventContext * NewLease) list

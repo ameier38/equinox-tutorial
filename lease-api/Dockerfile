@@ -1,5 +1,5 @@
 # use build image to compile
-FROM mcr.microsoft.com/dotnet/core/sdk:2.1 as builder
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2 as builder
 
 # install locales
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y locales
@@ -50,7 +50,7 @@ RUN fake build -t InstallDependencies
 COPY . .
 RUN fake build -t Publish
 
-FROM mcr.microsoft.com/dotnet/core/runtime:2.1 as tester
+FROM mcr.microsoft.com/dotnet/core/runtime:2.2 as tester
 
 WORKDIR /app
 

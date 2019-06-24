@@ -8,7 +8,7 @@ type Store(config:Config) =
     let timeout = TimeSpan.FromSeconds 5.0
     let log = Log.Logger |> Logger.SerilogNormal
     let connector = 
-        GesConnector(
+        Connector(
             config.EventStore.User, 
             config.EventStore.Password, 
             reqTimeout=timeout, 
@@ -19,11 +19,17 @@ type Store(config:Config) =
     let conn = 
         connector.Establish("lease", Discovery.Uri config.EventStore.Uri, strategy)
         |> Async.RunSynchronously
-    let gateway = GesGateway(conn, GesBatchingPolicy(maxBatchSize=500))
-    let cacheStrategy = Equinox.EventStore.CachingStrategy.SlidingWindow (cache, TimeSpan.FromMinutes 20.)
-    let serializationSettings = Newtonsoft.Json.JsonSerializerSettings()
-    let codec = Equinox.Codec.NewtonsoftJson.Json.Create<StoredEvent>(serializationSettings)
-    let resolver = GesResolver(gateway, codec, Aggregate.fold, Aggregate.initialState, caching=cacheStrategy)
+    let gateway = Context(conn, BatchingPolicy(maxBatchSize=500))
+
+    member __.Gateway with get () = gateway
+    member __.Cache with get () = cache
+
+type StreamResolver<'event,'state>
+    (   store:Store,
+        codec:Equinox.Codec.IUnionEncoder<'event,byte[]>,
+        fold:'state -> 'event seq -> 'state,
+        initial:'state ) =
+    let cacheStrategy = CachingStrategy.SlidingWindow (store.Cache, TimeSpan.FromMinutes 20.)
+    let resolver = Resolver(store.Gateway, codec, fold, initial, caching=cacheStrategy)
 
     member __.Resolve = resolver.Resolve
-        

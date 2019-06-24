@@ -1,24 +1,26 @@
-version 5.196.2
+version 5.210.1
 
 source https://www.nuget.org/api/v2
 storage: none
 
-github ameier38/fsharp-utilities src/Result.fs
-github ameier38/fsharp-utilities src/SimpleType.fs
-github ameier38/fsharp-utilities src/Env.fs
 nuget Expecto
 nuget Expecto.FsCheck
 nuget FsCheck
-nuget Equinox 2.0.0-preview5 preview
-nuget Equinox.Codec 2.0.0-preview5 preview
-nuget Equinox.EventStore 2.0.0-preview5 preview
+nuget Equinox 2.0.0-rc1 preview
+nuget Equinox.Codec 2.0.0-rc1 preview
+nuget Equinox.EventStore 2.0.0-rc1 preview
+nuget FsConfig
 nuget FSharp.UMX 1.0.0-preview-001 preview
+nuget Google.Api.CommonProtos
+nuget Google.Protobuf
+nuget Grpc
 nuget Grpc.Core.Testing
 nuget Grpc.HealthCheck
 nuget Jet.JsonNet.Converters
 nuget Serilog.Sinks.Console
 nuget Serilog
 
+// [ FAKE GROUP ]
 group Fake
     source https://www.nuget.org/api/v2
     storage: none

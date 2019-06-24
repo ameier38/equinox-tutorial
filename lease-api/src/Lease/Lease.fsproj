@@ -2,26 +2,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\paket-files\ameier38\fsharp-utilities\src\Result.fs">
-      <Paket>True</Paket>
-      <Link>paket-files/Result.fs</Link>
-    </Compile>
-    <Compile Include="..\..\paket-files\ameier38\fsharp-utilities\src\SimpleType.fs">
-      <Paket>True</Paket>
-      <Link>paket-files/SimpleType.fs</Link>
-    </Compile>
-    <Compile Include="..\..\paket-files\ameier38\fsharp-utilities\src\Env.fs">
-      <Paket>True</Paket>
-      <Link>paket-files/Env.fs</Link>
-    </Compile>
     <Compile Include="Lease.Config.fs" />
     <Compile Include="Lease.SimpleTypes.fs" />
     <Compile Include="Lease.Domain.fs" />
     <Compile Include="Lease.Aggregate.fs" />
     <Compile Include="Lease.Store.fs" />
+    <Compile Include="Lease.Projection.fs" />
     <Compile Include="Lease.Service.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

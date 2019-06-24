@@ -1,0 +1,98 @@
+syntax = "proto3";
+
+package tutorial.lease.v1;
+
+option csharp_namespace = "Tutorial.Lease.V1";
+option go_package = "leasev1";
+option java_multiple_files = true;
+option java_outer_classname = "LeaseApiProto";
+option java_package = "com.tutorial.lease.v1";
+option objc_class_prefix = "TLX";
+option php_namespace = "Tutorial\\Lease\\V1";
+
+import "google/type/date.proto";
+import "tutorial/lease/v1/lease.proto";
+
+// API to handle interactions with the Lease.
+service LeaseAPI {
+  // List the leases that have been created.
+  rpc ListLeases(ListLeasesRequest) returns (ListLeasesResponse);
+  // Get a lease as of a point in time.
+  rpc GetLease(GetLeaseRequest) returns (GetLeaseResponse);
+  // Get the lease events that have occurred as of a point in time.
+  rpc GetLeaseEvents(GetLeaseEventsRequest) returns (GetLeaseEventsResponse);
+  // Create a new lease.
+  rpc CreateLease(CreateLeaseRequest) returns (CreateLeaseResponse);
+  // Terminate an existing lease.
+  rpc TerminateLease(TerminateLeaseRequest) returns (TerminateLeaseResponse);
+  // Schedule a payment.
+  rpc SchedulePayment(SchedulePaymentRequest) returns (SchedulePaymentResponse);
+  // Receive a payment.
+  rpc ReceivePayment(ReceivePaymentRequest) returns (ReceivePaymentResponse);
+}
+
+message ListLeasesRequest {
+  AsOfDate as_of_date = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message ListLeasesResponse {
+  repeated Lease leases = 1;
+  string next_page_token = 2;
+}
+
+message GetLeaseRequest {
+  string lease_id = 1;
+  AsOfDate as_of_date = 2;
+}
+
+message GetLeaseResponse {
+  LeaseObservation lease = 1;
+}
+
+message GetLeaseEventsRequest {
+  string lease_id = 1;
+  AsOfDate as_of_date = 2;
+}
+
+message GetLeaseEventsResponse {
+  string lease_id = 1;
+  repeated LeaseEvent events = 2;
+}
+
+message CreateLeaseRequest {
+  google.type.Date effective_date = 1;
+  NewLease lease = 2;
+}
+
+message CreateLeaseResponse {
+  string lease_id = 1;
+  string message = 2;
+}
+
+message TerminateLeaseRequest {
+  google.type.Date effective_date = 1;
+}
+
+message TerminateLeaseResponse {
+  string message = 1;
+}
+
+message SchedulePaymentRequest {
+  google.type.Date effective_date = 1;
+  Payment payment = 2;
+}
+
+message SchedulePaymentResponse {
+  string message = 1;
+}
+
+message ReceivePaymentRequest {
+  google.type.Date effective_date = 1;
+  Payment payment = 2;
+}
+
+message ReceivePaymentResponse {
+  string message = 1;
+}

@@ -1,4 +1,3 @@
-#r "paket: groupref Fake //"
 #load "./.fake/build.fsx/intellisense.fsx"
 
 open Fake.Core
@@ -37,11 +36,17 @@ Target.create "CleanProto" (fun _ ->
         ++ "**/Proto/obj"
     Shell.cleanDirs directories)
 
-Target.create "CopyProto" (fun _ ->
-    let leaseProto = rootDir </> "protobuf" </> "lease.proto"
-    File.checkExists leaseProto
+Target.create "CopyGenerated" (fun _ ->
+    let genDir =
+        __SOURCE_DIRECTORY__ // lease-api
+        |> Path.getDirectory // equinox-tutorial
+        </> "proto" </> "gen" </> "csharp"
+    let lease = genDir </> "Lease.cs"
+    let leaseApi = genDir </> "LeaseApi.cs"
+    let leaseApiGrpc = genDir </> "LeaseApiGrpc.cs"
     let targetDir = __SOURCE_DIRECTORY__ </> "src" </> "Proto"
-    leaseProto |> Shell.copyFile targetDir)
+    [ lease; leaseApi; leaseApiGrpc ]
+    |> List.iter (Shell.copyFile targetDir))
 
 Target.create "BuildProto" (fun _ ->
     let protoProj = __SOURCE_DIRECTORY__ </> "src" </> "Proto" </> "Proto.csproj"
@@ -78,7 +83,7 @@ open Fake.Core.TargetOperators
 "CleanProto"
  ==> "BuildProto"
 
-"CopyProto"
+"CopyGenerated"
  ==> "BuildProto"
 
 "InstallDependencies"

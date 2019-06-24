@@ -4,41 +4,39 @@ open FSharp.UMX
 open System
 
 module EventContext =
-    let create effDate eventId =
-        { EventId = eventId
-          EventEffectiveDate = effDate
-          EventCreatedDate = %DateTime.UtcNow }
+    let create (getUtcNow: unit -> DateTime) =
+        fun effDate eventId ->
+            { EventId = eventId
+              EventCreatedTime = getUtcNow() |> UMX.tag<eventCreatedTime>
+              EventEffectiveDate = effDate }
 
 module StoredEvent =
     let tryToDeletedEvent = function
-        | StoredEvent.EventDeleted payload ->
+        | EventDeleted payload ->
             Some (payload.EventContext.EventCreatedDate, payload.EventId)
         | _ -> None
     let tryToLeaseEvent = function
-        | StoredEvent.EventDeleted _ -> None
-        | StoredEvent.LeaseCreated payload ->
+        | EventDeleted _ -> None
+        | LeaseCreated payload ->
             (payload.EventContext, payload.NewLease)
             |> LeaseEvent.LeaseCreated
             |> Some
-        | StoredEvent.PaymentScheduled payload ->
-            (payload.EventContext, payload.ScheduledAmount)
+        | PaymentScheduled payload ->
+            (payload.EventContext, payload.Payment)
             |> LeaseEvent.PaymentScheduled
             |> Some
-        | StoredEvent.PaymentReceived payload ->
-            (payload.EventContext, payload.ReceivedAmount)
+        | PaymentReceived payload ->
+            (payload.EventContext, payload.Payment)
             |> LeaseEvent.PaymentReceived
             |> Some
-        | StoredEvent.LeaseTerminated payload ->
+        | LeaseTerminated payload ->
             payload.EventContext
             |> LeaseEvent.LeaseTerminated
             |> Some
 
 module LeaseEvent =
-    let getEventType : LeaseEvent -> EventType = function
-        | LeaseEvent.LeaseCreated _ -> %"LeaseCreated"
-        | LeaseEvent.PaymentScheduled _ -> %"PaymentScheduled"
-        | LeaseEvent.PaymentReceived _ -> %"PaymentReceived"
-        | LeaseEvent.LeaseTerminated _ -> %"LeaseTerminated"
+    let getEventType : LeaseEvent -> EventType =
+        Union.toString >> UMX.tag<eventType>
     let getEventEffectiveOrder : LeaseEvent -> EventEffectiveOrder = function
         | LeaseEvent.LeaseCreated _ -> %1
         | LeaseEvent.PaymentScheduled _ -> %2
@@ -52,12 +50,12 @@ module LeaseEvent =
     let getOrder leaseEvent = 
         let ctx = getEventContext leaseEvent
         let effOrder = getEventEffectiveOrder leaseEvent
-        ctx.EventEffectiveDate, effOrder, ctx.EventCreatedDate
+        ctx.EventEffectiveDate, effOrder, ctx.EventCreatedTime
     let asOfOrBefore 
         ({ AsAt = createdDate; AsOn = effDate })
         (effOrderOpt:EventEffectiveOrder option) =
         fun (event:LeaseEvent) ->
-            let { EventCreatedDate = eventCreatedDate
+            let { EventCreatedTime = eventCreatedDate
                   EventEffectiveDate = eventEffectiveDate } = getEventContext event
             let eventEffectiveOrder = getEventEffectiveOrder event
             match effOrderOpt with
@@ -68,16 +66,16 @@ module LeaseEvent =
     let toStoredEvent = function
         | LeaseEvent.LeaseCreated (ctx, newLease) ->
             {| EventContext = ctx; NewLease = newLease |}
-            |> StoredEvent.LeaseCreated
-        | LeaseEvent.PaymentScheduled (ctx, scheduledAmount) ->
-            {| EventContext = ctx; ScheduledAmount = scheduledAmount |}
-            |> StoredEvent.PaymentScheduled
-        | LeaseEvent.PaymentReceived (ctx, receivedAmount) ->
-            {| EventContext = ctx; ReceivedAmount = receivedAmount |}
-            |> StoredEvent.PaymentReceived
+            |> LeaseCreated
+        | LeaseEvent.PaymentScheduled (ctx, payment) ->
+            {| EventContext = ctx; Payment = payment |}
+            |> PaymentScheduled
+        | LeaseEvent.PaymentReceived (ctx, payment) ->
+            {| EventContext = ctx; Payment = payment |}
+            |> PaymentReceived
         | LeaseEvent.LeaseTerminated ctx ->
             {| EventContext = ctx |}
-            |> StoredEvent.LeaseTerminated
+            |> LeaseTerminated
 
 module LeaseObservation =
     let createLease 
@@ -93,17 +91,17 @@ module LeaseObservation =
           AmountDue = 0m<usd>
           LeaseStatus = Outstanding }
     let schedulePayment 
-        (paymentAmount:USD) =
+        (payment:Payment) =
         fun leaseObs ->
-            let totalScheduled = leaseObs.TotalScheduled + paymentAmount
+            let totalScheduled = leaseObs.TotalScheduled + payment.PaymentAmount
             let amountDue = totalScheduled - leaseObs.TotalPaid
             { leaseObs with
                 TotalScheduled = totalScheduled
                 AmountDue = amountDue }
     let receivePayment 
-        (paymentAmount:USD) =
+        (payment:Payment) =
         fun leaseObs ->
-            let totalPaid = leaseObs.TotalPaid + paymentAmount
+            let totalPaid = leaseObs.TotalPaid + payment.PaymentAmount
             let amountDue = leaseObs.TotalScheduled - totalPaid
             { leaseObs with
                 TotalPaid = totalPaid
@@ -113,147 +111,210 @@ module LeaseObservation =
             { leaseObs with
                 LeaseStatus = Terminated }
 
-let observe 
+let evolveLeaseState 
+    (leaseId:LeaseId)
     : LeaseState -> LeaseEvent -> LeaseState =
+    let leaseIdStr = leaseId |> LeaseId.toStringN
     fun state -> function
-        | LeaseEvent.LeaseCreated ({ EventEffectiveDate = effDate }, newLease) ->
-            state
-            |> Result.bind (function
-                | None -> LeaseObservation.createLease effDate newLease |> Some |> Ok
-                | Some _ -> Error "cannot observe LeaseCreated; lease already exists")
-        | LeaseEvent.PaymentScheduled (_, paymentAmount) ->
-            state
-            |> Result.bind(function
-                | None -> Error "cannot observe PaymentScheduled; lease does not exist"
-                | Some leaseObs -> leaseObs |> LeaseObservation.schedulePayment paymentAmount |> Some |> Ok)
-        | LeaseEvent.PaymentReceived (_, paymentAmount) ->
-            state
-            |> Result.bind(function
-                | None -> Error "cannot observe PaymentReceived; lease does not exist"
-                | Some leaseObs -> leaseObs |> LeaseObservation.receivePayment paymentAmount |> Some |> Ok)
-        | LeaseEvent.LeaseTerminated _ ->
-            state
-            |> Result.bind(function
-                | None -> Error "cannot observe LeaseTerminated"
-                | Some leaseObs -> leaseObs |> LeaseObservation.terminateLease |> Some |> Ok)
+        | LeaseEvent.LeaseCreated ({ EventEffectiveDate = effDate }, newLease) as event ->
+            match state with
+            | None -> LeaseObservation.createLease effDate newLease |> Some
+            | Some _ -> failwithf "cannot observe %A; lease-%s already exists" event leaseIdStr
+        | LeaseEvent.PaymentScheduled (_, payment) as event ->
+            match state with
+            | None -> failwithf "cannot observe %A; lease-%s does not exist" event leaseIdStr
+            | Some leaseObs -> 
+                leaseObs 
+                |> LeaseObservation.schedulePayment payment 
+                |> Some
+        | LeaseEvent.PaymentReceived (_, payment) as event ->
+            match state with
+            | None -> failwithf "cannot observe %A; lease-%s does not exist" event leaseIdStr
+            | Some leaseObs -> 
+                leaseObs 
+                |> LeaseObservation.receivePayment payment 
+                |> Some
+        | LeaseEvent.LeaseTerminated _ as event ->
+            match state with
+            | None -> failwithf "cannot observe %A; lease-%s does not exist" event leaseIdStr
+            | Some leaseObs -> 
+                leaseObs 
+                |> LeaseObservation.terminateLease 
+                |> Some
             
-
-module StreamState =
-    let getEffectiveLeaseEvents
-        ({ AsAt = createdDate } as asOfDate)
-        (effOrderOpt:EventEffectiveOrder option) =
+module LeaseStream =
+    let getLeaseEvents
+        (asAt:EventCreatedTime) =
         fun { LeaseEvents = leaseEvents; DeletedEvents = deletedEvents } ->
             let deletedEventIds =
                 deletedEvents
                 |> List.choose (fun (deletedDate, deletedEventId) ->
-                    if deletedDate <= createdDate then Some deletedEventId
+                    if deletedDate <= asAt then Some deletedEventId
                     else None)
             leaseEvents
             |> List.filter (fun leaseEvent ->
                 let { EventId = eventId } = leaseEvent |> LeaseEvent.getEventContext
                 not (deletedEventIds |> List.contains eventId))
+    let getEffectiveLeaseEvents
+        (asOfDate:AsOfDate)
+        (effOrderOpt:EventEffectiveOrder option) =
+        fun (leaseStream:LeaseStream) ->
+            leaseStream
+            |> getLeaseEvents asOfDate.AsAt
             |> List.filter (LeaseEvent.asOfOrBefore asOfDate effOrderOpt)
 
 let reconstitute
+    (leaseId:LeaseId)
     (asOfDate:AsOfDate)
-    (effOrderOpt: EventEffectiveOrder option) =
+    (effOrderOpt: EventEffectiveOrder option) 
+    : LeaseStream -> LeaseState =
     fun streamState ->
         streamState
-        |> StreamState.getEffectiveLeaseEvents asOfDate effOrderOpt
+        |> LeaseStream.getEffectiveLeaseEvents asOfDate effOrderOpt
         |> List.sortBy LeaseEvent.getOrder
-        |> List.fold observe (Ok None)
+        |> List.fold (evolveLeaseState leaseId) None
 
-let decide
-    (command:Command)
-    : StreamState -> Result<unit,string> * StoredEvent list =
-    let ok = Ok ()
-    let success (storedEvent:StoredEvent) = (ok, [storedEvent])
-    let failure msg = (Error msg, [])
-    fun streamState ->
+let interpret
+    (getUtcNow:unit -> DateTime)
+    (leaseId:LeaseId)
+    : Command -> LeaseStream -> StoredEvent list =
+    fun command leaseStream ->
+        let leaseIdStr = leaseId |> LeaseId.toStringN
+        let getAsOfDate (effDate:EventEffectiveDate) =
+            { AsAt = %getUtcNow(); AsOn = effDate }
+        let createEventContext = 
+            EventContext.create getUtcNow
+        let reconstitute' asOfDate effOrderOpt =
+            leaseStream |> reconstitute leaseId asOfDate effOrderOpt
         match command with
         | DeleteEvent eventId ->
             let deletedEventIds =
-                streamState.DeletedEvents
+                leaseStream.DeletedEvents
                 |> List.map (fun (_, eventId) -> eventId)
             if deletedEventIds |> List.contains eventId then
-                sprintf "eventId %d already deleted" eventId |> failure
+                sprintf "lease-%s event-%d already deleted" leaseIdStr eventId
+                |> DuplicateCommandException
+                |> raise
             else
-                {| EventContext = {| EventCreatedDate = %DateTime.UtcNow |} ; EventId = eventId |}
-                |> StoredEvent.EventDeleted
-                |> success
+                {| EventContext = {| EventCreatedDate = %DateTime.UtcNow |}; EventId = eventId |}
+                |> EventDeleted
+                |> List.singleton
         | LeaseCommand leaseCommand ->
             match leaseCommand with
             | CreateLease (effDate, newLease) ->
-                let asOfDate = { AsAt = %DateTime.UtcNow; AsOn = effDate }
-                let ctx = EventContext.create effDate streamState.NextEventId
+                let asOfDate = getAsOfDate effDate
+                let alreadyCreated =
+                    leaseStream
+                    |> LeaseStream.getLeaseEvents asOfDate.AsAt 
+                    |> List.exists (function LeaseEvent.LeaseCreated _ -> true | _ -> false)
+                if alreadyCreated then
+                    sprintf "lease-%s already created" leaseIdStr
+                    |> DuplicateCommandException
+                    |> raise
+                let ctx = createEventContext effDate leaseStream.NextEventId
                 let leaseCreated = LeaseEvent.LeaseCreated (ctx, newLease)
                 let effOrderOpt = leaseCreated |> LeaseEvent.getEventEffectiveOrder |> Some
-                streamState 
-                |> reconstitute asOfDate effOrderOpt
-                |> Result.bind(function
-                    | None -> leaseCreated |> LeaseEvent.toStoredEvent |> Ok
-                    | Some _ -> Error "cannot create lease; lease already exists")
-                |> Result.bimap success failure
-            | SchedulePayment (effDate, paymentAmount) ->
-                let asOfDate = { AsAt = %DateTime.UtcNow; AsOn = effDate }
-                let ctx = EventContext.create effDate streamState.NextEventId
-                let paymentScheduled = LeaseEvent.PaymentScheduled (ctx, paymentAmount)
+                match reconstitute' asOfDate effOrderOpt with
+                | None -> leaseCreated |> LeaseEvent.toStoredEvent |> List.singleton
+                | Some _ -> failwithf "cannot create lease; lease-%s already exists" leaseIdStr
+            | SchedulePayment (effDate, payment) ->
+                let asOfDate = getAsOfDate effDate
+                let alreadyScheduled =
+                    leaseStream
+                    |> LeaseStream.getLeaseEvents asOfDate.AsAt
+                    |> List.choose (function LeaseEvent.PaymentScheduled (_, p) -> Some p.PaymentId | _ -> None)
+                    |> List.exists (fun pid -> pid = payment.PaymentId)
+                if alreadyScheduled then
+                    sprintf "lease-%s payment-%s already scheduled" leaseIdStr (payment.PaymentId |> PaymentId.toStringN)
+                    |> DuplicateCommandException
+                    |> raise
+                let ctx = createEventContext effDate leaseStream.NextEventId
+                let paymentScheduled = LeaseEvent.PaymentScheduled (ctx, payment)
                 let effOrderOpt = paymentScheduled |> LeaseEvent.getEventEffectiveOrder |> Some
-                streamState 
-                |> reconstitute asOfDate effOrderOpt
-                |> Result.bind(function
-                    | None -> Error "cannot schedule payment; lease does not exist" 
-                    | Some { LeaseStatus = leaseStatus } ->
-                        match leaseStatus with
-                        | Terminated -> Error "cannot schedule payment; lease is terminated"
-                        | Outstanding -> paymentScheduled |> LeaseEvent.toStoredEvent |> Ok)
-                |> Result.bimap success failure
-            | ReceivePayment (effDate, paymentAmount) ->
-                let asOfDate = { AsAt = %DateTime.UtcNow; AsOn = effDate }
-                let ctx = EventContext.create effDate streamState.NextEventId
-                let paymentReceived = LeaseEvent.PaymentReceived (ctx, paymentAmount)
+                match reconstitute' asOfDate effOrderOpt with
+                | None -> failwithf "cannot schedule payment; lease-%s does not exist" leaseIdStr
+                | Some { LeaseStatus = leaseStatus } ->
+                    match leaseStatus with
+                    | Terminated -> failwithf "cannot schedule payment; lease-%s is terminated" leaseIdStr
+                    | Outstanding -> paymentScheduled |> LeaseEvent.toStoredEvent |> List.singleton
+            | ReceivePayment (effDate, payment) ->
+                let asOfDate = getAsOfDate effDate
+                let alreadyReceived =
+                    leaseStream
+                    |> LeaseStream.getLeaseEvents asOfDate.AsAt
+                    |> List.choose (function LeaseEvent.PaymentReceived (_, p) -> Some p.PaymentId | _ -> None)
+                    |> List.exists (fun pid -> pid = payment.PaymentId)
+                if alreadyReceived then
+                    sprintf "lease-%s payment-%s already received" leaseIdStr (payment.PaymentId |> PaymentId.toStringN)
+                    |> DuplicateCommandException
+                    |> raise
+                let ctx = createEventContext effDate leaseStream.NextEventId
+                let paymentReceived = LeaseEvent.PaymentReceived (ctx, payment)
                 let effOrderOpt = paymentReceived |> LeaseEvent.getEventEffectiveOrder |> Some
-                streamState 
-                |> reconstitute asOfDate effOrderOpt
-                |> Result.bind (function
-                    | None -> Error "cannot receive payment; lease does not exist" 
-                    | Some _ -> paymentReceived |> LeaseEvent.toStoredEvent |> Ok)
-                |> Result.bimap success failure
+                match reconstitute' asOfDate effOrderOpt with
+                | None -> failwithf "cannot receive payment; lease-%s does not exist" leaseIdStr
+                | Some _ -> paymentReceived |> LeaseEvent.toStoredEvent |> List.singleton
             | TerminateLease effDate ->
-                let asOfDate = { AsAt = %DateTime.UtcNow; AsOn = effDate }
-                let ctx = EventContext.create effDate streamState.NextEventId
+                let asOfDate = getAsOfDate effDate
+                let alreadyTerminated =
+                    leaseStream
+                    |> LeaseStream.getLeaseEvents asOfDate.AsAt
+                    |> List.exists (function LeaseEvent.LeaseTerminated _ -> true | _ -> false)
+                if alreadyTerminated then
+                    sprintf "lease-%s already terminated" leaseIdStr
+                    |> DuplicateCommandException
+                    |> raise
+                let ctx = createEventContext effDate leaseStream.NextEventId
                 let leaseTerminated = LeaseEvent.LeaseTerminated ctx
                 let effOrderOpt = leaseTerminated |> LeaseEvent.getEventEffectiveOrder |> Some
-                streamState 
-                |> reconstitute asOfDate effOrderOpt
-                |> Result.bind (function
-                    | None -> Error "cannot terminate lease; lease does not exist" 
-                    | Some { LeaseStatus = leaseStatus } ->
-                        match leaseStatus with
-                        | Terminated -> Error "cannot terminate lease; lease is already terminated"
-                        | Outstanding -> leaseTerminated |> LeaseEvent.toStoredEvent |> Ok)
-                |> Result.bimap success failure
+                match reconstitute' asOfDate effOrderOpt with
+                | None -> failwithf "cannot terminate lease; lease-%s does not exist" leaseIdStr
+                | Some { LeaseStatus = leaseStatus } ->
+                    match leaseStatus with
+                    | Terminated -> failwithf "cannot terminate lease; lease-%s is already terminated" leaseIdStr
+                    | Outstanding -> leaseTerminated |> LeaseEvent.toStoredEvent |> List.singleton
 
-let evolve
-    : StreamState -> StoredEvent -> StreamState =
-    fun streamState storedEvent ->
+let evolveLeaseStream
+    : LeaseStream -> StoredEvent -> LeaseStream =
+    fun leaseStream storedEvent ->
         let (|DeletedEvent|_|) = StoredEvent.tryToDeletedEvent
         let (|LeaseEvent|_|) = StoredEvent.tryToLeaseEvent
         match storedEvent with
         | DeletedEvent deletedEvent ->
-            { streamState with
-                DeletedEvents = deletedEvent :: streamState.DeletedEvents }
+            { leaseStream with
+                DeletedEvents = deletedEvent :: leaseStream.DeletedEvents }
         | LeaseEvent leaseEvent ->
-            { streamState with
-                NextEventId = streamState.NextEventId + 1<eventId>
-                LeaseEvents = leaseEvent :: streamState.LeaseEvents }
-        | _ -> streamState
+            { leaseStream with
+                NextEventId = leaseStream.NextEventId + 1<eventId>
+                LeaseEvents = leaseEvent :: leaseStream.LeaseEvents }
+        | _ -> leaseStream
 
-let fold
-    : StreamState -> seq<StoredEvent> -> StreamState =
-    Seq.fold evolve
+let foldLeaseStream
+    : LeaseStream -> seq<StoredEvent> -> LeaseStream =
+    Seq.fold evolveLeaseStream
 
-let initialState =
+let initialLeaseStream =
     { NextEventId = 1<eventId>
       LeaseEvents = []
       DeletedEvents = [] }
+
+let evolveLeaseCreatedList
+    : LeaseCreatedList -> StoredEvent -> LeaseCreatedList =
+    fun leaseCreatedList storedEvent ->
+        let (|LeaseEvent|_|) = StoredEvent.tryToLeaseEvent
+        let (|DeletedEvent|_|) = StoredEvent.tryToDeletedEvent
+        match storedEvent with
+        | LeaseEvent leaseEvent ->
+            match leaseEvent with
+            | LeaseEvent.LeaseCreated (ctx, newLease) ->
+                (ctx, newLease) :: leaseCreatedList
+            | _ -> leaseCreatedList
+        | DeletedEvent (_, deletedEventId) ->
+            leaseCreatedList
+            |> List.filter (fun (ctx, _) -> ctx.EventId <> deletedEventId)
+        | _ -> leaseCreatedList
+
+let foldLeaseCreatedList
+    : LeaseCreatedList -> seq<StoredEvent> -> LeaseCreatedList =
+    fun leaseCreatedList storedEvents ->
+        storedEvents |> Seq.fold evolveLeaseCreatedList leaseCreatedList

@@ -2,7 +2,7 @@ namespace Lease
 
 open FSharp.UMX
 open Google.Protobuf.WellKnownTypes
-open SimpleType
+open Microsoft.FSharp.Reflection
 open System
 open System.Text
 
@@ -49,10 +49,10 @@ module Int =
         | (true, i) -> Some i
         | _ -> None
 
-type Entity = private Entity of String50
-module Entity =
-    let value (Entity entity) = entity |> String50.value
-    let create entity = entity |> String50.create |> Result.map Entity
+module Union =
+    let toString (x:'a) = 
+        match FSharpValue.GetUnionFields(x, typeof<'a>) with
+        | case, _ -> case.Name
 
 [<Measure>] type month
 
@@ -91,14 +91,8 @@ type EventEffectiveDate = DateTime<eventEffectiveDate>
 [<Measure>] type eventEffectiveOrder
 type EventEffectiveOrder = int<eventEffectiveOrder>
 
-[<Measure>] type eventCreatedDate
-type EventCreatedDate = DateTime<eventCreatedDate>
-
-[<Measure>] type asOnDate
-type AsOnDate = DateTime<asOnDate>
-
-[<Measure>] type asAtDate
-type AsAtDate = DateTime<asAtDate>
+[<Measure>] type eventCreatedTime
+type EventCreatedTime = DateTime<eventCreatedTime>
 
 [<Measure>] type leaseStartDate
 type LeaseStartDate = DateTime<leaseStartDate>

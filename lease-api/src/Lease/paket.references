@@ -1,10 +1,8 @@
 Equinox
 Equinox.EventStore
 FSharp.UMX
+FsConfig
 Grpc.HealthCheck
 Jet.JsonNet.Converters
 Serilog
 Serilog.Sinks.Console
-File:Result.fs
-File:SimpleType.fs
-File:Env.fs
