@@ -33,34 +33,31 @@ namespace Tutorial.Lease.V1 {
             "GAIgASgJEiUKCnN0YXJ0X2RhdGUYAyABKAsyES5nb29nbGUudHlwZS5EYXRl",
             "EigKDW1hdHVyaXR5X2RhdGUYBCABKAsyES5nb29nbGUudHlwZS5EYXRlEjIK",
             "Fm1vbnRobHlfcGF5bWVudF9hbW91bnQYBSABKAsyEi5nb29nbGUudHlwZS5N",
-            "b25leSJ5CghOZXdMZWFzZRIPCgd1c2VyX2lkGAEgASgJEigKDW1hdHVyaXR5",
-            "X2RhdGUYAyABKAsyES5nb29nbGUudHlwZS5EYXRlEjIKFm1vbnRobHlfcGF5",
-            "bWVudF9hbW91bnQYBCABKAsyEi5nb29nbGUudHlwZS5Nb25leSJJCgdQYXlt",
-            "ZW50EhIKCnBheW1lbnRfaWQYASABKAkSKgoOcGF5bWVudF9hbW91bnQYAiAB",
-            "KAsyEi5nb29nbGUudHlwZS5Nb25leSKbAQoKTGVhc2VFdmVudBIQCghldmVu",
-            "dF9pZBgBIAEoBRI2ChJldmVudF9jcmVhdGVkX3RpbWUYAiABKAsyGi5nb29n",
-            "bGUucHJvdG9idWYuVGltZXN0YW1wEi8KFGV2ZW50X2VmZmVjdGl2ZV9kYXRl",
-            "GAMgASgLMhEuZ29vZ2xlLnR5cGUuRGF0ZRISCgpldmVudF90eXBlGAQgASgJ",
-            "IpsCChBMZWFzZU9ic2VydmF0aW9uEisKEG9ic2VydmF0aW9uX2RhdGUYASAB",
-            "KAsyES5nb29nbGUudHlwZS5EYXRlEicKBWxlYXNlGAIgASgLMhgudHV0b3Jp",
-            "YWwubGVhc2UudjEuTGVhc2USKwoPdG90YWxfc2NoZWR1bGVkGAMgASgLMhIu",
-            "Z29vZ2xlLnR5cGUuTW9uZXkSJgoKdG90YWxfcGFpZBgEIAEoCzISLmdvb2ds",
-            "ZS50eXBlLk1vbmV5EiYKCmFtb3VudF9kdWUYBSABKAsyEi5nb29nbGUudHlw",
-            "ZS5Nb25leRI0CgxsZWFzZV9zdGF0dXMYBiABKA4yHi50dXRvcmlhbC5sZWFz",
-            "ZS52MS5MZWFzZVN0YXR1cypiCgtMZWFzZVN0YXR1cxIYChRMRUFTRV9TVEFU",
-            "VVNfSU5WQUxJRBAAEhwKGExFQVNFX1NUQVRVU19PVVRTVEFORElORxABEhsK",
-            "F0xFQVNFX1NUQVRVU19URVJNSU5BVEVEEAJCXAoVY29tLnR1dG9yaWFsLmxl",
-            "YXNlLnYxQgpMZWFzZVByb3RvUAFaB2xlYXNldjGiAgNUTFiqAhFUdXRvcmlh",
-            "bC5MZWFzZS5WMcoCEVR1dG9yaWFsXExlYXNlXFYxYgZwcm90bzM="));
+            "b25leSJyCgdQYXltZW50EhIKCnBheW1lbnRfaWQYASABKAkSJwoMcGF5bWVu",
+            "dF9kYXRlGAIgASgLMhEuZ29vZ2xlLnR5cGUuRGF0ZRIqCg5wYXltZW50X2Ft",
+            "b3VudBgDIAEoCzISLmdvb2dsZS50eXBlLk1vbmV5IpsBCgpMZWFzZUV2ZW50",
+            "EhAKCGV2ZW50X2lkGAEgASgFEjYKEmV2ZW50X2NyZWF0ZWRfdGltZRgCIAEo",
+            "CzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLwoUZXZlbnRfZWZmZWN0",
+            "aXZlX2RhdGUYAyABKAsyES5nb29nbGUudHlwZS5EYXRlEhIKCmV2ZW50X3R5",
+            "cGUYBCABKAki7gEKEExlYXNlT2JzZXJ2YXRpb24SJwoFbGVhc2UYASABKAsy",
+            "GC50dXRvcmlhbC5sZWFzZS52MS5MZWFzZRIrCg90b3RhbF9zY2hlZHVsZWQY",
+            "AiABKAsyEi5nb29nbGUudHlwZS5Nb25leRImCgp0b3RhbF9wYWlkGAMgASgL",
+            "MhIuZ29vZ2xlLnR5cGUuTW9uZXkSJgoKYW1vdW50X2R1ZRgEIAEoCzISLmdv",
+            "b2dsZS50eXBlLk1vbmV5EjQKDGxlYXNlX3N0YXR1cxgFIAEoDjIeLnR1dG9y",
+            "aWFsLmxlYXNlLnYxLkxlYXNlU3RhdHVzKmIKC0xlYXNlU3RhdHVzEhgKFExF",
+            "QVNFX1NUQVRVU19JTlZBTElEEAASHAoYTEVBU0VfU1RBVFVTX09VVFNUQU5E",
+            "SU5HEAESGwoXTEVBU0VfU1RBVFVTX1RFUk1JTkFURUQQAkJcChVjb20udHV0",
+            "b3JpYWwubGVhc2UudjFCCkxlYXNlUHJvdG9QAVoHbGVhc2V2MaICA1RMWKoC",
+            "EVR1dG9yaWFsLkxlYXNlLlYxygIRVHV0b3JpYWxcTGVhc2VcVjFiBnByb3Rv",
+            "Mw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, global::Google.Type.DateReflection.Descriptor, global::Google.Type.MoneyReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Tutorial.Lease.V1.LeaseStatus), }, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.AsOfDate), global::Tutorial.Lease.V1.AsOfDate.Parser, new[]{ "AsAtTime", "AsOnDate" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.Lease), global::Tutorial.Lease.V1.Lease.Parser, new[]{ "LeaseId", "UserId", "StartDate", "MaturityDate", "MonthlyPaymentAmount" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.NewLease), global::Tutorial.Lease.V1.NewLease.Parser, new[]{ "UserId", "MaturityDate", "MonthlyPaymentAmount" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.Payment), global::Tutorial.Lease.V1.Payment.Parser, new[]{ "PaymentId", "PaymentAmount" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.Payment), global::Tutorial.Lease.V1.Payment.Parser, new[]{ "PaymentId", "PaymentDate", "PaymentAmount" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.LeaseEvent), global::Tutorial.Lease.V1.LeaseEvent.Parser, new[]{ "EventId", "EventCreatedTime", "EventEffectiveDate", "EventType" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.LeaseObservation), global::Tutorial.Lease.V1.LeaseObservation.Parser, new[]{ "ObservationDate", "Lease", "TotalScheduled", "TotalPaid", "AmountDue", "LeaseStatus" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.LeaseObservation), global::Tutorial.Lease.V1.LeaseObservation.Parser, new[]{ "Lease", "TotalScheduled", "TotalPaid", "AmountDue", "LeaseStatus" }, null, null, null)
           }));
     }
     #endregion
@@ -252,7 +249,7 @@ namespace Tutorial.Lease.V1 {
   }
 
   /// <summary>
-  /// Lease that has been created.
+  /// Lease static information.
   /// </summary>
   public sealed partial class Lease : pb::IMessage<Lease> {
     private static readonly pb::MessageParser<Lease> _parser = new pb::MessageParser<Lease>(() => new Lease());
@@ -514,206 +511,6 @@ namespace Tutorial.Lease.V1 {
   }
 
   /// <summary>
-  /// Payload to create a new lease.
-  /// </summary>
-  public sealed partial class NewLease : pb::IMessage<NewLease> {
-    private static readonly pb::MessageParser<NewLease> _parser = new pb::MessageParser<NewLease>(() => new NewLease());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<NewLease> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Lease.V1.LeaseReflection.Descriptor.MessageTypes[2]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public NewLease() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public NewLease(NewLease other) : this() {
-      userId_ = other.userId_;
-      maturityDate_ = other.maturityDate_ != null ? other.maturityDate_.Clone() : null;
-      monthlyPaymentAmount_ = other.monthlyPaymentAmount_ != null ? other.monthlyPaymentAmount_.Clone() : null;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public NewLease Clone() {
-      return new NewLease(this);
-    }
-
-    /// <summary>Field number for the "user_id" field.</summary>
-    public const int UserIdFieldNumber = 1;
-    private string userId_ = "";
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string UserId {
-      get { return userId_; }
-      set {
-        userId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    /// <summary>Field number for the "maturity_date" field.</summary>
-    public const int MaturityDateFieldNumber = 3;
-    private global::Google.Type.Date maturityDate_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Type.Date MaturityDate {
-      get { return maturityDate_; }
-      set {
-        maturityDate_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "monthly_payment_amount" field.</summary>
-    public const int MonthlyPaymentAmountFieldNumber = 4;
-    private global::Google.Type.Money monthlyPaymentAmount_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Type.Money MonthlyPaymentAmount {
-      get { return monthlyPaymentAmount_; }
-      set {
-        monthlyPaymentAmount_ = value;
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override bool Equals(object other) {
-      return Equals(other as NewLease);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(NewLease other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (UserId != other.UserId) return false;
-      if (!object.Equals(MaturityDate, other.MaturityDate)) return false;
-      if (!object.Equals(MonthlyPaymentAmount, other.MonthlyPaymentAmount)) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (UserId.Length != 0) hash ^= UserId.GetHashCode();
-      if (maturityDate_ != null) hash ^= MaturityDate.GetHashCode();
-      if (monthlyPaymentAmount_ != null) hash ^= MonthlyPaymentAmount.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void WriteTo(pb::CodedOutputStream output) {
-      if (UserId.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(UserId);
-      }
-      if (maturityDate_ != null) {
-        output.WriteRawTag(26);
-        output.WriteMessage(MaturityDate);
-      }
-      if (monthlyPaymentAmount_ != null) {
-        output.WriteRawTag(34);
-        output.WriteMessage(MonthlyPaymentAmount);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int CalculateSize() {
-      int size = 0;
-      if (UserId.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(UserId);
-      }
-      if (maturityDate_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(MaturityDate);
-      }
-      if (monthlyPaymentAmount_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(MonthlyPaymentAmount);
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(NewLease other) {
-      if (other == null) {
-        return;
-      }
-      if (other.UserId.Length != 0) {
-        UserId = other.UserId;
-      }
-      if (other.maturityDate_ != null) {
-        if (maturityDate_ == null) {
-          MaturityDate = new global::Google.Type.Date();
-        }
-        MaturityDate.MergeFrom(other.MaturityDate);
-      }
-      if (other.monthlyPaymentAmount_ != null) {
-        if (monthlyPaymentAmount_ == null) {
-          MonthlyPaymentAmount = new global::Google.Type.Money();
-        }
-        MonthlyPaymentAmount.MergeFrom(other.MonthlyPaymentAmount);
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(pb::CodedInputStream input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 10: {
-            UserId = input.ReadString();
-            break;
-          }
-          case 26: {
-            if (maturityDate_ == null) {
-              MaturityDate = new global::Google.Type.Date();
-            }
-            input.ReadMessage(MaturityDate);
-            break;
-          }
-          case 34: {
-            if (monthlyPaymentAmount_ == null) {
-              MonthlyPaymentAmount = new global::Google.Type.Money();
-            }
-            input.ReadMessage(MonthlyPaymentAmount);
-            break;
-          }
-        }
-      }
-    }
-
-  }
-
-  /// <summary>
   /// Scheduled or received payment.
   /// </summary>
   public sealed partial class Payment : pb::IMessage<Payment> {
@@ -724,7 +521,7 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Lease.V1.LeaseReflection.Descriptor.MessageTypes[3]; }
+      get { return global::Tutorial.Lease.V1.LeaseReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -742,6 +539,7 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Payment(Payment other) : this() {
       paymentId_ = other.paymentId_;
+      paymentDate_ = other.paymentDate_ != null ? other.paymentDate_.Clone() : null;
       paymentAmount_ = other.paymentAmount_ != null ? other.paymentAmount_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -762,8 +560,19 @@ namespace Tutorial.Lease.V1 {
       }
     }
 
+    /// <summary>Field number for the "payment_date" field.</summary>
+    public const int PaymentDateFieldNumber = 2;
+    private global::Google.Type.Date paymentDate_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Type.Date PaymentDate {
+      get { return paymentDate_; }
+      set {
+        paymentDate_ = value;
+      }
+    }
+
     /// <summary>Field number for the "payment_amount" field.</summary>
-    public const int PaymentAmountFieldNumber = 2;
+    public const int PaymentAmountFieldNumber = 3;
     private global::Google.Type.Money paymentAmount_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Type.Money PaymentAmount {
@@ -787,6 +596,7 @@ namespace Tutorial.Lease.V1 {
         return true;
       }
       if (PaymentId != other.PaymentId) return false;
+      if (!object.Equals(PaymentDate, other.PaymentDate)) return false;
       if (!object.Equals(PaymentAmount, other.PaymentAmount)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -795,6 +605,7 @@ namespace Tutorial.Lease.V1 {
     public override int GetHashCode() {
       int hash = 1;
       if (PaymentId.Length != 0) hash ^= PaymentId.GetHashCode();
+      if (paymentDate_ != null) hash ^= PaymentDate.GetHashCode();
       if (paymentAmount_ != null) hash ^= PaymentAmount.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -813,8 +624,12 @@ namespace Tutorial.Lease.V1 {
         output.WriteRawTag(10);
         output.WriteString(PaymentId);
       }
-      if (paymentAmount_ != null) {
+      if (paymentDate_ != null) {
         output.WriteRawTag(18);
+        output.WriteMessage(PaymentDate);
+      }
+      if (paymentAmount_ != null) {
+        output.WriteRawTag(26);
         output.WriteMessage(PaymentAmount);
       }
       if (_unknownFields != null) {
@@ -827,6 +642,9 @@ namespace Tutorial.Lease.V1 {
       int size = 0;
       if (PaymentId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(PaymentId);
+      }
+      if (paymentDate_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(PaymentDate);
       }
       if (paymentAmount_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(PaymentAmount);
@@ -844,6 +662,12 @@ namespace Tutorial.Lease.V1 {
       }
       if (other.PaymentId.Length != 0) {
         PaymentId = other.PaymentId;
+      }
+      if (other.paymentDate_ != null) {
+        if (paymentDate_ == null) {
+          PaymentDate = new global::Google.Type.Date();
+        }
+        PaymentDate.MergeFrom(other.PaymentDate);
       }
       if (other.paymentAmount_ != null) {
         if (paymentAmount_ == null) {
@@ -867,6 +691,13 @@ namespace Tutorial.Lease.V1 {
             break;
           }
           case 18: {
+            if (paymentDate_ == null) {
+              PaymentDate = new global::Google.Type.Date();
+            }
+            input.ReadMessage(PaymentDate);
+            break;
+          }
+          case 26: {
             if (paymentAmount_ == null) {
               PaymentAmount = new global::Google.Type.Money();
             }
@@ -890,7 +721,7 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Lease.V1.LeaseReflection.Descriptor.MessageTypes[4]; }
+      get { return global::Tutorial.Lease.V1.LeaseReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1118,7 +949,7 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Lease.V1.LeaseReflection.Descriptor.MessageTypes[5]; }
+      get { return global::Tutorial.Lease.V1.LeaseReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1135,7 +966,6 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public LeaseObservation(LeaseObservation other) : this() {
-      observationDate_ = other.observationDate_ != null ? other.observationDate_.Clone() : null;
       lease_ = other.lease_ != null ? other.lease_.Clone() : null;
       totalScheduled_ = other.totalScheduled_ != null ? other.totalScheduled_.Clone() : null;
       totalPaid_ = other.totalPaid_ != null ? other.totalPaid_.Clone() : null;
@@ -1149,19 +979,8 @@ namespace Tutorial.Lease.V1 {
       return new LeaseObservation(this);
     }
 
-    /// <summary>Field number for the "observation_date" field.</summary>
-    public const int ObservationDateFieldNumber = 1;
-    private global::Google.Type.Date observationDate_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Type.Date ObservationDate {
-      get { return observationDate_; }
-      set {
-        observationDate_ = value;
-      }
-    }
-
     /// <summary>Field number for the "lease" field.</summary>
-    public const int LeaseFieldNumber = 2;
+    public const int LeaseFieldNumber = 1;
     private global::Tutorial.Lease.V1.Lease lease_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Tutorial.Lease.V1.Lease Lease {
@@ -1172,7 +991,7 @@ namespace Tutorial.Lease.V1 {
     }
 
     /// <summary>Field number for the "total_scheduled" field.</summary>
-    public const int TotalScheduledFieldNumber = 3;
+    public const int TotalScheduledFieldNumber = 2;
     private global::Google.Type.Money totalScheduled_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Type.Money TotalScheduled {
@@ -1183,7 +1002,7 @@ namespace Tutorial.Lease.V1 {
     }
 
     /// <summary>Field number for the "total_paid" field.</summary>
-    public const int TotalPaidFieldNumber = 4;
+    public const int TotalPaidFieldNumber = 3;
     private global::Google.Type.Money totalPaid_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Type.Money TotalPaid {
@@ -1194,7 +1013,7 @@ namespace Tutorial.Lease.V1 {
     }
 
     /// <summary>Field number for the "amount_due" field.</summary>
-    public const int AmountDueFieldNumber = 5;
+    public const int AmountDueFieldNumber = 4;
     private global::Google.Type.Money amountDue_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Type.Money AmountDue {
@@ -1205,7 +1024,7 @@ namespace Tutorial.Lease.V1 {
     }
 
     /// <summary>Field number for the "lease_status" field.</summary>
-    public const int LeaseStatusFieldNumber = 6;
+    public const int LeaseStatusFieldNumber = 5;
     private global::Tutorial.Lease.V1.LeaseStatus leaseStatus_ = 0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Tutorial.Lease.V1.LeaseStatus LeaseStatus {
@@ -1228,7 +1047,6 @@ namespace Tutorial.Lease.V1 {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (!object.Equals(ObservationDate, other.ObservationDate)) return false;
       if (!object.Equals(Lease, other.Lease)) return false;
       if (!object.Equals(TotalScheduled, other.TotalScheduled)) return false;
       if (!object.Equals(TotalPaid, other.TotalPaid)) return false;
@@ -1240,7 +1058,6 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (observationDate_ != null) hash ^= ObservationDate.GetHashCode();
       if (lease_ != null) hash ^= Lease.GetHashCode();
       if (totalScheduled_ != null) hash ^= TotalScheduled.GetHashCode();
       if (totalPaid_ != null) hash ^= TotalPaid.GetHashCode();
@@ -1259,28 +1076,24 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (observationDate_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(ObservationDate);
-      }
       if (lease_ != null) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(10);
         output.WriteMessage(Lease);
       }
       if (totalScheduled_ != null) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(18);
         output.WriteMessage(TotalScheduled);
       }
       if (totalPaid_ != null) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(26);
         output.WriteMessage(TotalPaid);
       }
       if (amountDue_ != null) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(34);
         output.WriteMessage(AmountDue);
       }
       if (LeaseStatus != 0) {
-        output.WriteRawTag(48);
+        output.WriteRawTag(40);
         output.WriteEnum((int) LeaseStatus);
       }
       if (_unknownFields != null) {
@@ -1291,9 +1104,6 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (observationDate_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ObservationDate);
-      }
       if (lease_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Lease);
       }
@@ -1319,12 +1129,6 @@ namespace Tutorial.Lease.V1 {
     public void MergeFrom(LeaseObservation other) {
       if (other == null) {
         return;
-      }
-      if (other.observationDate_ != null) {
-        if (observationDate_ == null) {
-          ObservationDate = new global::Google.Type.Date();
-        }
-        ObservationDate.MergeFrom(other.ObservationDate);
       }
       if (other.lease_ != null) {
         if (lease_ == null) {
@@ -1365,41 +1169,34 @@ namespace Tutorial.Lease.V1 {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            if (observationDate_ == null) {
-              ObservationDate = new global::Google.Type.Date();
-            }
-            input.ReadMessage(ObservationDate);
-            break;
-          }
-          case 18: {
             if (lease_ == null) {
               Lease = new global::Tutorial.Lease.V1.Lease();
             }
             input.ReadMessage(Lease);
             break;
           }
-          case 26: {
+          case 18: {
             if (totalScheduled_ == null) {
               TotalScheduled = new global::Google.Type.Money();
             }
             input.ReadMessage(TotalScheduled);
             break;
           }
-          case 34: {
+          case 26: {
             if (totalPaid_ == null) {
               TotalPaid = new global::Google.Type.Money();
             }
             input.ReadMessage(TotalPaid);
             break;
           }
-          case 42: {
+          case 34: {
             if (amountDue_ == null) {
               AmountDue = new global::Google.Type.Money();
             }
             input.ReadMessage(AmountDue);
             break;
           }
-          case 48: {
+          case 40: {
             LeaseStatus = (global::Tutorial.Lease.V1.LeaseStatus) input.ReadEnum();
             break;
           }

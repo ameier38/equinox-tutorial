@@ -62,13 +62,11 @@ message ListLeaseEventsResponse {
 }
 
 message CreateLeaseRequest {
-  google.type.Date effective_date = 1;
-  NewLease lease = 2;
+  Lease lease = 1;
 }
 
 message CreateLeaseResponse {
-  string lease_id = 1;
-  string message = 2;
+  string message = 1;
 }
 
 message TerminateLeaseRequest {
@@ -80,8 +78,7 @@ message TerminateLeaseResponse {
 }
 
 message SchedulePaymentRequest {
-  google.type.Date effective_date = 1;
-  Payment payment = 2;
+  Payment payment = 1;
 }
 
 message SchedulePaymentResponse {

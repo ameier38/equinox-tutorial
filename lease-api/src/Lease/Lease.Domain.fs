@@ -2,9 +2,6 @@ namespace Lease
 
 open System
 
-type DuplicateCommandException (msg:string) =
-    inherit Exception(msg)
-
 type AsOfDate =
     { AsAt: EventCreatedTime
       AsOn: EventEffectiveDate }
@@ -14,9 +11,10 @@ type EventContext =
       EventCreatedTime: EventCreatedTime
       EventEffectiveDate: EventEffectiveDate }
 
-type NewLease =
+type Lease =
     { LeaseId: LeaseId
       UserId: UserId
+      StartDate: LeaseStartDate
       MaturityDate: LeaseMaturityDate
       MonthlyPaymentAmount: MonthlyPaymentAmount }
 
@@ -29,7 +27,7 @@ type Payment =
       PaymentAmount: USD }
 
 type LeaseCommand =
-    | CreateLease of EventEffectiveDate * NewLease
+    | CreateLease of EventEffectiveDate * Lease
     | SchedulePayment of EventEffectiveDate * Payment
     | ReceivePayment of EventEffectiveDate * Payment
     | TerminateLease of EventEffectiveDate
@@ -39,25 +37,21 @@ type Command =
     | DeleteEvent of EventId
 
 type LeaseEvent =
-    | LeaseCreated of EventContext * NewLease
+    | LeaseCreated of EventContext * Lease
     | PaymentScheduled of EventContext * Payment
     | PaymentReceived of EventContext * Payment
     | LeaseTerminated of EventContext
 
 type StoredEvent =
     | EventDeleted of {| EventContext: {| EventCreatedDate: EventCreatedTime |}; EventId: EventId |}
-    | LeaseCreated of {| EventContext: EventContext; NewLease: NewLease |}
+    | LeaseCreated of {| EventContext: EventContext; Lease: Lease |}
     | PaymentScheduled of {| EventContext: EventContext; Payment: Payment |}
     | PaymentReceived of {| EventContext: EventContext; Payment: Payment |}
     | LeaseTerminated of {| EventContext: EventContext |}
     interface TypeShape.UnionContract.IUnionContract
 
 type LeaseObservation =
-    { LeaseId: LeaseId
-      UserId: UserId
-      StartDate: LeaseStartDate
-      MaturityDate: LeaseMaturityDate
-      MonthlyPaymentAmount: MonthlyPaymentAmount
+    { Lease: Lease
       TotalScheduled: USD
       TotalPaid: USD
       AmountDue: USD
@@ -70,6 +64,6 @@ type LeaseStream =
       LeaseEvents: LeaseEvent list
       DeletedEvents: (EventCreatedTime * EventId) list }
 
-type LeaseList = (EventContext * NewLease) list
+type LeaseList = (EventContext * Lease) list
 
 type LeaseEventList = LeaseEvent list

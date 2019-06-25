@@ -1,6 +1,7 @@
 namespace Lease
 
 open FSharp.UMX
+open Grpc.Core
 open Microsoft.FSharp.Reflection
 open System
 open System.Text
@@ -84,7 +85,10 @@ module Money =
     let toUSD (money:Google.Type.Money) =
         match money.CurrencyCode with
         | "USD" -> money.DecimalValue |> UMX.tag<usd>
-        | currCode -> failwithf "%s is not a supported currency code" currCode
+        | currCode -> 
+            let msg = sprintf "%s is not a supported currency code" currCode
+            RpcException(Status(StatusCode.InvalidArgument, msg))
+            |> raise
     let create units nanos =
         Google.Type.Money(Units = units, Nanos = nanos, CurrencyCode = "USD")
     let fromUSD (d:USD) =
@@ -96,18 +100,27 @@ module UserId =
     let parse (x:string) : UserId = 
         match Guid.tryParse x with
         | Some userId -> %userId
-        | None -> failwithf "could not parse %s into UserId" x
+        | None -> 
+            let msg = sprintf "could not parse %s into UserId" x
+            RpcException(Status(StatusCode.InvalidArgument, msg))
+            |> raise
 
 module LeaseId = 
     let toStringN (value:LeaseId) = Guid.toStringN %value
     let parse (x:string) : LeaseId = 
         match Guid.tryParse x with
         | Some leaseId -> %leaseId
-        | None -> failwithf "could not parse %s into LeaseId" x
+        | None -> 
+            let msg = sprintf "could not parse %s into LeaseId" x
+            RpcException(Status(StatusCode.InvalidArgument, msg))
+            |> raise
 
 module PaymentId = 
     let toStringN (value: PaymentId) = Guid.toStringN %value
     let parse (x:string) : PaymentId = 
         match Guid.tryParse x with
         | Some paymentId -> %paymentId
-        | None -> failwithf "could not parse %s into PaymentId" x
+        | None -> 
+            let msg = sprintf "could not parse %s into PaymentId" x
+            RpcException(Status(StatusCode.InvalidArgument, msg))
+            |> raise

@@ -17,7 +17,7 @@ type Store(config:Config) =
     let cache = Caching.Cache ("ES", 20)
     let strategy = ConnectionStrategy.ClusterTwinPreferSlaveReads
     let conn = 
-        connector.Establish("lease", Discovery.Uri config.EventStore.Uri, strategy)
+        connector.Establish("lease", Discovery.Uri config.EventStore.DiscoveryUri, strategy)
         |> Async.RunSynchronously
     let gateway = Context(conn, BatchingPolicy(maxBatchSize=500))
 

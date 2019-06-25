@@ -45,4 +45,7 @@ Target.create "Test" ignore
  ==> "Compile"
  ==> "Test"
 
+"Test"
+ ==> "Generate"
+
 Target.runOrDefault "Default"

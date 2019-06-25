@@ -1,5 +1,6 @@
 module Lease.Service
 
+open Lease
 open Lease.Store
 open FSharp.UMX
 open Grpc.Core
@@ -39,11 +40,19 @@ module AsOfDate =
         { AsAt = %proto.AsAtTime.ToDateTime()
           AsOn = %proto.AsOnDate.ToDateTime() }
 
-module NewLease =
-    let fromProto leaseId (proto:Tutorial.Lease.V1.NewLease) =
+module Lease =
+    let toProto (lease:Lease) =
+        Tutorial.Lease.V1.Lease(
+            LeaseId = (lease.LeaseId |> LeaseId.toStringN),
+            UserId = (lease.UserId |> UserId.toStringN),
+            StartDate = !@lease.StartDate,
+            MaturityDate = !@lease.MaturityDate,
+            MonthlyPaymentAmount = !!lease.MonthlyPaymentAmount)
+    let fromProto (proto:Tutorial.Lease.V1.Lease) =
         let userId = proto.UserId |> UserId.parse
-        { LeaseId = leaseId
+        { LeaseId = proto.LeaseId |> LeaseId.parse
           UserId = userId
+          StartDate = proto.StartDate.ToDateTime() |> UMX.tag<leaseStartDate>
           MaturityDate = proto.MaturityDate.ToDateTime() |> UMX.tag<leaseMaturityDate>
           MonthlyPaymentAmount = proto.MonthlyPaymentAmount.DecimalValue |> UMX.tag<usd/month> }
 
@@ -71,16 +80,9 @@ module LeaseStatus =
         | Terminated -> Tutorial.Lease.V1.LeaseStatus.Terminated
 
 module LeaseObservation =
-    let toProto (obsDate:EventEffectiveDate) (leaseObs:LeaseObservation) =
-        let lease = 
-            Tutorial.Lease.V1.Lease(
-                LeaseId = (leaseObs.LeaseId |> LeaseId.toStringN),
-                UserId = (leaseObs.UserId |> UserId.toStringN),
-                StartDate = !@leaseObs.StartDate,
-                MaturityDate = !@leaseObs.MaturityDate,
-                MonthlyPaymentAmount = !!leaseObs.MonthlyPaymentAmount)
+    let toProto (leaseObs:LeaseObservation) =
+        let lease = leaseObs.Lease |> Lease.toProto
         Tutorial.Lease.V1.LeaseObservation(
-            ObservationDate = !@obsDate,
             Lease = lease,
             TotalScheduled = !!leaseObs.TotalScheduled,
             TotalPaid = !!leaseObs.TotalPaid,
@@ -117,11 +119,24 @@ type LeaseAPIImpl
 
     override __.ListLeases(req:Tutorial.Lease.V1.ListLeasesRequest, ctx:ServerCallContext) 
         : Task<Tutorial.Lease.V1.ListLeasesResponse> =
-        ""
+        async {
+            let asOfDate = req.AsOfDate |> AsOfDate.fromProto
+            let! leases = listLeases asOfDate
+            let res = Tutorial.Lease.V1.ListLeasesResponse()
+            res.Leases.AddRange(leases |> List.map Lease.toProto)
+            return res
+        } |> Async.StartAsTask
 
     override __.ListLeaseEvents(req:Tutorial.Lease.V1.ListLeaseEventsRequest, ctx:ServerCallContext) 
         : Task<Tutorial.Lease.V1.ListLeaseEventsResponse> =
-        ""
+        async {
+            let asOfDate = req.AsOfDate |> AsOfDate.fromProto
+            let leaseId = req.LeaseId |> LeaseId.parse
+            let! leaseEvents = listLeaseEvents leaseId asOfDate
+            let res = Tutorial.Lease.V1.ListLeaseEventsResponse()
+            res.Events.AddRange(leaseEvents |> List.map LeaseEvent.toProto)
+            return res
+        } |> Async.StartAsTask
     
     override __.GetLease(req:Tutorial.Lease.V1.GetLeaseRequest, ctx:ServerCallContext) 
         : Task<Tutorial.Lease.V1.GetLeaseResponse> =

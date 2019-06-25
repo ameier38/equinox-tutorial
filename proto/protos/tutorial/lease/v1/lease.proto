@@ -27,7 +27,7 @@ message AsOfDate {
   google.type.Date as_on_date = 2;
 }
 
-// Lease that has been created.
+// Lease static information.
 message Lease {
   string lease_id = 1;
   string user_id = 2;
@@ -36,17 +36,11 @@ message Lease {
   google.type.Money monthly_payment_amount = 5;
 }
 
-// Payload to create a new lease.
-message NewLease {
-  string user_id = 1;
-  google.type.Date maturity_date = 3;
-  google.type.Money monthly_payment_amount = 4;
-}
-
 // Scheduled or received payment.
 message Payment {
   string payment_id = 1;
-  google.type.Money payment_amount = 2;
+  google.type.Date payment_date = 2;
+  google.type.Money payment_amount = 3;
 }
 
 // Lease event that has occurred.
@@ -59,10 +53,9 @@ message LeaseEvent {
 
 // Observation of a lease at a point in time.
 message LeaseObservation {
-  google.type.Date observation_date = 1;
-  Lease lease = 2;
-  google.type.Money total_scheduled = 3;
-  google.type.Money total_paid = 4;
-  google.type.Money amount_due = 5;
-  LeaseStatus lease_status = 6;
+  Lease lease = 1;
+  google.type.Money total_scheduled = 2;
+  google.type.Money total_paid = 3;
+  google.type.Money amount_due = 4;
+  LeaseStatus lease_status = 5;
 }
