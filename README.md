@@ -8,8 +8,6 @@ Features
 - Bi-Temporal domain
 - Fully Dockerized
 - Integration tests and example CI using Codefresh
-- Fully documented API at https://app.swaggerhub.com/apis-docs/ameier38/Lease/1.0.0
-- Type safe DTOs using [OpenAPI Type Provider](https://github.com/fsprojects/OpenAPITypeProvider)
 - Build automation using [FAKE](https://github.com/fsharp/FAKE)
 
 The domain model is a lease, such as a car lease.
@@ -19,71 +17,13 @@ can be found in this [blog post](https://andrewcmeier.com/bi-temporal-event-sour
 
 ## Structure
 ```
-Lease
-├── paket.references        --> Dependencies
-├── openapi.yaml            --> Available endpoints in OpenAPI config
-├── Lease.Config.fs         --> Application configuration
-├── Lease.SimpleTypes.fs    --> Definitions for simple types and measures
-├── Lease.Domain.fs         --> Lease commands, events, and possible states
-├── Lease.Dto.fs            --> Data transfer objects
-├── Lease.Aggregate.fs      --> Main business logic
-├── Lease.Store.fs          --> Set up for Event Store
-├── Lease.Service.fs        --> Functions for handling commands
-├── Lease.Api.fs            --> Route handlers
-└── Program.fs              --> Application entry point
-```
-
-## Dependencies
-For running the API:
-- [Docker](https://andrewcmeier.com/win-dev#docker)
-
-For development:
-- [dotnet CLI](https://github.com/dotnet/core-sdk#installers-and-binaries)
-> You will need version 2.1.6 for anonymous record support.
-- [FAKE](https://andrewcmeier.com/how-to-fake)
-
-## Testing
-Start Event Store.
-```shell
-docker-compose up -d eventstore
-```
-
-Build test image.
-```shell
-docker-compose build test
-```
-
-Run the test image.
-```shell
-docker-compose run --rm test
-```
-
-Alternatively you can run the test scripts yourself.
-```shell
-fake build -t test
-```
-> You will need to install the dev dependencies first listed above.
-
-## Usage
-Start Event Store and the API.
-```shell
-docker-compose up -d
-```
-
-All the available endpoints are documented via SwaggerHub 
-[here](https://app.swaggerhub.com/apis-docs/ameier38/Lease/1.0.0).
-
-Create a lease.
-```shell
-curl -X POST \
-  http://localhost:8080/lease \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "leaseId": "d290f1ee-6c54-4b01-90e6-d701748f0851",
-  "startDate": "2017-07-21Z",
-  "maturityDate": "2018-07-21Z",
-  "monthlyPaymentAmount": 25
-}'
+equinox-tutorial
+├── README.md           --> You are here
+├── codefresh.yml       --> CI/CD
+├── docker-compose.yml  --> Dockerization
+├── graphql-api         --> GraphQL API
+├── lease-api           --> Lease API (business logic)
+└── proto               --> Protobuf files
 ```
 
 ## Resources

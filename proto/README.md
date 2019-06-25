@@ -2,8 +2,8 @@
 Protobuf definitions.
 
 ## Setup
-It is easiest to use the 
-[VS Code Remote](https://code.visualstudio.com/docs/remote/containers)
+It is easiest to use
+[VS Code Remote Containers](https://code.visualstudio.com/docs/remote/containers)
 as it provides a convient way to install all the dependencies.
 
 First install VS Code Insiders. On Windows you can use scoop.
@@ -46,5 +46,6 @@ fake build -t Generate
 ```
 
 ## Resources
-- [gRPC Status Codes](https://github.com/grpc/grpc/blob/master/doc/statuscodes.md)
 - [VS Code Remote Containers](https://code.visualstudio.com/docs/remote/containers)
+- [Uber's Prototool](https://github.com/uber/prototool)
+- [Uber's Protobuf Style Guide V2](https://github.com/uber/prototool/tree/dev/style)
