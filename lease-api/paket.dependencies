@@ -9,6 +9,7 @@ nuget FsCheck
 nuget Equinox 2.0.0-rc1 preview
 nuget Equinox.Codec 2.0.0-rc1 preview
 nuget Equinox.EventStore 2.0.0-rc1 preview
+nuget Equinox.MemoryStore 2.0.0-rc1 preview
 nuget FsConfig
 nuget FSharp.UMX 1.0.0-preview-001 preview
 nuget Google.Api.CommonProtos

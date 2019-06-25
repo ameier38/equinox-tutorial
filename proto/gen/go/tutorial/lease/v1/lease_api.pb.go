@@ -25,6 +25,92 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
+type DeleteLeaseEventRequest struct {
+	LeaseId              string   `protobuf:"bytes,1,opt,name=lease_id,json=leaseId,proto3" json:"lease_id,omitempty"`
+	EventId              int32    `protobuf:"varint,2,opt,name=event_id,json=eventId,proto3" json:"event_id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DeleteLeaseEventRequest) Reset()         { *m = DeleteLeaseEventRequest{} }
+func (m *DeleteLeaseEventRequest) String() string { return proto.CompactTextString(m) }
+func (*DeleteLeaseEventRequest) ProtoMessage()    {}
+func (*DeleteLeaseEventRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_364b8fa3bf520ad6, []int{0}
+}
+
+func (m *DeleteLeaseEventRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DeleteLeaseEventRequest.Unmarshal(m, b)
+}
+func (m *DeleteLeaseEventRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DeleteLeaseEventRequest.Marshal(b, m, deterministic)
+}
+func (m *DeleteLeaseEventRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteLeaseEventRequest.Merge(m, src)
+}
+func (m *DeleteLeaseEventRequest) XXX_Size() int {
+	return xxx_messageInfo_DeleteLeaseEventRequest.Size(m)
+}
+func (m *DeleteLeaseEventRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteLeaseEventRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeleteLeaseEventRequest proto.InternalMessageInfo
+
+func (m *DeleteLeaseEventRequest) GetLeaseId() string {
+	if m != nil {
+		return m.LeaseId
+	}
+	return ""
+}
+
+func (m *DeleteLeaseEventRequest) GetEventId() int32 {
+	if m != nil {
+		return m.EventId
+	}
+	return 0
+}
+
+type DeleteLeaseEventResponse struct {
+	Message              string   `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DeleteLeaseEventResponse) Reset()         { *m = DeleteLeaseEventResponse{} }
+func (m *DeleteLeaseEventResponse) String() string { return proto.CompactTextString(m) }
+func (*DeleteLeaseEventResponse) ProtoMessage()    {}
+func (*DeleteLeaseEventResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_364b8fa3bf520ad6, []int{1}
+}
+
+func (m *DeleteLeaseEventResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DeleteLeaseEventResponse.Unmarshal(m, b)
+}
+func (m *DeleteLeaseEventResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DeleteLeaseEventResponse.Marshal(b, m, deterministic)
+}
+func (m *DeleteLeaseEventResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteLeaseEventResponse.Merge(m, src)
+}
+func (m *DeleteLeaseEventResponse) XXX_Size() int {
+	return xxx_messageInfo_DeleteLeaseEventResponse.Size(m)
+}
+func (m *DeleteLeaseEventResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteLeaseEventResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeleteLeaseEventResponse proto.InternalMessageInfo
+
+func (m *DeleteLeaseEventResponse) GetMessage() string {
+	if m != nil {
+		return m.Message
+	}
+	return ""
+}
+
 type ListLeasesRequest struct {
 	AsOfDate             *AsOfDate `protobuf:"bytes,1,opt,name=as_of_date,json=asOfDate,proto3" json:"as_of_date,omitempty"`
 	PageSize             int32     `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
@@ -38,7 +124,7 @@ func (m *ListLeasesRequest) Reset()         { *m = ListLeasesRequest{} }
 func (m *ListLeasesRequest) String() string { return proto.CompactTextString(m) }
 func (*ListLeasesRequest) ProtoMessage()    {}
 func (*ListLeasesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_364b8fa3bf520ad6, []int{0}
+	return fileDescriptor_364b8fa3bf520ad6, []int{2}
 }
 
 func (m *ListLeasesRequest) XXX_Unmarshal(b []byte) error {
@@ -92,7 +178,7 @@ func (m *ListLeasesResponse) Reset()         { *m = ListLeasesResponse{} }
 func (m *ListLeasesResponse) String() string { return proto.CompactTextString(m) }
 func (*ListLeasesResponse) ProtoMessage()    {}
 func (*ListLeasesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_364b8fa3bf520ad6, []int{1}
+	return fileDescriptor_364b8fa3bf520ad6, []int{3}
 }
 
 func (m *ListLeasesResponse) XXX_Unmarshal(b []byte) error {
@@ -139,7 +225,7 @@ func (m *GetLeaseRequest) Reset()         { *m = GetLeaseRequest{} }
 func (m *GetLeaseRequest) String() string { return proto.CompactTextString(m) }
 func (*GetLeaseRequest) ProtoMessage()    {}
 func (*GetLeaseRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_364b8fa3bf520ad6, []int{2}
+	return fileDescriptor_364b8fa3bf520ad6, []int{4}
 }
 
 func (m *GetLeaseRequest) XXX_Unmarshal(b []byte) error {
@@ -185,7 +271,7 @@ func (m *GetLeaseResponse) Reset()         { *m = GetLeaseResponse{} }
 func (m *GetLeaseResponse) String() string { return proto.CompactTextString(m) }
 func (*GetLeaseResponse) ProtoMessage()    {}
 func (*GetLeaseResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_364b8fa3bf520ad6, []int{3}
+	return fileDescriptor_364b8fa3bf520ad6, []int{5}
 }
 
 func (m *GetLeaseResponse) XXX_Unmarshal(b []byte) error {
@@ -216,6 +302,8 @@ func (m *GetLeaseResponse) GetLease() *LeaseObservation {
 type ListLeaseEventsRequest struct {
 	LeaseId              string    `protobuf:"bytes,1,opt,name=lease_id,json=leaseId,proto3" json:"lease_id,omitempty"`
 	AsOfDate             *AsOfDate `protobuf:"bytes,2,opt,name=as_of_date,json=asOfDate,proto3" json:"as_of_date,omitempty"`
+	PageSize             int32     `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken            string    `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
 	XXX_unrecognized     []byte    `json:"-"`
 	XXX_sizecache        int32     `json:"-"`
@@ -225,7 +313,7 @@ func (m *ListLeaseEventsRequest) Reset()         { *m = ListLeaseEventsRequest{}
 func (m *ListLeaseEventsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListLeaseEventsRequest) ProtoMessage()    {}
 func (*ListLeaseEventsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_364b8fa3bf520ad6, []int{4}
+	return fileDescriptor_364b8fa3bf520ad6, []int{6}
 }
 
 func (m *ListLeaseEventsRequest) XXX_Unmarshal(b []byte) error {
@@ -260,9 +348,24 @@ func (m *ListLeaseEventsRequest) GetAsOfDate() *AsOfDate {
 	return nil
 }
 
+func (m *ListLeaseEventsRequest) GetPageSize() int32 {
+	if m != nil {
+		return m.PageSize
+	}
+	return 0
+}
+
+func (m *ListLeaseEventsRequest) GetPageToken() string {
+	if m != nil {
+		return m.PageToken
+	}
+	return ""
+}
+
 type ListLeaseEventsResponse struct {
 	LeaseId              string        `protobuf:"bytes,1,opt,name=lease_id,json=leaseId,proto3" json:"lease_id,omitempty"`
 	Events               []*LeaseEvent `protobuf:"bytes,2,rep,name=events,proto3" json:"events,omitempty"`
+	NextPageToken        string        `protobuf:"bytes,3,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
 	XXX_unrecognized     []byte        `json:"-"`
 	XXX_sizecache        int32         `json:"-"`
@@ -272,7 +375,7 @@ func (m *ListLeaseEventsResponse) Reset()         { *m = ListLeaseEventsResponse
 func (m *ListLeaseEventsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListLeaseEventsResponse) ProtoMessage()    {}
 func (*ListLeaseEventsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_364b8fa3bf520ad6, []int{5}
+	return fileDescriptor_364b8fa3bf520ad6, []int{7}
 }
 
 func (m *ListLeaseEventsResponse) XXX_Unmarshal(b []byte) error {
@@ -307,6 +410,13 @@ func (m *ListLeaseEventsResponse) GetEvents() []*LeaseEvent {
 	return nil
 }
 
+func (m *ListLeaseEventsResponse) GetNextPageToken() string {
+	if m != nil {
+		return m.NextPageToken
+	}
+	return ""
+}
+
 type CreateLeaseRequest struct {
 	Lease                *Lease   `protobuf:"bytes,1,opt,name=lease,proto3" json:"lease,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -318,7 +428,7 @@ func (m *CreateLeaseRequest) Reset()         { *m = CreateLeaseRequest{} }
 func (m *CreateLeaseRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateLeaseRequest) ProtoMessage()    {}
 func (*CreateLeaseRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_364b8fa3bf520ad6, []int{6}
+	return fileDescriptor_364b8fa3bf520ad6, []int{8}
 }
 
 func (m *CreateLeaseRequest) XXX_Unmarshal(b []byte) error {
@@ -357,7 +467,7 @@ func (m *CreateLeaseResponse) Reset()         { *m = CreateLeaseResponse{} }
 func (m *CreateLeaseResponse) String() string { return proto.CompactTextString(m) }
 func (*CreateLeaseResponse) ProtoMessage()    {}
 func (*CreateLeaseResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_364b8fa3bf520ad6, []int{7}
+	return fileDescriptor_364b8fa3bf520ad6, []int{9}
 }
 
 func (m *CreateLeaseResponse) XXX_Unmarshal(b []byte) error {
@@ -386,7 +496,8 @@ func (m *CreateLeaseResponse) GetMessage() string {
 }
 
 type TerminateLeaseRequest struct {
-	EffectiveDate        *date.Date `protobuf:"bytes,1,opt,name=effective_date,json=effectiveDate,proto3" json:"effective_date,omitempty"`
+	LeaseId              string     `protobuf:"bytes,1,opt,name=lease_id,json=leaseId,proto3" json:"lease_id,omitempty"`
+	EffectiveDate        *date.Date `protobuf:"bytes,2,opt,name=effective_date,json=effectiveDate,proto3" json:"effective_date,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}   `json:"-"`
 	XXX_unrecognized     []byte     `json:"-"`
 	XXX_sizecache        int32      `json:"-"`
@@ -396,7 +507,7 @@ func (m *TerminateLeaseRequest) Reset()         { *m = TerminateLeaseRequest{} }
 func (m *TerminateLeaseRequest) String() string { return proto.CompactTextString(m) }
 func (*TerminateLeaseRequest) ProtoMessage()    {}
 func (*TerminateLeaseRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_364b8fa3bf520ad6, []int{8}
+	return fileDescriptor_364b8fa3bf520ad6, []int{10}
 }
 
 func (m *TerminateLeaseRequest) XXX_Unmarshal(b []byte) error {
@@ -417,6 +528,13 @@ func (m *TerminateLeaseRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_TerminateLeaseRequest proto.InternalMessageInfo
 
+func (m *TerminateLeaseRequest) GetLeaseId() string {
+	if m != nil {
+		return m.LeaseId
+	}
+	return ""
+}
+
 func (m *TerminateLeaseRequest) GetEffectiveDate() *date.Date {
 	if m != nil {
 		return m.EffectiveDate
@@ -435,7 +553,7 @@ func (m *TerminateLeaseResponse) Reset()         { *m = TerminateLeaseResponse{}
 func (m *TerminateLeaseResponse) String() string { return proto.CompactTextString(m) }
 func (*TerminateLeaseResponse) ProtoMessage()    {}
 func (*TerminateLeaseResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_364b8fa3bf520ad6, []int{9}
+	return fileDescriptor_364b8fa3bf520ad6, []int{11}
 }
 
 func (m *TerminateLeaseResponse) XXX_Unmarshal(b []byte) error {
@@ -464,7 +582,8 @@ func (m *TerminateLeaseResponse) GetMessage() string {
 }
 
 type SchedulePaymentRequest struct {
-	Payment              *Payment `protobuf:"bytes,1,opt,name=payment,proto3" json:"payment,omitempty"`
+	LeaseId              string   `protobuf:"bytes,1,opt,name=lease_id,json=leaseId,proto3" json:"lease_id,omitempty"`
+	Payment              *Payment `protobuf:"bytes,2,opt,name=payment,proto3" json:"payment,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -474,7 +593,7 @@ func (m *SchedulePaymentRequest) Reset()         { *m = SchedulePaymentRequest{}
 func (m *SchedulePaymentRequest) String() string { return proto.CompactTextString(m) }
 func (*SchedulePaymentRequest) ProtoMessage()    {}
 func (*SchedulePaymentRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_364b8fa3bf520ad6, []int{10}
+	return fileDescriptor_364b8fa3bf520ad6, []int{12}
 }
 
 func (m *SchedulePaymentRequest) XXX_Unmarshal(b []byte) error {
@@ -495,6 +614,13 @@ func (m *SchedulePaymentRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_SchedulePaymentRequest proto.InternalMessageInfo
 
+func (m *SchedulePaymentRequest) GetLeaseId() string {
+	if m != nil {
+		return m.LeaseId
+	}
+	return ""
+}
+
 func (m *SchedulePaymentRequest) GetPayment() *Payment {
 	if m != nil {
 		return m.Payment
@@ -513,7 +639,7 @@ func (m *SchedulePaymentResponse) Reset()         { *m = SchedulePaymentResponse
 func (m *SchedulePaymentResponse) String() string { return proto.CompactTextString(m) }
 func (*SchedulePaymentResponse) ProtoMessage()    {}
 func (*SchedulePaymentResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_364b8fa3bf520ad6, []int{11}
+	return fileDescriptor_364b8fa3bf520ad6, []int{13}
 }
 
 func (m *SchedulePaymentResponse) XXX_Unmarshal(b []byte) error {
@@ -542,18 +668,18 @@ func (m *SchedulePaymentResponse) GetMessage() string {
 }
 
 type ReceivePaymentRequest struct {
-	EffectiveDate        *date.Date `protobuf:"bytes,1,opt,name=effective_date,json=effectiveDate,proto3" json:"effective_date,omitempty"`
-	Payment              *Payment   `protobuf:"bytes,2,opt,name=payment,proto3" json:"payment,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}   `json:"-"`
-	XXX_unrecognized     []byte     `json:"-"`
-	XXX_sizecache        int32      `json:"-"`
+	LeaseId              string   `protobuf:"bytes,1,opt,name=lease_id,json=leaseId,proto3" json:"lease_id,omitempty"`
+	Payment              *Payment `protobuf:"bytes,2,opt,name=payment,proto3" json:"payment,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
 func (m *ReceivePaymentRequest) Reset()         { *m = ReceivePaymentRequest{} }
 func (m *ReceivePaymentRequest) String() string { return proto.CompactTextString(m) }
 func (*ReceivePaymentRequest) ProtoMessage()    {}
 func (*ReceivePaymentRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_364b8fa3bf520ad6, []int{12}
+	return fileDescriptor_364b8fa3bf520ad6, []int{14}
 }
 
 func (m *ReceivePaymentRequest) XXX_Unmarshal(b []byte) error {
@@ -574,11 +700,11 @@ func (m *ReceivePaymentRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ReceivePaymentRequest proto.InternalMessageInfo
 
-func (m *ReceivePaymentRequest) GetEffectiveDate() *date.Date {
+func (m *ReceivePaymentRequest) GetLeaseId() string {
 	if m != nil {
-		return m.EffectiveDate
+		return m.LeaseId
 	}
-	return nil
+	return ""
 }
 
 func (m *ReceivePaymentRequest) GetPayment() *Payment {
@@ -599,7 +725,7 @@ func (m *ReceivePaymentResponse) Reset()         { *m = ReceivePaymentResponse{}
 func (m *ReceivePaymentResponse) String() string { return proto.CompactTextString(m) }
 func (*ReceivePaymentResponse) ProtoMessage()    {}
 func (*ReceivePaymentResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_364b8fa3bf520ad6, []int{13}
+	return fileDescriptor_364b8fa3bf520ad6, []int{15}
 }
 
 func (m *ReceivePaymentResponse) XXX_Unmarshal(b []byte) error {
@@ -628,6 +754,8 @@ func (m *ReceivePaymentResponse) GetMessage() string {
 }
 
 func init() {
+	proto.RegisterType((*DeleteLeaseEventRequest)(nil), "tutorial.lease.v1.DeleteLeaseEventRequest")
+	proto.RegisterType((*DeleteLeaseEventResponse)(nil), "tutorial.lease.v1.DeleteLeaseEventResponse")
 	proto.RegisterType((*ListLeasesRequest)(nil), "tutorial.lease.v1.ListLeasesRequest")
 	proto.RegisterType((*ListLeasesResponse)(nil), "tutorial.lease.v1.ListLeasesResponse")
 	proto.RegisterType((*GetLeaseRequest)(nil), "tutorial.lease.v1.GetLeaseRequest")
@@ -647,50 +775,54 @@ func init() {
 func init() { proto.RegisterFile("tutorial/lease/v1/lease_api.proto", fileDescriptor_364b8fa3bf520ad6) }
 
 var fileDescriptor_364b8fa3bf520ad6 = []byte{
-	// 679 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x55, 0xe1, 0x4e, 0xd3, 0x50,
-	0x14, 0x4e, 0x4b, 0x80, 0x71, 0x08, 0xe0, 0xae, 0x61, 0xd4, 0x12, 0x92, 0x59, 0x94, 0x0c, 0x7f,
-	0x74, 0x6e, 0x68, 0x22, 0x3f, 0x41, 0x8c, 0x21, 0x41, 0x99, 0x65, 0x21, 0x6a, 0x48, 0x9a, 0xcb,
-	0x76, 0x36, 0x1a, 0xb6, 0xb6, 0xee, 0x5e, 0x1a, 0xe1, 0x05, 0x4c, 0x7c, 0x0c, 0x7f, 0xfa, 0x08,
-	0x3e, 0x82, 0x4f, 0x65, 0x7a, 0x7b, 0xcb, 0xd6, 0xee, 0x8e, 0xa1, 0x89, 0xff, 0xda, 0xd3, 0xef,
-	0x9c, 0xf3, 0x9d, 0xef, 0x9e, 0xef, 0x16, 0x1e, 0xf3, 0x2b, 0x1e, 0x0c, 0x3c, 0xda, 0xab, 0xf6,
-	0x90, 0x32, 0xac, 0x46, 0xb5, 0xe4, 0xc1, 0xa5, 0xa1, 0x67, 0x87, 0x83, 0x80, 0x07, 0xa4, 0x98,
-	0x42, 0x6c, 0xf1, 0xc5, 0x8e, 0x6a, 0x66, 0xa9, 0x1b, 0x04, 0xdd, 0x1e, 0x56, 0xf9, 0x75, 0x88,
-	0xd5, 0x36, 0xe5, 0x98, 0x40, 0xcd, 0x8d, 0x09, 0xd5, 0x92, 0xcf, 0xd6, 0x77, 0x0d, 0x8a, 0x47,
-	0x1e, 0xe3, 0x47, 0x71, 0x8c, 0x39, 0xf8, 0xe5, 0x0a, 0x19, 0x27, 0xbb, 0x00, 0x94, 0xb9, 0x41,
-	0xc7, 0x8d, 0x0b, 0x19, 0x5a, 0x59, 0xab, 0x2c, 0xd6, 0xd7, 0xed, 0xb1, 0xa6, 0xf6, 0x1e, 0x3b,
-	0xee, 0x1c, 0x50, 0x8e, 0x4e, 0x81, 0xca, 0x27, 0xb2, 0x0e, 0x0b, 0x21, 0xed, 0xa2, 0xcb, 0xbc,
-	0x1b, 0x34, 0xf4, 0xb2, 0x56, 0x99, 0x75, 0x0a, 0x71, 0xe0, 0xc4, 0xbb, 0x41, 0xb2, 0x01, 0x20,
-	0x3e, 0xf2, 0xe0, 0x12, 0x7d, 0x63, 0xa6, 0xac, 0x55, 0x16, 0x1c, 0x01, 0x6f, 0xc6, 0x01, 0xcb,
-	0x07, 0x32, 0xca, 0x85, 0x85, 0x81, 0xcf, 0x90, 0x3c, 0x87, 0x39, 0xd1, 0x90, 0x19, 0x5a, 0x79,
-	0xa6, 0xb2, 0x58, 0x37, 0x14, 0x44, 0x44, 0x8a, 0x23, 0x71, 0x64, 0x0b, 0x56, 0x7c, 0xfc, 0xca,
-	0xdd, 0x91, 0x5e, 0xba, 0xe8, 0xb5, 0x14, 0x87, 0x1b, 0xb7, 0xfd, 0xba, 0xb0, 0xf2, 0x16, 0x93,
-	0x76, 0xe9, 0xe4, 0x8f, 0xa0, 0x90, 0x88, 0xed, 0xb5, 0xc5, 0xdc, 0x0b, 0xce, 0xbc, 0x78, 0x3f,
-	0x6c, 0xe7, 0x44, 0xd1, 0xff, 0x42, 0x14, 0xeb, 0x1d, 0x3c, 0x18, 0x36, 0x92, 0x63, 0xed, 0xc2,
-	0xac, 0x48, 0x91, 0xf2, 0x6e, 0x4e, 0x9a, 0xea, 0xf8, 0x9c, 0xe1, 0x20, 0xa2, 0xdc, 0x0b, 0x7c,
-	0x27, 0xc9, 0xb0, 0x7c, 0x28, 0xdd, 0xea, 0xf4, 0x26, 0x42, 0x9f, 0xb3, 0xff, 0x4b, 0xff, 0x12,
-	0xd6, 0xc6, 0xfa, 0xc9, 0x29, 0xee, 0x68, 0xf8, 0x12, 0xe6, 0x50, 0x80, 0x0d, 0x5d, 0x9c, 0xdb,
-	0xc6, 0xa4, 0x09, 0x45, 0x49, 0x47, 0x82, 0xad, 0x03, 0x20, 0xaf, 0x07, 0x48, 0x39, 0x66, 0xce,
-	0xc5, 0xce, 0xaa, 0x35, 0x79, 0x07, 0xa4, 0x44, 0x55, 0x78, 0x98, 0xa9, 0x22, 0xe9, 0x1a, 0x30,
-	0xdf, 0x47, 0xc6, 0x68, 0x17, 0x53, 0xb6, 0xf2, 0xd5, 0xfa, 0x00, 0xab, 0x4d, 0x1c, 0xf4, 0x3d,
-	0x3f, 0xdf, 0xf9, 0x15, 0x2c, 0x63, 0xa7, 0x83, 0x2d, 0xee, 0x45, 0x38, 0xea, 0x87, 0xa2, 0x9d,
-	0x38, 0xce, 0x8e, 0x1d, 0x67, 0x0b, 0xc5, 0x96, 0x6e, 0x81, 0x42, 0xb6, 0x3a, 0x94, 0xf2, 0x25,
-	0xa7, 0xd2, 0x78, 0x0f, 0xa5, 0x93, 0xd6, 0x05, 0xb6, 0xaf, 0x7a, 0xd8, 0xa0, 0xd7, 0xfd, 0x58,
-	0x18, 0xc9, 0xe3, 0x05, 0xcc, 0x87, 0x49, 0x44, 0x12, 0x30, 0x15, 0x1a, 0xa4, 0x39, 0x29, 0xd4,
-	0xda, 0x81, 0xb5, 0xb1, 0x7a, 0x53, 0x49, 0x7c, 0xd3, 0x60, 0xd5, 0xc1, 0x16, 0x7a, 0x51, 0x9e,
-	0xc4, 0x3f, 0x8b, 0x31, 0x4a, 0x5f, 0xbf, 0x3f, 0xfd, 0x3a, 0x94, 0xf2, 0x44, 0xa6, 0xb1, 0xaf,
-	0xff, 0x9a, 0x85, 0x82, 0x90, 0x7b, 0xaf, 0x71, 0x48, 0x3e, 0x01, 0x0c, 0xaf, 0x14, 0xf2, 0x44,
-	0xb5, 0x36, 0xf9, 0xdb, 0xcf, 0x7c, 0x3a, 0x05, 0x25, 0x19, 0x5c, 0xc0, 0x4a, 0xce, 0x15, 0x64,
-	0xfb, 0xae, 0xcc, 0x8c, 0x53, 0xcd, 0x67, 0xf7, 0x81, 0xca, 0x4e, 0x27, 0x50, 0x48, 0xaf, 0x0f,
-	0x62, 0x29, 0xf2, 0x72, 0x97, 0x98, 0xb9, 0x79, 0x27, 0x46, 0x16, 0x3d, 0x83, 0xc5, 0x11, 0x87,
-	0x10, 0xd5, 0xd0, 0xe3, 0x3e, 0x34, 0xb7, 0xa6, 0xc1, 0x64, 0x75, 0x84, 0xe5, 0xec, 0xee, 0x93,
-	0x8a, 0x22, 0x53, 0xe9, 0x38, 0x73, 0xfb, 0x1e, 0xc8, 0xe1, 0x19, 0xe4, 0xd6, 0x5b, 0x79, 0x06,
-	0x6a, 0x4b, 0x29, 0xcf, 0x60, 0x92, 0x5b, 0x10, 0x96, 0xb3, 0x9b, 0xa8, 0x1c, 0x48, 0xe9, 0x1a,
-	0xe5, 0x40, 0xea, 0xb5, 0xde, 0x77, 0x61, 0xb5, 0x15, 0xf4, 0xc7, 0xf1, 0xfb, 0x4b, 0xc9, 0x4a,
-	0x87, 0x5e, 0x23, 0xfe, 0x6f, 0x37, 0xb4, 0xcf, 0xc9, 0x3d, 0x1b, 0xd5, 0x7e, 0xe8, 0x33, 0xcd,
-	0xa3, 0x8f, 0x3f, 0xf5, 0x62, 0x33, 0xcd, 0x11, 0x48, 0xfb, 0xb4, 0xf6, 0x7b, 0x18, 0x3b, 0x13,
-	0xb1, 0xb3, 0xd3, 0xda, 0xf9, 0x9c, 0xf8, 0xef, 0xef, 0xfc, 0x09, 0x00, 0x00, 0xff, 0xff, 0x1e,
-	0xcc, 0xe6, 0x86, 0x66, 0x08, 0x00, 0x00,
+	// 739 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x56, 0xcd, 0x4e, 0xdb, 0x40,
+	0x10, 0xae, 0x93, 0x92, 0x84, 0x41, 0xfc, 0x64, 0x2b, 0x82, 0x6b, 0x84, 0x44, 0x4d, 0x8b, 0x02,
+	0x95, 0x9c, 0x26, 0x50, 0xa9, 0x1c, 0xa1, 0x54, 0x15, 0x12, 0x15, 0x91, 0x89, 0x50, 0x5b, 0x21,
+	0x45, 0x26, 0x99, 0x04, 0xab, 0x89, 0xed, 0x66, 0x17, 0xab, 0xf0, 0x08, 0xbd, 0xf6, 0x0d, 0x7a,
+	0x2b, 0x8f, 0xd2, 0xa7, 0xaa, 0xbc, 0x5e, 0x93, 0xd8, 0xd9, 0xc4, 0xe9, 0x81, 0x5b, 0x76, 0xf7,
+	0x9b, 0x9d, 0x6f, 0xe6, 0xdb, 0x6f, 0x62, 0x78, 0xc1, 0x6e, 0x98, 0x3b, 0xb0, 0xad, 0x5e, 0xa5,
+	0x87, 0x16, 0xc5, 0x8a, 0x5f, 0x0d, 0x7f, 0x34, 0x2d, 0xcf, 0x36, 0xbc, 0x81, 0xcb, 0x5c, 0x52,
+	0x8c, 0x20, 0x06, 0x3f, 0x31, 0xfc, 0xaa, 0x56, 0xea, 0xba, 0x6e, 0xb7, 0x87, 0x15, 0x76, 0xeb,
+	0x61, 0xa5, 0x6d, 0x31, 0x0c, 0xa1, 0xda, 0xc6, 0x84, 0xdb, 0xc2, 0x63, 0xfd, 0x0c, 0xd6, 0x8e,
+	0xb1, 0x87, 0x0c, 0x4f, 0x83, 0xcd, 0x0f, 0x3e, 0x3a, 0xcc, 0xc4, 0xef, 0x37, 0x48, 0x19, 0x79,
+	0x0e, 0x85, 0x30, 0xaf, 0xdd, 0x56, 0x95, 0x4d, 0xa5, 0x3c, 0x6f, 0xe6, 0xf9, 0xfa, 0xa4, 0x1d,
+	0x1c, 0x61, 0x00, 0x0d, 0x8e, 0x32, 0x9b, 0x4a, 0x79, 0xce, 0xcc, 0xf3, 0xf5, 0x49, 0x5b, 0xdf,
+	0x07, 0x75, 0xfc, 0x42, 0xea, 0xb9, 0x0e, 0x45, 0xa2, 0x42, 0xbe, 0x8f, 0x94, 0x5a, 0x5d, 0x8c,
+	0x2e, 0x14, 0x4b, 0xfd, 0xa7, 0x02, 0xc5, 0x53, 0x9b, 0x32, 0x1e, 0x44, 0x23, 0x06, 0x07, 0x00,
+	0x16, 0x6d, 0xba, 0x9d, 0x66, 0x50, 0x0f, 0x0f, 0x59, 0xa8, 0xad, 0x1b, 0x63, 0xb5, 0x1b, 0x87,
+	0xf4, 0xac, 0x73, 0x6c, 0x31, 0x34, 0x0b, 0x96, 0xf8, 0x45, 0xd6, 0x61, 0xde, 0xb3, 0xba, 0xd8,
+	0xa4, 0xf6, 0x1d, 0x0a, 0x8a, 0x85, 0x60, 0xe3, 0xdc, 0xbe, 0x43, 0xb2, 0x01, 0xc0, 0x0f, 0x99,
+	0xfb, 0x0d, 0x1d, 0x35, 0xcb, 0xa9, 0x70, 0x78, 0x23, 0xd8, 0xd0, 0x1d, 0x20, 0xa3, 0x5c, 0x04,
+	0xf9, 0x37, 0x90, 0xe3, 0x09, 0xa9, 0xaa, 0x6c, 0x66, 0xcb, 0x0b, 0x35, 0x55, 0x42, 0x84, 0x87,
+	0x98, 0x02, 0x47, 0xb6, 0x61, 0xd9, 0xc1, 0x1f, 0xac, 0x39, 0x92, 0x2b, 0xc3, 0x73, 0x2d, 0x06,
+	0xdb, 0xf5, 0x87, 0x7c, 0x5d, 0x58, 0xfe, 0x88, 0x61, 0xba, 0x19, 0x7a, 0x1f, 0x6f, 0x4a, 0xe6,
+	0x3f, 0x9a, 0xa2, 0x7f, 0x82, 0x95, 0x61, 0x22, 0x51, 0xd6, 0x01, 0xcc, 0xf1, 0x10, 0xd1, 0xde,
+	0xad, 0x49, 0x55, 0x9d, 0x5d, 0x51, 0x1c, 0xf8, 0x16, 0xb3, 0x5d, 0xc7, 0x0c, 0x23, 0xf4, 0x7b,
+	0x05, 0x4a, 0x0f, 0x8d, 0xe2, 0x4a, 0xd3, 0x47, 0xe5, 0x1f, 0x17, 0x35, 0x3b, 0x55, 0xd4, 0xa7,
+	0x49, 0x51, 0x7f, 0x29, 0xb0, 0x36, 0x46, 0x56, 0xf4, 0x60, 0x0a, 0xdb, 0xb7, 0x90, 0xe3, 0x2f,
+	0x9b, 0xaa, 0x19, 0xae, 0xfa, 0xc6, 0xa4, 0xfe, 0x84, 0x2f, 0x5d, 0x80, 0x65, 0xd2, 0x67, 0x65,
+	0xd2, 0x1f, 0x03, 0x79, 0x3f, 0x40, 0x4b, 0xb8, 0x25, 0xea, 0x9e, 0x11, 0xd7, 0x64, 0xf2, 0x4b,
+	0x13, 0x42, 0x54, 0xe0, 0x59, 0xec, 0x96, 0x54, 0xbb, 0xf5, 0x60, 0xb5, 0x81, 0x83, 0xbe, 0xed,
+	0x24, 0x33, 0x4f, 0xe9, 0xc4, 0x3b, 0x58, 0xc2, 0x4e, 0x07, 0x5b, 0xcc, 0xf6, 0x71, 0x54, 0xbb,
+	0xa2, 0x11, 0x4e, 0x1e, 0x23, 0x98, 0x3c, 0x06, 0x57, 0x6c, 0xf1, 0x01, 0xc8, 0x9f, 0x5d, 0x0d,
+	0x4a, 0xc9, 0x6c, 0xa9, 0x0c, 0x6d, 0x28, 0x9d, 0xb7, 0xae, 0xb1, 0x7d, 0xd3, 0xc3, 0xba, 0x75,
+	0xdb, 0x9f, 0x6d, 0x2c, 0xed, 0x43, 0xde, 0x0b, 0xc1, 0x82, 0x9b, 0x26, 0xe9, 0x5c, 0x74, 0x5d,
+	0x04, 0xd5, 0xf7, 0x60, 0x6d, 0x2c, 0x55, 0x2a, 0xbf, 0x6b, 0x58, 0x35, 0xb1, 0x85, 0xb6, 0xff,
+	0xe8, 0xf4, 0x6a, 0x50, 0x4a, 0x66, 0x4a, 0x63, 0x57, 0xfb, 0x93, 0x83, 0x02, 0xef, 0xf4, 0x61,
+	0xfd, 0x84, 0xf4, 0x61, 0x25, 0x39, 0x91, 0xc9, 0xae, 0x24, 0xf3, 0x84, 0xff, 0x01, 0xed, 0xf5,
+	0x4c, 0xd8, 0x90, 0x93, 0xfe, 0x84, 0x7c, 0x01, 0x18, 0x4e, 0x4f, 0xf2, 0x52, 0xf6, 0x76, 0x93,
+	0x83, 0x5e, 0x7b, 0x95, 0x82, 0x12, 0x05, 0x5f, 0xc3, 0x72, 0xc2, 0xc2, 0x64, 0x67, 0x5a, 0x64,
+	0x6c, 0x26, 0x69, 0xbb, 0xb3, 0x40, 0x45, 0xa6, 0x73, 0x28, 0x44, 0x93, 0x92, 0xe8, 0x92, 0xb8,
+	0xc4, 0xbc, 0xd6, 0xb6, 0xa6, 0x62, 0xc4, 0xa5, 0x97, 0xb0, 0x30, 0x62, 0x53, 0x22, 0x2b, 0x7a,
+	0x7c, 0x18, 0x68, 0xdb, 0x69, 0x30, 0x71, 0x3b, 0xc2, 0x52, 0xdc, 0x65, 0xa4, 0x2c, 0x89, 0x94,
+	0xda, 0x5e, 0xdb, 0x99, 0x01, 0x39, 0xd4, 0x20, 0xe1, 0x16, 0xa9, 0x06, 0x72, 0xf3, 0x4a, 0x35,
+	0x98, 0x64, 0x3e, 0x84, 0xa5, 0xf8, 0xc3, 0x97, 0x16, 0x24, 0x75, 0xa1, 0xb4, 0x20, 0xb9, 0x8b,
+	0x8e, 0x9a, 0xb0, 0xda, 0x72, 0xfb, 0xe3, 0xf8, 0xa3, 0xc5, 0xd0, 0x41, 0x9e, 0x5d, 0x0f, 0xbe,
+	0x94, 0xea, 0xca, 0xd7, 0xd0, 0xc8, 0x7e, 0xf5, 0x77, 0x26, 0xdb, 0x38, 0xfd, 0x7c, 0x9f, 0x29,
+	0x36, 0xa2, 0x18, 0x8e, 0x34, 0x2e, 0xaa, 0x7f, 0x87, 0x7b, 0x97, 0x7c, 0xef, 0xf2, 0xa2, 0x7a,
+	0x95, 0xe3, 0x5f, 0x5a, 0x7b, 0xff, 0x02, 0x00, 0x00, 0xff, 0xff, 0x91, 0x71, 0xb8, 0x38, 0xd8,
+	0x09, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -705,6 +837,8 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type LeaseAPIClient interface {
+	// Delete a lease event.
+	DeleteLeaseEvent(ctx context.Context, in *DeleteLeaseEventRequest, opts ...grpc.CallOption) (*DeleteLeaseEventResponse, error)
 	// List the leases that have been created.
 	ListLeases(ctx context.Context, in *ListLeasesRequest, opts ...grpc.CallOption) (*ListLeasesResponse, error)
 	// List the lease events that have occurred as of a point in time.
@@ -727,6 +861,15 @@ type leaseAPIClient struct {
 
 func NewLeaseAPIClient(cc *grpc.ClientConn) LeaseAPIClient {
 	return &leaseAPIClient{cc}
+}
+
+func (c *leaseAPIClient) DeleteLeaseEvent(ctx context.Context, in *DeleteLeaseEventRequest, opts ...grpc.CallOption) (*DeleteLeaseEventResponse, error) {
+	out := new(DeleteLeaseEventResponse)
+	err := c.cc.Invoke(ctx, "/tutorial.lease.v1.LeaseAPI/DeleteLeaseEvent", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *leaseAPIClient) ListLeases(ctx context.Context, in *ListLeasesRequest, opts ...grpc.CallOption) (*ListLeasesResponse, error) {
@@ -794,6 +937,8 @@ func (c *leaseAPIClient) ReceivePayment(ctx context.Context, in *ReceivePaymentR
 
 // LeaseAPIServer is the server API for LeaseAPI service.
 type LeaseAPIServer interface {
+	// Delete a lease event.
+	DeleteLeaseEvent(context.Context, *DeleteLeaseEventRequest) (*DeleteLeaseEventResponse, error)
 	// List the leases that have been created.
 	ListLeases(context.Context, *ListLeasesRequest) (*ListLeasesResponse, error)
 	// List the lease events that have occurred as of a point in time.
@@ -814,6 +959,9 @@ type LeaseAPIServer interface {
 type UnimplementedLeaseAPIServer struct {
 }
 
+func (*UnimplementedLeaseAPIServer) DeleteLeaseEvent(ctx context.Context, req *DeleteLeaseEventRequest) (*DeleteLeaseEventResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteLeaseEvent not implemented")
+}
 func (*UnimplementedLeaseAPIServer) ListLeases(ctx context.Context, req *ListLeasesRequest) (*ListLeasesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListLeases not implemented")
 }
@@ -838,6 +986,24 @@ func (*UnimplementedLeaseAPIServer) ReceivePayment(ctx context.Context, req *Rec
 
 func RegisterLeaseAPIServer(s *grpc.Server, srv LeaseAPIServer) {
 	s.RegisterService(&_LeaseAPI_serviceDesc, srv)
+}
+
+func _LeaseAPI_DeleteLeaseEvent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteLeaseEventRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LeaseAPIServer).DeleteLeaseEvent(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/tutorial.lease.v1.LeaseAPI/DeleteLeaseEvent",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LeaseAPIServer).DeleteLeaseEvent(ctx, req.(*DeleteLeaseEventRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _LeaseAPI_ListLeases_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -970,6 +1136,10 @@ var _LeaseAPI_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "tutorial.lease.v1.LeaseAPI",
 	HandlerType: (*LeaseAPIServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "DeleteLeaseEvent",
+			Handler:    _LeaseAPI_DeleteLeaseEvent_Handler,
+		},
 		{
 			MethodName: "ListLeases",
 			Handler:    _LeaseAPI_ListLeases_Handler,

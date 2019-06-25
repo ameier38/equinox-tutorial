@@ -14,7 +14,6 @@ type Store(config:Config) =
             reqTimeout=timeout, 
             reqRetries=1, 
             log=log)
-    let cache = Caching.Cache ("ES", 20)
     let strategy = ConnectionStrategy.ClusterTwinPreferSlaveReads
     let conn = 
         connector.Establish("lease", Discovery.Uri config.EventStore.DiscoveryUri, strategy)
@@ -22,14 +21,15 @@ type Store(config:Config) =
     let gateway = Context(conn, BatchingPolicy(maxBatchSize=500))
 
     member __.Gateway with get () = gateway
-    member __.Cache with get () = cache
 
 type StreamResolver<'event,'state>
     (   store:Store,
         codec:Equinox.Codec.IUnionEncoder<'event,byte[]>,
+        cachePrefix: string,
         fold:'state -> 'event seq -> 'state,
         initial:'state ) =
-    let cacheStrategy = CachingStrategy.SlidingWindow (store.Cache, TimeSpan.FromMinutes 20.)
+    let cache = Caching.Cache ("ES", 20)
+    let cacheStrategy = CachingStrategy.SlidingWindowPrefixed (cache, TimeSpan.FromMinutes 20., cachePrefix)
     let resolver = Resolver(store.Gateway, codec, fold, initial, caching=cacheStrategy)
 
     member __.Resolve = resolver.Resolve

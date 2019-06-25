@@ -15,6 +15,8 @@ namespace Tutorial.Lease.V1 {
   {
     static readonly string __ServiceName = "tutorial.lease.v1.LeaseAPI";
 
+    static readonly grpc::Marshaller<global::Tutorial.Lease.V1.DeleteLeaseEventRequest> __Marshaller_tutorial_lease_v1_DeleteLeaseEventRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Lease.V1.DeleteLeaseEventRequest.Parser.ParseFrom);
+    static readonly grpc::Marshaller<global::Tutorial.Lease.V1.DeleteLeaseEventResponse> __Marshaller_tutorial_lease_v1_DeleteLeaseEventResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Lease.V1.DeleteLeaseEventResponse.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::Tutorial.Lease.V1.ListLeasesRequest> __Marshaller_tutorial_lease_v1_ListLeasesRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Lease.V1.ListLeasesRequest.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::Tutorial.Lease.V1.ListLeasesResponse> __Marshaller_tutorial_lease_v1_ListLeasesResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Lease.V1.ListLeasesResponse.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::Tutorial.Lease.V1.ListLeaseEventsRequest> __Marshaller_tutorial_lease_v1_ListLeaseEventsRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Lease.V1.ListLeaseEventsRequest.Parser.ParseFrom);
@@ -29,6 +31,13 @@ namespace Tutorial.Lease.V1 {
     static readonly grpc::Marshaller<global::Tutorial.Lease.V1.SchedulePaymentResponse> __Marshaller_tutorial_lease_v1_SchedulePaymentResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Lease.V1.SchedulePaymentResponse.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::Tutorial.Lease.V1.ReceivePaymentRequest> __Marshaller_tutorial_lease_v1_ReceivePaymentRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Lease.V1.ReceivePaymentRequest.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::Tutorial.Lease.V1.ReceivePaymentResponse> __Marshaller_tutorial_lease_v1_ReceivePaymentResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Lease.V1.ReceivePaymentResponse.Parser.ParseFrom);
+
+    static readonly grpc::Method<global::Tutorial.Lease.V1.DeleteLeaseEventRequest, global::Tutorial.Lease.V1.DeleteLeaseEventResponse> __Method_DeleteLeaseEvent = new grpc::Method<global::Tutorial.Lease.V1.DeleteLeaseEventRequest, global::Tutorial.Lease.V1.DeleteLeaseEventResponse>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "DeleteLeaseEvent",
+        __Marshaller_tutorial_lease_v1_DeleteLeaseEventRequest,
+        __Marshaller_tutorial_lease_v1_DeleteLeaseEventResponse);
 
     static readonly grpc::Method<global::Tutorial.Lease.V1.ListLeasesRequest, global::Tutorial.Lease.V1.ListLeasesResponse> __Method_ListLeases = new grpc::Method<global::Tutorial.Lease.V1.ListLeasesRequest, global::Tutorial.Lease.V1.ListLeasesResponse>(
         grpc::MethodType.Unary,
@@ -89,6 +98,17 @@ namespace Tutorial.Lease.V1 {
     [grpc::BindServiceMethod(typeof(LeaseAPI), "BindService")]
     public abstract partial class LeaseAPIBase
     {
+      /// <summary>
+      /// Delete a lease event.
+      /// </summary>
+      /// <param name="request">The request received from the client.</param>
+      /// <param name="context">The context of the server-side call handler being invoked.</param>
+      /// <returns>The response to send back to the client (wrapped by a task).</returns>
+      public virtual global::System.Threading.Tasks.Task<global::Tutorial.Lease.V1.DeleteLeaseEventResponse> DeleteLeaseEvent(global::Tutorial.Lease.V1.DeleteLeaseEventRequest request, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
       /// <summary>
       /// List the leases that have been created.
       /// </summary>
@@ -191,6 +211,50 @@ namespace Tutorial.Lease.V1 {
       {
       }
 
+      /// <summary>
+      /// Delete a lease event.
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The response received from the server.</returns>
+      public virtual global::Tutorial.Lease.V1.DeleteLeaseEventResponse DeleteLeaseEvent(global::Tutorial.Lease.V1.DeleteLeaseEventRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return DeleteLeaseEvent(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      /// <summary>
+      /// Delete a lease event.
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The response received from the server.</returns>
+      public virtual global::Tutorial.Lease.V1.DeleteLeaseEventResponse DeleteLeaseEvent(global::Tutorial.Lease.V1.DeleteLeaseEventRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_DeleteLeaseEvent, null, options, request);
+      }
+      /// <summary>
+      /// Delete a lease event.
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The call object.</returns>
+      public virtual grpc::AsyncUnaryCall<global::Tutorial.Lease.V1.DeleteLeaseEventResponse> DeleteLeaseEventAsync(global::Tutorial.Lease.V1.DeleteLeaseEventRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return DeleteLeaseEventAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      /// <summary>
+      /// Delete a lease event.
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The call object.</returns>
+      public virtual grpc::AsyncUnaryCall<global::Tutorial.Lease.V1.DeleteLeaseEventResponse> DeleteLeaseEventAsync(global::Tutorial.Lease.V1.DeleteLeaseEventRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_DeleteLeaseEvent, null, options, request);
+      }
       /// <summary>
       /// List the leases that have been created.
       /// </summary>
@@ -511,6 +575,7 @@ namespace Tutorial.Lease.V1 {
     public static grpc::ServerServiceDefinition BindService(LeaseAPIBase serviceImpl)
     {
       return grpc::ServerServiceDefinition.CreateBuilder()
+          .AddMethod(__Method_DeleteLeaseEvent, serviceImpl.DeleteLeaseEvent)
           .AddMethod(__Method_ListLeases, serviceImpl.ListLeases)
           .AddMethod(__Method_ListLeaseEvents, serviceImpl.ListLeaseEvents)
           .AddMethod(__Method_GetLease, serviceImpl.GetLease)
@@ -526,6 +591,7 @@ namespace Tutorial.Lease.V1 {
     /// <param name="serviceImpl">An object implementing the server-side handling logic.</param>
     public static void BindService(grpc::ServiceBinderBase serviceBinder, LeaseAPIBase serviceImpl)
     {
+      serviceBinder.AddMethod(__Method_DeleteLeaseEvent, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Tutorial.Lease.V1.DeleteLeaseEventRequest, global::Tutorial.Lease.V1.DeleteLeaseEventResponse>(serviceImpl.DeleteLeaseEvent));
       serviceBinder.AddMethod(__Method_ListLeases, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Tutorial.Lease.V1.ListLeasesRequest, global::Tutorial.Lease.V1.ListLeasesResponse>(serviceImpl.ListLeases));
       serviceBinder.AddMethod(__Method_ListLeaseEvents, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Tutorial.Lease.V1.ListLeaseEventsRequest, global::Tutorial.Lease.V1.ListLeaseEventsResponse>(serviceImpl.ListLeaseEvents));
       serviceBinder.AddMethod(__Method_GetLease, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Tutorial.Lease.V1.GetLeaseRequest, global::Tutorial.Lease.V1.GetLeaseResponse>(serviceImpl.GetLease));

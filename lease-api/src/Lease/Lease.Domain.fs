@@ -1,7 +1,5 @@
 namespace Lease
 
-open System
-
 type AsOfDate =
     { AsAt: EventCreatedTime
       AsOn: EventEffectiveDate }
@@ -24,6 +22,7 @@ type LeaseStatus =
 
 type Payment =
     { PaymentId: PaymentId
+      PaymentDate: PaymentDate
       PaymentAmount: USD }
 
 type LeaseCommand =

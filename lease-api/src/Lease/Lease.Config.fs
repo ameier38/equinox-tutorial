@@ -21,10 +21,11 @@ type EventStoreConfig =
         let discoveryPort = if this.Protocol = "discover" then this.HttpPort else this.TcpPort
         sprintf "%s://%s:%d" this.Protocol this.Host discoveryPort |> Uri
 
-
 type Config =
-    { Debug: bool
-      Port: int16
+    { [<DefaultValue("true")>]
+      Debug: bool
+      [<DefaultValue("50051")>]
+      Port: int
       EventStore: EventStoreConfig }
 module Config =
     let load () =

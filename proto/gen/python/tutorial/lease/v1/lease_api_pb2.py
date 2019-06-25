@@ -22,11 +22,80 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='tutorial.lease.v1',
   syntax='proto3',
   serialized_options=_b('\n\025com.tutorial.lease.v1B\rLeaseApiProtoP\001Z\007leasev1\242\002\003TLX\252\002\021Tutorial.Lease.V1\312\002\021Tutorial\\Lease\\V1'),
-  serialized_pb=_b('\n!tutorial/lease/v1/lease_api.proto\x12\x11tutorial.lease.v1\x1a\x16google/type/date.proto\x1a\x1dtutorial/lease/v1/lease.proto\"k\n\x11ListLeasesRequest\x12/\n\nas_of_date\x18\x01 \x01(\x0b\x32\x1b.tutorial.lease.v1.AsOfDate\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"W\n\x12ListLeasesResponse\x12(\n\x06leases\x18\x01 \x03(\x0b\x32\x18.tutorial.lease.v1.Lease\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"T\n\x0fGetLeaseRequest\x12\x10\n\x08lease_id\x18\x01 \x01(\t\x12/\n\nas_of_date\x18\x02 \x01(\x0b\x32\x1b.tutorial.lease.v1.AsOfDate\"F\n\x10GetLeaseResponse\x12\x32\n\x05lease\x18\x01 \x01(\x0b\x32#.tutorial.lease.v1.LeaseObservation\"[\n\x16ListLeaseEventsRequest\x12\x10\n\x08lease_id\x18\x01 \x01(\t\x12/\n\nas_of_date\x18\x02 \x01(\x0b\x32\x1b.tutorial.lease.v1.AsOfDate\"Z\n\x17ListLeaseEventsResponse\x12\x10\n\x08lease_id\x18\x01 \x01(\t\x12-\n\x06\x65vents\x18\x02 \x03(\x0b\x32\x1d.tutorial.lease.v1.LeaseEvent\"=\n\x12\x43reateLeaseRequest\x12\'\n\x05lease\x18\x01 \x01(\x0b\x32\x18.tutorial.lease.v1.Lease\"&\n\x13\x43reateLeaseResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\"B\n\x15TerminateLeaseRequest\x12)\n\x0e\x65\x66\x66\x65\x63tive_date\x18\x01 \x01(\x0b\x32\x11.google.type.Date\")\n\x16TerminateLeaseResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\"E\n\x16SchedulePaymentRequest\x12+\n\x07payment\x18\x01 \x01(\x0b\x32\x1a.tutorial.lease.v1.Payment\"*\n\x17SchedulePaymentResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\"o\n\x15ReceivePaymentRequest\x12)\n\x0e\x65\x66\x66\x65\x63tive_date\x18\x01 \x01(\x0b\x32\x11.google.type.Date\x12+\n\x07payment\x18\x02 \x01(\x0b\x32\x1a.tutorial.lease.v1.Payment\")\n\x16ReceivePaymentResponse\x12\x0f\n\x07message\x18\x01 \x01(\t2\xba\x05\n\x08LeaseAPI\x12Y\n\nListLeases\x12$.tutorial.lease.v1.ListLeasesRequest\x1a%.tutorial.lease.v1.ListLeasesResponse\x12h\n\x0fListLeaseEvents\x12).tutorial.lease.v1.ListLeaseEventsRequest\x1a*.tutorial.lease.v1.ListLeaseEventsResponse\x12S\n\x08GetLease\x12\".tutorial.lease.v1.GetLeaseRequest\x1a#.tutorial.lease.v1.GetLeaseResponse\x12\\\n\x0b\x43reateLease\x12%.tutorial.lease.v1.CreateLeaseRequest\x1a&.tutorial.lease.v1.CreateLeaseResponse\x12\x65\n\x0eTerminateLease\x12(.tutorial.lease.v1.TerminateLeaseRequest\x1a).tutorial.lease.v1.TerminateLeaseResponse\x12h\n\x0fSchedulePayment\x12).tutorial.lease.v1.SchedulePaymentRequest\x1a*.tutorial.lease.v1.SchedulePaymentResponse\x12\x65\n\x0eReceivePayment\x12(.tutorial.lease.v1.ReceivePaymentRequest\x1a).tutorial.lease.v1.ReceivePaymentResponseB_\n\x15\x63om.tutorial.lease.v1B\rLeaseApiProtoP\x01Z\x07leasev1\xa2\x02\x03TLX\xaa\x02\x11Tutorial.Lease.V1\xca\x02\x11Tutorial\\Lease\\V1b\x06proto3')
+  serialized_pb=_b('\n!tutorial/lease/v1/lease_api.proto\x12\x11tutorial.lease.v1\x1a\x16google/type/date.proto\x1a\x1dtutorial/lease/v1/lease.proto\"=\n\x17\x44\x65leteLeaseEventRequest\x12\x10\n\x08lease_id\x18\x01 \x01(\t\x12\x10\n\x08\x65vent_id\x18\x02 \x01(\x05\"+\n\x18\x44\x65leteLeaseEventResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\"k\n\x11ListLeasesRequest\x12/\n\nas_of_date\x18\x01 \x01(\x0b\x32\x1b.tutorial.lease.v1.AsOfDate\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"W\n\x12ListLeasesResponse\x12(\n\x06leases\x18\x01 \x03(\x0b\x32\x18.tutorial.lease.v1.Lease\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"T\n\x0fGetLeaseRequest\x12\x10\n\x08lease_id\x18\x01 \x01(\t\x12/\n\nas_of_date\x18\x02 \x01(\x0b\x32\x1b.tutorial.lease.v1.AsOfDate\"F\n\x10GetLeaseResponse\x12\x32\n\x05lease\x18\x01 \x01(\x0b\x32#.tutorial.lease.v1.LeaseObservation\"\x82\x01\n\x16ListLeaseEventsRequest\x12\x10\n\x08lease_id\x18\x01 \x01(\t\x12/\n\nas_of_date\x18\x02 \x01(\x0b\x32\x1b.tutorial.lease.v1.AsOfDate\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\"s\n\x17ListLeaseEventsResponse\x12\x10\n\x08lease_id\x18\x01 \x01(\t\x12-\n\x06\x65vents\x18\x02 \x03(\x0b\x32\x1d.tutorial.lease.v1.LeaseEvent\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t\"=\n\x12\x43reateLeaseRequest\x12\'\n\x05lease\x18\x01 \x01(\x0b\x32\x18.tutorial.lease.v1.Lease\"&\n\x13\x43reateLeaseResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\"T\n\x15TerminateLeaseRequest\x12\x10\n\x08lease_id\x18\x01 \x01(\t\x12)\n\x0e\x65\x66\x66\x65\x63tive_date\x18\x02 \x01(\x0b\x32\x11.google.type.Date\")\n\x16TerminateLeaseResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\"W\n\x16SchedulePaymentRequest\x12\x10\n\x08lease_id\x18\x01 \x01(\t\x12+\n\x07payment\x18\x02 \x01(\x0b\x32\x1a.tutorial.lease.v1.Payment\"*\n\x17SchedulePaymentResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\"V\n\x15ReceivePaymentRequest\x12\x10\n\x08lease_id\x18\x01 \x01(\t\x12+\n\x07payment\x18\x02 \x01(\x0b\x32\x1a.tutorial.lease.v1.Payment\")\n\x16ReceivePaymentResponse\x12\x0f\n\x07message\x18\x01 \x01(\t2\xa9\x06\n\x08LeaseAPI\x12m\n\x10\x44\x65leteLeaseEvent\x12*.tutorial.lease.v1.DeleteLeaseEventRequest\x1a+.tutorial.lease.v1.DeleteLeaseEventResponse\"\x00\x12Y\n\nListLeases\x12$.tutorial.lease.v1.ListLeasesRequest\x1a%.tutorial.lease.v1.ListLeasesResponse\x12h\n\x0fListLeaseEvents\x12).tutorial.lease.v1.ListLeaseEventsRequest\x1a*.tutorial.lease.v1.ListLeaseEventsResponse\x12S\n\x08GetLease\x12\".tutorial.lease.v1.GetLeaseRequest\x1a#.tutorial.lease.v1.GetLeaseResponse\x12\\\n\x0b\x43reateLease\x12%.tutorial.lease.v1.CreateLeaseRequest\x1a&.tutorial.lease.v1.CreateLeaseResponse\x12\x65\n\x0eTerminateLease\x12(.tutorial.lease.v1.TerminateLeaseRequest\x1a).tutorial.lease.v1.TerminateLeaseResponse\x12h\n\x0fSchedulePayment\x12).tutorial.lease.v1.SchedulePaymentRequest\x1a*.tutorial.lease.v1.SchedulePaymentResponse\x12\x65\n\x0eReceivePayment\x12(.tutorial.lease.v1.ReceivePaymentRequest\x1a).tutorial.lease.v1.ReceivePaymentResponseB_\n\x15\x63om.tutorial.lease.v1B\rLeaseApiProtoP\x01Z\x07leasev1\xa2\x02\x03TLX\xaa\x02\x11Tutorial.Lease.V1\xca\x02\x11Tutorial\\Lease\\V1b\x06proto3')
   ,
   dependencies=[google_dot_type_dot_date__pb2.DESCRIPTOR,tutorial_dot_lease_dot_v1_dot_lease__pb2.DESCRIPTOR,])
 
 
+
+
+_DELETELEASEEVENTREQUEST = _descriptor.Descriptor(
+  name='DeleteLeaseEventRequest',
+  full_name='tutorial.lease.v1.DeleteLeaseEventRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='lease_id', full_name='tutorial.lease.v1.DeleteLeaseEventRequest.lease_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='event_id', full_name='tutorial.lease.v1.DeleteLeaseEventRequest.event_id', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=111,
+  serialized_end=172,
+)
+
+
+_DELETELEASEEVENTRESPONSE = _descriptor.Descriptor(
+  name='DeleteLeaseEventResponse',
+  full_name='tutorial.lease.v1.DeleteLeaseEventResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='message', full_name='tutorial.lease.v1.DeleteLeaseEventResponse.message', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=174,
+  serialized_end=217,
+)
 
 
 _LISTLEASESREQUEST = _descriptor.Descriptor(
@@ -69,8 +138,8 @@ _LISTLEASESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=111,
-  serialized_end=218,
+  serialized_start=219,
+  serialized_end=326,
 )
 
 
@@ -107,8 +176,8 @@ _LISTLEASESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=220,
-  serialized_end=307,
+  serialized_start=328,
+  serialized_end=415,
 )
 
 
@@ -145,8 +214,8 @@ _GETLEASEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=309,
-  serialized_end=393,
+  serialized_start=417,
+  serialized_end=501,
 )
 
 
@@ -176,8 +245,8 @@ _GETLEASERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=395,
-  serialized_end=465,
+  serialized_start=503,
+  serialized_end=573,
 )
 
 
@@ -202,6 +271,20 @@ _LISTLEASEEVENTSREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_size', full_name='tutorial.lease.v1.ListLeaseEventsRequest.page_size', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_token', full_name='tutorial.lease.v1.ListLeaseEventsRequest.page_token', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -214,8 +297,8 @@ _LISTLEASEEVENTSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=467,
-  serialized_end=558,
+  serialized_start=576,
+  serialized_end=706,
 )
 
 
@@ -240,6 +323,13 @@ _LISTLEASEEVENTSRESPONSE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='next_page_token', full_name='tutorial.lease.v1.ListLeaseEventsResponse.next_page_token', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -252,8 +342,8 @@ _LISTLEASEEVENTSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=560,
-  serialized_end=650,
+  serialized_start=708,
+  serialized_end=823,
 )
 
 
@@ -283,8 +373,8 @@ _CREATELEASEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=652,
-  serialized_end=713,
+  serialized_start=825,
+  serialized_end=886,
 )
 
 
@@ -314,8 +404,8 @@ _CREATELEASERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=715,
-  serialized_end=753,
+  serialized_start=888,
+  serialized_end=926,
 )
 
 
@@ -327,8 +417,15 @@ _TERMINATELEASEREQUEST = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='effective_date', full_name='tutorial.lease.v1.TerminateLeaseRequest.effective_date', index=0,
-      number=1, type=11, cpp_type=10, label=1,
+      name='lease_id', full_name='tutorial.lease.v1.TerminateLeaseRequest.lease_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='effective_date', full_name='tutorial.lease.v1.TerminateLeaseRequest.effective_date', index=1,
+      number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -345,8 +442,8 @@ _TERMINATELEASEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=755,
-  serialized_end=821,
+  serialized_start=928,
+  serialized_end=1012,
 )
 
 
@@ -376,8 +473,8 @@ _TERMINATELEASERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=823,
-  serialized_end=864,
+  serialized_start=1014,
+  serialized_end=1055,
 )
 
 
@@ -389,8 +486,15 @@ _SCHEDULEPAYMENTREQUEST = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='payment', full_name='tutorial.lease.v1.SchedulePaymentRequest.payment', index=0,
-      number=1, type=11, cpp_type=10, label=1,
+      name='lease_id', full_name='tutorial.lease.v1.SchedulePaymentRequest.lease_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='payment', full_name='tutorial.lease.v1.SchedulePaymentRequest.payment', index=1,
+      number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -407,8 +511,8 @@ _SCHEDULEPAYMENTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=866,
-  serialized_end=935,
+  serialized_start=1057,
+  serialized_end=1144,
 )
 
 
@@ -438,8 +542,8 @@ _SCHEDULEPAYMENTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=937,
-  serialized_end=979,
+  serialized_start=1146,
+  serialized_end=1188,
 )
 
 
@@ -451,9 +555,9 @@ _RECEIVEPAYMENTREQUEST = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='effective_date', full_name='tutorial.lease.v1.ReceivePaymentRequest.effective_date', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      name='lease_id', full_name='tutorial.lease.v1.ReceivePaymentRequest.lease_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
@@ -476,8 +580,8 @@ _RECEIVEPAYMENTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=981,
-  serialized_end=1092,
+  serialized_start=1190,
+  serialized_end=1276,
 )
 
 
@@ -507,8 +611,8 @@ _RECEIVEPAYMENTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1094,
-  serialized_end=1135,
+  serialized_start=1278,
+  serialized_end=1319,
 )
 
 _LISTLEASESREQUEST.fields_by_name['as_of_date'].message_type = tutorial_dot_lease_dot_v1_dot_lease__pb2._ASOFDATE
@@ -520,8 +624,9 @@ _LISTLEASEEVENTSRESPONSE.fields_by_name['events'].message_type = tutorial_dot_le
 _CREATELEASEREQUEST.fields_by_name['lease'].message_type = tutorial_dot_lease_dot_v1_dot_lease__pb2._LEASE
 _TERMINATELEASEREQUEST.fields_by_name['effective_date'].message_type = google_dot_type_dot_date__pb2._DATE
 _SCHEDULEPAYMENTREQUEST.fields_by_name['payment'].message_type = tutorial_dot_lease_dot_v1_dot_lease__pb2._PAYMENT
-_RECEIVEPAYMENTREQUEST.fields_by_name['effective_date'].message_type = google_dot_type_dot_date__pb2._DATE
 _RECEIVEPAYMENTREQUEST.fields_by_name['payment'].message_type = tutorial_dot_lease_dot_v1_dot_lease__pb2._PAYMENT
+DESCRIPTOR.message_types_by_name['DeleteLeaseEventRequest'] = _DELETELEASEEVENTREQUEST
+DESCRIPTOR.message_types_by_name['DeleteLeaseEventResponse'] = _DELETELEASEEVENTRESPONSE
 DESCRIPTOR.message_types_by_name['ListLeasesRequest'] = _LISTLEASESREQUEST
 DESCRIPTOR.message_types_by_name['ListLeasesResponse'] = _LISTLEASESRESPONSE
 DESCRIPTOR.message_types_by_name['GetLeaseRequest'] = _GETLEASEREQUEST
@@ -537,6 +642,20 @@ DESCRIPTOR.message_types_by_name['SchedulePaymentResponse'] = _SCHEDULEPAYMENTRE
 DESCRIPTOR.message_types_by_name['ReceivePaymentRequest'] = _RECEIVEPAYMENTREQUEST
 DESCRIPTOR.message_types_by_name['ReceivePaymentResponse'] = _RECEIVEPAYMENTRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
+DeleteLeaseEventRequest = _reflection.GeneratedProtocolMessageType('DeleteLeaseEventRequest', (_message.Message,), dict(
+  DESCRIPTOR = _DELETELEASEEVENTREQUEST,
+  __module__ = 'tutorial.lease.v1.lease_api_pb2'
+  # @@protoc_insertion_point(class_scope:tutorial.lease.v1.DeleteLeaseEventRequest)
+  ))
+_sym_db.RegisterMessage(DeleteLeaseEventRequest)
+
+DeleteLeaseEventResponse = _reflection.GeneratedProtocolMessageType('DeleteLeaseEventResponse', (_message.Message,), dict(
+  DESCRIPTOR = _DELETELEASEEVENTRESPONSE,
+  __module__ = 'tutorial.lease.v1.lease_api_pb2'
+  # @@protoc_insertion_point(class_scope:tutorial.lease.v1.DeleteLeaseEventResponse)
+  ))
+_sym_db.RegisterMessage(DeleteLeaseEventResponse)
 
 ListLeasesRequest = _reflection.GeneratedProtocolMessageType('ListLeasesRequest', (_message.Message,), dict(
   DESCRIPTOR = _LISTLEASESREQUEST,
@@ -645,13 +764,22 @@ _LEASEAPI = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=1138,
-  serialized_end=1836,
+  serialized_start=1322,
+  serialized_end=2131,
   methods=[
+  _descriptor.MethodDescriptor(
+    name='DeleteLeaseEvent',
+    full_name='tutorial.lease.v1.LeaseAPI.DeleteLeaseEvent',
+    index=0,
+    containing_service=None,
+    input_type=_DELETELEASEEVENTREQUEST,
+    output_type=_DELETELEASEEVENTRESPONSE,
+    serialized_options=None,
+  ),
   _descriptor.MethodDescriptor(
     name='ListLeases',
     full_name='tutorial.lease.v1.LeaseAPI.ListLeases',
-    index=0,
+    index=1,
     containing_service=None,
     input_type=_LISTLEASESREQUEST,
     output_type=_LISTLEASESRESPONSE,
@@ -660,7 +788,7 @@ _LEASEAPI = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='ListLeaseEvents',
     full_name='tutorial.lease.v1.LeaseAPI.ListLeaseEvents',
-    index=1,
+    index=2,
     containing_service=None,
     input_type=_LISTLEASEEVENTSREQUEST,
     output_type=_LISTLEASEEVENTSRESPONSE,
@@ -669,7 +797,7 @@ _LEASEAPI = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='GetLease',
     full_name='tutorial.lease.v1.LeaseAPI.GetLease',
-    index=2,
+    index=3,
     containing_service=None,
     input_type=_GETLEASEREQUEST,
     output_type=_GETLEASERESPONSE,
@@ -678,7 +806,7 @@ _LEASEAPI = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='CreateLease',
     full_name='tutorial.lease.v1.LeaseAPI.CreateLease',
-    index=3,
+    index=4,
     containing_service=None,
     input_type=_CREATELEASEREQUEST,
     output_type=_CREATELEASERESPONSE,
@@ -687,7 +815,7 @@ _LEASEAPI = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='TerminateLease',
     full_name='tutorial.lease.v1.LeaseAPI.TerminateLease',
-    index=4,
+    index=5,
     containing_service=None,
     input_type=_TERMINATELEASEREQUEST,
     output_type=_TERMINATELEASERESPONSE,
@@ -696,7 +824,7 @@ _LEASEAPI = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='SchedulePayment',
     full_name='tutorial.lease.v1.LeaseAPI.SchedulePayment',
-    index=5,
+    index=6,
     containing_service=None,
     input_type=_SCHEDULEPAYMENTREQUEST,
     output_type=_SCHEDULEPAYMENTRESPONSE,
@@ -705,7 +833,7 @@ _LEASEAPI = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='ReceivePayment',
     full_name='tutorial.lease.v1.LeaseAPI.ReceivePayment',
-    index=6,
+    index=7,
     containing_service=None,
     input_type=_RECEIVEPAYMENTREQUEST,
     output_type=_RECEIVEPAYMENTRESPONSE,

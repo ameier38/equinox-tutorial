@@ -22,6 +22,9 @@ type LeaseId = Guid<leaseId>
 [<Measure>] type paymentId
 type PaymentId = Guid<paymentId>
 
+[<Measure>] type paymentDate
+type PaymentDate = DateTime<paymentDate>
+
 [<Measure>] type eventId
 type EventId = int<eventId>
 

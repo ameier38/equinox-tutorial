@@ -14,6 +14,11 @@ class LeaseAPIStub(object):
     Args:
       channel: A grpc.Channel.
     """
+    self.DeleteLeaseEvent = channel.unary_unary(
+        '/tutorial.lease.v1.LeaseAPI/DeleteLeaseEvent',
+        request_serializer=tutorial_dot_lease_dot_v1_dot_lease__api__pb2.DeleteLeaseEventRequest.SerializeToString,
+        response_deserializer=tutorial_dot_lease_dot_v1_dot_lease__api__pb2.DeleteLeaseEventResponse.FromString,
+        )
     self.ListLeases = channel.unary_unary(
         '/tutorial.lease.v1.LeaseAPI/ListLeases',
         request_serializer=tutorial_dot_lease_dot_v1_dot_lease__api__pb2.ListLeasesRequest.SerializeToString,
@@ -54,6 +59,13 @@ class LeaseAPIStub(object):
 class LeaseAPIServicer(object):
   """API to handle interactions with the Lease.
   """
+
+  def DeleteLeaseEvent(self, request, context):
+    """Delete a lease event.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
 
   def ListLeases(self, request, context):
     """List the leases that have been created.
@@ -107,6 +119,11 @@ class LeaseAPIServicer(object):
 
 def add_LeaseAPIServicer_to_server(servicer, server):
   rpc_method_handlers = {
+      'DeleteLeaseEvent': grpc.unary_unary_rpc_method_handler(
+          servicer.DeleteLeaseEvent,
+          request_deserializer=tutorial_dot_lease_dot_v1_dot_lease__api__pb2.DeleteLeaseEventRequest.FromString,
+          response_serializer=tutorial_dot_lease_dot_v1_dot_lease__api__pb2.DeleteLeaseEventResponse.SerializeToString,
+      ),
       'ListLeases': grpc.unary_unary_rpc_method_handler(
           servicer.ListLeases,
           request_deserializer=tutorial_dot_lease_dot_v1_dot_lease__api__pb2.ListLeasesRequest.FromString,

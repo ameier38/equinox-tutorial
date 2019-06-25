@@ -21,6 +21,10 @@ NUGET
       FSharp.Core (>= 4.3.4) - restriction: && (< net461) (>= netstandard2.0)
       Serilog (>= 2.7.1) - restriction: || (>= net461) (>= netstandard2.0)
       System.Runtime.Caching (>= 4.5) - restriction: && (< net461) (>= netstandard2.0)
+    Equinox.MemoryStore (2.0.0-rc1)
+      Equinox (>= 2.0.0-rc1) - restriction: || (>= net461) (>= netstandard2.0)
+      FSharp.Core (>= 3.1.2.5) - restriction: >= net461
+      FSharp.Core (>= 4.3.4) - restriction: && (< net461) (>= netstandard2.0)
     EventStore.Client (5.0.1) - restriction: || (>= net461) (>= netstandard2.0)
       Newtonsoft.Json (>= 11.0.2) - restriction: || (&& (>= net452) (< netstandard2.0)) (&& (< net452) (>= netstandard2.0)) (>= net46)
       protobuf-net (>= 2.4) - restriction: || (&& (>= net452) (< netstandard2.0)) (&& (< net452) (>= netstandard2.0)) (>= net46)
