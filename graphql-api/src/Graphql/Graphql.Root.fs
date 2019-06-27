@@ -6,21 +6,23 @@ open Lease
 type Root = { _empty: bool option }
 
 let leaseField
-    (leaseService:LeaseService) =
+    (leaseClient:LeaseClient) =
     Define.Field(
         name = "lease",
         typedef = Nullable LeaseObservationType,
-        description = "observe a lease at a point in time",
-        args = [ Define.Input("leaseId", ID); Define.Input("asOfDate", AsOfDateInputType)],
+        description = "get a lease at a point in time",
+        args = [ Define.Input("leaseId", ID); Define.Input("asOfDate", AsOfDateInputType) ],
         resolve = (fun ctx _ ->
-            result {
-                let! leaseId = ctx.TryArg("leaseId") |> Result.ofOption "leaseId is not defined"
-                let asOfDateInputOpt = ctx.TryArg<AsOfDateInput>("asOfDate")
-                return! leaseService.GetLease(leaseId, asOfDateInputOpt)
-            } |> Result.bimap Some (failwithf "Error: %s")))
+            let leaseId = ctx.Arg("leaseId")
+            let asOfDate = 
+                ctx.TryArg<AsOfDateInput>("asOfDate")
+                |> Option.map AsOfDate.fromInput
+                |> Option.defaultValue (AsOfDate.getDefault())
+            leaseClient.GetLease(leaseId, asOfDate) |> Some
+        ))
 
 let Query
-    (leaseService:LeaseService) =
+    (leaseClient:LeaseClient) =
     Define.Object<Root>(
         name = "Query",
-        fields = [ leaseField leaseService ])
+        fields = [ leaseField leaseClient ])

@@ -19,3 +19,14 @@ services:
       EVENTSTORE_PASSWORD: changeit
     ports:
       - "50051:50051"
+  graphql-api:
+    build:
+      context: ./graphql-api
+      target: runner
+    environment:
+      DEBUG: "true"
+      PORT: 4000
+      LEASE_API_HOST: lease-api
+      LEASE_API_PORT: 50051
+    ports:
+      - "4000:4000"

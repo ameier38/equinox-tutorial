@@ -1,17 +1,18 @@
-version 5.196.2
+version 5.210.1
 
 source https://www.nuget.org/api/v2
 storage: none
 
-github ameier38/fsharp-utilities src/Result.fs
-github ameier38/fsharp-utilities src/SimpleType.fs
-github ameier38/fsharp-utilities src/Env.fs
 nuget Expecto
-nuget Expecto.FsCheck
-nuget FSharp.Data.GraphQL.Server 1.0.0-beta beta
+nuget FsConfig
+nuget FSharp.Data.GraphQL.Server 1.0.0-beta9 beta
+nuget Google.Api.CommonProtos
+nuget Google.Protobuf
+nuget Grpc
 nuget Newtonsoft.Json
 nuget Suave
 
+// [ FAKE GROUP ]
 group Fake
     source https://www.nuget.org/api/v2
     storage: none

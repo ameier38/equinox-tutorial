@@ -1,5 +1,4 @@
 ﻿open FSharp.Data.GraphQL
-open FSharp.Data.GraphQL.Execution
 open Graphql
 open Grpc.Core
 open Newtonsoft.Json
@@ -8,65 +7,70 @@ open Suave.Operators
 open System
 
 let settings = JsonSerializerSettings()
-settings.ContractResolver <- Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver()
+settings.ContractResolver <- Serialization.CamelCasePropertyNamesContractResolver()
 let json o = JsonConvert.SerializeObject(o, settings)
     
 let tryParseRequest (data:byte array) =
-    try
-        let raw = Text.Encoding.UTF8.GetString data
-        if not (raw |> isNull) && raw <> "" then
-            let map = JsonConvert.DeserializeObject<Map<string,obj>>(raw)
-            Map.tryFind "query" map 
-            |> Option.map (fun qry -> qry :?> string)
-            |> Ok
-        else None |> Ok
-    with ex -> sprintf "error parsing request %A" ex |> Error
+    let raw = Text.Encoding.UTF8.GetString data
+    if not (raw |> isNull) && raw <> "" then
+        let map = JsonConvert.DeserializeObject<Map<string,obj>>(raw)
+        Map.tryFind "query" map 
+        |> Option.map (fun qry -> qry :?> string)
+    else None
 
-let getResponse = function
-    | Direct (data, errors) -> 
-        if errors |> List.isEmpty then
-            data |> json |> Ok
-        else errors |> List.map (fun (e, _) -> e) |> String.concat ";" |> Error
-    | _ -> Error "only direct queries are supported"
+let getResponseContent (res: Execution.GQLResponse) =
+    match res.Content with
+    | Execution.Direct (data, errors) ->
+        match errors with
+        | [] -> data |> json
+        | errors ->
+            errors
+            |> List.map fst
+            |> String.concat ";"
+            |> failwithf "Errors:\n%s"
+    | _ -> failwithf "Only direct queries are supported!"
 
 let graphql
     (executor:Executor<Root.Root>) 
     : WebPart =
     fun httpCtx ->
         async {
-            let onSuccess response = Successful.OK response
-            let onFailure err = RequestErrors.BAD_REQUEST err
-            match tryParseRequest httpCtx.request.rawForm with
-            | Ok (Some query) ->
-                let! gqlResponse = executor.AsyncExecute(query)
-                let response = getResponse gqlResponse |> Result.bimap onSuccess onFailure
-                return! httpCtx |> response
-            | Ok None ->
-                let! gqlResponse = executor.AsyncExecute(Introspection.IntrospectionQuery)
-                let response = getResponse gqlResponse |> Result.bimap onSuccess onFailure
-                return! httpCtx |> response
-            | Error err ->
-                return! httpCtx |> onFailure err
+            try
+                match tryParseRequest httpCtx.request.rawForm with
+                | Some query ->
+                    let! gqlRes = executor.AsyncExecute(query)
+                    let res = getResponseContent gqlRes |> Successful.OK
+                    return! httpCtx |> res
+                | None ->
+                    let! gqlRes = executor.AsyncExecute(Introspection.IntrospectionQuery)
+                    let res = getResponseContent gqlRes |> Successful.OK
+                    return! httpCtx |> res
+            with ex ->
+                let res =
+                    {| data = ex.ToString() |}
+                    |> json
+                    |> ServerErrors.INTERNAL_ERROR
+                return! httpCtx |> res
         }
 
 let setCorsHeaders = 
     Writers.setHeader  "Access-Control-Allow-Origin" "*"
-    >=> Writers.setHeader "Access-Control-Allow-Headers" "content-type"
+    >=> Writers.setHeader "Access-Control-Allow-Headers" "Content-Type"
+    >=> Writers.addHeader "Access-Control-Allow-Headers" "X-Apollo-Tracing"
 
 [<EntryPoint>]
 let main _ =
     let config = Config.load()
-    let membershipChannel = Channel(config.MembershipApi.Url, ChannelCredentials.Insecure)
-    let membershipClient = Proto.Membership.MembershipService.MembershipServiceClient(membershipChannel)
-    let membershipService = Membership.MembershipService(membershipClient)
-    let query = Root.Query membershipService
-    let mutation = Root.Mutation membershipService
-    let schema = Schema(query, mutation)
+    let leaseChannel = Channel(config.LeaseApi.ChannelTarget, ChannelCredentials.Insecure)
+    let leaseAPIClient = Tutorial.Lease.V1.LeaseAPI.LeaseAPIClient(leaseChannel)
+    let leaseClient = Lease.LeaseClient(leaseAPIClient)
+    let query = Root.Query leaseClient
+    let schema = Schema(query)
     let executor = Executor(schema)
     let suaveConfig =
         { defaultConfig with
             bindings = [ HttpBinding.createSimple HTTP "0.0.0.0" config.Port ]}
     let api = setCorsHeaders >=> graphql executor >=> Writers.setMimeType "application/json"
     startWebServer suaveConfig api
-    membershipChannel.ShutdownAsync().Wait()
+    leaseChannel.ShutdownAsync().Wait()
     0

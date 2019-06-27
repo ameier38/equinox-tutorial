@@ -15,6 +15,11 @@ The domain model is a lease, such as a car lease.
 A more detailed explanation about the motivation for modeling a bi-temporal domain
 can be found in this [blog post](https://andrewcmeier.com/bi-temporal-event-sourcing).
 
+## TL;DR
+```
+docker-compose up -d
+```
+
 ## Structure
 ```
 equinox-tutorial
