@@ -65,7 +65,8 @@ let main _ =
     let leaseAPIClient = Tutorial.Lease.V1.LeaseAPI.LeaseAPIClient(leaseChannel)
     let leaseClient = Lease.LeaseClient(leaseAPIClient)
     let query = Root.Query leaseClient
-    let schema = Schema(query)
+    let mutation = Root.Mutation leaseClient
+    let schema = Schema(query, mutation)
     let executor = Executor(schema)
     let suaveConfig =
         { defaultConfig with

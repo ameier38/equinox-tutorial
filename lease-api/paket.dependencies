@@ -20,6 +20,7 @@ nuget Grpc.HealthCheck
 nuget Jet.JsonNet.Converters
 nuget Serilog.Sinks.Console
 nuget Serilog
+nuget Serilog.Sinks.Seq
 
 // [ FAKE GROUP ]
 group Fake

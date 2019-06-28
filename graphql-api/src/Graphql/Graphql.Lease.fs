@@ -91,6 +91,21 @@ let LeaseType =
         ]
     )
 
+type CreatedLease =
+    {
+        LeaseId: string
+        Message: string
+    }
+let CreatedLeaseType =
+    Define.Object<CreatedLease>(
+        name = "CreatedLease",
+        description = "Created lease",
+        fields = [
+            Define.AutoField("leaseId", ID)
+            Define.AutoField("message", String)
+        ]
+    )
+
 type LeaseObservation =
     {
         Lease: Lease
@@ -133,4 +148,41 @@ type LeaseClient(client:Tutorial.Lease.V1.LeaseAPI.LeaseAPIClient) =
         | :? RpcException as ex ->
             match ex.StatusCode with
             | StatusCode.NotFound -> failwithf "lease-%s does not exist as of %A" leaseId asOfDate
+            | _ -> failwithf "Error!:\n%A" ex
+
+    member __.ListLeases(asOfDate:AsOfDate, pageSize:int, pageToken:string) =
+        try
+            let req =
+                Tutorial.Lease.V1.ListLeasesRequest(
+                    AsOfDate = (asOfDate |> AsOfDate.toProto),
+                    PageSize = pageSize,
+                    PageToken = pageToken)
+            let res = client.ListLeases(req)
+            res.Leases |> Seq.map Lease.fromProto |> Seq.toList
+        with
+        | ex -> failwithf "Error!:\n%A" ex
+
+    member __.CreateLease
+        (   userId:string, 
+            startDate:System.DateTime, 
+            maturityDate:System.DateTime, 
+            monthlyPaymentAmount:float) =
+        let leaseId = System.Guid.NewGuid().ToString("N")
+        try
+            let lease =
+                Tutorial.Lease.V1.Lease(
+                    LeaseId = leaseId,
+                    UserId = userId,
+                    StartDate = (startDate |> DateTime.toProtoDate),
+                    MaturityDate = (maturityDate |> DateTime.toProtoDate),
+                    MonthlyPaymentAmount = (monthlyPaymentAmount |> decimal |> Money.fromDecimal)
+                )
+            let req = Tutorial.Lease.V1.CreateLeaseRequest(Lease = lease)
+            let res = client.CreateLease(req)
+            { LeaseId = leaseId
+              Message = res.Message }
+        with
+        | :? RpcException as ex ->
+            match ex.StatusCode with
+            | StatusCode.AlreadyExists -> failwithf "lease-%s already exists" leaseId
             | _ -> failwithf "Error!:\n%A" ex

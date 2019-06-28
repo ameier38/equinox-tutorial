@@ -7,6 +7,7 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import LinearProgress from '@material-ui/core/LinearProgress'
+import MaterialTable from 'material-table'
 
 const useStyles = makeStyles({
   container: {
@@ -15,41 +16,74 @@ const useStyles = makeStyles({
 })
 
 const GET_LEASE = gql`
-{
-  lease(leaseId: "96ba9402201d4c3fb09f2e49c9c99015"){
-    lease{
-      leaseId
-      userId
-    }
+query GetLease($leaseId: String!){
+  lease(leaseId: $leaseId){
     amountDue
   }
 }
 `
 
-interface LeaseData {
-  lease: {
-    lease: {
-      leaseId: string,
-      userId: string,
-      startDate: string,
-      maturityDate: string
-    }
-    totalScheduled: number,
-    totalPaid: number,
-    amountDue: number
+const CREATE_LEASE = gql`
+mutation CreateLease(
+  $userId: String!,
+  $startDate: String!,
+  $maturityDate: String!,
+  $monthlyPaymentAmout: Float!
+){
+  createLease(
+    userId: $userId,
+    startDate: $startDate,
+    maturityDate: $maturityDate,
+    monthlyPaymentAmount: $monthlyPaymentAmount
+  ){
+    leaseId
+    message
   }
 }
+`
 
-const LeaseDetail: React.FC = () => (
-  <Query<LeaseData> query={GET_LEASE}>
+const LIST_LEASES = gql`
+query ListLeases{
+  listLeases(pageSize: 20, pageToken: ""){
+    leaseId
+    userId
+    startDate
+    maturityDate
+    monthlyPaymentAmount
+  }
+}
+`
+
+interface Lease {
+  leaseId: string,
+  userId: string,
+  startDate: string,
+  maturityDate: string
+  monthlyPaymentAmount: number
+}
+
+interface ListLeasesResponse {
+  listLeases: Lease[]
+}
+
+const LeaseTable: React.FC = () => (
+  <Query<ListLeasesResponse> query={LIST_LEASES}>
     {({ loading, error, data }) => {
       if (loading) return <LinearProgress />
       if (error) return `Error!: ${error.message}`
       return (
         <div>
-          <div><span>LeaseId: </span>{data ? data.lease.lease.leaseId : ''}</div>
-          <div><span>UserId: </span>{data ? data.lease.lease.userId : ''}</div>
-          <div><span>AmountDue: </span>{data ? data.lease.amountDue : ''}</div>
+          <MaterialTable
+            columns={[
+              { title: "Lease ID", field: "leaseId" },
+              { title: "User ID", field: "userId" },
+              { title: "Start Date", field: "startDate" },
+              { title: "Maturity Date", field: "maturityDate" },
+              { title: "Monthly Payment Amount", field: "monthlyPaymentAmount" }
+            ]}
+            data={data ? data.listLeases : []}
+            title="Leases"
+          />
         </div>
       )
     }}
@@ -68,7 +102,7 @@ const App: React.FC = () => {
         </Toolbar>
       </AppBar>
       <Container className={classes.container} maxWidth="lg">
-        <LeaseDetail />
+        <LeaseTable />
       </Container>
     </>
   )

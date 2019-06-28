@@ -17,21 +17,20 @@ type SerilogAdapter(log : ILogger) =
         member __.Error(format: string, args: obj []) =           log.Error(format, args)
         member __.Error(ex: exn, format: string, args: obj []) =  log.Error(ex, format, args)
 
-type ProjectionManager(config:Config) =
-    let serilog = LoggerConfiguration().WriteTo.Console().CreateLogger()
-    let log = SerilogAdapter(serilog)
+type ProjectionManager(config:Config, logger: Core.Logger) =
+    let log = SerilogAdapter(logger)
     let endpoint = DnsEndPoint(config.EventStore.Host, config.EventStore.HttpPort)
     let creds = UserCredentials(config.EventStore.User, config.EventStore.Password)
     let projectionsDir = Path.Combine(__SOURCE_DIRECTORY__,  "projections")
     let projectionManager = ProjectionsManager(log, endpoint, TimeSpan.FromSeconds(5.0))
-    let projections = [ "created-memberships" ]
+    let projections = [ "leases" ]
 
     let rec retry work = async {
         try
             let! res = work
             return res
         with ex ->
-            serilog.Warning(ex, "failed to create projection; retrying...")
+            logger.Warning(ex, "failed to create projection; retrying...")
             do! Async.Sleep(10000)
             return! retry work
         }
@@ -45,6 +44,7 @@ type ProjectionManager(config:Config) =
         }
 
     let createProjection projectionName projectionCode =
+        logger.Information(sprintf "creating projection: %s" projectionName)
         projectionManager.CreateContinuousAsync(projectionName, projectionCode, true, creds)
         |> Async.AwaitTask
 
@@ -53,14 +53,15 @@ type ProjectionManager(config:Config) =
         let projectionCode = File.ReadAllText(projectionPath)
         async {
             let! projections = listProjections()
-            printfn "existing projections: %A" projections
+            logger.Information(sprintf "existing projections: %A" projections)
             if not (projections |> List.contains projectionName) then
                 do! createProjection projectionName projectionCode
             let! projections = listProjections()
-            printfn "new projections: %A" projections
+            logger.Information(sprintf "new projections: %A" projections)
         }
 
     member __.StartProjections() =
+        logger.Information("starting projections 👓")
         projections
         |> List.map startProjection
         |> Async.Parallel

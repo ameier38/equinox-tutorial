@@ -5,6 +5,16 @@ services:
     ports:
       - "2113:2113"
       - "1113:1113"
+    environment:
+      EVENTSTORE_START_STANDARD_PROJECTIONS: "True"
+      EVENTSTORE_RUN_PROJECTIONS: All
+  logs:
+    image: datalust/seq
+    environment:
+      ACCEPT_EULA: "Y"
+    ports:
+      - "8081:80"
+      - "5341:5341"
   lease-api:
     build:
       context: ./lease-api
