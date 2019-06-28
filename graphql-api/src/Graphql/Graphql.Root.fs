@@ -5,7 +5,7 @@ open Lease
 
 type Root = { _empty: bool option }
 
-let leaseField
+let getLeaseField
     (leaseClient:LeaseClient) =
     Define.Field(
         name = "getLease",
@@ -25,7 +25,7 @@ let leaseField
         )
     )
 
-let leasesField
+let listLleasesField
     (leaseClient:LeaseClient) =
     Define.Field(
         name = "listLeases",
@@ -47,13 +47,36 @@ let leasesField
         )
     )
 
+let createLeaseField
+    (leaseClient:LeaseClient) =
+    Define.Field(
+        name = "createLease",
+        typedef = CreatedLeaseType,
+        description = "create a new lease",
+        args = [
+            Define.Input("leaseId", Guid)
+            Define.Input("userId", Guid)
+            Define.Input("startDate", Date)
+            Define.Input("maturityDate", Date)
+            Define.Input("monthlyPaymentAmount", Float)
+        ],
+        resolve = (fun ctx _ ->
+            let leaseId = ctx.Arg("leaseId")
+            let userId = ctx.Arg("userId")
+            let startDate = ctx.Arg("startDate")
+            let maturityDate = ctx.Arg("maturityDate")
+            let monthlyPaymentAmount = ctx.Arg("monthlyPaymentAmount")
+            leaseClient.CreateLease(leaseId, userId, startDate, maturityDate, monthlyPaymentAmount)
+        )
+    )
+
 let Query
     (leaseClient:LeaseClient) =
     Define.Object<Root>(
         name = "Query",
         fields = [ 
-            leaseField leaseClient 
-            leasesField leaseClient
+            getLeaseField leaseClient 
+            listLleasesField leaseClient
         ]
     )
 
@@ -62,21 +85,6 @@ let Mutation
     Define.Object<Root>(
         name = "Mutation",
         fields = [
-            Define.Field(
-                name = "createLease",
-                typedef = CreatedLeaseType,
-                description = "create a new lease",
-                args = [
-                    Define.Input("userId", ID)
-                    Define.Input("startDate", Date)
-                    Define.Input("maturityDate", Date)
-                    Define.Input("monthlyPaymentAmount", Float)],
-                resolve = (fun ctx _ ->
-                    let userId = ctx.Arg("userId")
-                    let startDate = ctx.Arg("startDate")
-                    let maturityDate = ctx.Arg("maturityDate")
-                    let monthlyPaymentAmount = ctx.Arg("monthlyPaymentAmount")
-                    leaseClient.CreateLease(userId, startDate, maturityDate, monthlyPaymentAmount))
-            )
+            createLeaseField leaseClient
         ]
     )

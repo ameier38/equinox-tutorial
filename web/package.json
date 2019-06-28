@@ -15,7 +15,8 @@
     "react-apollo": "^2.5.8",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
-    "typescript": "3.5.2"
+    "typescript": "3.5.2",
+    "uuid": "^3.3.2"
   },
   "scripts": {
     "start": "react-scripts start",

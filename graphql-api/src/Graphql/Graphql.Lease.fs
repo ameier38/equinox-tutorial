@@ -19,7 +19,8 @@ let AsOfDateInputType =
                 name = "asOn",
                 typedef = Nullable String,
                 description = "Filter events effective on or before this date") 
-        ])
+        ]
+    )
 
 type AsOfDate =
     { AsAt: System.DateTime
@@ -59,12 +60,13 @@ let LeaseStatusType =
         options = [
             Define.EnumValue("Outstanding", Outstanding)
             Define.EnumValue("Terminated", Terminated) ],
-        description = "Status of the lease")
+        description = "Status of the lease"
+    )
 
 type Lease =
     { 
-        LeaseId: string 
-        UserId: string
+        LeaseId: System.Guid 
+        UserId: System.Guid
         StartDate: System.DateTime 
         MaturityDate: System.DateTime 
         MonthlyPaymentAmount: decimal
@@ -72,8 +74,8 @@ type Lease =
 module Lease =
     let fromProto (proto:Tutorial.Lease.V1.Lease) =
         { 
-            LeaseId = proto.LeaseId 
-            UserId = proto.UserId 
+            LeaseId = proto.LeaseId |> System.Guid.Parse 
+            UserId = proto.UserId |> System.Guid.Parse
             StartDate = proto.StartDate.ToDateTime() 
             MaturityDate = proto.MaturityDate.ToDateTime() 
             MonthlyPaymentAmount = proto.MonthlyPaymentAmount.DecimalValue
@@ -83,8 +85,8 @@ let LeaseType =
         name = "Lease",
         description = "Lease information",
         fields = [
-            Define.AutoField("leaseId", ID)
-            Define.AutoField("userId", ID)
+            Define.AutoField("leaseId", Guid)
+            Define.AutoField("userId", Guid)
             Define.AutoField("startDate", Date)
             Define.AutoField("maturityDate", Date)
             Define.AutoField("monthlyPaymentAmount", Float)
@@ -93,7 +95,7 @@ let LeaseType =
 
 type CreatedLease =
     {
-        LeaseId: string
+        LeaseId: System.Guid
         Message: string
     }
 let CreatedLeaseType =
@@ -101,7 +103,7 @@ let CreatedLeaseType =
         name = "CreatedLease",
         description = "Created lease",
         fields = [
-            Define.AutoField("leaseId", ID)
+            Define.AutoField("leaseId", Guid)
             Define.AutoField("message", String)
         ]
     )
@@ -132,22 +134,25 @@ let LeaseObservationType =
             Define.AutoField("totalScheduled", Float)
             Define.AutoField("totalPaid", Float)
             Define.AutoField("amountDue", Float)
-            Define.AutoField("leaseStatus", LeaseStatusType) ])
+            Define.AutoField("leaseStatus", LeaseStatusType) 
+        ]
+    )
 
 type LeaseClient(client:Tutorial.Lease.V1.LeaseAPI.LeaseAPIClient) =
 
-    member __.GetLease(leaseId:string, asOfDate:AsOfDate) =
+    member __.GetLease(leaseId:System.Guid, asOfDate:AsOfDate) =
+        let leaseIdStr = leaseId.ToString("N")
         try
             let req = 
                 Tutorial.Lease.V1.GetLeaseRequest( 
-                    LeaseId = leaseId, 
+                    LeaseId = leaseIdStr,
                     AsOfDate = (asOfDate |> AsOfDate.toProto))
             let res = client.GetLease(req)
             res.Lease |> LeaseObservation.fromProto
         with
         | :? RpcException as ex ->
             match ex.StatusCode with
-            | StatusCode.NotFound -> failwithf "lease-%s does not exist as of %A" leaseId asOfDate
+            | StatusCode.NotFound -> failwithf "lease-%s does not exist as of %A" leaseIdStr asOfDate
             | _ -> failwithf "Error!:\n%A" ex
 
     member __.ListLeases(asOfDate:AsOfDate, pageSize:int, pageToken:string) =
@@ -163,16 +168,17 @@ type LeaseClient(client:Tutorial.Lease.V1.LeaseAPI.LeaseAPIClient) =
         | ex -> failwithf "Error!:\n%A" ex
 
     member __.CreateLease
-        (   userId:string, 
+        (   leaseId:System.Guid,
+            userId:System.Guid, 
             startDate:System.DateTime, 
             maturityDate:System.DateTime, 
             monthlyPaymentAmount:float) =
-        let leaseId = System.Guid.NewGuid().ToString("N")
+        let leaseIdStr = leaseId.ToString("N")
         try
             let lease =
                 Tutorial.Lease.V1.Lease(
-                    LeaseId = leaseId,
-                    UserId = userId,
+                    LeaseId = leaseIdStr,
+                    UserId = userId.ToString("N"),
                     StartDate = (startDate |> DateTime.toProtoDate),
                     MaturityDate = (maturityDate |> DateTime.toProtoDate),
                     MonthlyPaymentAmount = (monthlyPaymentAmount |> decimal |> Money.fromDecimal)
@@ -184,5 +190,5 @@ type LeaseClient(client:Tutorial.Lease.V1.LeaseAPI.LeaseAPIClient) =
         with
         | :? RpcException as ex ->
             match ex.StatusCode with
-            | StatusCode.AlreadyExists -> failwithf "lease-%s already exists" leaseId
+            | StatusCode.AlreadyExists -> failwithf "lease-%s already exists" leaseIdStr
             | _ -> failwithf "Error!:\n%A" ex
