@@ -7,7 +7,9 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import LinearProgress from '@material-ui/core/LinearProgress'
-import MaterialTable, { Column } from 'material-table'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
+import MaterialTable from 'material-table'
 
 const useStyles = makeStyles({
   container: {
@@ -84,31 +86,68 @@ const LeaseTable: React.FC = () => {
     { title: "Monthly Payment Amount", field: "monthlyPaymentAmount" }
   ]
 
+  const [values, setValues] = React.useState<Lease>({
+    leaseId: '',
+    userId: '',
+    startDate: '',
+    maturityDate: '',
+    monthlyPaymentAmount: 0
+  })
+
+  const handleChange = (name: keyof Lease) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValues({ ...values, [name]: event.target.value });
+  }
+
   return (
     <>
+      <Mutation<CreateLeaseResponse,Lease> mutation={CREATE_LEASE}>
+        {createLease => (
+          <form noValidate autoComplete='off' onSubmit={e => {
+            e.preventDefault()
+            createLease({variables: values})
+          }}>
+            <TextField
+              required
+              id='userId'
+              label='User ID'
+              value={values.userId}
+              onChange={handleChange('userId')}
+              margin='normal' />
+            <TextField
+              required
+              id='startDate'
+              label='Start Date'
+              value={values.startDate}
+              onChange={handleChange('startDate')}
+              margin='normal' />
+            <TextField
+              required
+              id='maturityDate'
+              label='Maturity Date'
+              value={values.maturityDate}
+              onChange={handleChange('maturityDate')}
+              margin='normal' />
+            <TextField
+              required
+              id='monthlyPaymentAmount'
+              label='Monthly Payment Amount'
+              value={values.monthlyPaymentAmount}
+              onChange={handleChange('monthlyPaymentAmount')}
+              margin='normal' />
+            <Button type="submit">Create Lease</Button>
+          </form>
+        )}
+      </Mutation>
       <Query<ListLeasesResponse> query={LIST_LEASES} >
         {({ loading, error, data }) => {
           if (loading) return <LinearProgress />
           if (error) return `Error!: ${error.message}`
           return (
-            <Mutation<CreateLeaseResponse,Lease> mutation={CREATE_LEASE} ignoreResults >
-              {createLease => (
-                <MaterialTable
-                  columns={columns}
-                  data={data ? data.listLeases : []}
-                  title="Leases"
-                  editable={{
-                    onRowAdd: newData => {
-                      console.log('newData', newData)
-                      return new Promise((resolve, reject) => {
-                        createLease({ variables: newData })
-                        resolve()
-                      })
-                    }
-                  }}
-                />
-              )}
-            </Mutation>
+            <MaterialTable
+              columns={columns}
+              data={data ? data.listLeases : []}
+              title="Leases"
+            />
           )
         }}
       </Query>
