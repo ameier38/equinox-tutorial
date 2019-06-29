@@ -4,6 +4,7 @@ import ApolloClient from 'apollo-boost'
 import { ApolloProvider } from 'react-apollo'
 import { ThemeProvider } from '@material-ui/styles'
 import { createMuiTheme } from '@material-ui/core/styles'
+import CssBaseline from '@material-ui/core/CssBaseline'
 import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
@@ -21,6 +22,7 @@ const client = new ApolloClient({
 const Root = () => (
     <ThemeProvider theme={theme}>
         <ApolloProvider client={client}>
+            <CssBaseline />
             <App />
         </ApolloProvider>
     </ThemeProvider>
