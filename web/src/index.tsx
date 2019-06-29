@@ -2,18 +2,28 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import ApolloClient from 'apollo-boost'
 import { ApolloProvider } from 'react-apollo'
+import { ThemeProvider } from '@material-ui/styles'
+import { createMuiTheme } from '@material-ui/core/styles'
 import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
+
+const theme = createMuiTheme({
+    palette: {
+        type: 'dark'
+    }
+})
 
 const client = new ApolloClient({
     uri: 'http://localhost:4000'
 })
 
 const Root = () => (
-    <ApolloProvider client={client}>
-        <App />
-    </ApolloProvider>
+    <ThemeProvider theme={theme}>
+        <ApolloProvider client={client}>
+            <App />
+        </ApolloProvider>
+    </ThemeProvider>
 )
 
 ReactDOM.render(<Root />, document.getElementById('root'))

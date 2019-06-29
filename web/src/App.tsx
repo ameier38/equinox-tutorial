@@ -77,14 +77,7 @@ interface CreateLeaseResponse {
   }
 }
 
-const LeaseTable: React.FC = () => {
-  const columns = [
-    { title: "Lease ID", field: "leaseId" },
-    { title: "User ID", field: "userId" },
-    { title: "Start Date", field: "startDate" },
-    { title: "Maturity Date", field: "maturityDate" },
-    { title: "Monthly Payment Amount", field: "monthlyPaymentAmount" }
-  ]
+const LeaseForm: React.FC = () => {
 
   const [values, setValues] = React.useState<Lease>({
     leaseId: '',
@@ -99,45 +92,59 @@ const LeaseTable: React.FC = () => {
   }
 
   return (
+    <Mutation<CreateLeaseResponse,Lease> mutation={CREATE_LEASE}>
+      {createLease => (
+        <form noValidate autoComplete='off' onSubmit={e => {
+          e.preventDefault()
+          createLease({variables: values})
+        }}>
+          <TextField
+            required
+            id='userId'
+            label='User ID'
+            value={values.userId}
+            onChange={handleChange('userId')}
+            margin='normal' />
+          <TextField
+            required
+            id='startDate'
+            label='Start Date'
+            value={values.startDate}
+            onChange={handleChange('startDate')}
+            margin='normal' />
+          <TextField
+            required
+            id='maturityDate'
+            label='Maturity Date'
+            value={values.maturityDate}
+            onChange={handleChange('maturityDate')}
+            margin='normal' />
+          <TextField
+            required
+            id='monthlyPaymentAmount'
+            label='Monthly Payment Amount'
+            value={values.monthlyPaymentAmount}
+            onChange={handleChange('monthlyPaymentAmount')}
+            margin='normal' />
+          <Button type="submit">Create Lease</Button>
+        </form>
+      )}
+    </Mutation>
+  )
+
+}
+
+const LeaseTable: React.FC = () => {
+  const columns = [
+    { title: "Lease ID", field: "leaseId" },
+    { title: "User ID", field: "userId" },
+    { title: "Start Date", field: "startDate" },
+    { title: "Maturity Date", field: "maturityDate" },
+    { title: "Monthly Payment Amount", field: "monthlyPaymentAmount" }
+  ]
+
+  return (
     <>
-      <Mutation<CreateLeaseResponse,Lease> mutation={CREATE_LEASE}>
-        {createLease => (
-          <form noValidate autoComplete='off' onSubmit={e => {
-            e.preventDefault()
-            createLease({variables: values})
-          }}>
-            <TextField
-              required
-              id='userId'
-              label='User ID'
-              value={values.userId}
-              onChange={handleChange('userId')}
-              margin='normal' />
-            <TextField
-              required
-              id='startDate'
-              label='Start Date'
-              value={values.startDate}
-              onChange={handleChange('startDate')}
-              margin='normal' />
-            <TextField
-              required
-              id='maturityDate'
-              label='Maturity Date'
-              value={values.maturityDate}
-              onChange={handleChange('maturityDate')}
-              margin='normal' />
-            <TextField
-              required
-              id='monthlyPaymentAmount'
-              label='Monthly Payment Amount'
-              value={values.monthlyPaymentAmount}
-              onChange={handleChange('monthlyPaymentAmount')}
-              margin='normal' />
-            <Button type="submit">Create Lease</Button>
-          </form>
-        )}
-      </Mutation>
       <Query<ListLeasesResponse> query={LIST_LEASES} >
         {({ loading, error, data }) => {
           if (loading) return <LinearProgress />
