@@ -4,48 +4,31 @@ open Graphql.Root
 open Graphql.JsonConverters
 open Grpc.Core
 open Newtonsoft.Json
-open Newtonsoft.Json.Linq
 open Newtonsoft.Json.Serialization
 open Suave
 open Suave.Operators
 open System
 
-module Helpers =
-    let tee f x =
-        f x
-        x
-
 module JsonHelpers =
-    let tryGetJsonProperty (jobj: JObject) prop =
-        match jobj.Property(prop) with
-        | null -> None
-        | p -> Some(p.Value.ToString())
-
     let initJsonSerializerSettings () =
         let settings = JsonSerializerSettings()
         settings.Converters <- [| OptionConverter() |]
         settings.ContractResolver <- CamelCasePropertyNamesContractResolver()
         settings
-
     let serialize (settings:JsonSerializerSettings) (o:obj) = JsonConvert.SerializeObject(o, settings)
     let deserialize<'T> (s:string) = JsonConvert.DeserializeObject<'T>(s)
 
 let tryParse fieldName (data:byte[]) =
     let raw = Text.Encoding.UTF8.GetString data
     if not (String.IsNullOrWhiteSpace(raw)) then
-        let map = raw |> JsonHelpers.deserialize<Map<string,string>>
-        match Map.tryFind fieldName map with
-        | Some s when String.IsNullOrWhiteSpace(s) -> None
-        | s -> s
+        JsonHelpers.deserialize<Map<string,obj>> raw
+        |> Map.tryFind fieldName
     else None
-
-let mapString (s : string option) =
-    Option.map JsonHelpers.deserialize<Map<string, obj>> s
 
 let removeWhitespacesAndLineBreaks (str : string) = 
     str.Trim().Replace("\r\n", " ")
 
-let getResponseContent (jsonSettings:JsonSerializerSettings) (res: Execution.GQLResponse) =
+let getResponseContent (jsonSettings:JsonSerializerSettings) (res:Execution.GQLResponse) =
     match res.Content with
     | Execution.Direct (data, errors) ->
         match errors with
@@ -65,8 +48,15 @@ let graphql
         async {
             try
                 let body = httpCtx.request.rawForm
-                let query = body |> tryParse "query"
-                let variables = body |> tryParse "variables" |> mapString
+                let query = 
+                    body 
+                    |> tryParse "query"
+                    |> Option.map (fun o -> o.ToString())
+                let variables = 
+                    body 
+                    |> tryParse "variables"
+                    |> Option.map (fun o -> o.ToString())
+                    |> Option.map JsonHelpers.deserialize<Map<string, obj>>
                 match query, variables with
                 | Some qry, Some variables ->
                     let formattedQry = removeWhitespacesAndLineBreaks qry

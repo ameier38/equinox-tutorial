@@ -54,8 +54,8 @@ let createLeaseField
         typedef = CreatedLeaseType,
         description = "create a new lease",
         args = [
-            Define.Input("leaseId", Guid)
-            Define.Input("userId", Guid)
+            Define.Input("leaseId", ID)
+            Define.Input("userId", ID)
             Define.Input("startDate", Date)
             Define.Input("maturityDate", Date)
             Define.Input("monthlyPaymentAmount", Float)
@@ -63,8 +63,8 @@ let createLeaseField
         resolve = (fun ctx _ ->
             let leaseId = ctx.Arg("leaseId")
             let userId = ctx.Arg("userId")
-            let startDate = ctx.Arg("startDate")
-            let maturityDate = ctx.Arg("maturityDate")
+            let startDate = ctx.Arg("startDate") |> DateTime.parse |> DateTime.toUtc
+            let maturityDate = ctx.Arg("maturityDate") |> DateTime.parse |> DateTime.toUtc
             let monthlyPaymentAmount = ctx.Arg("monthlyPaymentAmount")
             leaseClient.CreateLease(leaseId, userId, startDate, maturityDate, monthlyPaymentAmount)
         )

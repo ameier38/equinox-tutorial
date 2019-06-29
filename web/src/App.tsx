@@ -29,7 +29,7 @@ mutation CreateLease(
   $userId: String!,
   $startDate: String!,
   $maturityDate: String!,
-  $monthlyPaymentAmout: Float!
+  $monthlyPaymentAmount: Float!
 ){
   createLease(
     leaseId: $leaseId,
