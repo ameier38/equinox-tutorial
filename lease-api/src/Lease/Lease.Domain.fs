@@ -1,30 +1,37 @@
 namespace Lease
 
 type AsOfDate =
-    { AsAt: EventCreatedTime
-      AsOn: EventEffectiveDate }
+    { 
+        AsAt: EventCreatedTime 
+        AsOn: EventEffectiveDate 
+    }
 
 type EventContext =
-    { EventId: EventId
-      EventCreatedTime: EventCreatedTime
-      EventEffectiveDate: EventEffectiveDate }
+    { 
+        EventId: EventId 
+        EventCreatedTime: EventCreatedTime 
+        EventEffectiveDate: EventEffectiveDate 
+    }
 
 type Lease =
-    { LeaseId: LeaseId
-      UserId: UserId
-      StartDate: LeaseStartDate
-      MaturityDate: LeaseMaturityDate
-      MonthlyPaymentAmount: MonthlyPaymentAmount }
+    { 
+        LeaseId: LeaseId 
+        UserId: UserId 
+        StartDate: LeaseStartDate 
+        MaturityDate: LeaseMaturityDate 
+        MonthlyPaymentAmount: MonthlyPaymentAmount 
+    }
 
 type LeaseStatus =
     | Outstanding
     | Terminated
 
 type Payment =
-    { PaymentId: PaymentId
-      PaymentDate: PaymentDate
-      PaymentAmount: USD }
-
+    { 
+        PaymentId: PaymentId 
+        PaymentDate: PaymentDate 
+        PaymentAmount: USD 
+    }
 type LeaseCommand =
     | CreateLease of EventEffectiveDate * Lease
     | SchedulePayment of EventEffectiveDate * Payment
@@ -50,18 +57,24 @@ type StoredEvent =
     interface TypeShape.UnionContract.IUnionContract
 
 type LeaseObservation =
-    { Lease: Lease
-      TotalScheduled: USD
-      TotalPaid: USD
-      AmountDue: USD
-      LeaseStatus: LeaseStatus }
+    { 
+        Lease: Lease 
+        CreatedTime: EventCreatedTime
+        UpdatedTime: EventCreatedTime
+        TotalScheduled: USD 
+        TotalPaid: USD 
+        AmountDue: USD 
+        LeaseStatus: LeaseStatus 
+    }
 
 type LeaseState = LeaseObservation option
 
 type LeaseStream =
-    { NextEventId: EventId
-      LeaseEvents: LeaseEvent list
-      DeletedEvents: (EventCreatedTime * EventId) list }
+    { 
+        NextEventId: EventId 
+        LeaseEvents: LeaseEvent list 
+        DeletedEvents: (EventCreatedTime * EventId) list 
+    }
 
 type LeaseList = (EventContext * Lease) list
 

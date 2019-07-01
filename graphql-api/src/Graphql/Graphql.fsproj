@@ -7,7 +7,8 @@
   <ItemGroup>
     <Compile Include="Graphql.Config.fs" />
     <Compile Include="Graphql.SimpleTypes.fs" />
-    <Compile Include="Graphql.Lease.fs" />
+    <Compile Include="Graphql.Lease.Client.fs" />
+    <Compile Include="Graphql.Lease.Fields.fs" />
     <Compile Include="Graphql.Root.fs" />
     <Compile Include="Graphql.JsonConverters.fs" />
     <Compile Include="Program.fs" />

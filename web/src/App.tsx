@@ -52,9 +52,21 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 const GET_LEASE = gql`
-query GetLease($leaseId: String!){
+query GetLease(
+  $leaseId: String!
+  $eventPageToken: String!
+){
   lease(leaseId: $leaseId){
+    totalScheduled
+    totalPaid
     amountDue
+    leaseStatus
+    events(pageToken: $eventPageToken){
+      eventId
+      eventCreatedTime
+      eventEffectiveDate
+      eventType
+    }
   }
 }
 `
@@ -81,10 +93,13 @@ mutation CreateLease(
 `
 
 const LIST_LEASES = gql`
-query ListLeases($asAt: String!){
-  listLeases(
+query Leases(
+  $asAt: String!, 
+  $leasePageToken: String!,
+){
+  leases(
     pageSize: 20, 
-    pageToken: "",
+    pageToken: $leasePageToken,
     asOfDate: {
       asAt: $asAt
     }
@@ -282,7 +297,7 @@ const App: React.FC = () => {
   const classes = useStyles()
   return (
     <>
-      <AppBar position="static" color="default">
+      <AppBar position="static" color="primary">
         <Toolbar>
           <Typography variant="h6" color="inherit">
             Equinox Tutorial

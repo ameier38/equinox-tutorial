@@ -5,13 +5,15 @@ import { ApolloProvider } from 'react-apollo'
 import { ThemeProvider } from '@material-ui/styles'
 import { createMuiTheme } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
+import purple from '@material-ui/core/colors/purple'
 import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 
 const theme = createMuiTheme({
     palette: {
-        type: 'dark'
+        type: 'dark',
+        primary: purple
     }
 })
 

@@ -142,8 +142,12 @@ type LeaseAPIImpl
             let pageSize = req.PageSize
             let pageToken = req.PageToken
             let! leases = listLeases asOfDate
+            let totalCount = leases |> List.length
             let nextPageToken, pageLeases = leases |> Pagination.getPage pageToken pageSize
-            let res = Tutorial.Lease.V1.ListLeasesResponse(NextPageToken = nextPageToken)
+            let res = 
+                Tutorial.Lease.V1.ListLeasesResponse(
+                    NextPageToken = nextPageToken,
+                    TotalCount = totalCount)
             res.Leases.AddRange(pageLeases |> Seq.map Lease.toProto)
             return res
         } |> Async.StartAsTask
@@ -157,12 +161,16 @@ type LeaseAPIImpl
             let pageSize = req.PageSize
             let pageToken = req.PageToken
             let! leaseEvents = listLeaseEvents leaseId asOfDate
-            if leaseEvents |> List.isEmpty then
+            let totalCount = leaseEvents |> List.length
+            if totalCount = 0 then
                 let msg = sprintf "could not find lease-%s" req.LeaseId
                 RpcException(Status(StatusCode.NotFound, msg))
                 |> raise
             let nextPageToken, pageLeaseEvents = leaseEvents |> Pagination.getPage pageToken pageSize
-            let res = Tutorial.Lease.V1.ListLeaseEventsResponse(NextPageToken = nextPageToken)
+            let res = 
+                Tutorial.Lease.V1.ListLeaseEventsResponse(
+                    NextPageToken = nextPageToken,
+                    TotalCount = totalCount)
             res.Events.AddRange(pageLeaseEvents |> Seq.map LeaseEvent.toProto)
             return res
         } |> Async.StartAsTask

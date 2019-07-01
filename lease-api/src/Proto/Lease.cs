@@ -39,17 +39,19 @@ namespace Tutorial.Lease.V1 {
             "EhAKCGV2ZW50X2lkGAEgASgFEjYKEmV2ZW50X2NyZWF0ZWRfdGltZRgCIAEo",
             "CzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLwoUZXZlbnRfZWZmZWN0",
             "aXZlX2RhdGUYAyABKAsyES5nb29nbGUudHlwZS5EYXRlEhIKCmV2ZW50X3R5",
-            "cGUYBCABKAki7gEKEExlYXNlT2JzZXJ2YXRpb24SJwoFbGVhc2UYASABKAsy",
-            "GC50dXRvcmlhbC5sZWFzZS52MS5MZWFzZRIrCg90b3RhbF9zY2hlZHVsZWQY",
-            "AiABKAsyEi5nb29nbGUudHlwZS5Nb25leRImCgp0b3RhbF9wYWlkGAMgASgL",
-            "MhIuZ29vZ2xlLnR5cGUuTW9uZXkSJgoKYW1vdW50X2R1ZRgEIAEoCzISLmdv",
-            "b2dsZS50eXBlLk1vbmV5EjQKDGxlYXNlX3N0YXR1cxgFIAEoDjIeLnR1dG9y",
-            "aWFsLmxlYXNlLnYxLkxlYXNlU3RhdHVzKmIKC0xlYXNlU3RhdHVzEhgKFExF",
-            "QVNFX1NUQVRVU19JTlZBTElEEAASHAoYTEVBU0VfU1RBVFVTX09VVFNUQU5E",
-            "SU5HEAESGwoXTEVBU0VfU1RBVFVTX1RFUk1JTkFURUQQAkJcChVjb20udHV0",
-            "b3JpYWwubGVhc2UudjFCCkxlYXNlUHJvdG9QAVoHbGVhc2V2MaICA1RMWKoC",
-            "EVR1dG9yaWFsLkxlYXNlLlYxygIRVHV0b3JpYWxcTGVhc2VcVjFiBnByb3Rv",
-            "Mw=="));
+            "cGUYBCABKAki0gIKEExlYXNlT2JzZXJ2YXRpb24SJwoFbGVhc2UYASABKAsy",
+            "GC50dXRvcmlhbC5sZWFzZS52MS5MZWFzZRIwCgxjcmVhdGVkX3RpbWUYAiAB",
+            "KAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjAKDHVwZGF0ZWRfdGlt",
+            "ZRgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASKwoPdG90YWxf",
+            "c2NoZWR1bGVkGAQgASgLMhIuZ29vZ2xlLnR5cGUuTW9uZXkSJgoKdG90YWxf",
+            "cGFpZBgFIAEoCzISLmdvb2dsZS50eXBlLk1vbmV5EiYKCmFtb3VudF9kdWUY",
+            "BiABKAsyEi5nb29nbGUudHlwZS5Nb25leRI0CgxsZWFzZV9zdGF0dXMYByAB",
+            "KA4yHi50dXRvcmlhbC5sZWFzZS52MS5MZWFzZVN0YXR1cypiCgtMZWFzZVN0",
+            "YXR1cxIYChRMRUFTRV9TVEFUVVNfSU5WQUxJRBAAEhwKGExFQVNFX1NUQVRV",
+            "U19PVVRTVEFORElORxABEhsKF0xFQVNFX1NUQVRVU19URVJNSU5BVEVEEAJC",
+            "XAoVY29tLnR1dG9yaWFsLmxlYXNlLnYxQgpMZWFzZVByb3RvUAFaB2xlYXNl",
+            "djGiAgNUTFiqAhFUdXRvcmlhbC5MZWFzZS5WMcoCEVR1dG9yaWFsXExlYXNl",
+            "XFYxYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, global::Google.Type.DateReflection.Descriptor, global::Google.Type.MoneyReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Tutorial.Lease.V1.LeaseStatus), }, new pbr::GeneratedClrTypeInfo[] {
@@ -57,7 +59,7 @@ namespace Tutorial.Lease.V1 {
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.Lease), global::Tutorial.Lease.V1.Lease.Parser, new[]{ "LeaseId", "UserId", "StartDate", "MaturityDate", "MonthlyPaymentAmount" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.Payment), global::Tutorial.Lease.V1.Payment.Parser, new[]{ "PaymentId", "PaymentDate", "PaymentAmount" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.LeaseEvent), global::Tutorial.Lease.V1.LeaseEvent.Parser, new[]{ "EventId", "EventCreatedTime", "EventEffectiveDate", "EventType" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.LeaseObservation), global::Tutorial.Lease.V1.LeaseObservation.Parser, new[]{ "Lease", "TotalScheduled", "TotalPaid", "AmountDue", "LeaseStatus" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.LeaseObservation), global::Tutorial.Lease.V1.LeaseObservation.Parser, new[]{ "Lease", "CreatedTime", "UpdatedTime", "TotalScheduled", "TotalPaid", "AmountDue", "LeaseStatus" }, null, null, null)
           }));
     }
     #endregion
@@ -967,6 +969,8 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public LeaseObservation(LeaseObservation other) : this() {
       lease_ = other.lease_ != null ? other.lease_.Clone() : null;
+      createdTime_ = other.createdTime_ != null ? other.createdTime_.Clone() : null;
+      updatedTime_ = other.updatedTime_ != null ? other.updatedTime_.Clone() : null;
       totalScheduled_ = other.totalScheduled_ != null ? other.totalScheduled_.Clone() : null;
       totalPaid_ = other.totalPaid_ != null ? other.totalPaid_.Clone() : null;
       amountDue_ = other.amountDue_ != null ? other.amountDue_.Clone() : null;
@@ -990,8 +994,30 @@ namespace Tutorial.Lease.V1 {
       }
     }
 
+    /// <summary>Field number for the "created_time" field.</summary>
+    public const int CreatedTimeFieldNumber = 2;
+    private global::Google.Protobuf.WellKnownTypes.Timestamp createdTime_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Protobuf.WellKnownTypes.Timestamp CreatedTime {
+      get { return createdTime_; }
+      set {
+        createdTime_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "updated_time" field.</summary>
+    public const int UpdatedTimeFieldNumber = 3;
+    private global::Google.Protobuf.WellKnownTypes.Timestamp updatedTime_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Protobuf.WellKnownTypes.Timestamp UpdatedTime {
+      get { return updatedTime_; }
+      set {
+        updatedTime_ = value;
+      }
+    }
+
     /// <summary>Field number for the "total_scheduled" field.</summary>
-    public const int TotalScheduledFieldNumber = 2;
+    public const int TotalScheduledFieldNumber = 4;
     private global::Google.Type.Money totalScheduled_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Type.Money TotalScheduled {
@@ -1002,7 +1028,7 @@ namespace Tutorial.Lease.V1 {
     }
 
     /// <summary>Field number for the "total_paid" field.</summary>
-    public const int TotalPaidFieldNumber = 3;
+    public const int TotalPaidFieldNumber = 5;
     private global::Google.Type.Money totalPaid_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Type.Money TotalPaid {
@@ -1013,7 +1039,7 @@ namespace Tutorial.Lease.V1 {
     }
 
     /// <summary>Field number for the "amount_due" field.</summary>
-    public const int AmountDueFieldNumber = 4;
+    public const int AmountDueFieldNumber = 6;
     private global::Google.Type.Money amountDue_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Type.Money AmountDue {
@@ -1024,7 +1050,7 @@ namespace Tutorial.Lease.V1 {
     }
 
     /// <summary>Field number for the "lease_status" field.</summary>
-    public const int LeaseStatusFieldNumber = 5;
+    public const int LeaseStatusFieldNumber = 7;
     private global::Tutorial.Lease.V1.LeaseStatus leaseStatus_ = 0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Tutorial.Lease.V1.LeaseStatus LeaseStatus {
@@ -1048,6 +1074,8 @@ namespace Tutorial.Lease.V1 {
         return true;
       }
       if (!object.Equals(Lease, other.Lease)) return false;
+      if (!object.Equals(CreatedTime, other.CreatedTime)) return false;
+      if (!object.Equals(UpdatedTime, other.UpdatedTime)) return false;
       if (!object.Equals(TotalScheduled, other.TotalScheduled)) return false;
       if (!object.Equals(TotalPaid, other.TotalPaid)) return false;
       if (!object.Equals(AmountDue, other.AmountDue)) return false;
@@ -1059,6 +1087,8 @@ namespace Tutorial.Lease.V1 {
     public override int GetHashCode() {
       int hash = 1;
       if (lease_ != null) hash ^= Lease.GetHashCode();
+      if (createdTime_ != null) hash ^= CreatedTime.GetHashCode();
+      if (updatedTime_ != null) hash ^= UpdatedTime.GetHashCode();
       if (totalScheduled_ != null) hash ^= TotalScheduled.GetHashCode();
       if (totalPaid_ != null) hash ^= TotalPaid.GetHashCode();
       if (amountDue_ != null) hash ^= AmountDue.GetHashCode();
@@ -1080,20 +1110,28 @@ namespace Tutorial.Lease.V1 {
         output.WriteRawTag(10);
         output.WriteMessage(Lease);
       }
-      if (totalScheduled_ != null) {
+      if (createdTime_ != null) {
         output.WriteRawTag(18);
+        output.WriteMessage(CreatedTime);
+      }
+      if (updatedTime_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(UpdatedTime);
+      }
+      if (totalScheduled_ != null) {
+        output.WriteRawTag(34);
         output.WriteMessage(TotalScheduled);
       }
       if (totalPaid_ != null) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(42);
         output.WriteMessage(TotalPaid);
       }
       if (amountDue_ != null) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(50);
         output.WriteMessage(AmountDue);
       }
       if (LeaseStatus != 0) {
-        output.WriteRawTag(40);
+        output.WriteRawTag(56);
         output.WriteEnum((int) LeaseStatus);
       }
       if (_unknownFields != null) {
@@ -1106,6 +1144,12 @@ namespace Tutorial.Lease.V1 {
       int size = 0;
       if (lease_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Lease);
+      }
+      if (createdTime_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(CreatedTime);
+      }
+      if (updatedTime_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(UpdatedTime);
       }
       if (totalScheduled_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(TotalScheduled);
@@ -1135,6 +1179,18 @@ namespace Tutorial.Lease.V1 {
           Lease = new global::Tutorial.Lease.V1.Lease();
         }
         Lease.MergeFrom(other.Lease);
+      }
+      if (other.createdTime_ != null) {
+        if (createdTime_ == null) {
+          CreatedTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+        }
+        CreatedTime.MergeFrom(other.CreatedTime);
+      }
+      if (other.updatedTime_ != null) {
+        if (updatedTime_ == null) {
+          UpdatedTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+        }
+        UpdatedTime.MergeFrom(other.UpdatedTime);
       }
       if (other.totalScheduled_ != null) {
         if (totalScheduled_ == null) {
@@ -1176,27 +1232,41 @@ namespace Tutorial.Lease.V1 {
             break;
           }
           case 18: {
+            if (createdTime_ == null) {
+              CreatedTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            input.ReadMessage(CreatedTime);
+            break;
+          }
+          case 26: {
+            if (updatedTime_ == null) {
+              UpdatedTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            input.ReadMessage(UpdatedTime);
+            break;
+          }
+          case 34: {
             if (totalScheduled_ == null) {
               TotalScheduled = new global::Google.Type.Money();
             }
             input.ReadMessage(TotalScheduled);
             break;
           }
-          case 26: {
+          case 42: {
             if (totalPaid_ == null) {
               TotalPaid = new global::Google.Type.Money();
             }
             input.ReadMessage(TotalPaid);
             break;
           }
-          case 34: {
+          case 50: {
             if (amountDue_ == null) {
               AmountDue = new global::Google.Type.Money();
             }
             input.ReadMessage(AmountDue);
             break;
           }
-          case 40: {
+          case 56: {
             LeaseStatus = (global::Tutorial.Lease.V1.LeaseStatus) input.ReadEnum();
             break;
           }
