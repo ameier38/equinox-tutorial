@@ -1,5 +1,6 @@
 module Graphql.Lease.Fields
 
+open Graphql
 open Graphql.Lease.Client
 open FSharp.Data.GraphQL.Types
 
@@ -28,33 +29,21 @@ let LeaseStatusType =
         description = "Status of the lease"
     )
 
-let LeaseObservationType =
-    Define.Object<LeaseObservation>(
-        name = "LeaseObservation",
-        description = "Observation of a lease as of a particular date",
-        fields = [
-            Define.AutoField("totalScheduled", Float)
-            Define.AutoField("totalPaid", Float)
-            Define.AutoField("amountDue", Float)
-            Define.AutoField("leaseStatus", LeaseStatusType) 
-        ]
-    )
-
 let LeaseEventType =
     Define.Object<LeaseEvent>(
         name = "LeaseEvent",
         description = "Lease event that has occured",
         fields = [
-            Define.Field("id", Int, fun _ event -> event.EventId)
+            Define.Field("leaseId", Int, fun _ event -> event.EventId)
             Define.AutoField("eventCreatedTime", Date)
             Define.AutoField("eventEffectiveDate", Date)
             Define.AutoField("eventType", String)
         ]
     )
 
-let LeaseEventsResponseType =
+let ListLeaseEventsResponseType =
     Define.Object<ListLeaseEventsResponse>(
-        name = "LeaseEventsResponse",
+        name = "ListLeaseEventsResponse",
         description = "List lease events repsonse",
         fields = [
             Define.AutoField("events", ListOf LeaseEventType)
@@ -68,7 +57,7 @@ let LeaseType =
         name = "Lease",
         description = "Lease information",
         fields = [
-            Define.Field("id", ID, fun _ lease -> lease.LeaseId)
+            Define.Field("leaseId", ID, fun _ lease -> lease.LeaseId)
             Define.AutoField("userId", ID)
             Define.AutoField("startDate", Date)
             Define.AutoField("maturityDate", Date)
@@ -76,14 +65,49 @@ let LeaseType =
         ]
     )
 
-let leaseField
+let LeaseObservationType 
+    (leaseClient:LeaseClient) =
+    Define.Object<LeaseObservation>(
+        name = "LeaseObservation",
+        description = "Observation of a lease as of a particular date",
+        fields = [
+            Define.AutoField("lease", LeaseType)
+            Define.AutoField("totalScheduled", Float)
+            Define.AutoField("totalPaid", Float)
+            Define.AutoField("amountDue", Float)
+            Define.AutoField("leaseStatus", LeaseStatusType) 
+            Define.Field("listEvents", ListLeaseEventsResponseType, (fun ctx leaseObs ->
+                let leaseId = leaseObs.Lease.LeaseId
+                let asOfDate = 
+                    ctx.TryArg<AsOfDateInput>("asOfDate")
+                    |> Option.map AsOfDate.fromInput
+                    |> Option.defaultValue (AsOfDate.getDefault())
+                let pageSize = ctx.TryArg("pageSize") |> Option.defaultValue 20
+                let pageToken = ctx.TryArg("pageToken") |> Option.defaultValue ""
+                leaseClient.ListLeaseEvents(leaseId, asOfDate, pageSize, pageToken)
+            ))
+        ]
+    )
+
+let ListLeasesResponseType =
+    Define.Object<ListLeasesResponse>(
+        name = "ListLeasesResponse",
+        description = "List leases response",
+        fields = [
+            Define.AutoField("leases", ListOf LeaseType)
+            Define.AutoField("nextPageToken", String)
+            Define.AutoField("totalCount", Int)
+        ]
+    )
+
+let getLeaseField
     (leaseClient:LeaseClient) =
     Define.Field(
-        name = "lease",
-        typedef = Nullable LeaseObservationType,
+        name = "getLease",
+        typedef = (LeaseObservationType leaseClient),
         description = "get a lease at a point in time",
         args = [ 
-            Define.Input("id", ID)
+            Define.Input("leaseId", ID)
             Define.Input("asOfDate", AsOfDateInputType) 
         ],
         resolve = (fun ctx _ ->
@@ -92,15 +116,15 @@ let leaseField
                 ctx.TryArg<AsOfDateInput>("asOfDate")
                 |> Option.map AsOfDate.fromInput
                 |> Option.defaultValue (AsOfDate.getDefault())
-            leaseClient.GetLease(leaseId, asOfDate) |> Some
+            leaseClient.GetLease(leaseId, asOfDate)
         )
     )
 
-let leasesField
+let listLeasesField
     (leaseClient:LeaseClient) =
     Define.Field(
-        name = "leases",
-        typedef = ListOf LeaseType,
+        name = "listLeases",
+        typedef = ListLeasesResponseType,
         description = "list existing leases",
         args = [ 
             Define.Input("asOfDate", AsOfDateInputType) 

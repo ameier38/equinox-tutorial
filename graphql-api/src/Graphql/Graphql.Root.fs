@@ -1,7 +1,8 @@
 module Graphql.Root
 
 open FSharp.Data.GraphQL.Types
-open Graphql.Lease
+open Graphql.Lease.Client
+open Graphql.Lease.Fields
 
 type Root = { _empty: bool option }
 
@@ -10,8 +11,8 @@ let Query
     Define.Object<Root>(
         name = "Query",
         fields = [ 
-            leaseField leaseClient 
-            leasesField leaseClient
+            getLeaseField leaseClient 
+            listLeasesField leaseClient
         ]
     )
 

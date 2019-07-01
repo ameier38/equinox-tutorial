@@ -1,4 +1,7 @@
 FsConfig
 FSharp.Data.GraphQL.Server
 Suave
+Serilog
+Serilog.Sinks.Console
+Serilog.Sinks.Seq
 Newtonsoft.Json

@@ -12,12 +12,18 @@ let (!@) (value:DateTime<'u>) = %value |> Google.Type.Date.FromDateTime
 let (!@@) (value:DateTime<'u>) = %value |> DateTime.toUtc |> Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime
 
 module PageToken =
+    let prefix = "lease-"
     let decode (t:string) : int =
         match t with
         | "" -> 1
-        | token -> token |> String.fromBase64 |> int 
+        | token -> 
+            token 
+            |> String.fromBase64 
+            |> String.replace prefix ""
+            |> int 
     let encode (cursor:int) : string =
-        cursor |> string |> String.toBase64
+        sprintf "%s%d" prefix cursor 
+        |> String.toBase64
 
 module Pagination =
     let getPage (pageToken:string) (pageSize:int) (s:seq<'T>) =
@@ -27,11 +33,17 @@ module Pagination =
         let remaining = total - toSkip
         let toTake = min remaining pageSize
         let page = s |> Seq.skip toSkip |> Seq.take toTake
+        let prevPageToken =
+            match cursor - pageSize with
+            | c when c < 1 -> ""
+            | c -> c |> PageToken.encode
         let nextPageToken = 
             match cursor + pageSize with
-            | newCursor when newCursor > total -> ""
-            | newCursor -> newCursor |> PageToken.encode
-        nextPageToken, page
+            | c when c > total -> ""
+            | c -> c |> PageToken.encode
+        {| PrevPageToken = prevPageToken
+           NextPageToken = nextPageToken
+           Page = page |}
 
 module AsOfDate =
     let fromProto (proto:Tutorial.Lease.V1.AsOfDate) =
@@ -143,12 +155,13 @@ type LeaseAPIImpl
             let pageToken = req.PageToken
             let! leases = listLeases asOfDate
             let totalCount = leases |> List.length
-            let nextPageToken, pageLeases = leases |> Pagination.getPage pageToken pageSize
+            let pageInfo = leases |> Pagination.getPage pageToken pageSize
             let res = 
                 Tutorial.Lease.V1.ListLeasesResponse(
-                    NextPageToken = nextPageToken,
+                    PrevPageToken = pageInfo.PrevPageToken,
+                    NextPageToken = pageInfo.NextPageToken,
                     TotalCount = totalCount)
-            res.Leases.AddRange(pageLeases |> Seq.map Lease.toProto)
+            res.Leases.AddRange(pageInfo.Page |> Seq.map Lease.toProto)
             return res
         } |> Async.StartAsTask
 
@@ -166,12 +179,13 @@ type LeaseAPIImpl
                 let msg = sprintf "could not find lease-%s" req.LeaseId
                 RpcException(Status(StatusCode.NotFound, msg))
                 |> raise
-            let nextPageToken, pageLeaseEvents = leaseEvents |> Pagination.getPage pageToken pageSize
+            let pageInfo = leaseEvents |> Pagination.getPage pageToken pageSize
             let res = 
                 Tutorial.Lease.V1.ListLeaseEventsResponse(
-                    NextPageToken = nextPageToken,
+                    PrevPageToken = pageInfo.PrevPageToken,
+                    NextPageToken = pageInfo.NextPageToken,
                     TotalCount = totalCount)
-            res.Events.AddRange(pageLeaseEvents |> Seq.map LeaseEvent.toProto)
+            res.Events.AddRange(pageInfo.Page |> Seq.map LeaseEvent.toProto)
             return res
         } |> Async.StartAsTask
     

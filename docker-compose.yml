@@ -24,11 +24,17 @@ services:
       PORT: 50051
       EVENTSTORE_PROTOCOL: tcp
       EVENTSTORE_HOST: eventstore
-      EVENTSTORE_PORT: 1113
+      EVENTSTORE_TCP_PORT: 1113
+      EVENTSTORE_HTTP_PORT: 2113
       EVENTSTORE_USER: admin
       EVENTSTORE_PASSWORD: changeit
+      SEQ_HOST: logs
+      SEQ_PORT: 5341
     ports:
       - "50051:50051"
+    depends_on:
+      - logs
+      - eventstore
   graphql-api:
     build:
       context: ./graphql-api
@@ -38,5 +44,9 @@ services:
       PORT: 4000
       LEASE_API_HOST: lease-api
       LEASE_API_PORT: 50051
+      SEQ_HOST: logs
+      SEQ_PORT: 5341
     ports:
       - "4000:4000"
+    depends_on:
+      - lease-api

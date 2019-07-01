@@ -5,6 +5,7 @@ open Graphql.JsonConverters
 open Grpc.Core
 open Newtonsoft.Json
 open Newtonsoft.Json.Serialization
+open Serilog
 open Suave
 open Suave.Operators
 open System
@@ -90,9 +91,14 @@ let setCorsHeaders =
 [<EntryPoint>]
 let main _ =
     let config = Config.load()
+    let logger = 
+        LoggerConfiguration()
+            .WriteTo.Console()
+            .WriteTo.Seq(config.Seq.Url)
+            .CreateLogger()
     let leaseChannel = Channel(config.LeaseApi.ChannelTarget, ChannelCredentials.Insecure)
     let leaseAPIClient = Tutorial.Lease.V1.LeaseAPI.LeaseAPIClient(leaseChannel)
-    let leaseClient = Lease.LeaseClient(leaseAPIClient)
+    let leaseClient = Lease.Client.LeaseClient(leaseAPIClient)
     let query = Query leaseClient
     let mutation = Mutation leaseClient
     let schema = Schema(query, mutation)
@@ -102,6 +108,8 @@ let main _ =
         { defaultConfig with
             bindings = [ HttpBinding.createSimple HTTP "0.0.0.0" config.Port ]}
     let api = setCorsHeaders >=> graphql jsonSettings executor >=> Writers.setMimeType "application/json"
+    logger.Information(sprintf "logging at %s 📝" config.Seq.Url)
+    logger.Information("starting GraphQL API 🚀")
     startWebServer suaveConfig api
     leaseChannel.ShutdownAsync().Wait()
     0

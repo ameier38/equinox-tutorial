@@ -3,7 +3,6 @@ namespace Lease
 open FsConfig
 open System
 
-[<Convention("EVENTSTORE")>]
 type EventStoreConfig = 
     {
         [<DefaultValue("tcp")>]
@@ -24,7 +23,6 @@ type EventStoreConfig =
         let discoveryPort = if this.Protocol = "discover" then this.HttpPort else this.TcpPort
         sprintf "%s://%s:%d" this.Protocol this.Host discoveryPort |> Uri
 
-[<Convention("SEQ")>]
 type SeqConfig =
     {
         [<DefaultValue("http")>]
@@ -44,6 +42,7 @@ type Config =
         Debug: bool
         [<DefaultValue("50051")>]
         Port: int
+        [<CustomName("EVENTSTORE")>]
         EventStore: EventStoreConfig 
         Seq: SeqConfig
     }

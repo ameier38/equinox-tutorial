@@ -2,7 +2,6 @@ namespace Graphql
 
 open FsConfig
 
-[<Convention("LEASE_API")>]
 type LeaseApiConfig =
     {
         [<DefaultValue("localhost")>]
@@ -13,6 +12,19 @@ type LeaseApiConfig =
     member this.ChannelTarget =
         sprintf "%s:%d" this.Host this.Port
 
+type SeqConfig =
+    {
+        [<DefaultValue("http")>]
+        Protocol: string
+        [<DefaultValue("localhost")>]
+        Host: string
+        [<DefaultValue("5341")>]
+        Port: int
+    } with
+
+    member this.Url =
+        sprintf "%s://%s:%d" this.Protocol this.Host this.Port
+
 type Config =
     {
         [<DefaultValue("true")>]
@@ -20,6 +32,7 @@ type Config =
         [<DefaultValue("4000")>]
         Port: int
         LeaseApi: LeaseApiConfig
+        Seq: SeqConfig
     }
 module Config =
     let load () =

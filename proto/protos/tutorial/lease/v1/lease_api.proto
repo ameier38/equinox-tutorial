@@ -50,8 +50,9 @@ message ListLeasesRequest {
 
 message ListLeasesResponse {
   repeated Lease leases = 1;
-  string next_page_token = 2;
-  int32 total_count = 3;
+  string prev_page_token = 2;
+  string next_page_token = 3;
+  int32 total_count = 4;
 }
 
 message GetLeaseRequest {
@@ -73,8 +74,9 @@ message ListLeaseEventsRequest {
 message ListLeaseEventsResponse {
   string lease_id = 1;
   repeated LeaseEvent events = 2;
-  string next_page_token = 3;
-  int32 total_count = 4;
+  string prev_page_token = 3;
+  string next_page_token = 4;
+  int32 total_count = 5;
 }
 
 message CreateLeaseRequest {

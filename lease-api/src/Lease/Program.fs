@@ -38,7 +38,8 @@ let main _ =
 
     projectionManager.StartProjections()
 
-    logger.Information(sprintf "🚀 serving at %s:%d" host config.Port)
+    logger.Information(sprintf "logging at %s 📝" config.Seq.Url)
+    logger.Information(sprintf "serving at %s:%d 🚀" host config.Port)
     let exitEvent = new AutoResetEvent(false)
     let exit = new ConsoleCancelEventHandler(fun _ _ ->
         exitEvent.Set() |> ignore)

@@ -63,6 +63,7 @@ module String =
     let toBytes (s:string) = s |> Encoding.UTF8.GetBytes
     let fromBytes (bytes:byte []) = bytes |> Encoding.UTF8.GetString
     let lower (s:string) = s.ToLower()
+    let replace (oldValue:string) (newValue:string) (s:string) = s.Replace(oldValue, newValue)
     let toBase64 (s:string) = s |> toBytes |> Convert.ToBase64String
     let fromBase64 (s:string) = s |> Convert.FromBase64String |> fromBytes
 

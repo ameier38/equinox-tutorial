@@ -10,6 +10,9 @@ nuget Google.Api.CommonProtos
 nuget Google.Protobuf
 nuget Grpc
 nuget Newtonsoft.Json
+nuget Serilog
+nuget Serilog.Sinks.Console
+nuget Serilog.Sinks.Seq
 nuget Suave
 
 // [ FAKE GROUP ]

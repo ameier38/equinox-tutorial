@@ -53,20 +53,21 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const GET_LEASE = gql`
 query GetLease(
+  $asOn: String!,
+  $asAt: String!,
   $leaseId: String!
-  $eventPageToken: String!
 ){
-  lease(leaseId: $leaseId){
+  getLease(
+    leaseId: $leaseId,
+    asOfDate: {
+      asOn: $asOn,
+      asAt: $asAt
+    }
+  ){
     totalScheduled
     totalPaid
     amountDue
     leaseStatus
-    events(pageToken: $eventPageToken){
-      eventId
-      eventCreatedTime
-      eventEffectiveDate
-      eventType
-    }
   }
 }
 `
@@ -93,22 +94,29 @@ mutation CreateLease(
 `
 
 const LIST_LEASES = gql`
-query Leases(
+query ListLeases(
+  $asOn: String!,
   $asAt: String!, 
   $leasePageToken: String!,
+  $leasePageSize: Int!
 ){
-  leases(
-    pageSize: 20, 
-    pageToken: $leasePageToken,
+  listLeases(
     asOfDate: {
+      asOn: $asOn,
       asAt: $asAt
-    }
+    },
+    pageToken: $leasePageToken,
+    pageSize: $leasePageSize
   ){
-    leaseId
-    userId
-    startDate
-    maturityDate
-    monthlyPaymentAmount
+    leases {
+      leaseId
+      userId
+      startDate
+      maturityDate
+      monthlyPaymentAmount
+    }
+    nextPageToken
+    totalCount
   }
 }
 `
@@ -121,8 +129,34 @@ interface Lease {
   monthlyPaymentAmount: string
 }
 
+interface LeaseEvent {
+  eventId: number,
+  eventCreatedTime: Date,
+  eventEffectiveDate: Date,
+  eventType: string
+}
+
+interface GetLeaseResponse {
+  getLease: {
+    totalScheduled: number,
+    totalPaid: number,
+    amountDue: number,
+    listEvents: {
+      events: LeaseEvent[],
+      prevPageToken: string,
+      nextPageToken: string,
+      totalCount: number
+    }
+  }
+}
+
 interface ListLeasesResponse {
-  listLeases: Lease[]
+  listLeases: {
+    leases: Lease[],
+    prevPageToken: string,
+    nextPageToken: string,
+    totalCount: number
+  }
 }
 
 interface CreateLeaseResponse {
@@ -141,7 +175,7 @@ const LeaseForm: React.FC = () => {
   const initState = () => {
     return {
       leaseId: uuid(),
-      userId: '',
+      userId: uuid(),
       startDate: new Date(),
       maturityDate: addMonths(new Date(), 12),
       monthlyPaymentAmount: ''
@@ -242,10 +276,35 @@ const LeaseForm: React.FC = () => {
 const LeaseTable: React.FC = () => {
   const classes = useStyles();
 
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
+  const [pageToken, setPageToken] = useState("")
+  const [prevPageToken, setPrevPageToken] = useState("")
+  const [nextPageToken, setNextPageToken] = useState("")
+  const [asOn, setAsOn] = useState<Date | null>(new Date())
   const [asAt, setAsAt] = useState<Date | null>(new Date())
+
+  const handleAsOnChange = (date:Date | null) => {
+    setAsOn(date)
+  }
 
   const handleAsAtChange = (date:Date | null) => {
     setAsAt(date)
+  }
+
+  const handleChangePage = (newPage:number) => {
+    if (newPage > page) {
+      setPage(newPage)
+      setPageToken(nextPageToken)
+    }
+    else {
+      setPage(newPage)
+      setPageToken(prevPageToken)
+    }
+  }
+
+  const handleChangeRowsPerPage = (newPageSize:number) => {
+    setPageSize(newPageSize)
   }
 
   const columns = [
@@ -256,38 +315,97 @@ const LeaseTable: React.FC = () => {
     { title: "Monthly Payment Amount", field: "monthlyPaymentAmount" }
   ]
 
+  const detailColumns = [
+    { title: "Total Scheduled", field: "totalScheduled"},
+    { title: "Total Paid", field: "totalPaid"},
+    { title: "Amount Due", field: "amountDue"},
+    { title: "Status", field: "leaseStatus"}
+  ]
+
+  const eventColumns = [
+    { title: "Event ID", field: "eventId"},
+    { title: "Event Created Time", field: "eventCreatedTime"},
+    { title: "Event Effective Date", field: "eventEffectiveDate"},
+    { title: "Event Type", field: "eventType"}
+  ]
+
   return (
-    <Query<ListLeasesResponse> query={LIST_LEASES} variables={{ asAt }} >
+    <Query<ListLeasesResponse> 
+      query={LIST_LEASES} 
+      variables={{ 
+        asOn,
+        asAt,
+        leasePageToken: pageToken,
+        leasePageSize: pageSize
+      }} >
       {({ loading, error, data }) => {
         if (loading) return <LinearProgress />
         if (error) return `Error!: ${error.message}`
-        return (
-          <div className={classes.tableRoot}>
-            <MaterialTable
-              options={{
-                search: false
-              }}
-              columns={columns}
-              data={data ? data.listLeases : []}
-              title="Leases"
-              components={{
-                Toolbar: props => (
-                  <div className={classes.asAtField}>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <KeyboardDateTimePicker
-                        required
-                        id='asAtDate'
-                        label='As At Date'
-                        value={asAt}
-                        onChange={handleAsAtChange}
-                        margin='normal' />
-                    </MuiPickersUtilsProvider>
-                  </div>
-                ),
-              }}
-               />
-          </div>
-        )
+        if (data) {
+          setPrevPageToken(data.listLeases.prevPageToken)
+          setNextPageToken(data.listLeases.nextPageToken)
+          return (
+            <div className={classes.tableRoot}>
+              <MaterialTable
+                options={{
+                  search: false
+                }}
+                columns={columns}
+                data={data.listLeases.leases}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                title="Leases"
+                components={{
+                  Toolbar: props => (
+                    <div className={classes.asAtField}>
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDateTimePicker
+                          required
+                          id='asOnDate'
+                          label='As On Date'
+                          value={asOn}
+                          onChange={handleAsOnChange}
+                          margin='normal' />
+                        <KeyboardDateTimePicker
+                          required
+                          id='asAtDate'
+                          label='As At Date'
+                          value={asAt}
+                          onChange={handleAsAtChange}
+                          margin='normal' />
+                      </MuiPickersUtilsProvider>
+                    </div>
+                  ),
+                }}
+                detailPanel={rowData => {
+                  return (
+                    <Query<GetLeaseResponse> 
+                      query={GET_LEASE}
+                      variables={{
+                        asOn,
+                        asAt,
+                        leaseId: rowData.leaseId
+                      }}>
+                      {({ loading: detailLoading, error: detailError, data: detailData }) => {
+                        if (detailLoading) return <LinearProgress />
+                        if (detailError) return `Error!: ${detailError.message}`
+                        return (
+                          <MaterialTable 
+                            options={{
+                              search: false
+                            }}
+                            columns={detailColumns}
+                            data={detailData ? [detailData.getLease] : [] }
+                            />
+                        )
+                      }}
+                    </Query>
+                  )
+                }}
+                />
+            </div>
+          )
+        }
       }}
     </Query>
   )

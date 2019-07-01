@@ -50,22 +50,6 @@ type Payment =
         PaymentAmount: decimal
     }
 
-type LeaseObservation =
-    {
-        TotalScheduled: decimal
-        TotalPaid: decimal
-        AmountDue: decimal
-        LeaseStatus: LeaseStatus 
-    }
-module LeaseObservation =
-    let fromProto (proto:Tutorial.Lease.V1.LeaseObservation) =
-        {
-            TotalScheduled = proto.TotalScheduled.DecimalValue
-            TotalPaid = proto.TotalPaid.DecimalValue
-            AmountDue = proto.AmountDue.DecimalValue
-            LeaseStatus = proto.LeaseStatus |> LeaseStatus.fromProto
-        }
-
 type LeaseEvent =
     {
         EventId: int
@@ -85,12 +69,14 @@ module LeaseEvent =
 type ListLeaseEventsResponse =
     { 
         Events: LeaseEvent list
+        PrevPageToken: string
         NextPageToken: string
         TotalCount: int
     }
 module ListLeaseEventsResponse =
     let fromProto (proto:Tutorial.Lease.V1.ListLeaseEventsResponse) =
         { Events = proto.Events |> Seq.map LeaseEvent.fromProto |> Seq.toList
+          PrevPageToken = proto.PrevPageToken
           NextPageToken = proto.NextPageToken
           TotalCount = proto.TotalCount }
 
@@ -115,6 +101,7 @@ module Lease =
 type ListLeasesResponse =
     {
         Leases: Lease list
+        PrevPageToken: string
         NextPageToken: string
         TotalCount: int
     }
@@ -122,8 +109,27 @@ module ListLeasesResponse =
     let fromProto (proto:Tutorial.Lease.V1.ListLeasesResponse) =
         {
             Leases = proto.Leases |> Seq.map Lease.fromProto |> Seq.toList
+            PrevPageToken = proto.PrevPageToken
             NextPageToken = proto.NextPageToken
             TotalCount = proto.TotalCount
+        }
+
+type LeaseObservation =
+    {
+        Lease: Lease
+        TotalScheduled: decimal
+        TotalPaid: decimal
+        AmountDue: decimal
+        LeaseStatus: LeaseStatus 
+    }
+module LeaseObservation =
+    let fromProto (proto:Tutorial.Lease.V1.LeaseObservation) =
+        {
+            Lease = proto.Lease |> Lease.fromProto
+            TotalScheduled = proto.TotalScheduled.DecimalValue
+            TotalPaid = proto.TotalPaid.DecimalValue
+            AmountDue = proto.AmountDue.DecimalValue
+            LeaseStatus = proto.LeaseStatus |> LeaseStatus.fromProto
         }
 
 type LeaseClient(client:Tutorial.Lease.V1.LeaseAPI.LeaseAPIClient) =

@@ -31,61 +31,62 @@ namespace Tutorial.Lease.V1 {
             "dGVMZWFzZUV2ZW50UmVzcG9uc2USDwoHbWVzc2FnZRgBIAEoCSJrChFMaXN0",
             "TGVhc2VzUmVxdWVzdBIvCgphc19vZl9kYXRlGAEgASgLMhsudHV0b3JpYWwu",
             "bGVhc2UudjEuQXNPZkRhdGUSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2Vf",
-            "dG9rZW4YAyABKAkibAoSTGlzdExlYXNlc1Jlc3BvbnNlEigKBmxlYXNlcxgB",
-            "IAMoCzIYLnR1dG9yaWFsLmxlYXNlLnYxLkxlYXNlEhcKD25leHRfcGFnZV90",
-            "b2tlbhgCIAEoCRITCgt0b3RhbF9jb3VudBgDIAEoBSJUCg9HZXRMZWFzZVJl",
-            "cXVlc3QSEAoIbGVhc2VfaWQYASABKAkSLwoKYXNfb2ZfZGF0ZRgCIAEoCzIb",
-            "LnR1dG9yaWFsLmxlYXNlLnYxLkFzT2ZEYXRlIkYKEEdldExlYXNlUmVzcG9u",
-            "c2USMgoFbGVhc2UYASABKAsyIy50dXRvcmlhbC5sZWFzZS52MS5MZWFzZU9i",
-            "c2VydmF0aW9uIoIBChZMaXN0TGVhc2VFdmVudHNSZXF1ZXN0EhAKCGxlYXNl",
-            "X2lkGAEgASgJEi8KCmFzX29mX2RhdGUYAiABKAsyGy50dXRvcmlhbC5sZWFz",
-            "ZS52MS5Bc09mRGF0ZRIRCglwYWdlX3NpemUYAyABKAUSEgoKcGFnZV90b2tl",
-            "bhgEIAEoCSKIAQoXTGlzdExlYXNlRXZlbnRzUmVzcG9uc2USEAoIbGVhc2Vf",
-            "aWQYASABKAkSLQoGZXZlbnRzGAIgAygLMh0udHV0b3JpYWwubGVhc2UudjEu",
-            "TGVhc2VFdmVudBIXCg9uZXh0X3BhZ2VfdG9rZW4YAyABKAkSEwoLdG90YWxf",
-            "Y291bnQYBCABKAUiPQoSQ3JlYXRlTGVhc2VSZXF1ZXN0EicKBWxlYXNlGAEg",
-            "ASgLMhgudHV0b3JpYWwubGVhc2UudjEuTGVhc2UiJgoTQ3JlYXRlTGVhc2VS",
-            "ZXNwb25zZRIPCgdtZXNzYWdlGAEgASgJIlQKFVRlcm1pbmF0ZUxlYXNlUmVx",
-            "dWVzdBIQCghsZWFzZV9pZBgBIAEoCRIpCg5lZmZlY3RpdmVfZGF0ZRgCIAEo",
-            "CzIRLmdvb2dsZS50eXBlLkRhdGUiKQoWVGVybWluYXRlTGVhc2VSZXNwb25z",
-            "ZRIPCgdtZXNzYWdlGAEgASgJIlcKFlNjaGVkdWxlUGF5bWVudFJlcXVlc3QS",
-            "EAoIbGVhc2VfaWQYASABKAkSKwoHcGF5bWVudBgCIAEoCzIaLnR1dG9yaWFs",
-            "LmxlYXNlLnYxLlBheW1lbnQiKgoXU2NoZWR1bGVQYXltZW50UmVzcG9uc2US",
-            "DwoHbWVzc2FnZRgBIAEoCSJWChVSZWNlaXZlUGF5bWVudFJlcXVlc3QSEAoI",
-            "bGVhc2VfaWQYASABKAkSKwoHcGF5bWVudBgCIAEoCzIaLnR1dG9yaWFsLmxl",
-            "YXNlLnYxLlBheW1lbnQiKQoWUmVjZWl2ZVBheW1lbnRSZXNwb25zZRIPCgdt",
-            "ZXNzYWdlGAEgASgJMqkGCghMZWFzZUFQSRJtChBEZWxldGVMZWFzZUV2ZW50",
-            "EioudHV0b3JpYWwubGVhc2UudjEuRGVsZXRlTGVhc2VFdmVudFJlcXVlc3Qa",
-            "Ky50dXRvcmlhbC5sZWFzZS52MS5EZWxldGVMZWFzZUV2ZW50UmVzcG9uc2Ui",
-            "ABJZCgpMaXN0TGVhc2VzEiQudHV0b3JpYWwubGVhc2UudjEuTGlzdExlYXNl",
-            "c1JlcXVlc3QaJS50dXRvcmlhbC5sZWFzZS52MS5MaXN0TGVhc2VzUmVzcG9u",
-            "c2USaAoPTGlzdExlYXNlRXZlbnRzEikudHV0b3JpYWwubGVhc2UudjEuTGlz",
-            "dExlYXNlRXZlbnRzUmVxdWVzdBoqLnR1dG9yaWFsLmxlYXNlLnYxLkxpc3RM",
-            "ZWFzZUV2ZW50c1Jlc3BvbnNlElMKCEdldExlYXNlEiIudHV0b3JpYWwubGVh",
-            "c2UudjEuR2V0TGVhc2VSZXF1ZXN0GiMudHV0b3JpYWwubGVhc2UudjEuR2V0",
-            "TGVhc2VSZXNwb25zZRJcCgtDcmVhdGVMZWFzZRIlLnR1dG9yaWFsLmxlYXNl",
-            "LnYxLkNyZWF0ZUxlYXNlUmVxdWVzdBomLnR1dG9yaWFsLmxlYXNlLnYxLkNy",
-            "ZWF0ZUxlYXNlUmVzcG9uc2USZQoOVGVybWluYXRlTGVhc2USKC50dXRvcmlh",
-            "bC5sZWFzZS52MS5UZXJtaW5hdGVMZWFzZVJlcXVlc3QaKS50dXRvcmlhbC5s",
-            "ZWFzZS52MS5UZXJtaW5hdGVMZWFzZVJlc3BvbnNlEmgKD1NjaGVkdWxlUGF5",
-            "bWVudBIpLnR1dG9yaWFsLmxlYXNlLnYxLlNjaGVkdWxlUGF5bWVudFJlcXVl",
-            "c3QaKi50dXRvcmlhbC5sZWFzZS52MS5TY2hlZHVsZVBheW1lbnRSZXNwb25z",
-            "ZRJlCg5SZWNlaXZlUGF5bWVudBIoLnR1dG9yaWFsLmxlYXNlLnYxLlJlY2Vp",
-            "dmVQYXltZW50UmVxdWVzdBopLnR1dG9yaWFsLmxlYXNlLnYxLlJlY2VpdmVQ",
-            "YXltZW50UmVzcG9uc2VCXwoVY29tLnR1dG9yaWFsLmxlYXNlLnYxQg1MZWFz",
-            "ZUFwaVByb3RvUAFaB2xlYXNldjGiAgNUTFiqAhFUdXRvcmlhbC5MZWFzZS5W",
-            "McoCEVR1dG9yaWFsXExlYXNlXFYxYgZwcm90bzM="));
+            "dG9rZW4YAyABKAkihQEKEkxpc3RMZWFzZXNSZXNwb25zZRIoCgZsZWFzZXMY",
+            "ASADKAsyGC50dXRvcmlhbC5sZWFzZS52MS5MZWFzZRIXCg9wcmV2X3BhZ2Vf",
+            "dG9rZW4YAiABKAkSFwoPbmV4dF9wYWdlX3Rva2VuGAMgASgJEhMKC3RvdGFs",
+            "X2NvdW50GAQgASgFIlQKD0dldExlYXNlUmVxdWVzdBIQCghsZWFzZV9pZBgB",
+            "IAEoCRIvCgphc19vZl9kYXRlGAIgASgLMhsudHV0b3JpYWwubGVhc2UudjEu",
+            "QXNPZkRhdGUiRgoQR2V0TGVhc2VSZXNwb25zZRIyCgVsZWFzZRgBIAEoCzIj",
+            "LnR1dG9yaWFsLmxlYXNlLnYxLkxlYXNlT2JzZXJ2YXRpb24iggEKFkxpc3RM",
+            "ZWFzZUV2ZW50c1JlcXVlc3QSEAoIbGVhc2VfaWQYASABKAkSLwoKYXNfb2Zf",
+            "ZGF0ZRgCIAEoCzIbLnR1dG9yaWFsLmxlYXNlLnYxLkFzT2ZEYXRlEhEKCXBh",
+            "Z2Vfc2l6ZRgDIAEoBRISCgpwYWdlX3Rva2VuGAQgASgJIqEBChdMaXN0TGVh",
+            "c2VFdmVudHNSZXNwb25zZRIQCghsZWFzZV9pZBgBIAEoCRItCgZldmVudHMY",
+            "AiADKAsyHS50dXRvcmlhbC5sZWFzZS52MS5MZWFzZUV2ZW50EhcKD3ByZXZf",
+            "cGFnZV90b2tlbhgDIAEoCRIXCg9uZXh0X3BhZ2VfdG9rZW4YBCABKAkSEwoL",
+            "dG90YWxfY291bnQYBSABKAUiPQoSQ3JlYXRlTGVhc2VSZXF1ZXN0EicKBWxl",
+            "YXNlGAEgASgLMhgudHV0b3JpYWwubGVhc2UudjEuTGVhc2UiJgoTQ3JlYXRl",
+            "TGVhc2VSZXNwb25zZRIPCgdtZXNzYWdlGAEgASgJIlQKFVRlcm1pbmF0ZUxl",
+            "YXNlUmVxdWVzdBIQCghsZWFzZV9pZBgBIAEoCRIpCg5lZmZlY3RpdmVfZGF0",
+            "ZRgCIAEoCzIRLmdvb2dsZS50eXBlLkRhdGUiKQoWVGVybWluYXRlTGVhc2VS",
+            "ZXNwb25zZRIPCgdtZXNzYWdlGAEgASgJIlcKFlNjaGVkdWxlUGF5bWVudFJl",
+            "cXVlc3QSEAoIbGVhc2VfaWQYASABKAkSKwoHcGF5bWVudBgCIAEoCzIaLnR1",
+            "dG9yaWFsLmxlYXNlLnYxLlBheW1lbnQiKgoXU2NoZWR1bGVQYXltZW50UmVz",
+            "cG9uc2USDwoHbWVzc2FnZRgBIAEoCSJWChVSZWNlaXZlUGF5bWVudFJlcXVl",
+            "c3QSEAoIbGVhc2VfaWQYASABKAkSKwoHcGF5bWVudBgCIAEoCzIaLnR1dG9y",
+            "aWFsLmxlYXNlLnYxLlBheW1lbnQiKQoWUmVjZWl2ZVBheW1lbnRSZXNwb25z",
+            "ZRIPCgdtZXNzYWdlGAEgASgJMqkGCghMZWFzZUFQSRJtChBEZWxldGVMZWFz",
+            "ZUV2ZW50EioudHV0b3JpYWwubGVhc2UudjEuRGVsZXRlTGVhc2VFdmVudFJl",
+            "cXVlc3QaKy50dXRvcmlhbC5sZWFzZS52MS5EZWxldGVMZWFzZUV2ZW50UmVz",
+            "cG9uc2UiABJZCgpMaXN0TGVhc2VzEiQudHV0b3JpYWwubGVhc2UudjEuTGlz",
+            "dExlYXNlc1JlcXVlc3QaJS50dXRvcmlhbC5sZWFzZS52MS5MaXN0TGVhc2Vz",
+            "UmVzcG9uc2USaAoPTGlzdExlYXNlRXZlbnRzEikudHV0b3JpYWwubGVhc2Uu",
+            "djEuTGlzdExlYXNlRXZlbnRzUmVxdWVzdBoqLnR1dG9yaWFsLmxlYXNlLnYx",
+            "Lkxpc3RMZWFzZUV2ZW50c1Jlc3BvbnNlElMKCEdldExlYXNlEiIudHV0b3Jp",
+            "YWwubGVhc2UudjEuR2V0TGVhc2VSZXF1ZXN0GiMudHV0b3JpYWwubGVhc2Uu",
+            "djEuR2V0TGVhc2VSZXNwb25zZRJcCgtDcmVhdGVMZWFzZRIlLnR1dG9yaWFs",
+            "LmxlYXNlLnYxLkNyZWF0ZUxlYXNlUmVxdWVzdBomLnR1dG9yaWFsLmxlYXNl",
+            "LnYxLkNyZWF0ZUxlYXNlUmVzcG9uc2USZQoOVGVybWluYXRlTGVhc2USKC50",
+            "dXRvcmlhbC5sZWFzZS52MS5UZXJtaW5hdGVMZWFzZVJlcXVlc3QaKS50dXRv",
+            "cmlhbC5sZWFzZS52MS5UZXJtaW5hdGVMZWFzZVJlc3BvbnNlEmgKD1NjaGVk",
+            "dWxlUGF5bWVudBIpLnR1dG9yaWFsLmxlYXNlLnYxLlNjaGVkdWxlUGF5bWVu",
+            "dFJlcXVlc3QaKi50dXRvcmlhbC5sZWFzZS52MS5TY2hlZHVsZVBheW1lbnRS",
+            "ZXNwb25zZRJlCg5SZWNlaXZlUGF5bWVudBIoLnR1dG9yaWFsLmxlYXNlLnYx",
+            "LlJlY2VpdmVQYXltZW50UmVxdWVzdBopLnR1dG9yaWFsLmxlYXNlLnYxLlJl",
+            "Y2VpdmVQYXltZW50UmVzcG9uc2VCXwoVY29tLnR1dG9yaWFsLmxlYXNlLnYx",
+            "Qg1MZWFzZUFwaVByb3RvUAFaB2xlYXNldjGiAgNUTFiqAhFUdXRvcmlhbC5M",
+            "ZWFzZS5WMcoCEVR1dG9yaWFsXExlYXNlXFYxYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Type.DateReflection.Descriptor, global::Tutorial.Lease.V1.LeaseReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.DeleteLeaseEventRequest), global::Tutorial.Lease.V1.DeleteLeaseEventRequest.Parser, new[]{ "LeaseId", "EventId" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.DeleteLeaseEventResponse), global::Tutorial.Lease.V1.DeleteLeaseEventResponse.Parser, new[]{ "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ListLeasesRequest), global::Tutorial.Lease.V1.ListLeasesRequest.Parser, new[]{ "AsOfDate", "PageSize", "PageToken" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ListLeasesResponse), global::Tutorial.Lease.V1.ListLeasesResponse.Parser, new[]{ "Leases", "NextPageToken", "TotalCount" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ListLeasesResponse), global::Tutorial.Lease.V1.ListLeasesResponse.Parser, new[]{ "Leases", "PrevPageToken", "NextPageToken", "TotalCount" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.GetLeaseRequest), global::Tutorial.Lease.V1.GetLeaseRequest.Parser, new[]{ "LeaseId", "AsOfDate" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.GetLeaseResponse), global::Tutorial.Lease.V1.GetLeaseResponse.Parser, new[]{ "Lease" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ListLeaseEventsRequest), global::Tutorial.Lease.V1.ListLeaseEventsRequest.Parser, new[]{ "LeaseId", "AsOfDate", "PageSize", "PageToken" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ListLeaseEventsResponse), global::Tutorial.Lease.V1.ListLeaseEventsResponse.Parser, new[]{ "LeaseId", "Events", "NextPageToken", "TotalCount" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ListLeaseEventsResponse), global::Tutorial.Lease.V1.ListLeaseEventsResponse.Parser, new[]{ "LeaseId", "Events", "PrevPageToken", "NextPageToken", "TotalCount" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.CreateLeaseRequest), global::Tutorial.Lease.V1.CreateLeaseRequest.Parser, new[]{ "Lease" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.CreateLeaseResponse), global::Tutorial.Lease.V1.CreateLeaseResponse.Parser, new[]{ "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.TerminateLeaseRequest), global::Tutorial.Lease.V1.TerminateLeaseRequest.Parser, new[]{ "LeaseId", "EffectiveDate" }, null, null, null),
@@ -603,6 +604,7 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ListLeasesResponse(ListLeasesResponse other) : this() {
       leases_ = other.leases_.Clone();
+      prevPageToken_ = other.prevPageToken_;
       nextPageToken_ = other.nextPageToken_;
       totalCount_ = other.totalCount_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -623,8 +625,19 @@ namespace Tutorial.Lease.V1 {
       get { return leases_; }
     }
 
+    /// <summary>Field number for the "prev_page_token" field.</summary>
+    public const int PrevPageTokenFieldNumber = 2;
+    private string prevPageToken_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string PrevPageToken {
+      get { return prevPageToken_; }
+      set {
+        prevPageToken_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     /// <summary>Field number for the "next_page_token" field.</summary>
-    public const int NextPageTokenFieldNumber = 2;
+    public const int NextPageTokenFieldNumber = 3;
     private string nextPageToken_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string NextPageToken {
@@ -635,7 +648,7 @@ namespace Tutorial.Lease.V1 {
     }
 
     /// <summary>Field number for the "total_count" field.</summary>
-    public const int TotalCountFieldNumber = 3;
+    public const int TotalCountFieldNumber = 4;
     private int totalCount_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int TotalCount {
@@ -659,6 +672,7 @@ namespace Tutorial.Lease.V1 {
         return true;
       }
       if(!leases_.Equals(other.leases_)) return false;
+      if (PrevPageToken != other.PrevPageToken) return false;
       if (NextPageToken != other.NextPageToken) return false;
       if (TotalCount != other.TotalCount) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -668,6 +682,7 @@ namespace Tutorial.Lease.V1 {
     public override int GetHashCode() {
       int hash = 1;
       hash ^= leases_.GetHashCode();
+      if (PrevPageToken.Length != 0) hash ^= PrevPageToken.GetHashCode();
       if (NextPageToken.Length != 0) hash ^= NextPageToken.GetHashCode();
       if (TotalCount != 0) hash ^= TotalCount.GetHashCode();
       if (_unknownFields != null) {
@@ -684,12 +699,16 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       leases_.WriteTo(output, _repeated_leases_codec);
-      if (NextPageToken.Length != 0) {
+      if (PrevPageToken.Length != 0) {
         output.WriteRawTag(18);
+        output.WriteString(PrevPageToken);
+      }
+      if (NextPageToken.Length != 0) {
+        output.WriteRawTag(26);
         output.WriteString(NextPageToken);
       }
       if (TotalCount != 0) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(32);
         output.WriteInt32(TotalCount);
       }
       if (_unknownFields != null) {
@@ -701,6 +720,9 @@ namespace Tutorial.Lease.V1 {
     public int CalculateSize() {
       int size = 0;
       size += leases_.CalculateSize(_repeated_leases_codec);
+      if (PrevPageToken.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(PrevPageToken);
+      }
       if (NextPageToken.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(NextPageToken);
       }
@@ -719,6 +741,9 @@ namespace Tutorial.Lease.V1 {
         return;
       }
       leases_.Add(other.leases_);
+      if (other.PrevPageToken.Length != 0) {
+        PrevPageToken = other.PrevPageToken;
+      }
       if (other.NextPageToken.Length != 0) {
         NextPageToken = other.NextPageToken;
       }
@@ -741,10 +766,14 @@ namespace Tutorial.Lease.V1 {
             break;
           }
           case 18: {
+            PrevPageToken = input.ReadString();
+            break;
+          }
+          case 26: {
             NextPageToken = input.ReadString();
             break;
           }
-          case 24: {
+          case 32: {
             TotalCount = input.ReadInt32();
             break;
           }
@@ -1298,6 +1327,7 @@ namespace Tutorial.Lease.V1 {
     public ListLeaseEventsResponse(ListLeaseEventsResponse other) : this() {
       leaseId_ = other.leaseId_;
       events_ = other.events_.Clone();
+      prevPageToken_ = other.prevPageToken_;
       nextPageToken_ = other.nextPageToken_;
       totalCount_ = other.totalCount_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -1329,8 +1359,19 @@ namespace Tutorial.Lease.V1 {
       get { return events_; }
     }
 
+    /// <summary>Field number for the "prev_page_token" field.</summary>
+    public const int PrevPageTokenFieldNumber = 3;
+    private string prevPageToken_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string PrevPageToken {
+      get { return prevPageToken_; }
+      set {
+        prevPageToken_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     /// <summary>Field number for the "next_page_token" field.</summary>
-    public const int NextPageTokenFieldNumber = 3;
+    public const int NextPageTokenFieldNumber = 4;
     private string nextPageToken_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string NextPageToken {
@@ -1341,7 +1382,7 @@ namespace Tutorial.Lease.V1 {
     }
 
     /// <summary>Field number for the "total_count" field.</summary>
-    public const int TotalCountFieldNumber = 4;
+    public const int TotalCountFieldNumber = 5;
     private int totalCount_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int TotalCount {
@@ -1366,6 +1407,7 @@ namespace Tutorial.Lease.V1 {
       }
       if (LeaseId != other.LeaseId) return false;
       if(!events_.Equals(other.events_)) return false;
+      if (PrevPageToken != other.PrevPageToken) return false;
       if (NextPageToken != other.NextPageToken) return false;
       if (TotalCount != other.TotalCount) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -1376,6 +1418,7 @@ namespace Tutorial.Lease.V1 {
       int hash = 1;
       if (LeaseId.Length != 0) hash ^= LeaseId.GetHashCode();
       hash ^= events_.GetHashCode();
+      if (PrevPageToken.Length != 0) hash ^= PrevPageToken.GetHashCode();
       if (NextPageToken.Length != 0) hash ^= NextPageToken.GetHashCode();
       if (TotalCount != 0) hash ^= TotalCount.GetHashCode();
       if (_unknownFields != null) {
@@ -1396,12 +1439,16 @@ namespace Tutorial.Lease.V1 {
         output.WriteString(LeaseId);
       }
       events_.WriteTo(output, _repeated_events_codec);
-      if (NextPageToken.Length != 0) {
+      if (PrevPageToken.Length != 0) {
         output.WriteRawTag(26);
+        output.WriteString(PrevPageToken);
+      }
+      if (NextPageToken.Length != 0) {
+        output.WriteRawTag(34);
         output.WriteString(NextPageToken);
       }
       if (TotalCount != 0) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(40);
         output.WriteInt32(TotalCount);
       }
       if (_unknownFields != null) {
@@ -1416,6 +1463,9 @@ namespace Tutorial.Lease.V1 {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(LeaseId);
       }
       size += events_.CalculateSize(_repeated_events_codec);
+      if (PrevPageToken.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(PrevPageToken);
+      }
       if (NextPageToken.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(NextPageToken);
       }
@@ -1437,6 +1487,9 @@ namespace Tutorial.Lease.V1 {
         LeaseId = other.LeaseId;
       }
       events_.Add(other.events_);
+      if (other.PrevPageToken.Length != 0) {
+        PrevPageToken = other.PrevPageToken;
+      }
       if (other.NextPageToken.Length != 0) {
         NextPageToken = other.NextPageToken;
       }
@@ -1463,10 +1516,14 @@ namespace Tutorial.Lease.V1 {
             break;
           }
           case 26: {
+            PrevPageToken = input.ReadString();
+            break;
+          }
+          case 34: {
             NextPageToken = input.ReadString();
             break;
           }
-          case 32: {
+          case 40: {
             TotalCount = input.ReadInt32();
             break;
           }

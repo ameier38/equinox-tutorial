@@ -19,8 +19,9 @@ type SerilogAdapter(log : ILogger) =
 
 type ProjectionManager(config:Config, logger: Core.Logger) =
     let log = SerilogAdapter(logger)
-    let endpoint = DnsEndPoint(config.EventStore.Host, config.EventStore.HttpPort)
-    let creds = UserCredentials(config.EventStore.User, config.EventStore.Password)
+    let { Host = host; HttpPort = port; User = user; Password = password } = config.EventStore
+    let endpoint = DnsEndPoint(host, port)
+    let creds = UserCredentials(user, password)
     let projectionsDir = Path.Combine(__SOURCE_DIRECTORY__,  "projections")
     let projectionManager = ProjectionsManager(log, endpoint, TimeSpan.FromSeconds(5.0))
     let projections = [ "leases" ]
@@ -61,7 +62,7 @@ type ProjectionManager(config:Config, logger: Core.Logger) =
         }
 
     member __.StartProjections() =
-        logger.Information("starting projections 👓")
+        logger.Information(sprintf "starting projections on %s:%d 👓" host port)
         projections
         |> List.map startProjection
         |> Async.Parallel

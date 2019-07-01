@@ -55,6 +55,7 @@ FROM mcr.microsoft.com/dotnet/core/runtime:2.2 as tester
 WORKDIR /app
 
 COPY --from=builder /app/src/Tests/out .
+COPY --from=builder /app/src/Lease/projections /app/src/Lease/projections
 COPY --from=builder /app/wait-for.sh .
 
 CMD ["dotnet", "Tests.dll"]
@@ -73,5 +74,6 @@ RUN GRPC_HEALTH_PROBE_VERSION=v0.2.0 && \
 WORKDIR /app
 
 COPY --from=builder /app/src/Lease/out .
+COPY --from=builder /app/src/Lease/projections /app/src/Lease/projections
 
 CMD ["dotnet", "Lease.dll"]
