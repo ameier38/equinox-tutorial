@@ -1,16 +1,34 @@
 version: '1.0'
 stages:
-  - build
-  - test
+  - lease-api
+  - proto
 steps:
-  build_api:
-    stage: build
+  build_test_proto_image:
+    stage: proto
+    type: build
+    title: Build test image
+    working_directory: proto/.devcontainer
+    dockerfile: Dockerfile
+    image_name: equinox-tutorial/test-proto
+    build_arguments:
+      - NUGET_PACKAGES=/codefresh/volume/.nuget/packages
+  test_protos:
+    stage: proto
+    title: Test protos
+    image: ${{build_test_proto_image}}
+    working_directory: proto
+    commands:
+      - rm -rf paket-files
+      - fake build -t Test
+  build_lease_api:
+    stage: lease-api
     type: build
     title: Build Lease API
+    working_directory: lease-api
     image_name: lease-api
-    target: test-runtime
-  test_api:
-    stage: test
+    target: tester
+  test_lease_api:
+    stage: lease-api
     type: composition
     title: Test Lease API
     composition:
@@ -20,7 +38,7 @@ steps:
           image: eventstore/eventstore
     composition_candidates:
       test:
-        image: ${{build_api}}
+        image: ${{build_lease_api}}
         command: bash -c "./wait-for.sh http://eventstore:2113/users/admin && dotnet Tests.dll"
         environment:
           - EVENTSTORE_PROTOCOL=tcp

@@ -1,0 +1,24 @@
+version 5.210.1
+
+source https://www.nuget.org/api/v2
+storage: none
+
+nuget Expecto
+nuget FsConfig
+nuget FSharp.Data.GraphQL.Server 1.0.0-beta9 beta
+nuget Google.Api.CommonProtos
+nuget Google.Protobuf
+nuget Grpc
+nuget Newtonsoft.Json
+nuget Serilog
+nuget Serilog.Sinks.Console
+nuget Serilog.Sinks.Seq
+nuget Suave
+
+// [ FAKE GROUP ]
+group Fake
+    source https://www.nuget.org/api/v2
+    storage: none
+    nuget Fake.DotNet.Cli
+    nuget Fake.IO.FileSystem
+    nuget Fake.Core.Target 

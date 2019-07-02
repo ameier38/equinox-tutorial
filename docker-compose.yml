@@ -5,15 +5,70 @@ services:
     ports:
       - "2113:2113"
       - "1113:1113"
-  api:
-    build:
-      context: .
-      target: runtime
     environment:
-      - EVENTSTORE_PROTOCOL=tcp
-      - EVENTSTORE_HOST=eventstore
-      - EVENTSTORE_PORT=1113
-      - EVENTSTORE_USER=admin
-      - EVENTSTORE_PASSWORD=changeit
+      EVENTSTORE_START_STANDARD_PROJECTIONS: "True"
+      EVENTSTORE_RUN_PROJECTIONS: All
+  logs:
+    image: datalust/seq
+    environment:
+      ACCEPT_EULA: "Y"
     ports:
-      - "8080:8080"
+      - "8081:80"
+      - "5341:5341"
+  lease-api:
+    build:
+      context: ./lease-api
+      target: runner
+    environment:
+      DEBUG: "true"
+      PORT: 50051
+      EVENTSTORE_PROTOCOL: tcp
+      EVENTSTORE_HOST: eventstore
+      EVENTSTORE_TCP_PORT: 1113
+      EVENTSTORE_HTTP_PORT: 2113
+      EVENTSTORE_USER: admin
+      EVENTSTORE_PASSWORD: changeit
+      SEQ_HOST: logs
+      SEQ_PORT: 5341
+    ports:
+      - "50051:50051"
+    depends_on:
+      - logs
+      - eventstore
+  graphql-api:
+    build:
+      context: ./graphql-api
+      target: runner
+    environment:
+      DEBUG: "true"
+      PORT: 4000
+      LEASE_API_HOST: lease-api
+      LEASE_API_PORT: 50051
+      SEQ_HOST: logs
+      SEQ_PORT: 5341
+    ports:
+      - "4000:4000"
+    depends_on:
+      - lease-api
+  graphql-playground:
+    build:
+      context: ./graphql-api
+      dockerfile: ./playground/Dockerfile
+    environment:
+      GRAPHQL_HOST: localhost
+      GRAPHQL_PORT: 4000
+    ports:
+      - "3001:3001"
+    depends_on:
+      - graphql-api
+  app:
+    build:
+      context: ./app
+    volumes:
+      - ./app:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+      - "35729:35729"
+    depends_on:
+      - graphql-api

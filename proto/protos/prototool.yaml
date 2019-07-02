@@ -1,0 +1,28 @@
+protoc:
+  version: 3.7.1
+  includes: 
+    - ../paket-files/build/googleapis/googleapis
+lint:
+  group: uber2
+  rules:
+    add:
+      - RPCS_NO_STREAMING
+create:
+  packages:
+    - directory: tutorial
+      name: tutorial
+generate:
+  plugins: 
+    - name: csharp
+      output: ../gen/csharp
+    - name: grpc-csharp
+      output: ../gen/csharp
+      path: /usr/local/bin/grpc_csharp_plugin
+    - name: python
+      output: ../gen/python
+    - name: grpc-python
+      output: ../gen/python
+      path: /usr/local/bin/grpc_python_plugin
+    - name: go
+      flags: plugins=grpc
+      output: ../gen/go

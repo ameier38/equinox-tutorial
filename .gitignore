@@ -1,9 +1,3 @@
-.fake
-.paket
-packages
-paket-files
-build
-obj
-bin
-scratch.fsx
-
+.vscode
+.idea
+.ionide

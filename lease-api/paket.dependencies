@@ -1,0 +1,31 @@
+version 5.210.1
+
+source https://www.nuget.org/api/v2
+storage: none
+
+nuget Expecto
+nuget Expecto.FsCheck
+nuget FsCheck
+nuget Equinox 2.0.0-rc1 preview
+nuget Equinox.Codec 2.0.0-rc1 preview
+nuget Equinox.EventStore 2.0.0-rc1 preview
+nuget Equinox.MemoryStore 2.0.0-rc1 preview
+nuget FsConfig
+nuget FSharp.UMX 1.0.0-preview-001 preview
+nuget Google.Api.CommonProtos
+nuget Google.Protobuf
+nuget Grpc
+nuget Grpc.Core.Testing
+nuget Grpc.HealthCheck
+nuget Jet.JsonNet.Converters
+nuget Serilog.Sinks.Console
+nuget Serilog
+nuget Serilog.Sinks.Seq
+
+// [ FAKE GROUP ]
+group Fake
+    source https://www.nuget.org/api/v2
+    storage: none
+    nuget Fake.DotNet.Cli
+    nuget Fake.IO.FileSystem
+    nuget Fake.Core.Target 

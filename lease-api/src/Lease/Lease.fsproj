@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Lease.Config.fs" />
+    <Compile Include="Lease.SimpleTypes.fs" />
+    <Compile Include="Lease.Domain.fs" />
+    <Compile Include="Lease.Aggregate.fs" />
+    <Compile Include="Lease.Store.fs" />
+    <Compile Include="Lease.Projection.fs" />
+    <Compile Include="Lease.Service.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Proto\Proto.csproj" />
+  </ItemGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
+</Project>
