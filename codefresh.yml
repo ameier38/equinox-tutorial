@@ -28,7 +28,7 @@ steps:
     image_name: lease-api
     target: tester
   test_lease_api:
-    stage: test
+    stage: lease-api
     type: composition
     title: Test Lease API
     composition:
