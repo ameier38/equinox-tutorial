@@ -17,6 +17,21 @@ query GetLease(
     totalPaid
     amountDue
     leaseStatus
+    listEvents(
+      pageSize: 1000,
+      pageToken: "",
+      asOfDate: {
+        asOn: $asOn,
+        asAt: $asAt
+      }
+    ){
+      events {
+        eventId
+        eventCreatedTime
+        eventEffectiveDate
+        eventType
+      }
+    }
   }
 }`
 
@@ -112,7 +127,7 @@ export type CreateLeaseResponse = {
 export type PaymentRequest = {
   leaseId: string,
   paymentId: string,
-  paymentDate: string,
+  paymentDate: Date,
   paymentAmount: number
 }
 
@@ -154,10 +169,7 @@ export interface GetLeaseResponse {
     totalPaid: number,
     amountDue: number,
     listEvents: {
-      events: LeaseEvent[],
-      prevPageToken: string,
-      nextPageToken: string,
-      totalCount: number
+      events: LeaseEvent[]
     }
   }
 }

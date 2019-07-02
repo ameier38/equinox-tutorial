@@ -8,6 +8,7 @@ import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
 import LeaseTable from './LeaseTable'
 import LeaseForm from './LeaseForm'
+import { AsOfDate } from './Types'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -15,9 +16,10 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingTop: 20,
     },
     fab: {
-      position: 'absolute',
+      position: 'fixed',
       right: 10,
       bottom: 10,
+      zIndex: 2000,
     }
   })
 )
@@ -25,6 +27,10 @@ const useStyles = makeStyles((theme: Theme) =>
 const App: React.FC = () => {
   const classes = useStyles()
   const [formOpen, setFormOpen] = useState(false)
+  const [asOfDate, setAsOfDate] = useState<AsOfDate>({
+    asAt: new Date(),
+    asOn: new Date()
+  })
 
   const handleFabClick = () => {
     setFormOpen(!formOpen)
@@ -40,8 +46,11 @@ const App: React.FC = () => {
         </Toolbar>
       </AppBar>
       <Container className={classes.container} maxWidth="lg">
-        <LeaseTable />
+        <LeaseTable
+          asOfDate={asOfDate}
+          setAsOfDate={setAsOfDate} />
         <LeaseForm
+          setAsOfDate={setAsOfDate}
           open={formOpen}
           setOpen={setFormOpen} />
         <Fab 

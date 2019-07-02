@@ -116,6 +116,7 @@ module ListLeasesResponse =
 
 type LeaseObservation =
     {
+        AsOfDate: AsOfDate
         Lease: Lease
         TotalScheduled: decimal
         TotalPaid: decimal
@@ -123,8 +124,9 @@ type LeaseObservation =
         LeaseStatus: LeaseStatus 
     }
 module LeaseObservation =
-    let fromProto (proto:Tutorial.Lease.V1.LeaseObservation) =
+    let fromProto (asOfDate:AsOfDate) (proto:Tutorial.Lease.V1.LeaseObservation) =
         {
+            AsOfDate = asOfDate
             Lease = proto.Lease |> Lease.fromProto
             TotalScheduled = proto.TotalScheduled.DecimalValue
             TotalPaid = proto.TotalPaid.DecimalValue
@@ -132,7 +134,9 @@ module LeaseObservation =
             LeaseStatus = proto.LeaseStatus |> LeaseStatus.fromProto
         }
 
-type LeaseClient(client:Tutorial.Lease.V1.LeaseAPI.LeaseAPIClient) =
+type LeaseClient
+    (   client:Tutorial.Lease.V1.LeaseAPI.LeaseAPIClient, 
+        logger:Serilog.Core.Logger) =
 
     member __.GetLease
         (   leaseId:string,
@@ -143,7 +147,7 @@ type LeaseClient(client:Tutorial.Lease.V1.LeaseAPI.LeaseAPIClient) =
                     LeaseId = leaseId,
                     AsOfDate = (asOfDate |> AsOfDate.toProto))
             let res = client.GetLease(req)
-            res.Lease |> LeaseObservation.fromProto
+            res.Lease |> LeaseObservation.fromProto asOfDate
         with
         | :? RpcException as ex ->
             match ex.StatusCode with
@@ -211,7 +215,11 @@ type LeaseClient(client:Tutorial.Lease.V1.LeaseAPI.LeaseAPIClient) =
                     PaymentId = paymentId,
                     PaymentDate = (paymentDate |> DateTime.toProtoDate),
                     PaymentAmount = (paymentAmount |> decimal |> Money.fromDecimal))
-            let req = Tutorial.Lease.V1.SchedulePaymentRequest(LeaseId=leaseId, Payment=payment)
+            let req = 
+                Tutorial.Lease.V1.SchedulePaymentRequest(
+                    LeaseId=leaseId, 
+                    Payment=payment)
+            logger.Information(sprintf "scheduling payment:\n%A" req)
             let res = client.SchedulePayment(req)
             res.Message
         with
@@ -232,6 +240,7 @@ type LeaseClient(client:Tutorial.Lease.V1.LeaseAPI.LeaseAPIClient) =
                     PaymentDate = (paymentDate |> DateTime.toProtoDate),
                     PaymentAmount = (paymentAmount |> decimal |> Money.fromDecimal))
             let req = Tutorial.Lease.V1.ReceivePaymentRequest(LeaseId=leaseId, Payment=payment)
+            logger.Information(sprintf "receive payment:\n%A" req)
             let res = client.ReceivePayment(req)
             res.Message
         with

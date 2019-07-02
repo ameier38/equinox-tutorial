@@ -50,3 +50,22 @@ services:
       - "4000:4000"
     depends_on:
       - lease-api
+  graphql-playground:
+    image: mkrou/graphql-playground-docker
+    environment:
+      HOST: http://localhost:4000
+    ports:
+      - "8080:8080"
+    depends_on:
+      - graphql-api
+  app:
+    build:
+      context: ./app
+    volumes:
+      - ./app:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+      - "35729:35729"
+    depends_on:
+      - graphql-api

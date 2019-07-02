@@ -34,7 +34,7 @@ let LeaseEventType =
         name = "LeaseEvent",
         description = "Lease event that has occured",
         fields = [
-            Define.Field("leaseId", Int, fun _ event -> event.EventId)
+            Define.AutoField("eventId", Int)
             Define.AutoField("eventCreatedTime", Date)
             Define.AutoField("eventEffectiveDate", Date)
             Define.AutoField("eventType", String)
@@ -76,15 +76,20 @@ let LeaseObservationType
             Define.AutoField("totalPaid", Float)
             Define.AutoField("amountDue", Float)
             Define.AutoField("leaseStatus", LeaseStatusType) 
-            Define.Field("listEvents", ListLeaseEventsResponseType, (fun ctx leaseObs ->
-                let leaseId = leaseObs.Lease.LeaseId
-                let asOfDate = 
-                    ctx.TryArg<AsOfDateInput>("asOfDate")
-                    |> Option.map AsOfDate.fromInput
-                    |> Option.defaultValue (AsOfDate.getDefault())
-                let pageSize = ctx.TryArg("pageSize") |> Option.defaultValue 20
-                let pageToken = ctx.TryArg("pageToken") |> Option.defaultValue ""
-                leaseClient.ListLeaseEvents(leaseId, asOfDate, pageSize, pageToken)
+            Define.Field(
+                name = "listEvents", 
+                typedef = ListLeaseEventsResponseType, 
+                args = [
+                    Define.Input("pageSize", Int)
+                    Define.Input("pageToken", String)
+                ],
+                resolve = (fun ctx leaseObs ->
+                    let leaseId = leaseObs.Lease.LeaseId
+                    let asOfDate = leaseObs.AsOfDate
+                    let pageSize = ctx.TryArg("pageSize") |> Option.defaultValue 20
+                    let pageToken = ctx.TryArg("pageToken") |> Option.defaultValue ""
+                    leaseClient.ListLeaseEvents(leaseId, asOfDate, pageSize, pageToken
+                )
             ))
         ]
     )
@@ -160,7 +165,7 @@ let createLeaseField
             let userId = ctx.Arg("userId")
             let startDate = ctx.Arg("startDate") |> DateTime.parse |> DateTime.toUtc
             let maturityDate = ctx.Arg("maturityDate") |> DateTime.parse |> DateTime.toUtc
-            let monthlyPaymentAmount = ctx.Arg("monthlyPaymentAmount")
+            let monthlyPaymentAmount = ctx.Arg<float>("monthlyPaymentAmount")
             leaseClient.CreateLease(leaseId, userId, startDate, maturityDate, monthlyPaymentAmount)
         )
     )
@@ -179,9 +184,13 @@ let schedulePaymentField
         ],
         resolve = (fun ctx _ ->
             let leaseId = ctx.Arg("leaseId")
+            printfn "leaseId: %s" leaseId
             let paymentId = ctx.Arg("paymentId")
-            let paymentDate = ctx.Arg("paymentDate")
+            printfn "paymentId: %s" paymentId
+            let paymentDate = ctx.Arg("paymentDate") |> DateTime.parse |> DateTime.toUtc
+            printfn "paymentDate: %A" paymentDate
             let paymentAmount = ctx.Arg("paymentAmount")
+            printfn "paymentAmount: %A" paymentAmount
             leaseClient.SchedulePayment(leaseId, paymentId, paymentDate, paymentAmount))
     )
 
@@ -200,7 +209,7 @@ let receivePaymentField
         resolve = (fun ctx _ ->
             let leaseId = ctx.Arg("leaseId")
             let paymentId = ctx.Arg("paymentId")
-            let paymentDate = ctx.Arg("paymentDate")
+            let paymentDate = ctx.Arg("paymentDate") |> DateTime.parse |> DateTime.toUtc
             let paymentAmount = ctx.Arg("paymentAmount")
             leaseClient.ReceivePayment(leaseId, paymentId, paymentDate, paymentAmount))
     )

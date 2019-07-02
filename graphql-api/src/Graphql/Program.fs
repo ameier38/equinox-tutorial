@@ -42,6 +42,7 @@ let getResponseContent (jsonSettings:JsonSerializerSettings) (res:Execution.GQLR
     | _ -> failwithf "Only direct queries are supported!"
 
 let graphql
+    (logger:Core.Logger)
     (jsonSettings:JsonSerializerSettings)
     (executor:Executor<Root.Root>) 
     : WebPart =
@@ -53,11 +54,13 @@ let graphql
                     body 
                     |> tryParse "query"
                     |> Option.map (fun o -> o.ToString())
+                logger.Information(sprintf "request query:\n%A" query)
                 let variables = 
                     body 
                     |> tryParse "variables"
                     |> Option.map (fun o -> o.ToString())
                     |> Option.map JsonHelpers.deserialize<Map<string, obj>>
+                logger.Information(sprintf "request variables:\n%A" variables)
                 match query, variables with
                 | Some qry, Some variables ->
                     let formattedQry = removeWhitespacesAndLineBreaks qry
@@ -98,7 +101,7 @@ let main _ =
             .CreateLogger()
     let leaseChannel = Channel(config.LeaseApi.ChannelTarget, ChannelCredentials.Insecure)
     let leaseAPIClient = Tutorial.Lease.V1.LeaseAPI.LeaseAPIClient(leaseChannel)
-    let leaseClient = Lease.Client.LeaseClient(leaseAPIClient)
+    let leaseClient = Lease.Client.LeaseClient(leaseAPIClient, logger)
     let query = Query leaseClient
     let mutation = Mutation leaseClient
     let schema = Schema(query, mutation)
@@ -107,7 +110,7 @@ let main _ =
     let suaveConfig =
         { defaultConfig with
             bindings = [ HttpBinding.createSimple HTTP "0.0.0.0" config.Port ]}
-    let api = setCorsHeaders >=> graphql jsonSettings executor >=> Writers.setMimeType "application/json"
+    let api = setCorsHeaders >=> graphql logger jsonSettings executor >=> Writers.setMimeType "application/json"
     logger.Information(sprintf "logging at %s 📝" config.Seq.Url)
     logger.Information("starting GraphQL API 🚀")
     startWebServer suaveConfig api

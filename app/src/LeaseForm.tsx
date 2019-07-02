@@ -15,6 +15,7 @@ import {
   KeyboardDatePicker
 } from '@material-ui/pickers'
 import { CREATE_LEASE, Lease, CreateLeaseResponse } from './GQL'
+import { AsOfDate } from './Types';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,12 +27,13 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 type LeaseFormProps = {
+  setAsOfDate: (asOf:AsOfDate) => void,
   open: boolean,
   setOpen: (open: boolean) => void
 }
 
 const LeaseForm: React.FC<LeaseFormProps> = 
-  ({open, setOpen}) => {
+  ({setAsOfDate, open, setOpen}) => {
 
     const classes = useStyles()
 
@@ -66,9 +68,15 @@ const LeaseForm: React.FC<LeaseFormProps> =
 
     const handleSubmit = (createLease:MutationFn<CreateLeaseResponse,Lease>) => 
       () => {
-        createLease({variables: values})
-        setValues(initState())
-        setOpen(false)
+        createLease({variables: values}).then(() => {
+          setValues(initState())
+          setOpen(false)
+          let newDate = new Date()
+          setAsOfDate({
+            asAt: newDate,
+            asOn: newDate
+          })
+        })
       }
 
     return (
@@ -121,16 +129,6 @@ const LeaseForm: React.FC<LeaseFormProps> =
                       value={values.monthlyPaymentAmount}
                       onChange={handleChange('monthlyPaymentAmount')}
                       margin='normal' />
-                  </Grid>
-                  <Grid container item justify='space-between' xs={12}>
-                    <Grid item ></Grid>
-                    <Grid item>
-                      <Button 
-                        variant="contained" 
-                        type="submit">
-                        Create Lease
-                      </Button>
-                    </Grid>
                   </Grid>
                 </MuiPickersUtilsProvider>
               </Grid>
