@@ -102,6 +102,7 @@ const SchedulePaymentDialog: React.FC<SchedulePaymentDialogProps> =
           }).then(() => {
             setOpen(false)
             let newDate = new Date()
+            newDate.setSeconds(newDate.getSeconds() + 10)
             setAsOfDate({
               asAt: newDate,
               asOn: newDate
@@ -243,6 +244,7 @@ const ReceivePaymentDialog: React.FC<ReceivePaymentDialogProps> =
           }).then(() => {
             setOpen(false)
             let newDate = new Date()
+            newDate.setSeconds(newDate.getSeconds() + 10)
             setAsOfDate({
               asAt: newDate,
               asOn: newDate

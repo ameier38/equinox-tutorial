@@ -72,6 +72,7 @@ const LeaseForm: React.FC<LeaseFormProps> =
           setValues(initState())
           setOpen(false)
           let newDate = new Date()
+          newDate.setSeconds(newDate.getSeconds() + 10)
           setAsOfDate({
             asAt: newDate,
             asOn: newDate
@@ -87,7 +88,7 @@ const LeaseForm: React.FC<LeaseFormProps> =
             <DialogContent>
               <Grid container>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <Grid item xs={12} sm={6} md={3}>
+                  <Grid item xs={12} md={6}>
                     <TextField
                       className={classes.textField}
                       required
@@ -97,7 +98,7 @@ const LeaseForm: React.FC<LeaseFormProps> =
                       onChange={handleChange('userId')}
                       margin='normal' />
                   </Grid>
-                  <Grid item xs={12} sm={6} md={3}>
+                  <Grid item sm={12} md={6}>
                     <KeyboardDatePicker
                       className={classes.textField}
                       required
@@ -108,7 +109,7 @@ const LeaseForm: React.FC<LeaseFormProps> =
                       onChange={handleDateChange('startDate')}
                       margin='normal' />
                   </Grid>
-                  <Grid item xs={12} sm={6} md={3}>
+                  <Grid item xs={12} md={6}>
                     <KeyboardDatePicker
                       className={classes.textField}
                       required
@@ -119,7 +120,7 @@ const LeaseForm: React.FC<LeaseFormProps> =
                       onChange={handleDateChange('maturityDate')}
                       margin='normal' />
                   </Grid>
-                  <Grid item xs={12} sm={6} md={3}>
+                  <Grid item xs={12} md={6}>
                     <TextField
                       className={classes.textField}
                       required
