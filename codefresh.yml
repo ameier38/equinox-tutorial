@@ -1,10 +1,10 @@
 version: '1.0'
 stages:
-  - build
-  - test
+  - lease-api
+  - proto
 steps:
   build_test_proto_image:
-    stage: build
+    stage: proto
     type: build
     title: Build test image
     working_directory: proto/.devcontainer
@@ -13,7 +13,7 @@ steps:
     build_arguments:
       - NUGET_PACKAGES=/codefresh/volume/.nuget/packages
   test_protos:
-    stage: test
+    stage: proto
     title: Test protos
     image: ${{build_test_proto_image}}
     working_directory: proto
@@ -21,9 +21,10 @@ steps:
       - rm -rf paket-files
       - fake build -t Test
   build_lease_api:
-    stage: build
+    stage: lease-api
     type: build
     title: Build Lease API
+    working_directory: lease-api
     image_name: lease-api
     target: tester
   test_lease_api:
