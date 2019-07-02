@@ -15,18 +15,18 @@ steps:
   test_protos:
     stage: test
     title: Test protos
-    image: ${{build_test_image}}
+    image: ${{build_test_proto_image}}
     working_directory: proto
     commands:
       - rm -rf paket-files
       - fake build -t Test
-  build_api:
+  build_lease_api:
     stage: build
     type: build
     title: Build Lease API
     image_name: lease-api
-    target: test-runtime
-  test_api:
+    target: tester
+  test_lease_api:
     stage: test
     type: composition
     title: Test Lease API
@@ -37,7 +37,7 @@ steps:
           image: eventstore/eventstore
     composition_candidates:
       test:
-        image: ${{build_api}}
+        image: ${{build_lease_api}}
         command: bash -c "./wait-for.sh http://eventstore:2113/users/admin && dotnet Tests.dll"
         environment:
           - EVENTSTORE_PROTOCOL=tcp
