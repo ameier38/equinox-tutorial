@@ -249,3 +249,13 @@ type LeaseClient(client:Tutorial.Lease.V1.LeaseAPI.LeaseAPIClient) =
                 EffectiveDate=(effDate |> DateTime.toProtoDate))
         let res = client.TerminateLease(req)
         res.Message
+
+    member __.DeleteEvent
+        (   leaseId:string,
+            eventId:int) =
+        let req =
+            Tutorial.Lease.V1.DeleteLeaseEventRequest(
+                LeaseId = leaseId,
+                EventId = eventId)
+        let res = client.DeleteLeaseEvent(req)
+        res.Message

@@ -220,3 +220,19 @@ let terminateLeaseField
             let effDate = ctx.Arg("effectiveDate")
             leaseClient.TerminateLease(leaseId, effDate))
     )
+
+let deleteLeaseEventField
+    (leaseClient:LeaseClient) =
+    Define.Field(
+        name = "deleteLeaseEvent",
+        typedef = String,
+        description = "delete a lease event",
+        args = [
+            Define.Input("leaseId", ID)
+            Define.Input("eventId", Int)
+        ],
+        resolve = (fun ctx _ ->
+            let leaseId = ctx.Arg("leaseId")
+            let eventId = ctx.Arg("eventId")
+            leaseClient.DeleteEvent(leaseId, eventId))
+    )

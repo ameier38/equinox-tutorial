@@ -25,5 +25,6 @@ let Mutation
             schedulePaymentField leaseClient
             receivePaymentField leaseClient
             terminateLeaseField leaseClient
+            deleteLeaseEventField leaseClient
         ]
     )
