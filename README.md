@@ -5,12 +5,13 @@ Practical example for learning how to model a bi-temporal domain using
 [Jet.com's Equinox Event Sourcing Platform](https://github.com/jet/equinox).
 
 __Features__
-- Bi-temporal event sourcing in F# using 
-[Jet.com's Equinox platform](https://github.com/jet/equinox).
-- [gRPC](https://grpc.io/) backend API :milky_way:.
-- Protobuf files leveraging [Uber's Prototool](https://github.com/uber/prototool) :wrench:.
+- Bi-temporal, event sourced API in F# using 
+[Jet.com's Equinox platform](https://github.com/jet/equinox) 
+and [gRPC](https://grpc.io/) :milky_way:.
+- Protobuf files compiled with 
+[Uber's Prototool](https://github.com/uber/prototool) :wrench:.
 - Fully typed GraphQL API using 
-[FSharp.Data.GraphQL](https://github.com/fsprojects/FSharp.Data.GraphQL) :boom:.
+[FSharp.Data.GraphQL](https://github.com/fsprojects/FSharp.Data.GraphQL) :fireworks:.
 - Centralized logging with [Seq](https://datalust.co/seq) :scroll:.
 - Web application using [React](https://reactjs.org/) 
 and [TypeScript](https://www.typescriptlang.org/) :computer:.
@@ -28,8 +29,7 @@ can be found in the accompanying
 docker-compose up -d
 ```
 Endpoints:
-- http://localhost:2113 -> Event Store UI (database)
-  > user:admin password:changeit
+- http://localhost:2113 -> Event Store UI (database; user:admin password:changeit)
 - http://localhost:5341 -> Seq UI (logging)
 - http://localhost:8080 -> GraphQL Playground
 - http://localhost:3000 -> Web application
@@ -71,3 +71,4 @@ Moving forward the more recently created lease can be seen again.
 - [Uber Protobuf Style Guide V2](https://github.com/uber/prototool/tree/dev/style)
 - [GraphQL CLI](https://github.com/graphql-cli/graphql-cli)
 - [Apollo GraphQL](https://www.apollographql.com/docs/react/)
+- [F# Expecto](https://github.com/haf/expecto)
