@@ -2,7 +2,11 @@ Equinox
 Equinox.EventStore
 FSharp.UMX
 FsConfig
+FsCodec
+FsCodec.NewtonsoftJson
+Grpc.AspNetCore
 Grpc.HealthCheck
+Microsoft.AspNetCore.App
 Serilog
 Serilog.Sinks.Console
 Serilog.Sinks.Seq

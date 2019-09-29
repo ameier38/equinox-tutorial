@@ -123,6 +123,16 @@ module PaymentId =
             RpcException(Status(StatusCode.InvalidArgument, msg))
             |> raise
 
+module TerminationId = 
+    let toStringN (value: TerminationId) = Guid.toStringN %value
+    let parse (x:string) : TerminationId = 
+        match Guid.tryParse x with
+        | Some terminationId -> %terminationId
+        | None -> 
+            let msg = sprintf "could not parse %s into Termination" x
+            RpcException(Status(StatusCode.InvalidArgument, msg))
+            |> raise
+
 module PageToken =
     let prefix = "Lease-"
     let decode (t:PageToken) : int =

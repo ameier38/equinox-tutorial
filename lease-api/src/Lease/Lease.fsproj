@@ -12,6 +12,7 @@
     <Compile Include="Lease.Store.fs" />
     <Compile Include="Lease.Projection.fs" />
     <Compile Include="Lease.Service.fs" />
+    <Compile Include="Startup.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>

@@ -12,7 +12,7 @@ open System.Threading
 [<EntryPoint>]
 let main _ =
     let getUtcNow () = DateTime.UtcNow
-    let config = Config.load()
+    let config = Config.Load()
     let logger = 
         LoggerConfiguration()
             .WriteTo.Console()
@@ -20,11 +20,8 @@ let main _ =
             .CreateLogger()
     let store = Store(config)
     let serializationSettings = Newtonsoft.Json.JsonSerializerSettings()
-    let codec = Equinox.Codec.NewtonsoftJson.Json.Create<StoredEvent>(serializationSettings)
-    let leaseResolver = StreamResolver(store, codec, "lease", Aggregate.foldLeaseStream, Aggregate.initialLeaseStream)
-    let leaseEventListResolver = StreamResolver(store, codec, "events", Aggregate.foldLeaseEventList, [])
-    let leaseListResolver = StreamResolver(store, codec, "leases", Aggregate.foldLeaseList, [])
-    let leaseAPI = LeaseAPIImpl(getUtcNow, leaseResolver, leaseEventListResolver, leaseListResolver, logger)
+    let codec = FsCodec.NewtonsoftJson.Codec.Create<StoredEvent>(serializationSettings)
+    let leaseAPI = LeaseAPIImpl(getUtcNow, store, codec, logger)
     let healthService = HealthServiceImpl()
     let projectionManager = ProjectionManager(config, logger)
     let server = Server()

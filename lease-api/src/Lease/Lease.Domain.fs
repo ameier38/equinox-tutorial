@@ -27,7 +27,7 @@ type Payment =
       PaymentDate: DateTime 
       PaymentAmount: USD }
 
-type LeaseTermination =
+type Termination =
     { TerminationId: TerminationId
       TerminationDate: DateTime
       TerminationReason: string }
@@ -36,7 +36,7 @@ type LeaseCommand =
     | CreateLease of Lease
     | SchedulePayment of Payment
     | ReceivePayment of Payment
-    | TerminateLease of DateTime
+    | TerminateLease of Termination
 
 type Command =
     | LeaseCommand of LeaseCommand
@@ -46,23 +46,24 @@ type LeaseEvent =
     | LeaseCreated of EventContext * Lease
     | PaymentScheduled of EventContext * Payment
     | PaymentReceived of EventContext * Payment
-    | LeaseTerminated of EventContext * LeaseTermination
+    | LeaseTerminated of EventContext * Termination
 
 type StoredEvent =
     | EventDeleted of {| EventContext: {| EventCreatedTime: EventCreatedTime |}; EventId: EventId |}
     | LeaseCreated of {| EventContext: EventContext; Lease: Lease |}
     | PaymentScheduled of {| EventContext: EventContext; Payment: Payment |}
     | PaymentReceived of {| EventContext: EventContext; Payment: Payment |}
-    | LeaseTerminated of {| EventContext: EventContext; LeaseTermination: LeaseTermination |}
+    | LeaseTerminated of {| EventContext: EventContext; Termination: Termination |}
     interface TypeShape.UnionContract.IUnionContract
 
 type LeaseObservation =
-    { Lease: Lease 
-      CreatedTime: DateTime
-      UpdatedTime: DateTime
-      TotalScheduled: USD 
-      TotalPaid: USD 
-      AmountDue: USD 
+    { Lease: Lease
+      ObservationDate: DateTime
+      CreatedTime: EventCreatedTime
+      UpdatedTime: EventCreatedTime
+      TotalScheduled: USD
+      TotalPaid: USD
+      AmountDue: USD
       LeaseStatus: LeaseStatus }
 
 type LeaseState = LeaseObservation option
@@ -72,6 +73,6 @@ type LeaseStream =
       LeaseEvents: LeaseEvent list 
       DeletedEvents: (EventCreatedTime * EventId) list }
 
-type LeaseCreatedList = Lease list
+type LeaseCreatedList = (EventContext * Lease) list
 
 type LeaseEventList = LeaseEvent list

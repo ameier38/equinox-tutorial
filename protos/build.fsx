@@ -9,9 +9,8 @@ open BlackFox.Fake
 open Fake.Core
 open Fake.IO
 open Fake.IO.FileSystemOperators
-open Fake.Core.TargetOperators
 
-let prototoolImage = "uber/prototool:1.8.1"
+let prototoolImage = "prototool:latest"
 
 let run (command:string) (args:string list) (workDir:string) =
     CreateProcess.fromRawCommand command args
@@ -33,33 +32,37 @@ let prototool (args:string list) =
           workMountArg
           prototoolImage ]
     let prototoolArgs =
-        [ yield "prototool"
-          yield! args
+        [ yield! args
           yield "protos" ]
     __SOURCE_DIRECTORY__
     |> run "docker" (dockerArgs @ prototoolArgs) 
+
+let buildPrototool = BuildTask.create "BuildPrototool" [] {
+    __SOURCE_DIRECTORY__
+    |> run "docker" ["build"; "-t"; prototoolImage; "."]
+}
 
 let clean = BuildTask.create "Clean" [] {
     Shell.cleanDir "gen"
 }
 
-let format = BuildTask.create "Format" [] {
+let format = BuildTask.create "Format" [buildPrototool] {
     prototool ["format"; "-w"]
 }    
 
-let lint = BuildTask.create "Lint" [format] {
+let lint = BuildTask.create "Lint" [buildPrototool; format] {
     prototool ["lint"]
 }
 
-let compile = BuildTask.create "Compile" [lint] {
+let compile = BuildTask.create "Compile" [buildPrototool; lint] {
     prototool ["compile"]
 }
 
-BuildTask.create "Generate" [clean; compile] {
+BuildTask.create "Generate" [buildPrototool; clean; compile] {
     prototool ["generate"; "--debug"]
 }
 
-BuildTask.createEmpty "Test" [compile]
+BuildTask.createEmpty "Test" [buildPrototool; compile]
 
 let _default = BuildTask.createEmpty "Default" []
 

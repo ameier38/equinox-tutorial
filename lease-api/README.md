@@ -54,3 +54,4 @@ fake build -t Test
 - [gRPC TestServerCallContext](https://grpc.github.io/grpc/csharp/api/Grpc.Core.Testing.TestServerCallContext.html)
 - [.NET gRPC health probe](https://github.com/grpc/grpc/blob/master/src/csharp/Grpc.HealthCheck/HealthServiceImpl.cs)
 - [You're better off using exceptions](https://eiriktsarpalis.wordpress.com/2017/02/19/youre-better-off-using-exceptions/)
+- [gRPC on dotnetcore](https://grpc.io/blog/grpc-on-dotnetcore/)

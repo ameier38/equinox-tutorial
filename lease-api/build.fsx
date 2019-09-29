@@ -9,7 +9,7 @@ open Fake.IO.Globbing.Operators
 
 let solution = __SOURCE_DIRECTORY__ </> "Lease.sln"
 
-let clean = BuildTask.create "Clean" [] {
+BuildTask.create "Clean" [] {
     let directories =
         !! "**/Proto/out"
         ++ "**/Proto/bin"
@@ -17,13 +17,13 @@ let clean = BuildTask.create "Clean" [] {
     Shell.cleanDirs directories
 }
 
-let copyProtos = BuildTask.create "CopyProtos" [] {
+BuildTask.create "CopyProtos" [] {
     let genDir =
         __SOURCE_DIRECTORY__ // lease-api
         |> Path.getDirectory // equinox-tutorial
         </> "protos" </> "gen" </> "csharp"
-    genDir |> Shell.cleanDir
     let targetDir = __SOURCE_DIRECTORY__ </> "src" </> "Proto" </> "gen"
+    targetDir |> Shell.cleanDir
     !! (genDir </> "*.cs")
     |> Shell.copyFiles targetDir
 }

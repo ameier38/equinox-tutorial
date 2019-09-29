@@ -62,10 +62,11 @@ message LeaseEvent {
 // Observation of a lease at a point in time.
 message LeaseObservation {
   Lease lease = 1;
-  google.protobuf.Timestamp created_time = 2;
-  google.protobuf.Timestamp updated_time = 3;
-  google.type.Money total_scheduled = 4;
-  google.type.Money total_paid = 5;
-  google.type.Money amount_due = 6;
-  LeaseStatus lease_status = 7;
+  google.type.Date observation_date = 2;
+  google.protobuf.Timestamp created_time = 3;
+  google.protobuf.Timestamp updated_time = 4;
+  google.type.Money total_scheduled = 5;
+  google.type.Money total_paid = 6;
+  google.type.Money amount_due = 7;
+  LeaseStatus lease_status = 8;
 }
