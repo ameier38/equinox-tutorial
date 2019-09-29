@@ -87,7 +87,6 @@ module LeaseObservation =
         (eventCreatedTime:EventCreatedTime)
         (lease:Lease) =
         { Lease = lease
-          ObservationDate = lease.StartDate
           CreatedTime = eventCreatedTime
           UpdatedTime = eventCreatedTime
           TotalScheduled = 0m<usd> 
@@ -101,7 +100,6 @@ module LeaseObservation =
             let totalScheduled = leaseObs.TotalScheduled + payment.PaymentAmount
             let amountDue = totalScheduled - leaseObs.TotalPaid
             { leaseObs with
-                ObservationDate = payment.PaymentDate
                 UpdatedTime = eventCreatedTime
                 TotalScheduled = totalScheduled
                 AmountDue = amountDue }
@@ -112,7 +110,6 @@ module LeaseObservation =
             let totalPaid = leaseObs.TotalPaid + payment.PaymentAmount
             let amountDue = leaseObs.TotalScheduled - totalPaid
             { leaseObs with
-                ObservationDate = payment.PaymentDate
                 UpdatedTime = eventCreatedTime
                 TotalPaid = totalPaid
                 AmountDue = amountDue }
@@ -121,7 +118,6 @@ module LeaseObservation =
         (termination:Termination)=
         fun leaseObs ->
             { leaseObs with
-                ObservationDate = termination.TerminationDate
                 UpdatedTime = eventCreatedTime
                 LeaseStatus = Terminated }
 

@@ -17,7 +17,7 @@ BuildTask.create "Clean" [] {
     Shell.cleanDirs directories
 }
 
-BuildTask.create "CopyProtos" [] {
+BuildTask.create "CopyGenerated" [] {
     let genDir =
         __SOURCE_DIRECTORY__ // lease-api
         |> Path.getDirectory // equinox-tutorial
@@ -35,8 +35,8 @@ BuildTask.create "Restore" [] {
 
 BuildTask.create "Test" [] {
     Trace.trace "Running tests..."
-    DotNet.exec id "run" "--project src/Tests/Tests.fsproj"
-    |> ignore
+    let result = DotNet.exec id "run" "--project src/Tests/Tests.fsproj"
+    if not result.OK then failwith "Error!"
 }
 
 BuildTask.create "Publish" [] {

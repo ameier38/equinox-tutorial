@@ -134,7 +134,7 @@ module TerminationId =
             |> raise
 
 module PageToken =
-    let prefix = "Lease-"
+    let prefix = "Index-"
     let decode (t:PageToken) : int =
         match %t with
         | "" -> 0

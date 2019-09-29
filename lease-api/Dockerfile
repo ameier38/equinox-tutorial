@@ -17,7 +17,8 @@ ENV LC_ALL en_US.UTF-8
 ENV DOTNET_CLI_TELEMETRY_OPTOUT 1
 
 # install fake
-RUN dotnet tool install fake-cli -g
+RUN dotnet tool install -g fake-cli
+RUN dotnet tool install -g paket
 
 # add fake to path
 ENV PATH="$PATH:/root/.dotnet/tools"
@@ -44,7 +45,7 @@ COPY src/Tests/Tests.fsproj src/Tests/
 COPY src/Tests/paket.references src/Tests/
 
 # install dependencies
-RUN fake build -t InstallDependencies
+RUN fake build
 
 # copy everything else and build
 COPY . .
@@ -60,7 +61,7 @@ COPY --from=builder /app/wait-for.sh .
 
 CMD ["dotnet", "Tests.dll"]
 
-FROM mcr.microsoft.com/dotnet/core/runtime:2.2-alpine as runner
+FROM mcr.microsoft.com/dotnet/core/runtime:2.2-alpine3.8 as runner
 
 # install grpc alpine dependencies
 RUN apk update && apk add libc6-compat

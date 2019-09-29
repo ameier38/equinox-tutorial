@@ -13,17 +13,17 @@ open System.Threading.Tasks
 module Pagination =
     let getPage (pageToken:PageToken) (pageSize:PageSize) (s:seq<'T>) =
         let start = pageToken |> PageToken.decode
-        let last = (s |> Seq.length) - 1
-        let remaining = last - start
+        let cnt = s |> Seq.length
+        let remaining = cnt - start
         let toTake = min remaining %pageSize
         let page = s |> Seq.skip start |> Seq.take toTake
         let prevPageToken =
             match start - %pageSize with
-            | c when c < 0 -> "" |> UMX.tag<pageToken>
+            | c when c <= 0 -> "" |> UMX.tag<pageToken>
             | c -> c |> PageToken.encode
         let nextPageToken = 
             match start + %pageSize with
-            | c when c > last -> "" |> UMX.tag<pageToken>
+            | c when c >= cnt -> "" |> UMX.tag<pageToken>
             | c -> c |> PageToken.encode
         {| PrevPageToken = prevPageToken
            NextPageToken = nextPageToken
@@ -95,7 +95,6 @@ module LeaseObservation =
         let lease = leaseObs.Lease |> Lease.toProto
         Tutorial.Lease.V1.LeaseObservation(
             Lease = lease,
-            ObservationDate = !@leaseObs.ObservationDate,
             CreatedTime = !@@leaseObs.CreatedTime,
             UpdatedTime = !@@leaseObs.UpdatedTime,
             TotalScheduled = !!leaseObs.TotalScheduled,
@@ -137,7 +136,7 @@ type LeaseAPIImpl
     override __.DeleteLeaseEvent(req:Tutorial.Lease.V1.DeleteLeaseEventRequest, ctx:ServerCallContext)
         : Task<Tutorial.Lease.V1.DeleteLeaseEventResponse> =
         async {
-            logger.Information(sprintf "received req: %A" req)
+            logger.Debug(sprintf "received req: %A" req)
             let leaseId = req.LeaseId |> LeaseId.parse
             let eventId = req.EventId |> UMX.tag<eventId>
             let command = eventId |> DeleteEvent
@@ -150,7 +149,7 @@ type LeaseAPIImpl
     override __.ListLeases(req:Tutorial.Lease.V1.ListLeasesRequest, ctx:ServerCallContext) 
         : Task<Tutorial.Lease.V1.ListLeasesResponse> =
         async {
-            logger.Information(sprintf "received req: %A" req)
+            logger.Debug(sprintf "received req: %A" req)
             let asOfDate = req.AsOfDate |> AsOfDate.fromProto
             let pageSize = req.PageSize |> UMX.tag<pageSize>
             let pageToken = req.PageToken |> UMX.tag<pageToken>
@@ -169,7 +168,7 @@ type LeaseAPIImpl
     override __.ListLeaseEvents(req:Tutorial.Lease.V1.ListLeaseEventsRequest, ctx:ServerCallContext) 
         : Task<Tutorial.Lease.V1.ListLeaseEventsResponse> =
         async {
-            logger.Information(sprintf "received req: %A" req)
+            logger.Debug(sprintf "received req: %A" req)
             let asOfDate = req.AsOfDate |> AsOfDate.fromProto
             let leaseId = req.LeaseId |> LeaseId.parse
             let pageSize = req.PageSize |> UMX.tag<pageSize>
@@ -193,7 +192,7 @@ type LeaseAPIImpl
     override __.GetLease(req:Tutorial.Lease.V1.GetLeaseRequest, ctx:ServerCallContext) 
         : Task<Tutorial.Lease.V1.GetLeaseResponse> =
         async {
-            logger.Information(sprintf "received req: %A" req)
+            logger.Debug(sprintf "received req: %A" req)
             let asOfDate = req.AsOfDate |> AsOfDate.fromProto
             let leaseId = req.LeaseId |> LeaseId.parse
             let! leaseState = getLease leaseId asOfDate
@@ -212,7 +211,7 @@ type LeaseAPIImpl
     override __.CreateLease(req:Tutorial.Lease.V1.CreateLeaseRequest, ctx:ServerCallContext)
         : Task<Tutorial.Lease.V1.CreateLeaseResponse> =
         async {
-            logger.Information(sprintf "received req: %A" req)
+            logger.Debug(sprintf "received req: %A" req)
             let lease = req.Lease |> Lease.fromProto
             let command =
                 lease
@@ -227,7 +226,7 @@ type LeaseAPIImpl
     override __.TerminateLease(req:Tutorial.Lease.V1.TerminateLeaseRequest, ctx:ServerCallContext)
         : Task<Tutorial.Lease.V1.TerminateLeaseResponse> =
         async {
-            logger.Information(sprintf "received req: %A" req)
+            logger.Debug(sprintf "received req: %A" req)
             let leaseId = req.LeaseId |> LeaseId.parse
             let termination = req.Termination |> Termination.fromProto
             let command =
@@ -243,7 +242,7 @@ type LeaseAPIImpl
     override __.SchedulePayment(req:Tutorial.Lease.V1.SchedulePaymentRequest, ctx:ServerCallContext)
         : Task<Tutorial.Lease.V1.SchedulePaymentResponse> =
         async {
-            logger.Information(sprintf "received req: %A" req)
+            logger.Debug(sprintf "received req: %A" req)
             let leaseId = req.LeaseId |> LeaseId.parse
             let payment = req.Payment |> Payment.fromProto
             let command =
@@ -259,7 +258,7 @@ type LeaseAPIImpl
     override __.ReceivePayment(req:Tutorial.Lease.V1.ReceivePaymentRequest, ctx:ServerCallContext)
         : Task<Tutorial.Lease.V1.ReceivePaymentResponse> =
         async {
-            logger.Information(sprintf "received req: %A" req)
+            logger.Debug(sprintf "received req: %A" req)
             let leaseId = req.LeaseId |> LeaseId.parse
             let payment = req.Payment |> Payment.fromProto
             let command =

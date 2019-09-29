@@ -9,14 +9,14 @@ nuget Equinox.EventStore 2.0.0-rc6 preview
 nuget Equinox.MemoryStore 2.0.0-rc6 preview
 nuget FsCodec 1.0.0-rc2
 nuget FsCodec.NewtonsoftJson 1.0.0-rc2
-nuget FsConfig
+nuget FSharp.Control.AsyncSeq 2.0.21
 nuget FSharp.UMX 1.0.0
 nuget Google.Api.CommonProtos
 nuget Google.Protobuf
+nuget Grpc.Core 2.24.0
+nuget Grpc.Core.Testing 2.24.0
 nuget Grpc.Core.Api 2.24.0
-nuget Grpc.AspNetCore
 nuget Grpc.HealthCheck
-nuget Microsoft.AspNetCore.App
 nuget Serilog.Sinks.Console
 nuget Serilog
 nuget Serilog.Sinks.Seq

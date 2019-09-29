@@ -58,7 +58,6 @@ type StoredEvent =
 
 type LeaseObservation =
     { Lease: Lease
-      ObservationDate: DateTime
       CreatedTime: EventCreatedTime
       UpdatedTime: EventCreatedTime
       TotalScheduled: USD

@@ -18,10 +18,10 @@ fake build -t Serve
 ### Setup
 Install the .NET SDK. and Docker Desktop
 ```
-scoop install sudo
-scoop install dotnet-sdk
-sudo choco install -y docker-desktop
+choco install -y dotnetcore-sdk
+choco install -y docker-desktop
 ```
+> Commands must be run as Administrator
 
 ### Updating protobuf files
 Update the protobuf files and generate the new outputs. 
