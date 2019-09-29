@@ -22,8 +22,8 @@ type LeaseId = Guid<leaseId>
 [<Measure>] type paymentId
 type PaymentId = Guid<paymentId>
 
-[<Measure>] type paymentDate
-type PaymentDate = DateTime<paymentDate>
+[<Measure>] type terminationId
+type TerminationId = Guid<terminationId>
 
 [<Measure>] type eventId
 type EventId = int<eventId>
@@ -39,12 +39,6 @@ type EventEffectiveOrder = int<eventEffectiveOrder>
 
 [<Measure>] type eventCreatedTime
 type EventCreatedTime = DateTime<eventCreatedTime>
-
-[<Measure>] type leaseStartDate
-type LeaseStartDate = DateTime<leaseStartDate>
-
-[<Measure>] type leaseMaturityDate
-type LeaseMaturityDate = DateTime<leaseMaturityDate>
 
 [<Measure>] type pageToken
 type PageToken = string<pageToken>
@@ -128,3 +122,23 @@ module PaymentId =
             let msg = sprintf "could not parse %s into PaymentId" x
             RpcException(Status(StatusCode.InvalidArgument, msg))
             |> raise
+
+module PageToken =
+    let prefix = "Lease-"
+    let decode (t:PageToken) : int =
+        match %t with
+        | "" -> 0
+        | token -> 
+            token 
+            |> String.fromBase64 
+            |> String.replace prefix ""
+            |> int 
+    let encode (cursor:int) : PageToken =
+        sprintf "%s%d" prefix cursor 
+        |> String.toBase64
+        |> UMX.tag<pageToken>
+
+module Operators =
+    let (!!) (value:decimal<'u>) = %value |> Money.fromUSD
+    let (!@) (value:DateTime<'u>) = %value |> DateTime.toUtc |> Google.Type.Date.FromDateTime
+    let (!@@) (value:DateTime<'u>) = %value |> DateTime.toUtc |> Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime

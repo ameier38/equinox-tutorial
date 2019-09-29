@@ -3,7 +3,6 @@ Equinox.EventStore
 FSharp.UMX
 FsConfig
 Grpc.HealthCheck
-Jet.JsonNet.Converters
 Serilog
 Serilog.Sinks.Console
 Serilog.Sinks.Seq

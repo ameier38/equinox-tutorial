@@ -16,20 +16,21 @@ type Store(config:Config) =
             log=log)
     let strategy = ConnectionStrategy.ClusterTwinPreferSlaveReads
     let conn = 
-        connector.Establish("lease", Discovery.Uri config.EventStore.DiscoveryUri, strategy)
+        connector.Establish("Twin", Discovery.Uri config.EventStore.DiscoveryUri, strategy)
         |> Async.RunSynchronously
-    let gateway = Context(conn, BatchingPolicy(maxBatchSize=500))
+    let context = Context(conn, BatchingPolicy(maxBatchSize=500))
+    let cache = Caching.Cache ("ES", 100)
 
-    member __.Gateway with get () = gateway
+    member __.Cache with get () = cache
+    member __.Context with get () = context
 
 type StreamResolver<'event,'state>
     (   store:Store,
-        codec:Equinox.Codec.IUnionEncoder<'event,byte[]>,
+        codec:FsCodec.IUnionEncoder<'event,byte[]>,
         cachePrefix: string,
         fold:'state -> 'event seq -> 'state,
         initial:'state ) =
-    let cache = Caching.Cache ("ES", 20)
-    let cacheStrategy = CachingStrategy.SlidingWindowPrefixed (cache, TimeSpan.FromMinutes 20., cachePrefix)
-    let resolver = Resolver(store.Gateway, codec, fold, initial, caching=cacheStrategy)
+    let cacheStrategy = CachingStrategy.SlidingWindowPrefixed (store.Cache, TimeSpan.FromMinutes 20., cachePrefix)
+    let resolver = Resolver(store.Context, codec, fold, initial, caching=cacheStrategy)
 
     member __.Resolve = resolver.Resolve

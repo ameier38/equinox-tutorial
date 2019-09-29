@@ -1,45 +1,29 @@
 module Lease.Service
 
 open Lease
+open Lease.Operators
 open Lease.Store
 open FSharp.UMX
 open Grpc.Core
 open Serilog.Core
 open System.Threading.Tasks
 
-let (!!) (value:decimal<'u>) = %value |> Money.fromUSD
-let (!@) (value:DateTime<'u>) = %value |> Google.Type.Date.FromDateTime
-let (!@@) (value:DateTime<'u>) = %value |> DateTime.toUtc |> Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime
-
-module PageToken =
-    let prefix = "lease-"
-    let decode (t:string) : int =
-        match t with
-        | "" -> 1
-        | token -> 
-            token 
-            |> String.fromBase64 
-            |> String.replace prefix ""
-            |> int 
-    let encode (cursor:int) : string =
-        sprintf "%s%d" prefix cursor 
-        |> String.toBase64
-
+// ref: https://cloud.google.com/apis/design/design_patterns#list_pagination
+// pageToken contains the zero-based index of the starting element
 module Pagination =
-    let getPage (pageToken:string) (pageSize:int) (s:seq<'T>) =
-        let cursor = pageToken |> PageToken.decode
-        let total = s |> Seq.length
-        let toSkip = cursor - 1
-        let remaining = total - toSkip
-        let toTake = min remaining pageSize
-        let page = s |> Seq.skip toSkip |> Seq.take toTake
+    let getPage (pageToken:PageToken) (pageSize:PageSize) (s:seq<'T>) =
+        let start = pageToken |> PageToken.decode
+        let last = (s |> Seq.length) - 1
+        let remaining = last - start
+        let toTake = min remaining %pageSize
+        let page = s |> Seq.skip start |> Seq.take toTake
         let prevPageToken =
-            match cursor - pageSize with
-            | c when c < 1 -> ""
+            match start - %pageSize with
+            | c when c < 0 -> "" |> UMX.tag<pageToken>
             | c -> c |> PageToken.encode
         let nextPageToken = 
-            match cursor + pageSize with
-            | c when c > total -> ""
+            match start + %pageSize with
+            | c when c > last -> "" |> UMX.tag<pageToken>
             | c -> c |> PageToken.encode
         {| PrevPageToken = prevPageToken
            NextPageToken = nextPageToken
@@ -62,21 +46,26 @@ module Lease =
         let userId = proto.UserId |> UserId.parse
         { LeaseId = proto.LeaseId |> LeaseId.parse
           UserId = userId
-          StartDate = proto.StartDate.ToDateTime() |> UMX.tag<leaseStartDate>
-          MaturityDate = proto.MaturityDate.ToDateTime() |> UMX.tag<leaseMaturityDate>
+          StartDate = proto.StartDate.ToDateTime()
+          MaturityDate = proto.MaturityDate.ToDateTime()
           MonthlyPaymentAmount = proto.MonthlyPaymentAmount |> Money.toUSD |> fun usd -> usd * 1M<1/month> }
 
 module LeaseEvent =
-    let toProto (leaseEvent:LeaseEvent) =
+    let toProto (codec:FsCodec.IUnionEncoder<StoredEvent,byte[]>) (leaseEvent:LeaseEvent) =
         let { EventId = eventId 
               EventCreatedTime = createdTime 
               EventEffectiveDate = effDate } = leaseEvent |> Aggregate.LeaseEvent.getEventContext
         let eventType = leaseEvent |> Aggregate.LeaseEvent.getEventType
+        let eventPayload = 
+            leaseEvent 
+            |> Aggregate.LeaseEvent.toStoredEvent 
+            |> codec.Encode
         Tutorial.Lease.V1.LeaseEvent(
             EventId = %eventId,
             EventCreatedTime = !@@createdTime,
             EventEffectiveDate = !@effDate,
-            EventType = %eventType)
+            EventType = %eventType,
+            EventPayload = (eventPayload.Data |> String.fromBytes))
 
 module LeaseStatus =
     let fromProto (proto:Tutorial.Lease.V1.LeaseStatus) =

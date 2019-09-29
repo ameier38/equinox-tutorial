@@ -10,13 +10,12 @@ option java_package = "com.tutorial.lease.v1";
 option objc_class_prefix = "TLX";
 option php_namespace = "Tutorial\\Lease\\V1";
 
-import "google/type/date.proto";
 import "tutorial/lease/v1/lease.proto";
 
 // API to handle interactions with the Lease.
 service LeaseAPI {
   // Delete a lease event.
-  rpc DeleteLeaseEvent(DeleteLeaseEventRequest) returns (DeleteLeaseEventResponse) {};
+  rpc DeleteLeaseEvent(DeleteLeaseEventRequest) returns (DeleteLeaseEventResponse);
   // List the leases that have been created.
   rpc ListLeases(ListLeasesRequest) returns (ListLeasesResponse);
   // List the lease events that have occurred as of a point in time.
@@ -89,7 +88,7 @@ message CreateLeaseResponse {
 
 message TerminateLeaseRequest {
   string lease_id = 1;
-  google.type.Date effective_date = 2;
+  Termination termination = 2;
 }
 
 message TerminateLeaseResponse {
