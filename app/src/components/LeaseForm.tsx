@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import { Mutation, MutationFn } from 'react-apollo'
+import { gql } from 'apollo-boost'
+import { useMutation } from '@apollo/react-hooks'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 import { v4 as uuid } from 'uuid'
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
@@ -14,7 +15,6 @@ import {
   MuiPickersUtilsProvider, 
   KeyboardDatePicker
 } from '@material-ui/pickers'
-import { CREATE_LEASE, Lease, CreateLeaseResponse } from './GQL'
 import { AsOfDate } from './Types';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -25,6 +25,23 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 )
+
+const CREATE_LEASE = gql`
+mutation CreateLease(
+  $leaseId: String!
+  $userId: String!,
+  $startDate: String!,
+  $maturityDate: String!,
+  $monthlyPaymentAmount: Float!
+){
+  createLease(
+    leaseId: $leaseId,
+    userId: $userId,
+    startDate: $startDate,
+    maturityDate: $maturityDate,
+    monthlyPaymentAmount: $monthlyPaymentAmount
+  )
+}`
 
 type LeaseFormProps = {
   setAsOfDate: (asOf:AsOfDate) => void,

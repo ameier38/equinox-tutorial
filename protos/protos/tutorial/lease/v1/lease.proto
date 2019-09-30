@@ -36,11 +36,18 @@ message Lease {
   google.type.Money monthly_payment_amount = 5;
 }
 
-// Scheduled or received payment.
-message Payment {
+// Scheduled payment.
+message ScheduledPayment {
   string payment_id = 1;
-  google.type.Date payment_date = 2;
-  google.type.Money payment_amount = 3;
+  google.type.Date scheduled_date = 2;
+  google.type.Money scheduled_amount = 3;
+}
+
+// Received payment.
+message ReceivedPayment {
+  string payment_id = 1;
+  google.type.Date received_date = 2;
+  google.type.Money received_amount = 3;
 }
 
 // Termination of a lease.

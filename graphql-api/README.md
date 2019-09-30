@@ -52,3 +52,4 @@ graphql init
 ## Resources
 - [GraphQL](https://graphql.org/)
 - [GraphQL CLI](https://github.com/graphql-cli/graphql-cli)
+- [Designing Graphql Mutations](https://blog.apollographql.com/designing-graphql-mutations-e09de826ed97)

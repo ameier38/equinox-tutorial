@@ -1,11 +1,16 @@
 module Graphql.Lease.Fields
 
 open Graphql
+open Graphql.Lease.Types
 open Graphql.Lease.Client
 open FSharp.Data.GraphQL.Types
+open Tutorial.Lease.V1
+
+let PageSizeInputType = Define.Input("pageSize", Int)
+let PageTokenInputType = Define.Input("pageToken", ID)
 
 let AsOfDateInputType =
-    Define.InputObject<AsOfDateInput>(
+    Define.InputObject<AsOfDateInputDto>(
         name = "AsOfDate",
         description = "As of date",
         fields = [
@@ -21,11 +26,11 @@ let AsOfDateInputType =
     )
 
 let LeaseStatusType =
-    Define.Enum(
+    Define.Enum<LeaseStatus>(
         name = "LeaseStatus",
         options = [
-            Define.EnumValue("Outstanding", Outstanding)
-            Define.EnumValue("Terminated", Terminated) ],
+            Define.EnumValue("Outstanding", LeaseStatus.Outstanding)
+            Define.EnumValue("Terminated", LeaseStatus.Terminated) ],
         description = "Status of the lease"
     )
 
@@ -35,9 +40,10 @@ let LeaseEventType =
         description = "Lease event that has occured",
         fields = [
             Define.AutoField("eventId", Int)
-            Define.AutoField("eventCreatedTime", Date)
-            Define.AutoField("eventEffectiveDate", Date)
+            Define.Field("eventCreatedTime", Date, fun _ e -> e.EventCreatedTime.ToDateTime())
+            Define.Field("eventEffectiveDate", Date, fun _ e -> e.EventEffectiveDate.ToDateTime())
             Define.AutoField("eventType", String)
+            Define.AutoField("eventPayload", String)
         ]
     )
 
@@ -47,6 +53,7 @@ let ListLeaseEventsResponseType =
         description = "List lease events repsonse",
         fields = [
             Define.AutoField("events", ListOf LeaseEventType)
+            Define.AutoField("prevPageToken", String)
             Define.AutoField("nextPageToken", String)
             Define.AutoField("totalCount", Int)
         ]
@@ -57,11 +64,11 @@ let LeaseType =
         name = "Lease",
         description = "Lease information",
         fields = [
-            Define.Field("leaseId", ID, fun _ lease -> lease.LeaseId)
+            Define.AutoField("leaseId", ID)
             Define.AutoField("userId", ID)
-            Define.AutoField("startDate", Date)
-            Define.AutoField("maturityDate", Date)
-            Define.AutoField("monthlyPaymentAmount", Float)
+            Define.Field("startDate", Date, fun _ lease -> lease.StartDate.ToDateTime())
+            Define.Field("maturityDate", Date, fun _ lease -> lease.MaturityDate.ToDateTime())
+            Define.Field("monthlyPaymentAmount", Float, fun _ lease -> lease.MonthlyPaymentAmount.DecimalValue |> float)
         ]
     )
 
@@ -72,16 +79,16 @@ let LeaseObservationType
         description = "Observation of a lease as of a particular date",
         fields = [
             Define.AutoField("lease", LeaseType)
-            Define.AutoField("totalScheduled", Float)
-            Define.AutoField("totalPaid", Float)
-            Define.AutoField("amountDue", Float)
-            Define.AutoField("leaseStatus", LeaseStatusType) 
+            Define.Field("totalScheduled", Float, fun _ obs -> obs.TotalScheduled.DecimalValue |> float)
+            Define.Field("totalPaid", Float, fun _ obs -> obs.TotalPaid.DecimalValue |> float)
+            Define.Field("amountDue", Float, fun _ obs -> obs.AmountDue.DecimalValue |> float)
+            Define.AutoField("leaseStatus", LeaseStatusType)
             Define.Field(
                 name = "listEvents", 
                 typedef = ListLeaseEventsResponseType, 
                 args = [
-                    Define.Input("pageSize", Int)
-                    Define.Input("pageToken", String)
+                    PageSizeInputType
+                    PageTokenInputType
                 ],
                 resolve = (fun ctx leaseObs ->
                     let leaseId = leaseObs.Lease.LeaseId
@@ -94,14 +101,12 @@ let LeaseObservationType
         ]
     )
 
-let ListLeasesResponseType =
-    Define.Object<ListLeasesResponse>(
-        name = "ListLeasesResponse",
-        description = "List leases response",
+let GetLeaseInputType =
+    Define.InputObject<GetLeaseInputDto>(
+        name = "GetLeaseInput",
         fields = [
-            Define.AutoField("leases", ListOf LeaseType)
-            Define.AutoField("nextPageToken", String)
-            Define.AutoField("totalCount", Int)
+            Define.Input("leaseId", ID)
+            Define.Input("asOfDate", Nullable AsOfDateInputType) 
         ]
     )
 
@@ -112,8 +117,6 @@ let getLeaseField
         typedef = (LeaseObservationType leaseClient),
         description = "get a lease at a point in time",
         args = [ 
-            Define.Input("leaseId", ID)
-            Define.Input("asOfDate", AsOfDateInputType) 
         ],
         resolve = (fun ctx _ ->
             let leaseId = ctx.Arg("leaseId")
@@ -123,6 +126,17 @@ let getLeaseField
                 |> Option.defaultValue (AsOfDate.getDefault())
             leaseClient.GetLease(leaseId, asOfDate)
         )
+    )
+
+let ListLeasesResponseType =
+    Define.Object<ListLeasesResponse>(
+        name = "ListLeasesResponse",
+        description = "List leases response",
+        fields = [
+            Define.AutoField("leases", ListOf LeaseType)
+            Define.AutoField("nextPageToken", String)
+            Define.AutoField("totalCount", Int)
+        ]
     )
 
 let listLeasesField
@@ -147,26 +161,44 @@ let listLeasesField
         )
     )
 
+let CreateLeaseInputType =
+    Define.InputObject<CreateLeaseInputDto>(
+        name = "CreateLeaseInput",
+        description = "Lease",
+        fields = [
+            Define.Input(
+                name = "leaseId",
+                typedef = ID,
+                description = "Unique identifier of the lease")
+            Define.Input(
+                name = "userId",
+                typedef = ID,
+                description = "Unique identifier of the user")
+            Define.Input(
+                name = "startDate",
+                typedef = Date,
+                description = "Start date of the lease")
+            Define.Input(
+                name = "maturityDate",
+                typedef = Date,
+                description = "Maturity date of the lease")
+            Define.Input(
+                name = "monthlyPaymentAmount",
+                typedef = Float,
+                description = "Monthly payment amount for the lease")
+        ]
+    )
+
 let createLeaseField
     (leaseClient:LeaseClient) =
     Define.Field(
         name = "createLease",
         typedef = String,
         description = "create a new lease",
-        args = [
-            Define.Input("leaseId", ID)
-            Define.Input("userId", ID)
-            Define.Input("startDate", Date)
-            Define.Input("maturityDate", Date)
-            Define.Input("monthlyPaymentAmount", Float)
-        ],
+        args = [ Define.Input("input", CreateLeaseInputType) ],
         resolve = (fun ctx _ ->
-            let leaseId = ctx.Arg("leaseId")
-            let userId = ctx.Arg("userId")
-            let startDate = ctx.Arg("startDate") |> DateTime.parse |> DateTime.toUtc
-            let maturityDate = ctx.Arg("maturityDate") |> DateTime.parse |> DateTime.toUtc
-            let monthlyPaymentAmount = ctx.Arg<float>("monthlyPaymentAmount")
-            leaseClient.CreateLease(leaseId, userId, startDate, maturityDate, monthlyPaymentAmount)
+            let createLeaseInputDto = ctx.Arg<CreateLeaseInputDto>("input")
+            leaseClient.CreateLease(createLeaseInputDto)
         )
     )
 

@@ -22,10 +22,15 @@ type LeaseStatus =
     | Outstanding
     | Terminated
 
-type Payment =
+type ScheduledPayment =
     { PaymentId: PaymentId 
-      PaymentDate: DateTime 
-      PaymentAmount: USD }
+      ScheduledDate: DateTime 
+      ScheduledAmount: USD }
+
+type ReceivedPayment =
+    { PaymentId: PaymentId
+      ReceivedDate: DateTime
+      ReceivedAmount: USD }
 
 type Termination =
     { TerminationId: TerminationId
@@ -34,8 +39,8 @@ type Termination =
 
 type LeaseCommand =
     | CreateLease of Lease
-    | SchedulePayment of Payment
-    | ReceivePayment of Payment
+    | SchedulePayment of ScheduledPayment
+    | ReceivePayment of ReceivedPayment
     | TerminateLease of Termination
 
 type Command =
@@ -44,15 +49,15 @@ type Command =
 
 type LeaseEvent =
     | LeaseCreated of EventContext * Lease
-    | PaymentScheduled of EventContext * Payment
-    | PaymentReceived of EventContext * Payment
+    | PaymentScheduled of EventContext * ScheduledPayment
+    | PaymentReceived of EventContext * ReceivedPayment
     | LeaseTerminated of EventContext * Termination
 
 type StoredEvent =
     | EventDeleted of {| EventContext: {| EventCreatedTime: EventCreatedTime |}; EventId: EventId |}
     | LeaseCreated of {| EventContext: EventContext; Lease: Lease |}
-    | PaymentScheduled of {| EventContext: EventContext; Payment: Payment |}
-    | PaymentReceived of {| EventContext: EventContext; Payment: Payment |}
+    | PaymentScheduled of {| EventContext: EventContext; ScheduledPayment: ScheduledPayment |}
+    | PaymentReceived of {| EventContext: EventContext; ReceivedPayment: ReceivedPayment |}
     | LeaseTerminated of {| EventContext: EventContext; Termination: Termination |}
     interface TypeShape.UnionContract.IUnionContract
 

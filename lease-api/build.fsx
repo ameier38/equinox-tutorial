@@ -9,15 +9,16 @@ open Fake.IO.Globbing.Operators
 
 let solution = __SOURCE_DIRECTORY__ </> "Lease.sln"
 
-BuildTask.create "Clean" [] {
+let cleanProto = BuildTask.create "CleanProto" [] {
     let directories =
         !! "**/Proto/out"
         ++ "**/Proto/bin"
         ++ "**/Proto/obj"
+        ++ "**/Proto/gen"
     Shell.cleanDirs directories
 }
 
-BuildTask.create "CopyGenerated" [] {
+BuildTask.create "CopyGenerated" [cleanProto] {
     let genDir =
         __SOURCE_DIRECTORY__ // lease-api
         |> Path.getDirectory // equinox-tutorial

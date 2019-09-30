@@ -13,3 +13,8 @@ module DateTime =
 module Money =
     let fromDecimal (value:decimal) =
         Money(DecimalValue = value, CurrencyCode = "USD")
+
+module Operators =
+    let (!!) (value:float) = value |> decimal |> Money.fromDecimal
+    let (!@) (dt:DateTime) = dt |> DateTime.toProtoDate
+    let (!@@) (dt:DateTime) = dt |> DateTime.toProtoTimestamp

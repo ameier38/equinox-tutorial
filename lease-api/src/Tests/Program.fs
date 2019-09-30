@@ -93,14 +93,14 @@ let createLease lease =
 
 let schedulePayment leaseId payment =
     async {
-        let req = Tutorial.Lease.V1.SchedulePaymentRequest(LeaseId = leaseId, Payment = payment)
+        let req = Tutorial.Lease.V1.SchedulePaymentRequest(LeaseId = leaseId, ScheduledPayment = payment)
         let! res = leaseAPI.SchedulePayment(req, serverCtx) |> Async.AwaitTask
         return res.Message
     }
 
 let receivePayment leaseId payment =
     async {
-        let req = Tutorial.Lease.V1.ReceivePaymentRequest(LeaseId = leaseId, Payment = payment)
+        let req = Tutorial.Lease.V1.ReceivePaymentRequest(LeaseId = leaseId, ReceivedPayment = payment)
         let! res = leaseAPI.ReceivePayment(req, serverCtx) |> Async.AwaitTask
         return res.Message
     }
@@ -176,10 +176,10 @@ let testSchedulePayment =
         do! createLease lease |> Async.Ignore
         let s1Date = DateTime(2019, 2, 1)
         let scheduledPayment =
-            Tutorial.Lease.V1.Payment(
+            Tutorial.Lease.V1.ScheduledPayment(
                 PaymentId = s1Id,
-                PaymentDate = !@s1Date,
-                PaymentAmount = !!50m)
+                ScheduledDate = !@s1Date,
+                ScheduledAmount = !!50m)
         do! schedulePayment leaseId scheduledPayment |> Async.Ignore
         let! leaseObsAtStart = getLease leaseId now startDate
         let! leaseObsAtS1 = getLease leaseId now s1Date
@@ -225,17 +225,17 @@ let testReceivePayment =
         do! createLease lease |> Async.Ignore
         let s1Date = DateTime(2019, 2, 1)
         let scheduledPayment =
-            Tutorial.Lease.V1.Payment(
+            Tutorial.Lease.V1.ScheduledPayment(
                 PaymentId = s1Id,
-                PaymentDate = !@s1Date,
-                PaymentAmount = !!50m)
+                ScheduledDate = !@s1Date,
+                ScheduledAmount = !!50m)
         do! schedulePayment leaseId scheduledPayment |> Async.Ignore
         let p1Date = DateTime(2019, 2, 2)
         let receivedPayment =
-            Tutorial.Lease.V1.Payment(
+            Tutorial.Lease.V1.ReceivedPayment(
                 PaymentId = p1Id,
-                PaymentDate = !@p1Date,
-                PaymentAmount = !!40m)
+                ReceivedDate = !@p1Date,
+                ReceivedAmount = !!40m)
         do! receivePayment leaseId receivedPayment |> Async.Ignore 
         let! loanObsAtStart = getLease leaseId now startDate
         let! loanObsAtS1 = getLease leaseId now s1Date

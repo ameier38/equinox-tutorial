@@ -97,7 +97,7 @@ message TerminateLeaseResponse {
 
 message SchedulePaymentRequest {
   string lease_id = 1;
-  Payment payment = 2;
+  ScheduledPayment scheduled_payment = 2;
 }
 
 message SchedulePaymentResponse {
@@ -106,7 +106,7 @@ message SchedulePaymentResponse {
 
 message ReceivePaymentRequest {
   string lease_id = 1;
-  Payment payment = 2;
+  ReceivedPayment received_payment = 2;
 }
 
 message ReceivePaymentResponse {

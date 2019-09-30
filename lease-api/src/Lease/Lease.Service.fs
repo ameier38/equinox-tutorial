@@ -78,11 +78,17 @@ module LeaseStatus =
         | Outstanding -> Tutorial.Lease.V1.LeaseStatus.Outstanding
         | Terminated -> Tutorial.Lease.V1.LeaseStatus.Terminated
 
-module Payment =
-    let fromProto (proto:Tutorial.Lease.V1.Payment) =
+module ScheduledPayment =
+    let fromProto (proto:Tutorial.Lease.V1.ScheduledPayment) =
         { PaymentId = proto.PaymentId |> PaymentId.parse
-          PaymentDate = proto.PaymentDate.ToDateTime()
-          PaymentAmount = proto.PaymentAmount |> Money.toUSD }
+          ScheduledDate = proto.ScheduledDate.ToDateTime()
+          ScheduledAmount = proto.ScheduledAmount |> Money.toUSD }
+
+module ReceivedPayment =
+    let fromProto(proto:Tutorial.Lease.V1.ReceivedPayment) =
+        { PaymentId = proto.PaymentId |> PaymentId.parse
+          ReceivedDate = proto.ReceivedDate.ToDateTime()
+          ReceivedAmount = proto.ReceivedAmount |> Money.toUSD }
 
 module Termination =
     let fromProto (proto:Tutorial.Lease.V1.Termination) =
@@ -244,13 +250,13 @@ type LeaseAPIImpl
         async {
             logger.Debug(sprintf "received req: %A" req)
             let leaseId = req.LeaseId |> LeaseId.parse
-            let payment = req.Payment |> Payment.fromProto
+            let payment = req.ScheduledPayment |> ScheduledPayment.fromProto
             let command =
                 payment
                 |> SchedulePayment
                 |> LeaseCommand
             do! execute leaseId command |> Async.Ignore
-            let msg = sprintf "successfully scheduled Payment-%s for Lease-%s" req.Payment.PaymentId req.LeaseId
+            let msg = sprintf "successfully scheduled Payment-%s for Lease-%s" req.ScheduledPayment.PaymentId req.LeaseId
             let res = Tutorial.Lease.V1.SchedulePaymentResponse(Message = msg)
             return res
         } |> Async.StartAsTask
@@ -260,13 +266,13 @@ type LeaseAPIImpl
         async {
             logger.Debug(sprintf "received req: %A" req)
             let leaseId = req.LeaseId |> LeaseId.parse
-            let payment = req.Payment |> Payment.fromProto
+            let payment = req.ReceivedPayment |> ReceivedPayment.fromProto
             let command =
                 payment
                 |> ReceivePayment
                 |> LeaseCommand
             do! execute leaseId command |> Async.Ignore
-            let msg = sprintf "successfully received Payment-%s for Lease-%s" req.Payment.PaymentId req.LeaseId
+            let msg = sprintf "successfully received Payment-%s for Lease-%s" req.ReceivedPayment.PaymentId req.LeaseId
             let res = Tutorial.Lease.V1.ReceivePaymentResponse(Message = msg)
             return res
         } |> Async.StartAsTask

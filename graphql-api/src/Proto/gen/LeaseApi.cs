@@ -25,76 +25,76 @@ namespace Tutorial.Lease.V1 {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CiF0dXRvcmlhbC9sZWFzZS92MS9sZWFzZV9hcGkucHJvdG8SEXR1dG9yaWFs",
-            "LmxlYXNlLnYxGhZnb29nbGUvdHlwZS9kYXRlLnByb3RvGh10dXRvcmlhbC9s",
-            "ZWFzZS92MS9sZWFzZS5wcm90byI9ChdEZWxldGVMZWFzZUV2ZW50UmVxdWVz",
-            "dBIQCghsZWFzZV9pZBgBIAEoCRIQCghldmVudF9pZBgCIAEoBSIrChhEZWxl",
-            "dGVMZWFzZUV2ZW50UmVzcG9uc2USDwoHbWVzc2FnZRgBIAEoCSJrChFMaXN0",
-            "TGVhc2VzUmVxdWVzdBIvCgphc19vZl9kYXRlGAEgASgLMhsudHV0b3JpYWwu",
-            "bGVhc2UudjEuQXNPZkRhdGUSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2Vf",
-            "dG9rZW4YAyABKAkihQEKEkxpc3RMZWFzZXNSZXNwb25zZRIoCgZsZWFzZXMY",
-            "ASADKAsyGC50dXRvcmlhbC5sZWFzZS52MS5MZWFzZRIXCg9wcmV2X3BhZ2Vf",
-            "dG9rZW4YAiABKAkSFwoPbmV4dF9wYWdlX3Rva2VuGAMgASgJEhMKC3RvdGFs",
-            "X2NvdW50GAQgASgFIlQKD0dldExlYXNlUmVxdWVzdBIQCghsZWFzZV9pZBgB",
-            "IAEoCRIvCgphc19vZl9kYXRlGAIgASgLMhsudHV0b3JpYWwubGVhc2UudjEu",
-            "QXNPZkRhdGUiRgoQR2V0TGVhc2VSZXNwb25zZRIyCgVsZWFzZRgBIAEoCzIj",
-            "LnR1dG9yaWFsLmxlYXNlLnYxLkxlYXNlT2JzZXJ2YXRpb24iggEKFkxpc3RM",
-            "ZWFzZUV2ZW50c1JlcXVlc3QSEAoIbGVhc2VfaWQYASABKAkSLwoKYXNfb2Zf",
-            "ZGF0ZRgCIAEoCzIbLnR1dG9yaWFsLmxlYXNlLnYxLkFzT2ZEYXRlEhEKCXBh",
-            "Z2Vfc2l6ZRgDIAEoBRISCgpwYWdlX3Rva2VuGAQgASgJIqEBChdMaXN0TGVh",
-            "c2VFdmVudHNSZXNwb25zZRIQCghsZWFzZV9pZBgBIAEoCRItCgZldmVudHMY",
-            "AiADKAsyHS50dXRvcmlhbC5sZWFzZS52MS5MZWFzZUV2ZW50EhcKD3ByZXZf",
-            "cGFnZV90b2tlbhgDIAEoCRIXCg9uZXh0X3BhZ2VfdG9rZW4YBCABKAkSEwoL",
-            "dG90YWxfY291bnQYBSABKAUiPQoSQ3JlYXRlTGVhc2VSZXF1ZXN0EicKBWxl",
-            "YXNlGAEgASgLMhgudHV0b3JpYWwubGVhc2UudjEuTGVhc2UiJgoTQ3JlYXRl",
-            "TGVhc2VSZXNwb25zZRIPCgdtZXNzYWdlGAEgASgJIlQKFVRlcm1pbmF0ZUxl",
-            "YXNlUmVxdWVzdBIQCghsZWFzZV9pZBgBIAEoCRIpCg5lZmZlY3RpdmVfZGF0",
-            "ZRgCIAEoCzIRLmdvb2dsZS50eXBlLkRhdGUiKQoWVGVybWluYXRlTGVhc2VS",
-            "ZXNwb25zZRIPCgdtZXNzYWdlGAEgASgJIlcKFlNjaGVkdWxlUGF5bWVudFJl",
-            "cXVlc3QSEAoIbGVhc2VfaWQYASABKAkSKwoHcGF5bWVudBgCIAEoCzIaLnR1",
-            "dG9yaWFsLmxlYXNlLnYxLlBheW1lbnQiKgoXU2NoZWR1bGVQYXltZW50UmVz",
-            "cG9uc2USDwoHbWVzc2FnZRgBIAEoCSJWChVSZWNlaXZlUGF5bWVudFJlcXVl",
-            "c3QSEAoIbGVhc2VfaWQYASABKAkSKwoHcGF5bWVudBgCIAEoCzIaLnR1dG9y",
-            "aWFsLmxlYXNlLnYxLlBheW1lbnQiKQoWUmVjZWl2ZVBheW1lbnRSZXNwb25z",
-            "ZRIPCgdtZXNzYWdlGAEgASgJMqkGCghMZWFzZUFQSRJtChBEZWxldGVMZWFz",
-            "ZUV2ZW50EioudHV0b3JpYWwubGVhc2UudjEuRGVsZXRlTGVhc2VFdmVudFJl",
-            "cXVlc3QaKy50dXRvcmlhbC5sZWFzZS52MS5EZWxldGVMZWFzZUV2ZW50UmVz",
-            "cG9uc2UiABJZCgpMaXN0TGVhc2VzEiQudHV0b3JpYWwubGVhc2UudjEuTGlz",
-            "dExlYXNlc1JlcXVlc3QaJS50dXRvcmlhbC5sZWFzZS52MS5MaXN0TGVhc2Vz",
-            "UmVzcG9uc2USaAoPTGlzdExlYXNlRXZlbnRzEikudHV0b3JpYWwubGVhc2Uu",
-            "djEuTGlzdExlYXNlRXZlbnRzUmVxdWVzdBoqLnR1dG9yaWFsLmxlYXNlLnYx",
-            "Lkxpc3RMZWFzZUV2ZW50c1Jlc3BvbnNlElMKCEdldExlYXNlEiIudHV0b3Jp",
-            "YWwubGVhc2UudjEuR2V0TGVhc2VSZXF1ZXN0GiMudHV0b3JpYWwubGVhc2Uu",
-            "djEuR2V0TGVhc2VSZXNwb25zZRJcCgtDcmVhdGVMZWFzZRIlLnR1dG9yaWFs",
-            "LmxlYXNlLnYxLkNyZWF0ZUxlYXNlUmVxdWVzdBomLnR1dG9yaWFsLmxlYXNl",
-            "LnYxLkNyZWF0ZUxlYXNlUmVzcG9uc2USZQoOVGVybWluYXRlTGVhc2USKC50",
-            "dXRvcmlhbC5sZWFzZS52MS5UZXJtaW5hdGVMZWFzZVJlcXVlc3QaKS50dXRv",
-            "cmlhbC5sZWFzZS52MS5UZXJtaW5hdGVMZWFzZVJlc3BvbnNlEmgKD1NjaGVk",
-            "dWxlUGF5bWVudBIpLnR1dG9yaWFsLmxlYXNlLnYxLlNjaGVkdWxlUGF5bWVu",
-            "dFJlcXVlc3QaKi50dXRvcmlhbC5sZWFzZS52MS5TY2hlZHVsZVBheW1lbnRS",
-            "ZXNwb25zZRJlCg5SZWNlaXZlUGF5bWVudBIoLnR1dG9yaWFsLmxlYXNlLnYx",
-            "LlJlY2VpdmVQYXltZW50UmVxdWVzdBopLnR1dG9yaWFsLmxlYXNlLnYxLlJl",
-            "Y2VpdmVQYXltZW50UmVzcG9uc2VCXwoVY29tLnR1dG9yaWFsLmxlYXNlLnYx",
-            "Qg1MZWFzZUFwaVByb3RvUAFaB2xlYXNldjGiAgNUTFiqAhFUdXRvcmlhbC5M",
-            "ZWFzZS5WMcoCEVR1dG9yaWFsXExlYXNlXFYxYgZwcm90bzM="));
+            "LmxlYXNlLnYxGh10dXRvcmlhbC9sZWFzZS92MS9sZWFzZS5wcm90byI9ChdE",
+            "ZWxldGVMZWFzZUV2ZW50UmVxdWVzdBIQCghsZWFzZV9pZBgBIAEoCRIQCghl",
+            "dmVudF9pZBgCIAEoBSIrChhEZWxldGVMZWFzZUV2ZW50UmVzcG9uc2USDwoH",
+            "bWVzc2FnZRgBIAEoCSJrChFMaXN0TGVhc2VzUmVxdWVzdBIvCgphc19vZl9k",
+            "YXRlGAEgASgLMhsudHV0b3JpYWwubGVhc2UudjEuQXNPZkRhdGUSEQoJcGFn",
+            "ZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkihQEKEkxpc3RMZWFz",
+            "ZXNSZXNwb25zZRIoCgZsZWFzZXMYASADKAsyGC50dXRvcmlhbC5sZWFzZS52",
+            "MS5MZWFzZRIXCg9wcmV2X3BhZ2VfdG9rZW4YAiABKAkSFwoPbmV4dF9wYWdl",
+            "X3Rva2VuGAMgASgJEhMKC3RvdGFsX2NvdW50GAQgASgFIlQKD0dldExlYXNl",
+            "UmVxdWVzdBIQCghsZWFzZV9pZBgBIAEoCRIvCgphc19vZl9kYXRlGAIgASgL",
+            "MhsudHV0b3JpYWwubGVhc2UudjEuQXNPZkRhdGUiRgoQR2V0TGVhc2VSZXNw",
+            "b25zZRIyCgVsZWFzZRgBIAEoCzIjLnR1dG9yaWFsLmxlYXNlLnYxLkxlYXNl",
+            "T2JzZXJ2YXRpb24iggEKFkxpc3RMZWFzZUV2ZW50c1JlcXVlc3QSEAoIbGVh",
+            "c2VfaWQYASABKAkSLwoKYXNfb2ZfZGF0ZRgCIAEoCzIbLnR1dG9yaWFsLmxl",
+            "YXNlLnYxLkFzT2ZEYXRlEhEKCXBhZ2Vfc2l6ZRgDIAEoBRISCgpwYWdlX3Rv",
+            "a2VuGAQgASgJIqEBChdMaXN0TGVhc2VFdmVudHNSZXNwb25zZRIQCghsZWFz",
+            "ZV9pZBgBIAEoCRItCgZldmVudHMYAiADKAsyHS50dXRvcmlhbC5sZWFzZS52",
+            "MS5MZWFzZUV2ZW50EhcKD3ByZXZfcGFnZV90b2tlbhgDIAEoCRIXCg9uZXh0",
+            "X3BhZ2VfdG9rZW4YBCABKAkSEwoLdG90YWxfY291bnQYBSABKAUiPQoSQ3Jl",
+            "YXRlTGVhc2VSZXF1ZXN0EicKBWxlYXNlGAEgASgLMhgudHV0b3JpYWwubGVh",
+            "c2UudjEuTGVhc2UiJgoTQ3JlYXRlTGVhc2VSZXNwb25zZRIPCgdtZXNzYWdl",
+            "GAEgASgJIl4KFVRlcm1pbmF0ZUxlYXNlUmVxdWVzdBIQCghsZWFzZV9pZBgB",
+            "IAEoCRIzCgt0ZXJtaW5hdGlvbhgCIAEoCzIeLnR1dG9yaWFsLmxlYXNlLnYx",
+            "LlRlcm1pbmF0aW9uIikKFlRlcm1pbmF0ZUxlYXNlUmVzcG9uc2USDwoHbWVz",
+            "c2FnZRgBIAEoCSJXChZTY2hlZHVsZVBheW1lbnRSZXF1ZXN0EhAKCGxlYXNl",
+            "X2lkGAEgASgJEisKB3BheW1lbnQYAiABKAsyGi50dXRvcmlhbC5sZWFzZS52",
+            "MS5QYXltZW50IioKF1NjaGVkdWxlUGF5bWVudFJlc3BvbnNlEg8KB21lc3Nh",
+            "Z2UYASABKAkiVgoVUmVjZWl2ZVBheW1lbnRSZXF1ZXN0EhAKCGxlYXNlX2lk",
+            "GAEgASgJEisKB3BheW1lbnQYAiABKAsyGi50dXRvcmlhbC5sZWFzZS52MS5Q",
+            "YXltZW50IikKFlJlY2VpdmVQYXltZW50UmVzcG9uc2USDwoHbWVzc2FnZRgB",
+            "IAEoCTKnBgoITGVhc2VBUEkSawoQRGVsZXRlTGVhc2VFdmVudBIqLnR1dG9y",
+            "aWFsLmxlYXNlLnYxLkRlbGV0ZUxlYXNlRXZlbnRSZXF1ZXN0GisudHV0b3Jp",
+            "YWwubGVhc2UudjEuRGVsZXRlTGVhc2VFdmVudFJlc3BvbnNlElkKCkxpc3RM",
+            "ZWFzZXMSJC50dXRvcmlhbC5sZWFzZS52MS5MaXN0TGVhc2VzUmVxdWVzdBol",
+            "LnR1dG9yaWFsLmxlYXNlLnYxLkxpc3RMZWFzZXNSZXNwb25zZRJoCg9MaXN0",
+            "TGVhc2VFdmVudHMSKS50dXRvcmlhbC5sZWFzZS52MS5MaXN0TGVhc2VFdmVu",
+            "dHNSZXF1ZXN0GioudHV0b3JpYWwubGVhc2UudjEuTGlzdExlYXNlRXZlbnRz",
+            "UmVzcG9uc2USUwoIR2V0TGVhc2USIi50dXRvcmlhbC5sZWFzZS52MS5HZXRM",
+            "ZWFzZVJlcXVlc3QaIy50dXRvcmlhbC5sZWFzZS52MS5HZXRMZWFzZVJlc3Bv",
+            "bnNlElwKC0NyZWF0ZUxlYXNlEiUudHV0b3JpYWwubGVhc2UudjEuQ3JlYXRl",
+            "TGVhc2VSZXF1ZXN0GiYudHV0b3JpYWwubGVhc2UudjEuQ3JlYXRlTGVhc2VS",
+            "ZXNwb25zZRJlCg5UZXJtaW5hdGVMZWFzZRIoLnR1dG9yaWFsLmxlYXNlLnYx",
+            "LlRlcm1pbmF0ZUxlYXNlUmVxdWVzdBopLnR1dG9yaWFsLmxlYXNlLnYxLlRl",
+            "cm1pbmF0ZUxlYXNlUmVzcG9uc2USaAoPU2NoZWR1bGVQYXltZW50EikudHV0",
+            "b3JpYWwubGVhc2UudjEuU2NoZWR1bGVQYXltZW50UmVxdWVzdBoqLnR1dG9y",
+            "aWFsLmxlYXNlLnYxLlNjaGVkdWxlUGF5bWVudFJlc3BvbnNlEmUKDlJlY2Vp",
+            "dmVQYXltZW50EigudHV0b3JpYWwubGVhc2UudjEuUmVjZWl2ZVBheW1lbnRS",
+            "ZXF1ZXN0GikudHV0b3JpYWwubGVhc2UudjEuUmVjZWl2ZVBheW1lbnRSZXNw",
+            "b25zZUJfChVjb20udHV0b3JpYWwubGVhc2UudjFCDUxlYXNlQXBpUHJvdG9Q",
+            "AVoHbGVhc2V2MaICA1RMWKoCEVR1dG9yaWFsLkxlYXNlLlYxygIRVHV0b3Jp",
+            "YWxcTGVhc2VcVjFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Google.Type.DateReflection.Descriptor, global::Tutorial.Lease.V1.LeaseReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.DeleteLeaseEventRequest), global::Tutorial.Lease.V1.DeleteLeaseEventRequest.Parser, new[]{ "LeaseId", "EventId" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.DeleteLeaseEventResponse), global::Tutorial.Lease.V1.DeleteLeaseEventResponse.Parser, new[]{ "Message" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ListLeasesRequest), global::Tutorial.Lease.V1.ListLeasesRequest.Parser, new[]{ "AsOfDate", "PageSize", "PageToken" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ListLeasesResponse), global::Tutorial.Lease.V1.ListLeasesResponse.Parser, new[]{ "Leases", "PrevPageToken", "NextPageToken", "TotalCount" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.GetLeaseRequest), global::Tutorial.Lease.V1.GetLeaseRequest.Parser, new[]{ "LeaseId", "AsOfDate" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.GetLeaseResponse), global::Tutorial.Lease.V1.GetLeaseResponse.Parser, new[]{ "Lease" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ListLeaseEventsRequest), global::Tutorial.Lease.V1.ListLeaseEventsRequest.Parser, new[]{ "LeaseId", "AsOfDate", "PageSize", "PageToken" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ListLeaseEventsResponse), global::Tutorial.Lease.V1.ListLeaseEventsResponse.Parser, new[]{ "LeaseId", "Events", "PrevPageToken", "NextPageToken", "TotalCount" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.CreateLeaseRequest), global::Tutorial.Lease.V1.CreateLeaseRequest.Parser, new[]{ "Lease" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.CreateLeaseResponse), global::Tutorial.Lease.V1.CreateLeaseResponse.Parser, new[]{ "Message" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.TerminateLeaseRequest), global::Tutorial.Lease.V1.TerminateLeaseRequest.Parser, new[]{ "LeaseId", "EffectiveDate" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.TerminateLeaseResponse), global::Tutorial.Lease.V1.TerminateLeaseResponse.Parser, new[]{ "Message" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.SchedulePaymentRequest), global::Tutorial.Lease.V1.SchedulePaymentRequest.Parser, new[]{ "LeaseId", "Payment" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.SchedulePaymentResponse), global::Tutorial.Lease.V1.SchedulePaymentResponse.Parser, new[]{ "Message" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ReceivePaymentRequest), global::Tutorial.Lease.V1.ReceivePaymentRequest.Parser, new[]{ "LeaseId", "Payment" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ReceivePaymentResponse), global::Tutorial.Lease.V1.ReceivePaymentResponse.Parser, new[]{ "Message" }, null, null, null)
+          new pbr::FileDescriptor[] { global::Tutorial.Lease.V1.LeaseReflection.Descriptor, },
+          new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.DeleteLeaseEventRequest), global::Tutorial.Lease.V1.DeleteLeaseEventRequest.Parser, new[]{ "LeaseId", "EventId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.DeleteLeaseEventResponse), global::Tutorial.Lease.V1.DeleteLeaseEventResponse.Parser, new[]{ "Message" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ListLeasesRequest), global::Tutorial.Lease.V1.ListLeasesRequest.Parser, new[]{ "AsOfDate", "PageSize", "PageToken" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ListLeasesResponse), global::Tutorial.Lease.V1.ListLeasesResponse.Parser, new[]{ "Leases", "PrevPageToken", "NextPageToken", "TotalCount" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.GetLeaseRequest), global::Tutorial.Lease.V1.GetLeaseRequest.Parser, new[]{ "LeaseId", "AsOfDate" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.GetLeaseResponse), global::Tutorial.Lease.V1.GetLeaseResponse.Parser, new[]{ "Lease" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ListLeaseEventsRequest), global::Tutorial.Lease.V1.ListLeaseEventsRequest.Parser, new[]{ "LeaseId", "AsOfDate", "PageSize", "PageToken" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ListLeaseEventsResponse), global::Tutorial.Lease.V1.ListLeaseEventsResponse.Parser, new[]{ "LeaseId", "Events", "PrevPageToken", "NextPageToken", "TotalCount" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.CreateLeaseRequest), global::Tutorial.Lease.V1.CreateLeaseRequest.Parser, new[]{ "Lease" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.CreateLeaseResponse), global::Tutorial.Lease.V1.CreateLeaseResponse.Parser, new[]{ "Message" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.TerminateLeaseRequest), global::Tutorial.Lease.V1.TerminateLeaseRequest.Parser, new[]{ "LeaseId", "Termination" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.TerminateLeaseResponse), global::Tutorial.Lease.V1.TerminateLeaseResponse.Parser, new[]{ "Message" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.SchedulePaymentRequest), global::Tutorial.Lease.V1.SchedulePaymentRequest.Parser, new[]{ "LeaseId", "Payment" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.SchedulePaymentResponse), global::Tutorial.Lease.V1.SchedulePaymentResponse.Parser, new[]{ "Message" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ReceivePaymentRequest), global::Tutorial.Lease.V1.ReceivePaymentRequest.Parser, new[]{ "LeaseId", "Payment" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ReceivePaymentResponse), global::Tutorial.Lease.V1.ReceivePaymentResponse.Parser, new[]{ "Message" }, null, null, null, null)
           }));
     }
     #endregion
@@ -1823,7 +1823,7 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public TerminateLeaseRequest(TerminateLeaseRequest other) : this() {
       leaseId_ = other.leaseId_;
-      effectiveDate_ = other.effectiveDate_ != null ? other.effectiveDate_.Clone() : null;
+      termination_ = other.termination_ != null ? other.termination_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1843,14 +1843,14 @@ namespace Tutorial.Lease.V1 {
       }
     }
 
-    /// <summary>Field number for the "effective_date" field.</summary>
-    public const int EffectiveDateFieldNumber = 2;
-    private global::Google.Type.Date effectiveDate_;
+    /// <summary>Field number for the "termination" field.</summary>
+    public const int TerminationFieldNumber = 2;
+    private global::Tutorial.Lease.V1.Termination termination_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Type.Date EffectiveDate {
-      get { return effectiveDate_; }
+    public global::Tutorial.Lease.V1.Termination Termination {
+      get { return termination_; }
       set {
-        effectiveDate_ = value;
+        termination_ = value;
       }
     }
 
@@ -1868,7 +1868,7 @@ namespace Tutorial.Lease.V1 {
         return true;
       }
       if (LeaseId != other.LeaseId) return false;
-      if (!object.Equals(EffectiveDate, other.EffectiveDate)) return false;
+      if (!object.Equals(Termination, other.Termination)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1876,7 +1876,7 @@ namespace Tutorial.Lease.V1 {
     public override int GetHashCode() {
       int hash = 1;
       if (LeaseId.Length != 0) hash ^= LeaseId.GetHashCode();
-      if (effectiveDate_ != null) hash ^= EffectiveDate.GetHashCode();
+      if (termination_ != null) hash ^= Termination.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1894,9 +1894,9 @@ namespace Tutorial.Lease.V1 {
         output.WriteRawTag(10);
         output.WriteString(LeaseId);
       }
-      if (effectiveDate_ != null) {
+      if (termination_ != null) {
         output.WriteRawTag(18);
-        output.WriteMessage(EffectiveDate);
+        output.WriteMessage(Termination);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -1909,8 +1909,8 @@ namespace Tutorial.Lease.V1 {
       if (LeaseId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(LeaseId);
       }
-      if (effectiveDate_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(EffectiveDate);
+      if (termination_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Termination);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1926,11 +1926,11 @@ namespace Tutorial.Lease.V1 {
       if (other.LeaseId.Length != 0) {
         LeaseId = other.LeaseId;
       }
-      if (other.effectiveDate_ != null) {
-        if (effectiveDate_ == null) {
-          EffectiveDate = new global::Google.Type.Date();
+      if (other.termination_ != null) {
+        if (termination_ == null) {
+          Termination = new global::Tutorial.Lease.V1.Termination();
         }
-        EffectiveDate.MergeFrom(other.EffectiveDate);
+        Termination.MergeFrom(other.Termination);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1948,10 +1948,10 @@ namespace Tutorial.Lease.V1 {
             break;
           }
           case 18: {
-            if (effectiveDate_ == null) {
-              EffectiveDate = new global::Google.Type.Date();
+            if (termination_ == null) {
+              Termination = new global::Tutorial.Lease.V1.Termination();
             }
-            input.ReadMessage(EffectiveDate);
+            input.ReadMessage(Termination);
             break;
           }
         }

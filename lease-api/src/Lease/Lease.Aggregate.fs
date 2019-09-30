@@ -23,11 +23,11 @@ module StoredEvent =
             |> LeaseEvent.LeaseCreated
             |> Some
         | PaymentScheduled payload ->
-            (payload.EventContext, payload.Payment)
+            (payload.EventContext, payload.ScheduledPayment)
             |> LeaseEvent.PaymentScheduled
             |> Some
         | PaymentReceived payload ->
-            (payload.EventContext, payload.Payment)
+            (payload.EventContext, payload.ReceivedPayment)
             |> LeaseEvent.PaymentReceived
             |> Some
         | LeaseTerminated payload ->
@@ -73,10 +73,10 @@ module LeaseEvent =
             {| EventContext = ctx; Lease = lease |}
             |> LeaseCreated
         | LeaseEvent.PaymentScheduled (ctx, payment) ->
-            {| EventContext = ctx; Payment = payment |}
+            {| EventContext = ctx; ScheduledPayment = payment |}
             |> PaymentScheduled
         | LeaseEvent.PaymentReceived (ctx, payment) ->
-            {| EventContext = ctx; Payment = payment |}
+            {| EventContext = ctx; ReceivedPayment = payment |}
             |> PaymentReceived
         | LeaseEvent.LeaseTerminated (ctx, termination) ->
             {| EventContext = ctx; Termination = termination |}
@@ -95,9 +95,9 @@ module LeaseObservation =
           LeaseStatus = Outstanding }
     let schedulePayment 
         (eventCreatedTime:EventCreatedTime)
-        (payment:Payment) =
+        (payment:ScheduledPayment) =
         fun leaseObs ->
-            let totalScheduled = leaseObs.TotalScheduled + payment.PaymentAmount
+            let totalScheduled = leaseObs.TotalScheduled + payment.ScheduledAmount
             let amountDue = totalScheduled - leaseObs.TotalPaid
             { leaseObs with
                 UpdatedTime = eventCreatedTime
@@ -105,9 +105,9 @@ module LeaseObservation =
                 AmountDue = amountDue }
     let receivePayment 
         (eventCreatedTime:EventCreatedTime)
-        (payment:Payment) =
+        (payment:ReceivedPayment) =
         fun leaseObs ->
-            let totalPaid = leaseObs.TotalPaid + payment.PaymentAmount
+            let totalPaid = leaseObs.TotalPaid + payment.ReceivedAmount
             let amountDue = leaseObs.TotalScheduled - totalPaid
             { leaseObs with
                 UpdatedTime = eventCreatedTime
@@ -245,7 +245,7 @@ let interpret
                     RpcException(Status(StatusCode.Internal, msg))
                     |> raise
             | SchedulePayment payment ->
-                let asOfDate = getAsOfDate %payment.PaymentDate
+                let asOfDate = getAsOfDate %payment.ScheduledDate
                 let alreadyScheduled =
                     leaseStream
                     |> LeaseStream.getEffectiveLeaseEventsAsAt asOfDate.AsAt
@@ -256,7 +256,7 @@ let interpret
                     let msg = sprintf "Lease-%s Payment-%s already scheduled" leaseIdStr (payment.PaymentId |> PaymentId.toStringN)
                     RpcException(Status(StatusCode.AlreadyExists, msg))
                     |> raise
-                let ctx = createEventContext %payment.PaymentDate leaseStream.NextEventId
+                let ctx = createEventContext %payment.ScheduledDate leaseStream.NextEventId
                 let paymentScheduled = LeaseEvent.PaymentScheduled (ctx, payment)
                 let effOrderOpt = paymentScheduled |> LeaseEvent.getEventEffectiveOrder |> Some
                 match reconstitute' asOfDate effOrderOpt with
@@ -272,7 +272,7 @@ let interpret
                         |> raise
                     | Outstanding -> paymentScheduled |> LeaseEvent.toStoredEvent |> List.singleton
             | ReceivePayment payment ->
-                let asOfDate = getAsOfDate %payment.PaymentDate
+                let asOfDate = getAsOfDate %payment.ReceivedDate
                 let alreadyReceived =
                     leaseStream
                     |> LeaseStream.getEffectiveLeaseEventsAsAt asOfDate.AsAt
@@ -283,7 +283,7 @@ let interpret
                     let msg = sprintf "Lease-%s Payment-%s already received" leaseIdStr (payment.PaymentId |> PaymentId.toStringN)
                     RpcException(Status(StatusCode.AlreadyExists, msg))
                     |> raise
-                let ctx = createEventContext %payment.PaymentDate leaseStream.NextEventId
+                let ctx = createEventContext %payment.ReceivedDate leaseStream.NextEventId
                 let paymentReceived = LeaseEvent.PaymentReceived (ctx, payment)
                 let effOrderOpt = paymentReceived |> LeaseEvent.getEventEffectiveOrder |> Some
                 match reconstitute' asOfDate effOrderOpt with

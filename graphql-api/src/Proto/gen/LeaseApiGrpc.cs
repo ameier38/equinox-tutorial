@@ -193,7 +193,7 @@ namespace Tutorial.Lease.V1 {
     {
       /// <summary>Creates a new client for LeaseAPI</summary>
       /// <param name="channel">The channel to use to make remote calls.</param>
-      public LeaseAPIClient(grpc::Channel channel) : base(channel)
+      public LeaseAPIClient(grpc::ChannelBase channel) : base(channel)
       {
       }
       /// <summary>Creates a new client for LeaseAPI that uses a custom <c>CallInvoker</c>.</summary>

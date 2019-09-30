@@ -12,7 +12,7 @@ nuget FsCodec.NewtonsoftJson 1.0.0-rc2
 nuget FSharp.Control.AsyncSeq 2.0.21
 nuget FSharp.UMX 1.0.0
 nuget Google.Api.CommonProtos
-nuget Google.Protobuf
+nuget Google.Protobuf 3.9.2
 nuget Grpc.Core 2.24.0
 nuget Grpc.Core.Testing 2.24.0
 nuget Grpc.Core.Api 2.24.0
