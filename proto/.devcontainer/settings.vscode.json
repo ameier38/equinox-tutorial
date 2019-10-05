@@ -1,8 +1,0 @@
-{
-    "FSharp.fsacRuntime":"netcore",
-    "protoc": {
-        "options": [
-            "--proto_path=paket-files/build/googleapis/googleapis"
-        ]
-    }
-}
