@@ -1,7 +1,7 @@
 protoc:
-  version: 3.7.1
+  version: 3.9.2
   includes: 
-    - ../paket-files/build/googleapis/googleapis
+    - /usr/local/include/google/googleapis
 lint:
   group: uber2
   rules:
@@ -17,12 +17,7 @@ generate:
       output: ../gen/csharp
     - name: grpc-csharp
       output: ../gen/csharp
-      path: /usr/local/bin/grpc_csharp_plugin
-    - name: python
-      output: ../gen/python
-    - name: grpc-python
-      output: ../gen/python
-      path: /usr/local/bin/grpc_python_plugin
+      path: /usr/bin/grpc_csharp_plugin
     - name: go
       flags: plugins=grpc
       output: ../gen/go
