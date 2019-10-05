@@ -9,6 +9,15 @@ open Fake.IO.Globbing.Operators
 
 let solution = __SOURCE_DIRECTORY__ </> "Lease.sln"
 
+BuildTask.create "CleanAll" [] {
+    let directories =
+        !! "**/out"
+        ++ "**/bin"
+        ++ "**/obj"
+        ++ "**/gen"
+    Shell.cleanDirs directories
+}
+
 let cleanProto = BuildTask.create "CleanProto" [] {
     let directories =
         !! "**/Proto/out"
@@ -40,11 +49,18 @@ BuildTask.create "Test" [] {
     if not result.OK then failwith "Error!"
 }
 
-BuildTask.create "Publish" [] {
-    Trace.trace "Publishing solution..."
+BuildTask.create "PublishTests" [] {
+    Trace.trace "Publishing Tests..."
     DotNet.publish 
-        (fun args -> { args with OutputPath = Some "out"})
-        solution
+        (fun args -> { args with OutputPath = Some "src/Tests/out"})
+        "src/Tests/Tests.fsproj"
+}
+
+BuildTask.create "PublishLease" [] {
+    Trace.trace "Publishing Lease..."
+    DotNet.publish
+        (fun args -> { args with OutputPath = Some "src/Lease/out"})
+        "src/Lease/Lease.fsproj"
 }
 
 BuildTask.create "Serve" [] {

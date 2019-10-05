@@ -1,5 +1,4 @@
-# use build image to compile
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2 as builder
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0 as builder
 
 # install locales
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y locales
@@ -16,11 +15,13 @@ ENV LC_ALL en_US.UTF-8
 # prevent sending metrics to microsoft
 ENV DOTNET_CLI_TELEMETRY_OPTOUT 1
 
-# install fake
+# install FAKE
 RUN dotnet tool install -g fake-cli
+
+# install Paket
 RUN dotnet tool install -g paket
 
-# add fake to path
+# add tools to PATH
 ENV PATH="$PATH:/root/.dotnet/tools"
 
 WORKDIR /app
@@ -32,39 +33,30 @@ COPY paket.lock .
 # copy build script
 COPY build.fsx .
 
-# copy Lease
-COPY src/Lease/Lease.fsproj src/Lease/
-COPY src/Lease/paket.references src/Lease/
-
-# copy Proto
-COPY src/Proto/Proto.csproj src/Proto
-COPY src/Proto/lease.proto src/Proto
-
-# copy Tests
-COPY src/Tests/Tests.fsproj src/Tests/
-COPY src/Tests/paket.references src/Tests/
-
 # install dependencies
 RUN fake build
 
 # copy everything else and build
 COPY . .
-RUN fake build -t Publish
+RUN fake build -t PublishTests
+RUN fake build -t PublishLease
 
-FROM mcr.microsoft.com/dotnet/core/runtime:2.2 as tester
+FROM mcr.microsoft.com/dotnet/core/runtime:3.0 as tester
 
 WORKDIR /app
 
 COPY --from=builder /app/src/Tests/out .
-COPY --from=builder /app/src/Lease/projections /app/src/Lease/projections
 COPY --from=builder /app/wait-for.sh .
 
 CMD ["dotnet", "Tests.dll"]
 
-FROM mcr.microsoft.com/dotnet/core/runtime:2.2-alpine3.8 as runner
+FROM mcr.microsoft.com/dotnet/core/runtime:3.0-alpine as runner
 
-# install grpc alpine dependencies
-RUN apk update && apk add libc6-compat
+# ref: https://github.com/sgerrand/alpine-pkg-glibc
+RUN apk --no-cache add ca-certificates wget && \
+    wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
+    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.30-r0/glibc-2.30-r0.apk && \
+    apk add glibc-2.30-r0.apk
 
 # download the grpc health probe
 # ref: https://github.com/grpc-ecosystem/grpc-health-probe/
@@ -75,6 +67,5 @@ RUN GRPC_HEALTH_PROBE_VERSION=v0.2.0 && \
 WORKDIR /app
 
 COPY --from=builder /app/src/Lease/out .
-COPY --from=builder /app/src/Lease/projections /app/src/Lease/projections
 
 CMD ["dotnet", "Lease.dll"]

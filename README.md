@@ -1,5 +1,4 @@
 # Equinox Tutorial
-[![Codefresh build status]( https://g.codefresh.io/api/badges/pipeline/ameier38/ameier38%2Fequinox-tutorial%2Fequinox-tutorial?type=cf-1)]( https://g.codefresh.io/public/accounts/ameier38/pipelines/ameier38/equinox-tutorial/equinox-tutorial)
 ___
 Practical example for learning how to model a bi-temporal domain using
 [Jet.com's Equinox Event Sourcing Platform](https://github.com/jet/equinox).
@@ -72,3 +71,4 @@ Moving forward the more recently created lease can be seen again.
 - [GraphQL CLI](https://github.com/graphql-cli/graphql-cli)
 - [Apollo GraphQL](https://www.apollographql.com/docs/react/)
 - [F# Expecto](https://github.com/haf/expecto)
+- [GitHub Workflow Syntax](https://help.github.com/en/articles/workflow-syntax-for-github-actions)

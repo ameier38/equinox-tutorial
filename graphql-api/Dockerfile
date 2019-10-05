@@ -1,5 +1,5 @@
 # use build image to compile
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2 as builder
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0 as builder
 
 # set nuget package location
 ARG NUGET_PACKAGES=/home/.nuget/packages
@@ -24,6 +24,9 @@ WORKDIR /app
 # install fake
 RUN dotnet tool install fake-cli -g
 
+# install paket
+RUN dotnet tool install paket -g
+
 # add fake to path
 ENV PATH="$PATH:/root/.dotnet/tools"
 
@@ -34,26 +37,15 @@ COPY paket.lock .
 # copy FAKE script
 COPY build.fsx .
 
-# copy Proto
-COPY src/Proto/Proto.csproj src/Proto/
-COPY src/Proto/paket.references src/Proto/
-
-# copy Graphql
-COPY src/Graphql/Graphql.fsproj src/Graphql/
-COPY src/Graphql/paket.references src/Graphql/
-
-# copy Tests
-COPY src/Tests/Tests.fsproj src/Tests/
-COPY src/Tests/paket.references src/Tests/
-
 # install dependencies
-RUN fake build -t InstallDependencies
+RUN fake build
 
 # copy everything else and build
 COPY . .
-RUN fake build -t Publish
+RUN fake build -t PublishTests
+RUN fake build -t PublishServer
 
-FROM mcr.microsoft.com/dotnet/core/runtime:2.2 as tester
+FROM mcr.microsoft.com/dotnet/core/runtime:3.0 as tester
 
 WORKDIR /app
 
@@ -61,13 +53,16 @@ COPY --from=builder /app/src/Tests/out .
 
 CMD ["dotnet", "Tests.dll"]
 
-FROM mcr.microsoft.com/dotnet/core/runtime:2.2-alpine as runner
+FROM mcr.microsoft.com/dotnet/core/runtime:3.0-alpine as runner
 
-# install grpc alpine dependencies
-RUN apk update && apk add libc6-compat
+# ref: https://github.com/sgerrand/alpine-pkg-glibc
+RUN apk --no-cache add ca-certificates wget && \
+    wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
+    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.30-r0/glibc-2.30-r0.apk && \
+    apk add glibc-2.30-r0.apk
 
 WORKDIR /app
 
-COPY --from=builder /app/src/Graphql/out .
+COPY --from=builder /app/src/Server/out .
 
-CMD ["dotnet", "Graphql.dll"]
+CMD ["dotnet", "Server.dll"]

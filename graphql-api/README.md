@@ -1,53 +1,46 @@
 # GraphQL API
-Main client facing API which stiches together the different gRPC APIs.
+Main client facing API which stitches together the different gRPC APIs.
 
-## Setup
-Install Node Version Manager.
+## Development
+Install the .NET SDK.
+```shell
+choco install dotnetcore-sdk
 ```
-scoop install nvm
+> Must be run as administrator
+
+Install FAKE.
+```shell
+dotnet tool install fake-cli -g
 ```
 
-Install Node.
+Install Paket.
+```shell
+dotnet tool install paket -g
 ```
-nvm install 10.16.0
-```
-> You can run `nvm list available` to see all available version.
 
-Install GraphQL CLI.
+Add tool path to `PATH`.
+
+_Linux/macOS_
+```shell
+export PATH = "$PATH:$HOME/.dotnet/tools"
 ```
-npm install -g graphql-cli
+_Windows Powershell_
+```powershell
+$env:PATH += ";C:/Users/<user>/.dotnet/tools"
 ```
 
 ## Usage
-Start Event Store and the Lease API.
+Start services.
 ```
 docker-compose up -d eventstore
 docker-compose up -d lease-api
+docker-compose up -d graphql-playground
 ```
 
 Start the GraphQL API.
 ```
 fake build -t Serve
 ```
-
-Start the GraphQL Playground.
-```
-graphql playground
-```
-> This command will start the GraphQL Playground server
-and read the `.graphqlconfig.yaml` in this repository.
-
-## Development
-Install the .NET SDK.
-```
-scoop install dotnet-sdk
-```
-
-Create a `.graphqlconfig.yaml` file.
-```
-graphql init
-```
-> Follow the prompts to populate the values.
 
 ## Resources
 - [GraphQL](https://graphql.org/)

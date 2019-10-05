@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Lease.Config.fs" />
+    <Compile Include="Lease.Types.fs" />
+    <Compile Include="Lease.Client.fs" />
+    <Compile Include="Lease.Fields.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Proto\Proto.csproj" />
+    <ProjectReference Include="..\Shared\Shared.fsproj" />
+  </ItemGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
+</Project>

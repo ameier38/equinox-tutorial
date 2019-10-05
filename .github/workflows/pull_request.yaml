@@ -1,0 +1,71 @@
+name: Tutorial Pull Request
+on: [pull_request]
+
+jobs:
+  test_protos:
+    # ref: https://github.com/actions/virtual-environments/issues/2
+    runs-on: ubuntu-16.04
+    steps:
+      - uses: actions/checkout@v1
+      - name: Lint protos
+        uses: ./.github/actions/prototool
+        with:
+          # `root` will get translated into `INPUT_ROOT` env var
+          root: protos
+          args: lint
+      - name: Compile protos
+        uses: ./.github/actions/prototool
+        with:
+          # `root` will get translated into `INPUT_ROOT` env var
+          root: protos
+          args: compile
+  generate_protos:
+    runs-on: ubuntu-16.04
+    needs: [test_protos]
+    steps:
+      - uses: actions/checkout@v1
+      - uses: ./.github/actions/prototool
+        with:
+          # `root` will get translated into `INPUT_ROOT` env var
+          root: protos
+          args: generate
+      - run: sudo chmod -R 777 protos/gen
+      - uses: actions/upload-artifact@v1
+        with:
+          name: protos
+          path: protos/gen
+  test_lease_api:
+    runs-on: ubuntu-16.04
+    needs: [generate_protos]
+    services:
+      eventstore:
+        image: eventstore/eventstore
+        ports:
+          - "2113:2113"
+          - "1113:1113"
+        env:
+          EVENTSTORE_START_STANDARD_PROJECTIONS: "True"
+          EVENTSTORE_RUN_PROJECTIONS: All
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/download-artifact@v1
+        with:
+          name: protos
+          path: protos/gen
+      - uses: ./.github/actions/fake
+        with:
+          root: lease-api
+          target: CopyGenerated
+      - name: Test Lease API
+        uses: ./.github/actions/fake
+        with:
+          root: lease-api
+          target: Test
+        env:
+          EVENTSTORE_PROTOCOL: tcp
+          EVENTSTORE_HOST: eventstore
+          EVENTSTORE_TCP_PORT: 1113
+          EVENTSTORE_HTTP_PORT: 2113
+          EVENTSTORE_USER: admin
+          EVENTSTORE_PASSWORD: changeit
+    
