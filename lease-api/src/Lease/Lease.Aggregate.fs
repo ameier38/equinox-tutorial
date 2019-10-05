@@ -48,7 +48,7 @@ module LeaseEvent =
         | LeaseEvent.PaymentScheduled (ctx, _)
         | LeaseEvent.PaymentReceived (ctx, _)
         | LeaseEvent.LeaseTerminated (ctx, _) -> ctx
-    let getOrder leaseEvent = 
+    let getSortOrder leaseEvent = 
         let ctx = getEventContext leaseEvent
         let effOrder = getEventEffectiveOrder leaseEvent
         ctx.EventEffectiveDate, effOrder, ctx.EventCreatedTime
@@ -92,7 +92,8 @@ module LeaseObservation =
           TotalScheduled = 0m<usd> 
           TotalPaid = 0m<usd> 
           AmountDue = 0m<usd> 
-          LeaseStatus = Outstanding }
+          LeaseStatus = Outstanding
+          TerminatedDate = None }
     let schedulePayment 
         (eventCreatedTime:EventCreatedTime)
         (payment:ScheduledPayment) =
@@ -114,12 +115,13 @@ module LeaseObservation =
                 TotalPaid = totalPaid
                 AmountDue = amountDue }
     let terminateLease
-        (eventCreatedTime:EventCreatedTime) 
-        (termination:Termination)=
+        (eventCreatedTime:EventCreatedTime)
+        (termination: Termination) =
         fun leaseObs ->
             { leaseObs with
                 UpdatedTime = eventCreatedTime
-                LeaseStatus = Terminated }
+                LeaseStatus = Terminated
+                TerminatedDate = Some termination.TerminationDate }
 
 let evolveLeaseState 
     (leaseId:LeaseId)
@@ -165,7 +167,7 @@ let evolveLeaseState
                 |> Some
             
 module LeaseStream =
-    // Get non-deleted events created at before asAt.
+    // Get non-deleted events created at or before asAt.
     let getEffectiveLeaseEventsAsAt
         (asAt:EventCreatedTime) =
         fun { LeaseEvents = leaseEvents; DeletedEvents = deletedEvents } ->
@@ -177,7 +179,9 @@ module LeaseStream =
             leaseEvents
             |> List.filter (fun leaseEvent ->
                 let { EventId = eventId } = leaseEvent |> LeaseEvent.getEventContext
-                not (deletedEventIds |> List.contains eventId) && (leaseEvent |> LeaseEvent.asAtOrBefore asAt))
+                let notDeleted = not (deletedEventIds |> List.contains eventId)
+                let atOrBeforeAsAt = leaseEvent |> LeaseEvent.asAtOrBefore asAt
+                notDeleted && atOrBeforeAsAt)
     // Get non-deleted events created at or before asAt and effective on or before asOn.
     let getEffectiveLeaseEventsAsOf
         (asOf:AsOfDate)
@@ -195,7 +199,7 @@ let reconstitute
     fun streamState ->
         streamState
         |> LeaseStream.getEffectiveLeaseEventsAsOf asOfDate effOrderOpt
-        |> List.sortBy LeaseEvent.getOrder
+        |> List.sortBy LeaseEvent.getSortOrder
         |> List.fold (evolveLeaseState leaseId) None
 
 let interpret
@@ -220,7 +224,7 @@ let interpret
                 RpcException(Status(StatusCode.AlreadyExists, msg))
                 |> raise
             else
-                {| EventContext = {| EventCreatedTime = %DateTime.UtcNow |}; EventId = eventId |}
+                {| EventContext = {| EventCreatedTime = %getUtcNow() |}; EventId = eventId |}
                 |> EventDeleted
                 |> List.singleton
         | LeaseCommand leaseCommand ->
@@ -266,7 +270,7 @@ let interpret
                     |> raise
                 | Some { LeaseStatus = leaseStatus } ->
                     match leaseStatus with
-                    | Terminated -> 
+                    | Terminated _ -> 
                         let msg = sprintf "cannot schedule payment; Lease-%s is terminated" leaseIdStr
                         RpcException(Status(StatusCode.Internal, msg))
                         |> raise
@@ -314,7 +318,7 @@ let interpret
                     |> raise
                 | Some { LeaseStatus = leaseStatus } ->
                     match leaseStatus with
-                    | Terminated -> 
+                    | Terminated _ -> 
                         let msg = sprintf "cannot terminate lease; Lease-%s is already terminated" leaseIdStr
                         RpcException(Status(StatusCode.Internal, msg))
                         |> raise

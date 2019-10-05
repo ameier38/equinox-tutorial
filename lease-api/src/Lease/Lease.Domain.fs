@@ -18,10 +18,6 @@ type Lease =
       MaturityDate: DateTime 
       MonthlyPaymentAmount: MonthlyPaymentAmount }
 
-type LeaseStatus =
-    | Outstanding
-    | Terminated
-
 type ScheduledPayment =
     { PaymentId: PaymentId 
       ScheduledDate: DateTime 
@@ -33,8 +29,7 @@ type ReceivedPayment =
       ReceivedAmount: USD }
 
 type Termination =
-    { TerminationId: TerminationId
-      TerminationDate: DateTime
+    { TerminationDate: DateTime
       TerminationReason: string }
 
 type LeaseCommand =
@@ -61,6 +56,10 @@ type StoredEvent =
     | LeaseTerminated of {| EventContext: EventContext; Termination: Termination |}
     interface TypeShape.UnionContract.IUnionContract
 
+type LeaseStatus =
+    | Outstanding
+    | Terminated
+
 type LeaseObservation =
     { Lease: Lease
       CreatedTime: EventCreatedTime
@@ -68,7 +67,8 @@ type LeaseObservation =
       TotalScheduled: USD
       TotalPaid: USD
       AmountDue: USD
-      LeaseStatus: LeaseStatus }
+      LeaseStatus: LeaseStatus
+      TerminatedDate: DateTime option }
 
 type LeaseState = LeaseObservation option
 

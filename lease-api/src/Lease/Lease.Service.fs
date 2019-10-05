@@ -52,18 +52,16 @@ module Lease =
 
 module LeaseEvent =
     let toProto (codec:FsCodec.IUnionEncoder<StoredEvent,byte[]>) (leaseEvent:LeaseEvent) =
-        let { EventId = eventId 
-              EventCreatedTime = createdTime 
-              EventEffectiveDate = effDate } = leaseEvent |> Aggregate.LeaseEvent.getEventContext
+        let ctx = leaseEvent |> Aggregate.LeaseEvent.getEventContext
         let eventType = leaseEvent |> Aggregate.LeaseEvent.getEventType
         let eventPayload = 
             leaseEvent 
             |> Aggregate.LeaseEvent.toStoredEvent 
             |> codec.Encode
         Tutorial.Lease.V1.LeaseEvent(
-            EventId = %eventId,
-            EventCreatedTime = !@@createdTime,
-            EventEffectiveDate = !@effDate,
+            EventId = %ctx.EventId,
+            EventCreatedTime = !@@ctx.EventCreatedTime,
+            EventEffectiveDate = !@ctx.EventEffectiveDate,
             EventType = %eventType,
             EventPayload = (eventPayload.Data |> String.fromBytes))
 
@@ -92,8 +90,7 @@ module ReceivedPayment =
 
 module Termination =
     let fromProto (proto:Tutorial.Lease.V1.Termination) =
-        { TerminationId = proto.TerminationId |> TerminationId.parse
-          TerminationDate = proto.TerminationDate.ToDateTime()
+        { TerminationDate = proto.TerminationDate.ToDateTime()
           TerminationReason = proto.TerminationReason }
 
 module LeaseObservation =
@@ -106,7 +103,8 @@ module LeaseObservation =
             TotalScheduled = !!leaseObs.TotalScheduled,
             TotalPaid = !!leaseObs.TotalPaid,
             AmountDue = !!leaseObs.AmountDue,
-            LeaseStatus = (leaseObs.LeaseStatus |> LeaseStatus.toProto))
+            LeaseStatus = (leaseObs.LeaseStatus |> LeaseStatus.toProto),
+            TerminatedDate = match leaseObs.TerminatedDate with Some d -> !@d | None -> null)
 
 type LeaseAPIImpl
     (   getUtcNow:unit -> System.DateTime,

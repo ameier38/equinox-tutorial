@@ -295,9 +295,6 @@ let testReceivePayment =
         p1Events
         |> Expect.sequenceEqual "should equal expected events at p1" expectedP1Events
         do! deleteLeaseEvent leaseId 3 |> Async.Ignore
-        let! loanObsAtP1AfterDelete = getLease leaseId now p1Date
-        loanObsAtP1AfterDelete
-        |> Expect.equal "should equal s1 lease at p1 date" expectedLeaseObsAtS1
         let p1EventsAfterDelete = 
             getLeaseEvents leaseId now p1Date
             |> Seq.map (fun e -> e.EventPayload <- ""; e)
@@ -314,6 +311,9 @@ let testReceivePayment =
                 EventType = "LeaseCreated") ]
         p1EventsAfterDelete
         |> Expect.sequenceEqual "should equal expected events at p1 after delete" expectedP1EventsAfterDelete
+        let! loanObsAtP1AfterDelete = getLease leaseId now p1Date
+        loanObsAtP1AfterDelete
+        |> Expect.equal "should equal s1 lease at p1 date" expectedLeaseObsAtS1
     }
 
 let testTerminateLease = 
@@ -335,7 +335,6 @@ let testTerminateLease =
         do! createLease lease |> Async.Ignore
         let termination =
             Tutorial.Lease.V1.Termination(
-                TerminationId = Guid.create(),
                 TerminationDate = !@terminationDate,
                 TerminationReason = "Test")
         do! terminateLease leaseId termination |> Async.Ignore
@@ -356,7 +355,8 @@ let testTerminateLease =
                 TotalScheduled = !!0m,
                 TotalPaid = !!0m,
                 AmountDue = !!0m,
-                LeaseStatus = Tutorial.Lease.V1.LeaseStatus.Terminated)
+                LeaseStatus = Tutorial.Lease.V1.LeaseStatus.Terminated,
+                TerminatedDate = !@terminationDate)
         let! actualLeaseBeforeTermination = getLease leaseId now beforeTeminationDate
         let! actualLeaseAfterTermination = getLease leaseId now afterTerminationDate
         actualLeaseBeforeTermination 
