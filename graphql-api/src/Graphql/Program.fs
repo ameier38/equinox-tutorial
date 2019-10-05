@@ -7,6 +7,8 @@ open Newtonsoft.Json
 open Newtonsoft.Json.Serialization
 open Serilog
 open Suave
+open Suave.Filters
+open Suave.Successful
 open Suave.Operators
 open System
 
@@ -93,7 +95,7 @@ let setCorsHeaders =
 
 [<EntryPoint>]
 let main _ =
-    let config = Config.load()
+    let config = Config.Load()
     let logger = 
         LoggerConfiguration()
             .WriteTo.Console()
@@ -109,8 +111,14 @@ let main _ =
     let jsonSettings = JsonHelpers.initJsonSerializerSettings()
     let suaveConfig =
         { defaultConfig with
-            bindings = [ HttpBinding.createSimple HTTP "0.0.0.0" config.Port ]}
-    let api = setCorsHeaders >=> graphql logger jsonSettings executor >=> Writers.setMimeType "application/json"
+            bindings = [ HttpBinding.createSimple HTTP config.Server.Host config.Server.Port ]}
+    let api = 
+        choose [
+            GET >=> choose [
+                path "/health" >=> OK "Hello"
+            ]
+            POST >=> setCorsHeaders >=> graphql logger jsonSettings executor >=> Writers.setMimeType "application/json"
+        ]
     logger.Information(sprintf "logging at %s 📝" config.Seq.Url)
     logger.Information("starting GraphQL API 🚀")
     startWebServer suaveConfig api

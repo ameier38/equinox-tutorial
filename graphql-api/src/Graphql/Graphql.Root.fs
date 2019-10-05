@@ -13,6 +13,7 @@ let Query
         fields = [ 
             getLeaseField leaseClient 
             listLeasesField leaseClient
+            listLeaseEventsField leaseClient
         ]
     )
 

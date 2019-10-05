@@ -1,41 +1,50 @@
 namespace Graphql
 
-open FsConfig
+open System
+
+module Env = 
+    let getEnv (key:string) (defaultValueOpt:string option) =
+        match Environment.GetEnvironmentVariable(key), defaultValueOpt with
+        | value, Some defaultValue when String.IsNullOrEmpty(value) -> defaultValue
+        | value, None when String.IsNullOrEmpty(value) -> failwithf "envVar %s is not defined" key
+        | value, _ -> value
 
 type LeaseApiConfig =
-    {
-        [<DefaultValue("localhost")>]
-        Host: string
-        [<DefaultValue("50051")>]
-        Port: int
-    } with
-    member this.ChannelTarget =
-        sprintf "%s:%d" this.Host this.Port
+    { Host: string
+      Port: int
+      ChannelTarget: string } with
+    static member Load() =
+        let host = Some "localhost" |> Env.getEnv "LEASE_API_HOST"
+        let port = Some "50051" |> Env.getEnv "LEASE_API_PORT" |> int
+        { Host = host
+          Port = port
+          ChannelTarget = sprintf "%s:%d" host port }
 
 type SeqConfig =
-    {
-        [<DefaultValue("http")>]
-        Protocol: string
-        [<DefaultValue("localhost")>]
-        Host: string
-        [<DefaultValue("5341")>]
-        Port: int
-    } with
+    { Host: string
+      Port: int
+      Url: string } with
+    static member Load() =
+        let host = Some "localhost" |> Env.getEnv "SEQ_HOST"
+        let port = Some "5341" |> Env.getEnv "SEQ_PORT" |> int
+        { Host = host
+          Port = port
+          Url = sprintf "http://%s:%d" host port }
 
-    member this.Url =
-        sprintf "%s://%s:%d" this.Protocol this.Host this.Port
+type ServerConfig =
+    { Host: string
+      Port: int } with
+    static member Load() =
+        let host = Some "0.0.0.0" |> Env.getEnv "SERVER_HOST"
+        let port = Some "4000" |> Env.getEnv "SERVER_PORT" |> int
+        { Host = host
+          Port = port }
 
 type Config =
-    {
-        [<DefaultValue("true")>]
-        Debug: bool
-        [<DefaultValue("4000")>]
-        Port: int
-        LeaseApi: LeaseApiConfig
-        Seq: SeqConfig
-    }
-module Config =
-    let load () =
-        match EnvConfig.Get<Config>() with
-        | Ok config -> config
-        | Error error -> failwithf "error loading config: %A" error
+    { Server: ServerConfig
+      LeaseApi: LeaseApiConfig
+      Seq: SeqConfig } with
+    static member Load() =
+        { Server = ServerConfig.Load()
+          LeaseApi = LeaseApiConfig.Load()
+          Seq = SeqConfig.Load() }
