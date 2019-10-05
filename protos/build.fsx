@@ -38,7 +38,9 @@ let prototool (args:string list) =
     |> run "docker" (dockerArgs @ prototoolArgs) 
 
 let buildPrototool = BuildTask.create "BuildPrototool" [] {
-    __SOURCE_DIRECTORY__
+    __SOURCE_DIRECTORY__ // protos
+    |> Path.getDirectory // equinox-tutorial
+    </> ".github" </> "actions" </> "prototool"
     |> run "docker" ["build"; "-t"; prototoolImage; "."]
 }
 
