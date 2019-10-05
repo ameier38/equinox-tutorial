@@ -52,7 +52,6 @@ message ReceivedPayment {
 
 // Termination of a lease.
 message Termination {
-  string termination_id = 1;
   google.type.Date termination_date = 2;
   string termination_reason = 3;
 }
@@ -75,4 +74,5 @@ message LeaseObservation {
   google.type.Money total_paid = 6;
   google.type.Money amount_due = 7;
   LeaseStatus lease_status = 8;
+  google.type.Date terminated_date = 9;
 }
