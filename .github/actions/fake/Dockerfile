@@ -7,5 +7,6 @@ ENV PATH="$PATH:$HOME/.dotnet/tools"
 
 # Copy the entrypoint script.
 COPY ./entrypoint.sh /usr/bin/fake-action
+RUN chmod +x /usr/bin/fake-action
 
 ENTRYPOINT [ "fake-action" ]
