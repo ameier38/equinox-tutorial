@@ -52,6 +52,7 @@ RUN curl -sSL \
 # ref: https://github.com/googleapis/googleapis
 RUN git clone https://github.com/googleapis/googleapis.git ${PROTOTOOL_PROTOC_WKT_PATH}/google/googleapis
 
-WORKDIR /work
+# Copy the entrypoint script.
+COPY ./entrypoint.sh /usr/bin/prototool-action
 
-ENTRYPOINT [ "prototool" ]
+ENTRYPOINT [ "prototool-action" ]
