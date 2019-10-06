@@ -37,6 +37,8 @@ services:
     build:
       context: ./graphql-api
       target: runner
+    ports:
+      - "4000:4000"
     environment:
       SERVER_HOST: '0.0.0.0'
       SERVER_PORT: 4000

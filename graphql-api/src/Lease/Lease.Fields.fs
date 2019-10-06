@@ -98,6 +98,7 @@ let ListLeaseEventsInputObject =
         description = "Input for listing lease events",
         fields = [
             leaseIdInputField
+            asOfDateInputField
             pageSizeInputField
             pageTokenInputField
         ]
