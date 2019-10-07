@@ -80,22 +80,21 @@ export const LeaseTable: React.FC = () => {
     if (data) {
         setPrevPageToken(data.listLeases.prevPageToken)
         setNextPageToken(data.listLeases.nextPageToken)
-        return (
-            <div className={classes.tableRoot}>
-                <MaterialTable
-                    options={{
-                        search: false
-                    }}
-                    style={{
-                        padding: 10,
-                    }}
-                    columns={columns}
-                    data={data.listLeases.leases}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                    title="Leases" />
-            </div>
-        )
     }
-    return <LinearProgress />
-  }
+    return (
+        <div className={classes.tableRoot}>
+            <MaterialTable
+                options={{
+                    search: false
+                }}
+                style={{
+                    padding: 10,
+                }}
+                columns={columns}
+                data={data ? data.listLeases.leases : []}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                title="Leases" />
+        </div>
+    )
+}

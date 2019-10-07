@@ -1,48 +1,67 @@
 import React from 'react'
+import gql from 'graphql-tag'
+import { useQuery, useApolloClient } from '@apollo/react-hooks'
 import { Slider, Typography } from '@material-ui/core'
+import * as moment from 'moment'
 
-type AsOfDateSliderProps = {
-    startDate: Date,
-    endDate: Date,
-    onAsAtChange: (dt:Date) => void,
-    onAsOnChange: (dt:Date) => void,
+const GET_AS_OF_DATE = gql`
+query GetAsOfDate {
+    asAt @client
+    asOn @client
+}`
+
+type GetAsOfDateResponse = {
+    asAt: Date
+    asOn: Date
 }
 
-export const AsOfDateSlider: React.FC<AsOfDateSliderProps> = ({
-    startDate, 
-    endDate,
-    onAsAtChange,
-    onAsOnChange
-}) => {
-    const createDateRange = (start:Date, end:Date) => {
+type AsOfDateSliderProps = {
+    startDate: Date
+}
+
+export const AsOfDateSlider: React.FC<AsOfDateSliderProps> = ({ startDate }) => {
+    const createDateRange = (endDate:Date) => {
         let arr = new Array<Date>()
-        for (let dt = start; dt <= end; dt.setDate(dt.getDate() + 1)) {
+        for (let dt = startDate; dt <= endDate; dt.setDate(dt.getDate() + 1)) {
             arr.push(new Date(dt))
         }
         return arr
     } 
-    const marks = createDateRange(startDate, endDate).map((dt, i) => ({value: i, dateValue: dt, label: dt.toISOString()}))
+    const { data } = useQuery<GetAsOfDateResponse>(GET_AS_OF_DATE)
+    const client = useApolloClient()
+    const endDate = moment.utc().endOf('day').toDate()
+    const marks = createDateRange(endDate).map((dt, i) => ({
+        value: i, 
+        dateValue: dt, 
+        label: dt.toISOString()
+    }))
+    const getMarkValue = (dt:Date) => {
+        const mark = marks.find(mark => mark.dateValue === dt)
+        if (mark) {
+            return mark.value
+        }
+    }
     const onAsAtValueChange = (e:React.ChangeEvent<{}>, value:number | number[]) => {
         let dt = marks.find(mark => mark.value == value)!.dateValue
-        onAsAtChange(dt)
+        client.writeData({ data: { asAt: dt } })
     }
     const onAsOnValueChange = (e:React.ChangeEvent<{}>, value:number | number[]) => {
         let dt = marks.find(mark => mark.value == value)!.dateValue
-        onAsOnChange(dt)
+        client.writeData({ data: { asOn: dt } })
     }
     return (
         <React.Fragment>
             <Typography id='as-at-slider'>As At</Typography>
             <Slider
                 aria-labelledby='as-at-slider'
-                defaultValue={marks.length - 1}
+                defaultValue={data && getMarkValue(data.asAt)}
                 step={null}
                 marks
                 onChange={onAsAtValueChange} />
             <Typography id='as-on-slider'>As On</Typography>
             <Slider
                 aria-labelledby='as-on-slider'
-                defaultValue={marks.length - 1}
+                defaultValue={data && getMarkValue(data.asOn)}
                 step={null}
                 marks
                 onChange={onAsOnValueChange} />

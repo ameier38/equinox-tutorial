@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { gql } from 'apollo-boost'
-import { useMutation } from '@apollo/react-hooks'
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
+import gql from 'graphql-tag'
+import { useMutation, useQuery, useApolloClient } from '@apollo/react-hooks'
+import { Theme } from '@material-ui/core/styles'
+import { makeStyles, createStyles } from '@material-ui/styles'
 import { v4 as uuid } from 'uuid'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -15,7 +16,10 @@ import {
   MuiPickersUtilsProvider, 
   KeyboardDatePicker
 } from '@material-ui/pickers'
-import { AsOfDate } from './Types';
+import { 
+    Lease,
+    MutationCreateLeaseArgs 
+} from '../generated/graphql';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -27,47 +31,34 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 const CREATE_LEASE = gql`
-mutation CreateLease(
-  $leaseId: String!
-  $userId: String!,
-  $startDate: String!,
-  $maturityDate: String!,
-  $monthlyPaymentAmount: Float!
-){
-  createLease(
-    leaseId: $leaseId,
-    userId: $userId,
-    startDate: $startDate,
-    maturityDate: $maturityDate,
-    monthlyPaymentAmount: $monthlyPaymentAmount
-  )
+mutation CreateLease($input: CreateLeaseInput!){
+  createLease(input: $input)
 }`
 
-type LeaseFormProps = {
-  setAsOfDate: (asOf:AsOfDate) => void,
-  open: boolean,
-  setOpen: (open: boolean) => void
+const CREATE_LEASE_DIALOG_OPEN = gql`
+query CreateLeaseDialogOpen {
+    createLeaseDialogOpen @client
 }
+`
 
-const LeaseForm: React.FC<LeaseFormProps> = 
-  ({setAsOfDate, open, setOpen}) => {
-
-    const classes = useStyles()
+export const CreateLeaseDialog: React.FC = () => {
 
     const addMonths = (d:Date, months:number) => 
       new Date(d.setMonth(d.getMonth() + months))
 
-    const initState = () => {
-      return {
+    const initState = () => ({
         leaseId: uuid(),
         userId: uuid(),
         startDate: new Date(),
         maturityDate: addMonths(new Date(), 12),
-        monthlyPaymentAmount: ''
-      }
-    }
+        monthlyPaymentAmount: 0
+    })
 
+    const classes = useStyles()
+    const client = useApolloClient()
     const [values, setValues] = useState<Lease>(initState())
+    const [createLease] = useMutation<string, MutationCreateLeaseArgs>(CREATE_LEASE)
+    const { data } = useQuery(CREATE_LEASE_DIALOG_OPEN)
 
     const handleChange = (name: keyof Lease) => 
       (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,27 +71,29 @@ const LeaseForm: React.FC<LeaseFormProps> =
       }
 
     const handleClose = () => {
-      setOpen(false)
+        client.writeData({ data: { createLeaseDialogOpen: false } })
     }
 
-    const handleSubmit = (createLease:MutationFn<CreateLeaseResponse,Lease>) => 
-      () => {
-        createLease({variables: values}).then(() => {
-          setValues(initState())
-          setOpen(false)
-          let newDate = new Date()
-          newDate.setSeconds(newDate.getSeconds() + 10)
-          setAsOfDate({
-            asAt: newDate,
-            asOn: newDate
-          })
+    const handleSubmit = () => {
+        createLease({
+            variables: { 
+                input: values 
+            }
+        }).then(() => {
+            let newDate = new Date()
+            newDate.setSeconds(newDate.getSeconds() + 10)
+            client.writeData({
+                data: {
+                    asAt: newDate,
+                    asOn: newDate,
+                    createLeaseDialogOpen: false
+                }
+            })
         })
       }
 
     return (
-      <Mutation<CreateLeaseResponse,Lease> mutation={CREATE_LEASE}>
-        {createLease => (
-          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+          <Dialog open={data.createLeaseDialogOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Create Lease</DialogTitle>
             <DialogContent>
               <Grid container>
@@ -155,14 +148,10 @@ const LeaseForm: React.FC<LeaseFormProps> =
               <Button onClick={handleClose} color="primary">
                 Cancel
               </Button>
-              <Button onClick={handleSubmit(createLease)} color="primary">
+              <Button onClick={handleSubmit} color="primary">
                 Create
               </Button>
             </DialogActions>
           </Dialog>
-        )}
-      </Mutation>
     )
   }
-
-export default LeaseForm

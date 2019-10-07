@@ -101,7 +101,7 @@ export const SchedulePaymentDialog: React.FC<SchedulePaymentDialogProps> = ({ le
     }
 
     return (
-        <Dialog open={data.schedulePayemntDialogOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <Dialog open={data.schedulePaymentDialogOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Schedule Payment</DialogTitle>
             <DialogContent>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>

@@ -53,33 +53,13 @@ const LeaseDetailPanel: React.FC<LeaseDetailPanelProps> =
 
     const classes = useStyles()
 
+    if (loading) return <LinearProgress />
+    if (error) return `Error!: ${error.message}`
     return (
-      <Query<GetLeaseResponse> 
-          query={GET_LEASE}
-          variables={{
-            asOn: asOfDate.asOn,
-            asAt: asOfDate.asAt,
-            leaseId: leaseId
-          }}>
-          {({ loading, error, data }) => {
-            if (loading) return <LinearProgress />
-            if (error) return `Error!: ${error.message}`
             if (data) {
               return(
                 <div className={classes.root}>
                   <Grid container spacing={2}>
-                    <Grid item xs={6} md={3}>
-                      <TotalScheduledCard
-                        setAsOfDate={setAsOfDate}
-                        leaseId={leaseId}
-                        totalScheduled={data.getLease.totalScheduled} />
-                    </Grid>
-                    <Grid item xs={6} md={3}>
-                      <TotalPaidCard
-                        setAsOfDate={setAsOfDate}
-                        leaseId={leaseId}
-                        totalPaid={data.getLease.totalPaid} />
-                    </Grid>
                     <Grid item xs={12}>
                       <LeaseEventTable 
                         leaseId={leaseId} 
