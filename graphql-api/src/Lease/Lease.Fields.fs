@@ -14,12 +14,12 @@ let leaseIdInputField =
 let pageSizeInputField = 
     Define.Input(
         name = "pageSize", 
-        typedef = Int,
+        typedef = Nullable Int,
         description = "Maximum number of items in a page")
 let pageTokenInputField = 
     Define.Input(
         name = "pageToken", 
-        typedef = ID,
+        typedef = Nullable ID,
         description = "Token for page to retrieve; Empty string for first page")
 
 let AsOfDateInputObject =
@@ -151,7 +151,6 @@ let ListLeasesInputObject =
     Define.InputObject<ListLeasesInputDto>(
         name = "ListLeasesInput",
         fields = [
-            asOfDateInputField
             pageSizeInputField
             pageTokenInputField
         ]
@@ -163,6 +162,7 @@ let ListLeasesResponseType =
         description = "List leases response",
         fields = [
             Define.AutoField("leases", ListOf LeaseType)
+            Define.AutoField("prevPageToken", String)
             Define.AutoField("nextPageToken", String)
             Define.AutoField("totalCount", Int)
         ]

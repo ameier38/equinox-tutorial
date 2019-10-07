@@ -27,7 +27,7 @@ let cleanProto = BuildTask.create "CleanProto" [] {
     Shell.cleanDirs directories
 }
 
-BuildTask.create "CopyGenerated" [cleanProto] {
+let copyGenerated = BuildTask.create "CopyGenerated" [cleanProto] {
     let genDir =
         __SOURCE_DIRECTORY__ // lease-api
         |> Path.getDirectory // equinox-tutorial
@@ -36,6 +36,12 @@ BuildTask.create "CopyGenerated" [cleanProto] {
     targetDir |> Shell.cleanDir
     !! (genDir </> "*.cs")
     |> Shell.copyFiles targetDir
+}
+
+BuildTask.create "UpdateProtos" [copyGenerated] {
+    DotNet.build 
+        (fun ops -> { ops with Configuration = DotNet.Debug })
+        "src/Proto/Proto.csproj"
 }
 
 BuildTask.create "Restore" [] {

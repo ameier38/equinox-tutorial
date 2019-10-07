@@ -11,8 +11,7 @@ type GetLeaseInputDto =
       AsOfDate: AsOfDateInputDto option }
 
 type ListLeasesInputDto =
-    { AsOfDate: AsOfDateInputDto option
-      PageSize: int option
+    { PageSize: int option
       PageToken: string option }
 
 type ListLeaseEventsInputDto =

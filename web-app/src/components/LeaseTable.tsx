@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
-import { Query } from 'react-apollo'
+import { useQuery } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 import LinearProgress from '@material-ui/core/LinearProgress'
-import MaterialTable, { MTableToolbar } from 'material-table'
-import DateFnsUtils from '@date-io/date-fns'
+import MaterialTable, { Column } from 'material-table'
 import { 
-  MuiPickersUtilsProvider, 
-  KeyboardDateTimePicker,
-} from '@material-ui/pickers'
-import LeaseDetailPanel from './LeaseDetailPanel'
-import { LIST_LEASES, ListLeasesResponse, Lease } from './GQL'
-import { AsOfDate } from './Types'
+    Query,
+    Lease,
+    ListLeasesInput, 
+} from '../generated/graphql'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -27,13 +25,23 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-type LeaseTableProps = {
-  asOfDate: AsOfDate,
-  setAsOfDate: (asOf:AsOfDate) => void,
+const LIST_LEASES = gql`
+query ListLeases($input: ListLeasesInput!) {
+    listLeases(input: $input) {
+        leases {
+            leaseId
+            startDate
+            maturityDate
+            monthlyPaymentAmount
+        }
+        prevPageToken
+        nextPageToken
+        totalCount
+    }
 }
+`
 
-const LeaseTable: React.FC<LeaseTableProps> = 
-  ({asOfDate, setAsOfDate }) => {
+export const LeaseTable: React.FC = () => {
     const classes = useStyles();
 
     const [page, setPage] = useState(1)
@@ -41,18 +49,9 @@ const LeaseTable: React.FC<LeaseTableProps> =
     const [pageToken, setPageToken] = useState("")
     const [prevPageToken, setPrevPageToken] = useState("")
     const [nextPageToken, setNextPageToken] = useState("")
-
-    const handleAsOnChange = (date:Date | null) => {
-      if (date) {
-        setAsOfDate({...asOfDate, asOn: date})
-      }
-    }
-
-    const handleAsAtChange = (date:Date | null) => {
-      if (date) {
-        setAsOfDate({...asOfDate, asAt: date})
-      }
-    }
+    const { data, loading, error } = useQuery<Query,ListLeasesInput>(
+        LIST_LEASES,
+        { variables: {pageSize, pageToken}})
 
     const handleChangePage = (newPage:number) => {
       if (newPage > page) {
@@ -69,80 +68,34 @@ const LeaseTable: React.FC<LeaseTableProps> =
       setPageSize(newPageSize)
     }
 
-    const columns = [
+    const columns: Column<Lease>[] = [
       { title: "Lease ID", field: "leaseId" },
       { title: "Start Date", field: "startDate" },
       { title: "Maturity Date", field: "maturityDate" },
       { title: "Monthly Payment Amount", field: "monthlyPaymentAmount" },
     ]
 
-    return (
-      <Query<ListLeasesResponse> 
-        query={LIST_LEASES} 
-        variables={{ 
-          asOn: asOfDate.asOn,
-          asAt: asOfDate.asAt,
-          leasePageToken: pageToken,
-          leasePageSize: pageSize
-        }} >
-        {({ loading, error, data }) => {
-          if (loading) return <LinearProgress />
-          if (error) return `Error!: ${error.message}`
-          if (data) {
-            setPrevPageToken(data.listLeases.prevPageToken)
-            setNextPageToken(data.listLeases.nextPageToken)
-            return (
-              <div className={classes.tableRoot}>
+    if (loading) return <LinearProgress />
+    if (error) return (<p>`Error!: ${error.message}`</p>)
+    if (data) {
+        setPrevPageToken(data.listLeases.prevPageToken)
+        setNextPageToken(data.listLeases.nextPageToken)
+        return (
+            <div className={classes.tableRoot}>
                 <MaterialTable
-                  options={{
-                    search: false
-                  }}
-                  style={{
-                    padding: 10,
-                  }}
-                  columns={columns}
-                  data={data.listLeases.leases}
-                  onChangePage={handleChangePage}
-                  onChangeRowsPerPage={handleChangeRowsPerPage}
-                  title="Leases"
-                  components={{
-                    Toolbar: props => (
-                      <>
-                        <MTableToolbar {...props} />
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                          <KeyboardDateTimePicker
-                            className={classes.textField}
-                            required
-                            id='asOnDate'
-                            label='As On Date'
-                            value={asOfDate.asOn}
-                            onChange={handleAsOnChange}
-                            margin='normal' />
-                          <KeyboardDateTimePicker
-                            className={classes.textField}
-                            required
-                            id='asAtDate'
-                            label='As At Date'
-                            value={asOfDate.asAt}
-                            onChange={handleAsAtChange}
-                            margin='normal' />
-                        </MuiPickersUtilsProvider>
-                      </>
-                    ),
-                  }}
-                  detailPanel={(rowData:Lease) => (
-                    <LeaseDetailPanel
-                      asOfDate={asOfDate}
-                      setAsOfDate={setAsOfDate}
-                      leaseId={rowData.leaseId} />
-                  )}
-                  />
-              </div>
-            )
-          }
-        }}
-      </Query>
-    )
+                    options={{
+                        search: false
+                    }}
+                    style={{
+                        padding: 10,
+                    }}
+                    columns={columns}
+                    data={data.listLeases.leases}
+                    onChangePage={handleChangePage}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                    title="Leases" />
+            </div>
+        )
+    }
+    return <LinearProgress />
   }
-
-export default LeaseTable

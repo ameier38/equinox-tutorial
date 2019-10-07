@@ -3,6 +3,9 @@ import gql from 'graphql-tag'
 
 export const typeDefs = gql`
     extend type Query {
+        asAt: Date
+        asOn: Date
+        createLeaseDialogOpen: Boolean
         schedulePaymentDialogOpen: Boolean
         receivePaymentDialogOpen: Boolean
     }

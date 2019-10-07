@@ -37,7 +37,7 @@ let copyGenerated = BuildTask.create "CopyGenerated" [cleanProto] {
     |> Shell.copyFiles targetDir
 }
 
-BuildTask.create "BuildProto" [copyGenerated] {
+BuildTask.create "UpdateProtos" [copyGenerated] {
     DotNet.build 
         (fun ops -> { ops with Configuration = DotNet.Debug })
         "src/Proto/Proto.csproj"

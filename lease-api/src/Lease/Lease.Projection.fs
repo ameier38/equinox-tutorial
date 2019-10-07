@@ -31,7 +31,7 @@ type ProjectionManager(config:Config, logger: Core.Logger) =
             let! res = work
             return res
         with ex ->
-            logger.Warning(ex, "failed to create projection; retrying...")
+            logger.Warning(ex, "work failed; retrying...")
             do! Async.Sleep(10000)
             return! retry work
         }
@@ -64,7 +64,7 @@ type ProjectionManager(config:Config, logger: Core.Logger) =
     member __.StartProjections() =
         logger.Information(sprintf "starting projections on %s:%d 👓" host port)
         projections
-        |> List.map startProjection
+        |> List.map (startProjection >> retry)
         |> Async.Parallel
         |> Async.Ignore
         |> Async.RunSynchronously

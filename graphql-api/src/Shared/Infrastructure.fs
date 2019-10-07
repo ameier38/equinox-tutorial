@@ -3,6 +3,13 @@ namespace Shared
 open Google.Protobuf.WellKnownTypes
 open Google.Type
 open System
+open System.Text
+
+module String =
+    let fromBytes (bytes:byte[]) =
+        Encoding.UTF8.GetString(bytes)
+    let isNullOrWhiteSpace (str : string) =
+        String.IsNullOrWhiteSpace(str)
 
 module DateTime =
     let parse (s:string) = DateTime.Parse(s)

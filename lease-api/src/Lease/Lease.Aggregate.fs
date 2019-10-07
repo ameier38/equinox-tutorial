@@ -1,7 +1,6 @@
 module Lease.Aggregate
 
 open FSharp.UMX
-open Grpc.Core
 open System
 
 module EventContext =
@@ -132,15 +131,13 @@ let evolveLeaseState
             match state with
             | None -> LeaseObservation.createLease ctx.EventCreatedTime lease |> Some
             | Some _ -> 
-                let msg = sprintf "cannot observe %A; Lease-%s already exists" event leaseIdStr
-                RpcException(Status(StatusCode.Internal, msg))
-                |> raise
+                sprintf "cannot observe %A; Lease-%s already exists" event leaseIdStr
+                |> RpcException.raiseInternal
         | LeaseEvent.PaymentScheduled (ctx, payment) as event ->
             match state with
             | None -> 
-                let msg = sprintf "cannot observe %A; Lease-%s does not exist" event leaseIdStr
-                RpcException(Status(StatusCode.Internal, msg))
-                |> raise
+                sprintf "cannot observe %A; Lease-%s does not exist" event leaseIdStr
+                |> RpcException.raiseInternal
             | Some leaseObs -> 
                 leaseObs 
                 |> LeaseObservation.schedulePayment ctx.EventCreatedTime payment 
@@ -148,9 +145,8 @@ let evolveLeaseState
         | LeaseEvent.PaymentReceived (ctx, payment) as event ->
             match state with
             | None -> 
-                let msg = sprintf "cannot observe %A; Lease-%s does not exist" event leaseIdStr
-                RpcException(Status(StatusCode.Internal, msg))
-                |> raise
+                sprintf "cannot observe %A; Lease-%s does not exist" event leaseIdStr
+                |> RpcException.raiseInternal
             | Some leaseObs -> 
                 leaseObs 
                 |> LeaseObservation.receivePayment ctx.EventCreatedTime payment 
@@ -158,9 +154,8 @@ let evolveLeaseState
         | LeaseEvent.LeaseTerminated (ctx, termination) as event ->
             match state with
             | None -> 
-                let msg = sprintf "cannot observe %A; Lease-%s does not exist" event leaseIdStr
-                RpcException(Status(StatusCode.Internal, msg))
-                |> raise
+                sprintf "cannot observe %A; Lease-%s does not exist" event leaseIdStr
+                |> RpcException.raiseInternal
             | Some leaseObs -> 
                 leaseObs
                 |> LeaseObservation.terminateLease ctx.EventCreatedTime termination
@@ -220,9 +215,8 @@ let interpret
                 leaseStream.DeletedEvents
                 |> List.exists (fun (_, deletedEventId) -> deletedEventId = eventId)
             if alreadyDeleted then
-                let msg = sprintf "Lease-%s Event-%d already deleted" leaseIdStr eventId
-                RpcException(Status(StatusCode.AlreadyExists, msg))
-                |> raise
+                sprintf "Lease-%s Event-%d already deleted" leaseIdStr eventId
+                |> RpcException.raiseAlreadyExists
             else
                 {| EventContext = {| EventCreatedTime = %getUtcNow() |}; EventId = eventId |}
                 |> EventDeleted
@@ -236,18 +230,16 @@ let interpret
                     |> LeaseStream.getEffectiveLeaseEventsAsAt asOfDate.AsAt 
                     |> List.exists (function LeaseEvent.LeaseCreated _ -> true | _ -> false)
                 if alreadyCreated then
-                    let msg = sprintf "Lease-%s already created" leaseIdStr
-                    RpcException(Status(StatusCode.AlreadyExists, msg))
-                    |> raise
+                    sprintf "Lease-%s already created" leaseIdStr
+                    |> RpcException.raiseAlreadyExists
                 let ctx = createEventContext %lease.StartDate leaseStream.NextEventId
                 let leaseCreated = LeaseEvent.LeaseCreated (ctx, lease)
                 let effOrderOpt = leaseCreated |> LeaseEvent.getEventEffectiveOrder |> Some
                 match reconstitute' asOfDate effOrderOpt with
                 | None -> leaseCreated |> LeaseEvent.toStoredEvent |> List.singleton
                 | Some _ -> 
-                    let msg = sprintf "cannot create lease; Lease-%s already exists" leaseIdStr
-                    RpcException(Status(StatusCode.Internal, msg))
-                    |> raise
+                    sprintf "cannot create lease; Lease-%s already exists" leaseIdStr
+                    |> RpcException.raiseInternal
             | SchedulePayment payment ->
                 let asOfDate = getAsOfDate %payment.ScheduledDate
                 let alreadyScheduled =
@@ -257,23 +249,20 @@ let interpret
                         | LeaseEvent.PaymentScheduled (_, p) -> p.PaymentId = payment.PaymentId 
                         | _ -> false)
                 if alreadyScheduled then
-                    let msg = sprintf "Lease-%s Payment-%s already scheduled" leaseIdStr (payment.PaymentId |> PaymentId.toStringN)
-                    RpcException(Status(StatusCode.AlreadyExists, msg))
-                    |> raise
+                    sprintf "Lease-%s Payment-%s already scheduled" leaseIdStr (payment.PaymentId |> PaymentId.toStringN)
+                    |> RpcException.raiseAlreadyExists
                 let ctx = createEventContext %payment.ScheduledDate leaseStream.NextEventId
                 let paymentScheduled = LeaseEvent.PaymentScheduled (ctx, payment)
                 let effOrderOpt = paymentScheduled |> LeaseEvent.getEventEffectiveOrder |> Some
                 match reconstitute' asOfDate effOrderOpt with
                 | None -> 
-                    let msg = sprintf "cannot schedule payment; Lease-%s does not exist" leaseIdStr
-                    RpcException(Status(StatusCode.Internal, msg))
-                    |> raise
+                    sprintf "cannot schedule payment; Lease-%s does not exist" leaseIdStr
+                    |> RpcException.raiseInternal
                 | Some { LeaseStatus = leaseStatus } ->
                     match leaseStatus with
                     | Terminated _ -> 
-                        let msg = sprintf "cannot schedule payment; Lease-%s is terminated" leaseIdStr
-                        RpcException(Status(StatusCode.Internal, msg))
-                        |> raise
+                        sprintf "cannot schedule payment; Lease-%s is terminated" leaseIdStr
+                        |> RpcException.raiseInternal
                     | Outstanding -> paymentScheduled |> LeaseEvent.toStoredEvent |> List.singleton
             | ReceivePayment payment ->
                 let asOfDate = getAsOfDate %payment.ReceivedDate
@@ -284,17 +273,15 @@ let interpret
                         | LeaseEvent.PaymentReceived (_, p) -> p.PaymentId = payment.PaymentId
                         | _ -> false)
                 if alreadyReceived then
-                    let msg = sprintf "Lease-%s Payment-%s already received" leaseIdStr (payment.PaymentId |> PaymentId.toStringN)
-                    RpcException(Status(StatusCode.AlreadyExists, msg))
-                    |> raise
+                    sprintf "Lease-%s Payment-%s already received" leaseIdStr (payment.PaymentId |> PaymentId.toStringN)
+                    |> RpcException.raiseAlreadyExists
                 let ctx = createEventContext %payment.ReceivedDate leaseStream.NextEventId
                 let paymentReceived = LeaseEvent.PaymentReceived (ctx, payment)
                 let effOrderOpt = paymentReceived |> LeaseEvent.getEventEffectiveOrder |> Some
                 match reconstitute' asOfDate effOrderOpt with
                 | None -> 
-                    let msg = sprintf "cannot receive payment; Lease-%s does not exist" leaseIdStr
-                    RpcException(Status(StatusCode.Internal, msg))
-                    |> raise
+                    sprintf "cannot receive payment; Lease-%s does not exist" leaseIdStr
+                    |> RpcException.raiseInternal
                 | Some _ -> paymentReceived |> LeaseEvent.toStoredEvent |> List.singleton
             | TerminateLease termination ->
                 let asOfDate = getAsOfDate %termination.TerminationDate
@@ -305,23 +292,20 @@ let interpret
                         | LeaseEvent.LeaseTerminated _ -> true 
                         | _ -> false)
                 if alreadyTerminated then
-                    let msg = sprintf "Lease-%s already terminated" leaseIdStr
-                    RpcException(Status(StatusCode.AlreadyExists, msg))
-                    |> raise
+                    sprintf "Lease-%s already terminated" leaseIdStr
+                    |> RpcException.raiseAlreadyExists
                 let ctx = createEventContext %termination.TerminationDate leaseStream.NextEventId
                 let leaseTerminated = LeaseEvent.LeaseTerminated (ctx, termination)
                 let effOrderOpt = leaseTerminated |> LeaseEvent.getEventEffectiveOrder |> Some
                 match reconstitute' asOfDate effOrderOpt with
                 | None -> 
-                    let msg = sprintf "cannot terminate lease; Lease-%s does not exist" leaseIdStr
-                    RpcException(Status(StatusCode.Internal, msg))
-                    |> raise
+                    sprintf "cannot terminate lease; Lease-%s does not exist" leaseIdStr
+                    |> RpcException.raiseInternal
                 | Some { LeaseStatus = leaseStatus } ->
                     match leaseStatus with
                     | Terminated _ -> 
-                        let msg = sprintf "cannot terminate lease; Lease-%s is already terminated" leaseIdStr
-                        RpcException(Status(StatusCode.Internal, msg))
-                        |> raise
+                        sprintf "cannot terminate lease; Lease-%s is already terminated" leaseIdStr
+                        |> RpcException.raiseInternal
                     | Outstanding -> leaseTerminated |> LeaseEvent.toStoredEvent |> List.singleton
 
 let evolveLeaseStream
@@ -347,27 +331,6 @@ let initialLeaseStream =
     { NextEventId = 1<eventId>
       LeaseEvents = []
       DeletedEvents = [] }
-
-let evolveLeaseCreatedList
-    : LeaseCreatedList -> StoredEvent -> LeaseCreatedList =
-    fun leaseCreatedList storedEvent ->
-        let (|LeaseEvent|_|) = StoredEvent.tryToLeaseEvent
-        let (|DeletedEvent|_|) = StoredEvent.tryToDeletedEvent
-        match storedEvent with
-        | LeaseEvent leaseEvent ->
-            match leaseEvent with
-            | LeaseEvent.LeaseCreated (ctx, lease) ->
-                (ctx, lease) :: leaseCreatedList
-            | _ -> leaseCreatedList
-        | DeletedEvent (_, deletedEventId) ->
-            leaseCreatedList
-            |> List.filter (fun (ctx, _) -> ctx.EventId <> deletedEventId)
-        | _ -> leaseCreatedList
-
-let foldLeaseList
-    : LeaseCreatedList -> seq<StoredEvent> -> LeaseCreatedList =
-    fun leaseList storedEvents ->
-        storedEvents |> Seq.fold evolveLeaseCreatedList leaseList
 
 let evolveLeaseEventList
     : LeaseEventList -> StoredEvent -> LeaseEventList =

@@ -1,38 +1,38 @@
 ﻿open FSharp.Data
 open Grpc.Core
-open Newtonsoft.Json
-open Newtonsoft.Json.Serialization
 open Server
 open Serilog
+open Shared
 open Suave
 open Suave.Filters
 open Suave.Operators
-open System
 
-module JsonHelpers =
-    let initJsonSerializerSettings () =
-        let settings = JsonSerializerSettings()
-        settings.Converters <- [| JsonConverters.OptionConverter() |]
-        settings.ContractResolver <- CamelCasePropertyNamesContractResolver()
-        settings
-    let serialize (settings:JsonSerializerSettings) (o:obj) = JsonConvert.SerializeObject(o, settings)
-    let deserialize<'T> (s:string) = JsonConvert.DeserializeObject<'T>(s)
+let tryParseBody (rawBody:byte[]) =
+    let sBody = rawBody |> String.fromBytes
+    if sBody |> String.isNullOrWhiteSpace then None
+    else
+        rawBody
+        |> String.fromBytes
+        |> JsonHelpers.deserialize<Map<string,obj>>
+        |> Some
 
-let tryParse fieldName (data:byte[]) =
-    let raw = Text.Encoding.UTF8.GetString data
-    if not (String.IsNullOrWhiteSpace(raw)) then
-        JsonHelpers.deserialize<Map<string,obj>> raw
-        |> Map.tryFind fieldName
+let tryParseQuery (schema:GraphQL.Schema<Root.Root>) (body:Map<string,obj>) =
+    if body.ContainsKey("query") then
+        match body.["query"] with
+        | :? string as query -> 
+            let varDefs = Variables.parseVariableDefinitions query
+            Some (query, Variables.getVariables schema varDefs body)
+        | _ -> failwith "Failure deserializing repsonse. Could not read query - it is not stringified in request."
     else None
 
 let removeWhitespacesAndLineBreaks (str : string) = 
     str.Trim().Replace("\r\n", " ")
 
-let getResponseContent (jsonSettings:JsonSerializerSettings) (res:GraphQL.Execution.GQLResponse) =
+let getResponseContent (res:GraphQL.Execution.GQLResponse) =
     match res.Content with
     | GraphQL.Execution.Direct (data, errors) ->
         match errors with
-        | [] -> JsonConvert.SerializeObject(data, jsonSettings)
+        | [] -> JsonHelpers.serialize data
         | errors ->
             errors
             |> List.map fst
@@ -42,44 +42,41 @@ let getResponseContent (jsonSettings:JsonSerializerSettings) (res:GraphQL.Execut
 
 let graphql
     (logger:Core.Logger)
-    (jsonSettings:JsonSerializerSettings)
-    (executor:GraphQL.Executor<Root.Root>) 
+    (schema:GraphQL.Schema<Root.Root>) 
     : WebPart =
     fun httpCtx ->
         async {
             try
-                let body = httpCtx.request.rawForm
+                let executor = GraphQL.Executor(schema)
+                let body = 
+                    httpCtx.request.rawForm 
+                    |> tryParseBody
                 let query = 
-                    body 
-                    |> tryParse "query"
-                    |> Option.map (fun o -> o.ToString())
-                logger.Information(sprintf "request query:\n%A" query)
-                let variables = 
-                    body 
-                    |> tryParse "variables"
-                    |> Option.map (fun o -> o.ToString())
-                    |> Option.map JsonHelpers.deserialize<Map<string, obj>>
-                logger.Information(sprintf "request variables:\n%A" variables)
-                match query, variables with
-                | Some qry, Some variables ->
+                    body
+                    |> Option.bind (tryParseQuery schema)
+                match query with
+                | Some (qry, Some variables) ->
+                    logger.Information("request query {Query}", qry)
+                    logger.Information(sprintf "request variables {Variables}", variables)
                     let formattedQry = removeWhitespacesAndLineBreaks qry
                     let root = { Root._empty = None }
                     let! gqlRes = executor.AsyncExecute(formattedQry, root, variables)
-                    let res = getResponseContent jsonSettings gqlRes |> Successful.OK
+                    let res = getResponseContent gqlRes |> Successful.OK
                     return! httpCtx |> res
-                | Some qry, None ->
+                | Some (qry, None) ->
+                    logger.Information("request query {Query}", qry)
                     let formattedQry = removeWhitespacesAndLineBreaks qry
                     let! gqlRes = executor.AsyncExecute(formattedQry)
-                    let res = getResponseContent jsonSettings gqlRes |> Successful.OK
+                    let res = getResponseContent gqlRes |> Successful.OK
                     return! httpCtx |> res
-                | None, _ ->
+                | None ->
                     let! gqlRes = executor.AsyncExecute(GraphQL.Introspection.IntrospectionQuery)
-                    let res = getResponseContent jsonSettings gqlRes |> Successful.OK
+                    let res = getResponseContent gqlRes |> Successful.OK
                     return! httpCtx |> res
             with ex ->
                 let res =
                     {| data = ex.ToString() |}
-                    |> JsonHelpers.serialize jsonSettings
+                    |> JsonHelpers.serialize
                     |> ServerErrors.INTERNAL_ERROR
                 return! httpCtx |> res
         }
@@ -105,17 +102,13 @@ let main _ =
     let mutation = Root.Mutation leaseClient
     let schema = GraphQL.Schema(query, mutation)
     let executor = GraphQL.Executor(schema)
-    let jsonSettings = JsonHelpers.initJsonSerializerSettings()
     let suaveConfig =
         { defaultConfig with
             bindings = [ HttpBinding.createSimple HTTP config.Server.Host config.Server.Port ]}
-    let api = 
-        choose [
-            GET >=> choose [
-                path "/health" >=> Successful.OK "Hello"
-            ]
-            POST >=> setCorsHeaders >=> graphql logger jsonSettings executor >=> Writers.setMimeType "application/json"
-        ]
+    let api = choose [ 
+        path "/health" >=> Successful.OK "Hello" 
+        setCorsHeaders >=> graphql logger schema >=> Writers.setMimeType "application/json" 
+    ]
     logger.Information(sprintf "logging at %s 📝" config.Seq.Url)
     logger.Information("starting GraphQL API 🚀")
     startWebServer suaveConfig api

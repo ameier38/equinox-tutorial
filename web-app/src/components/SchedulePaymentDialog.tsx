@@ -1,107 +1,144 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Theme } from '@material-ui/core/styles'
+import { makeStyles, createStyles } from '@material-ui/styles'
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
+import DateFnsUtils from '@date-io/date-fns'
+import { v4 as uuid } from 'uuid'
+import { useMutation, useQuery, useApolloClient } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
+import { MutationSchedulePaymentArgs } from '../generated/graphql'
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      padding: theme.spacing(1)
+    },
+    textField: {
+      marginLeft: theme.spacing(1),
+      marginRight: theme.spacing(1),
+    },
+    lightPaper: {
+      backgroundColor: theme.palette.grey[600]
+    }
+  })
+)
 
 type SchedulePaymentDialogState = {
-  scheduleDate: Date | null,
-  scheduleAmount: number | string
+  scheduledDate: Date | null,
+  scheduledAmount: number | string
 }
 
 type SchedulePaymentDialogProps = {
-  setAsOfDate: (asOf:AsOfDate) => void,
   leaseId: string,
-  open: boolean,
-  setOpen: (open: boolean) => void
 }
 
-const SchedulePaymentDialog: React.FC<SchedulePaymentDialogProps> =
-  ({ setAsOfDate, leaseId, open, setOpen }) => {
+const SCHEDULE_PAYMENT_DIALOG_OPEN = gql`
+query SchedulePaymentDialogOpen {
+    schedulePaymentDialogOpen @client
+}
+`
+
+const SCHEDULE_PAYMENT = gql`
+mutation SchedulePayment($input: SchedulePaymentInput!){
+  schedulePayment(input: $input)
+}`
+
+export const SchedulePaymentDialog: React.FC<SchedulePaymentDialogProps> = ({ leaseId }) => {
 
     const classes = useStyles()
-
+    const [schedulePayment] = useMutation<string,MutationSchedulePaymentArgs>(SCHEDULE_PAYMENT)
+    const { data } = useQuery(SCHEDULE_PAYMENT_DIALOG_OPEN)
+    const client = useApolloClient()
     const [values, setValues] = useState<SchedulePaymentDialogState>({
-      scheduleDate: new Date(),
-      scheduleAmount: ''
+      scheduledDate: new Date(),
+      scheduledAmount: ''
     })
 
-    const handleScheduleAmountChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-      setValues({...values, scheduleAmount: parseFloat(e.target.value)})
+    const handleScheduledAmountChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+      setValues({...values, scheduledAmount: parseFloat(e.target.value)})
     }
 
-    const handleScheduleDateChange = (date:Date | null) => {
+    const handleScheduledDateChange = (date:Date | null) => {
       if (date) {
-        setValues({...values, scheduleDate: date})
+        setValues({...values, scheduledDate: date})
       }
     }
 
-    const handleSubmit = (schedulePayment:MutationFn<SchedulePaymentResponse,PaymentRequest>) => 
-      () => {
-        if (values.scheduleDate && typeof values.scheduleAmount !== 'string') {
+    const handleSubmit = () => {
+        if (values.scheduledDate && typeof values.scheduledAmount !== 'string') {
           schedulePayment({
             variables: {
-              leaseId,
-              paymentId: uuid(),
-              paymentDate: values.scheduleDate,
-              paymentAmount: values.scheduleAmount
+              input: {
+                leaseId: leaseId,
+                paymentId: uuid(),
+                scheduledDate: values.scheduledDate,
+                scheduledAmount: values.scheduledAmount
+              },
             }
           }).then(() => {
-            setOpen(false)
             let newDate = new Date()
             newDate.setSeconds(newDate.getSeconds() + 10)
-            setAsOfDate({
-              asAt: newDate,
-              asOn: newDate
+            client.writeData({
+                data: {
+                    asAt: newDate,
+                    asOn: newDate,
+                    schedulePaymentDialogOpen: false
+                }
             })
           })
         }
       }
 
     const handleClose = () => {
-      setOpen(false)
+      client.writeData({ data: { schedulePaymentDialogOpen: false } })
     }
 
     return (
-      <Mutation<SchedulePaymentResponse,PaymentRequest>
-        mutation={SCHEDULE_PAYMENT} >
-        {schedulePayment => (
-          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <Dialog open={data.schedulePayemntDialogOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Schedule Payment</DialogTitle>
             <DialogContent>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  className={classes.textField}
-                  required
-                  id='startDate'
-                  label='Payment Date'
-                  format='MM/dd/yyyy'
-                  value={values.scheduleDate}
-                  onChange={handleScheduleDateChange}
-                  margin='normal' />
-              </MuiPickersUtilsProvider>
-              <TextField
-                type='number'
-                className={classes.textField}
-                margin='normal'
-                label="Schedule Amount"
-                value={values.scheduleAmount}
-                onChange={handleScheduleAmountChange}
-                InputProps={{
-                  startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                }} />
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                        className={classes.textField}
+                        required
+                        id='startDate'
+                        label='Scheduled Date'
+                        format='MM/dd/yyyy'
+                        value={values.scheduledDate}
+                        onChange={handleScheduledDateChange}
+                        margin='normal' />
+                </MuiPickersUtilsProvider>
+                <TextField
+                    type='number'
+                    className={classes.textField}
+                    margin='normal'
+                    label="Scheduled Amount"
+                    value={values.scheduledAmount}
+                    onChange={handleScheduledAmountChange}
+                    InputProps={{
+                        startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                    }} />
             </DialogContent>
             <DialogActions>
-              <Button 
-                onClick={handleClose} 
-                color="primary">
-                Cancel
-              </Button>
-              <Button
-                variant='contained'
-                color='primary'
-                onClick={handleSubmit(schedulePayment)}>
-                Schedule Payment
-              </Button>
+                <Button 
+                    onClick={handleClose} 
+                    color="primary">
+                    Cancel
+                </Button>
+                <Button
+                    variant='contained'
+                    color='primary'
+                    onClick={handleSubmit}>
+                    Schedule Payment
+                </Button>
             </DialogActions>
-          </Dialog>
-        )}
-      </Mutation>
+        </Dialog>
     )
   }

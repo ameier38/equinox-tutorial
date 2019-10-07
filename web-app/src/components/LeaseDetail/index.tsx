@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
-import { v4 as uuid } from 'uuid'
 import { 
   GET_LEASE, 
   SCHEDULE_PAYMENT,
@@ -14,24 +13,11 @@ import {
   DeleteLeaseEventResponse,
   LeaseEvent 
 } from './GQL'
-import TextField from '@material-ui/core/TextField'
-import DateFnsUtils from '@date-io/date-fns'
-import { 
-  MuiPickersUtilsProvider, 
-  KeyboardDatePicker
-} from '@material-ui/pickers'
 import grey from '@material-ui/core/colors/grey'
 import Grid from '@material-ui/core/Grid'
-import InputAdornment from '@material-ui/core/InputAdornment'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import MaterialTable from 'material-table'
 import { AsOfDate } from './Types'

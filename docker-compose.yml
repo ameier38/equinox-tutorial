@@ -19,6 +19,8 @@ services:
     build:
       context: ./lease-api
       target: runner
+    ports:
+      - "50051:50051"
     environment:
       SERVER_HOST: '0.0.0.0'
       SERVER_PORT: 50051
@@ -48,16 +50,6 @@ services:
       SEQ_PORT: 5341
     depends_on:
       - lease-api
-  graphql-playground:
-    build:
-      context: ./graphql-playground
-    environment:
-      GRAPHQL_HOST: graphql-api
-      GRAPHQL_PORT: 4000
-    ports:
-      - "3001:3001"
-    depends_on:
-      - graphql-api
   web-app:
     build:
       context: ./web-app

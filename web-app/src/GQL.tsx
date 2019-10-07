@@ -77,21 +77,6 @@ mutation SchedulePayment(
   )
 }`
 
-export const RECEIVE_PAYMENT = gql`
-mutation ReceivePayment(
-  $leaseId: String!,
-  $paymentId: String!,
-  $paymentDate: String!,
-  $paymentAmount: Float!
-){
-  receivePayment(
-    leaseId: $leaseId,
-    paymentId: $paymentId,
-    paymentDate: $paymentDate,
-    paymentAmount: $paymentAmount
-  )
-}`
-
 export const DELETE_LEASE_EVENT = gql`
 mutation DeleteLeaseEvent(
   $leaseId: String!,
@@ -116,10 +101,6 @@ export type PaymentRequest = {
 
 export type SchedulePaymentResponse = {
   schedulePayment: string
-}
-
-export type ReceivePaymentResponse = {
-  receivePayment: string
 }
 
 export type DeleteLeaseEventRequest = {

@@ -7,6 +7,7 @@ open System
 type Store(config:Config) =
     let timeout = TimeSpan.FromSeconds 5.0
     let log = Log.Logger |> Logger.SerilogNormal
+    let creds = EventStore.ClientAPI.SystemData.UserCredentials(config.EventStore.User, config.EventStore.Password)
     let connector = 
         Connector(
             config.EventStore.User, 
@@ -23,6 +24,9 @@ type Store(config:Config) =
 
     member __.Cache with get () = cache
     member __.Context with get () = context
+    member __.ReadStream(streamName, start, count) =
+        conn.ReadConnection.ReadStreamEventsForwardAsync(streamName, start, count, true, creds)
+        |> Async.AwaitTask
 
 type StreamResolver<'event,'state>
     (   store:Store,

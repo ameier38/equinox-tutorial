@@ -47,13 +47,9 @@ module GetLeaseInputDto =
 
 module ListLeasesInputDto =
     let toProto (dto:Types.ListLeasesInputDto) =
-        let asOfDate = 
-            dto.AsOfDate
-            |> AsOfDateInputDto.toProto
         let pageSize = dto.PageSize |> PageSize.defaultValue
         let pageToken = dto.PageToken |> PageToken.defaultValue
         ListLeasesRequest(
-            AsOfDate = asOfDate,
             PageSize = pageSize,
             PageToken = pageToken)
         

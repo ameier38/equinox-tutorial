@@ -2,6 +2,8 @@
 Main client facing API which stitches together the different gRPC APIs.
 
 ## Development
+
+### Setup
 Install the .NET SDK.
 ```shell
 choco install dotnetcore-sdk
@@ -29,12 +31,21 @@ _Windows Powershell_
 $env:PATH += ";C:/Users/<user>/.dotnet/tools"
 ```
 
+Install [GraphQL Playground](https://github.com/prisma-labs/graphql-playground)
+> Used for interactively running queries.
+
+### Updating Protos
+If you have updated the protocol buffers in the [protos sub-repo](../protos),
+first make sure you have generated the compiled code then run the following
+to copy the generated code and rebuild the project.
+```
+fake build -t UpdateProtos
+```
+
 ## Usage
 Start services.
 ```
-docker-compose up -d eventstore
 docker-compose up -d lease-api
-docker-compose up -d graphql-playground
 ```
 
 Start the GraphQL API.

@@ -15,6 +15,9 @@ export const client = new ApolloClient({
 
 cache.writeData({
     data: {
+        asAt: new Date(),
+        asOn: new Date(),
+        createLeaseDialogOpen: false,
         schedulePaymentDialogOpen: false,
         receivePaymentDialogOpen: false
     }

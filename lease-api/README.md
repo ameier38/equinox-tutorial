@@ -27,9 +27,9 @@ choco install -y docker-desktop
 Update the protobuf files and generate the new outputs. 
 See [proto README](../proto/README.md) for instructions.
 
-Then copy the generated files.
+Then copy the generated files and build the Proto project.
 ```
-fake build -t CopyGenerated
+fake build -t UpdateProtos
 ```
 
 ### Testing

@@ -6,9 +6,9 @@ open Grpc.Core
 open Grpc.Core.Testing
 open Grpc.Core.Utils
 open Lease
+open Lease.Operators
 open Lease.Store
 open Lease.Service
-open Lease.Operators
 open Newtonsoft.Json
 open Serilog
 open System
@@ -114,18 +114,22 @@ let terminateLease leaseId termination =
 
 let testPagination =
     test "should successfully paginate" {
-        let items = ["A"; "B"; "C"; "D"]
+        let items = ["A"; "B"; "C"; "D"; "E"]
         let page1 = items |> Pagination.getPage %"" %2
         page1.Page
         |> Seq.toList
         |> Expect.equal "should equal first two elements" ["A"; "B"]
         %page1.NextPageToken
-        |> Expect.equal "should equal encoded 2" ("Index-2" |> String.toBase64)
-        let page2 = items |> Pagination.getPage %"" %5
+        |> Expect.equal "should equal encoded 2" ("index-2" |> String.toBase64)
+        let page2 = items |> Pagination.getPage page1.NextPageToken %2
         page2.Page
         |> Seq.toList
-        |> Expect.equal "should equal full list" items
-        %page2.NextPageToken
+        |> Expect.equal "should equal second two elements" ["C"; "D"]
+        let page3 = items |> Pagination.getPage page2.NextPageToken %2
+        page3.Page
+        |> Seq.toList
+        |> Expect.equal "should equal last element" ["E"]
+        %page3.NextPageToken
         |> Expect.equal "should equal empty string" ""
     }
 

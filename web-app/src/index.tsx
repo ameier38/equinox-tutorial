@@ -1,13 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import ApolloClient from 'apollo-boost'
 import { ApolloProvider } from '@apollo/react-hooks'
 import { ThemeProvider } from '@material-ui/styles'
 import { createMuiTheme } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import purple from '@material-ui/core/colors/purple'
 import './index.css'
-import App from './App'
+import { App } from './components/App'
+import { client } from './apollo'
 import * as serviceWorker from './serviceWorker'
 
 const theme = createMuiTheme({
@@ -15,10 +15,6 @@ const theme = createMuiTheme({
         type: 'dark',
         primary: purple
     }
-})
-
-const client = new ApolloClient({
-    uri: 'http://localhost:4000'
 })
 
 const Root = () => (

@@ -8,6 +8,7 @@ import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
 import LeaseTable from './LeaseTable'
 import LeaseForm from './LeaseForm'
+import { AsOfDate } from '../types'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,12 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-type AsOfDate = {
-  asOn: Date,
-  asAt: Date
-}
-
-export const Root: React.FC = () => {
+export const App: React.FC = () => {
   const classes = useStyles()
   const [formOpen, setFormOpen] = useState(false)
   const [asOfDate, setAsOfDate] = useState<AsOfDate>({

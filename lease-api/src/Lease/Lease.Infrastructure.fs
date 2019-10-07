@@ -22,9 +22,6 @@ type LeaseId = Guid<leaseId>
 [<Measure>] type paymentId
 type PaymentId = Guid<paymentId>
 
-[<Measure>] type terminationId
-type TerminationId = Guid<terminationId>
-
 [<Measure>] type eventId
 type EventId = int<eventId>
 
@@ -123,18 +120,14 @@ module PaymentId =
             RpcException(Status(StatusCode.InvalidArgument, msg))
             |> raise
 
-module TerminationId = 
-    let toStringN (value: TerminationId) = Guid.toStringN %value
-    let parse (x:string) : TerminationId = 
-        match Guid.tryParse x with
-        | Some terminationId -> %terminationId
-        | None -> 
-            let msg = sprintf "could not parse %s into Termination" x
-            RpcException(Status(StatusCode.InvalidArgument, msg))
-            |> raise
+module RpcException =
+    let raiseInternal (msg:string) =
+        RpcException(Status(StatusCode.Internal, msg)) |> raise
+    let raiseAlreadyExists (msg:string) =
+        RpcException(Status(StatusCode.AlreadyExists, msg)) |> raise
 
 module PageToken =
-    let prefix = "Index-"
+    let prefix = "index-"
     let decode (t:PageToken) : int =
         match %t with
         | "" -> 0
@@ -147,6 +140,31 @@ module PageToken =
         sprintf "%s%d" prefix cursor 
         |> String.toBase64
         |> UMX.tag<pageToken>
+
+// ref: https://cloud.google.com/apis/design/design_patterns#list_pagination
+// // pageToken contains the zero-based index of the starting element
+module Pagination =
+    type PageInfo<'T> =
+        { PrevPageToken: PageToken
+          NextPageToken: PageToken
+          Page: seq<'T> }
+    let getPage (pageToken:PageToken) (pageSize:PageSize) (s:seq<'T>) =
+        let start = pageToken |> PageToken.decode
+        let cnt = s |> Seq.length
+        let remaining = cnt - start
+        let toTake = min remaining %pageSize
+        let page = s |> Seq.skip start |> Seq.take toTake
+        let prevPageToken =
+            match start - %pageSize with
+            | c when c <= 0 -> "" |> UMX.tag<pageToken>
+            | c -> c |> PageToken.encode
+        let nextPageToken = 
+            match start + %pageSize with
+            | c when c >= cnt -> "" |> UMX.tag<pageToken>
+            | c -> c |> PageToken.encode
+        { PrevPageToken = prevPageToken
+          NextPageToken = nextPageToken
+          Page = page }
 
 module Operators =
     let (!!) (value:decimal<'u>) = %value |> Money.fromUSD

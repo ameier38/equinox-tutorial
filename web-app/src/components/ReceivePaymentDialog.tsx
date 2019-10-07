@@ -11,9 +11,9 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
 import { v4 as uuid } from 'uuid'
-import { useMutation, useQuery } from '@apollo/react-hooks'
+import { useMutation, useQuery, useApolloClient } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
-import { AsOfDate } from '../types'
+import { MutationReceivePaymentArgs } from '../generated/graphql'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,85 +31,77 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 type ReceivePaymentDialogState = {
-  paymentDate: Date | null,
-  paymentAmount: number | string
+  receivedDate: Date | null,
+  receivedAmount: number | string
 }
 
 type ReceivePaymentDialogProps = {
-  setAsOfDate: (asOf:AsOfDate) => void,
   leaseId: string,
-  open: boolean,
-  setOpen: (open: boolean) => void
 }
+
+const RECEIVE_PAYMENT_DIALOG_OPEN = gql`
+query ReceivePaymentDialogOpen {
+    receivePaymentDialogOpen @client
+}
+`
 
 const RECEIVE_PAYMENT = gql`
-mutation ReceivePayment(
-  $leaseId: String!,
-  $paymentId: String!,
-  $paymentDate: String!,
-  $paymentAmount: Float!
-){
-  receivePayment(
-    leaseId: $leaseId,
-    paymentId: $paymentId,
-    paymentDate: $paymentDate,
-    paymentAmount: $paymentAmount
-  )
+mutation ReceivePayment($input: ReceivePaymentInput!){
+  receivePayment(input: $input)
 }`
 
-type ReceivePaymentResponse = {
-  receivePayment: string
-}
-
-const ReceivePaymentDialog: React.FC<ReceivePaymentDialogProps> =
-  ({ setAsOfDate, leaseId, open, setOpen }) => {
+export const ReceivePaymentDialog: React.FC<ReceivePaymentDialogProps> = ({ leaseId }) => {
 
     const classes = useStyles()
-    const [receivePayment, { data }] = useMutation(RECEIVE_PAYMENT)
-
+    const [receivePayment] = useMutation<string,MutationReceivePaymentArgs>(RECEIVE_PAYMENT)
+    const { data } = useQuery(RECEIVE_PAYMENT_DIALOG_OPEN)
+    const client = useApolloClient()
     const [values, setValues] = useState<ReceivePaymentDialogState>({
-      paymentDate: new Date(),
-      paymentAmount: ''
+      receivedDate: new Date(),
+      receivedAmount: ''
     })
 
-    const handlePaymentAmountChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-      setValues({...values, paymentAmount: parseFloat(e.target.value)})
+    const handleReceivedAmountChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+      setValues({...values, receivedAmount: parseFloat(e.target.value)})
     }
 
-    const handlePaymentDateChange = (date:Date | null) => {
+    const handleReceivedDateChange = (date:Date | null) => {
       if (date) {
-        setValues({...values, paymentDate: date})
+        setValues({...values, receivedDate: date})
       }
     }
 
-    const handleSubmit = (receivePayment:MutationFn<ReceivePaymentResponse,PaymentRequest>) => 
-      () => {
-        if (values.paymentDate && typeof values.paymentAmount !== 'string') {
+    const handleSubmit = () => {
+        if (values.receivedDate && typeof values.receivedAmount !== 'string') {
           receivePayment({
             variables: {
-              leaseId,
-              paymentId: uuid(),
-              paymentDate: values.paymentDate,
-              paymentAmount: values.paymentAmount
+              input: {
+                leaseId,
+                paymentId: uuid(),
+                receivedDate: values.receivedDate,
+                receivedAmount: values.receivedAmount
+              },
             }
           }).then(() => {
-            setOpen(false)
             let newDate = new Date()
             newDate.setSeconds(newDate.getSeconds() + 10)
-            setAsOfDate({
-              asAt: newDate,
-              asOn: newDate
+            client.writeData({
+                data: {
+                    asAt: newDate,
+                    asOn: newDate,
+                    receivePaymentDialogOpen: false
+                }
             })
           })
         }
       }
 
     const handleClose = () => {
-      setOpen(false)
+        client.writeData({ data: { receivePaymentDialogOpen: false } })
     }
 
     return (
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog open={data.receivePaymentDialogOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Receive Payment</DialogTitle>
         <DialogContent>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -117,18 +109,18 @@ const ReceivePaymentDialog: React.FC<ReceivePaymentDialogProps> =
               className={classes.textField}
               required
               id='startDate'
-              label='Payment Date'
+              label='Received Date'
               format='MM/dd/yyyy'
-              value={values.paymentDate}
-              onChange={handlePaymentDateChange}
+              value={values.receivedDate}
+              onChange={handleReceivedDateChange}
               margin='normal' />
           </MuiPickersUtilsProvider>
           <TextField
             className={classes.textField}
             margin='normal'
-            label="Payment Amount"
-            value={values.paymentAmount}
-            onChange={handlePaymentAmountChange}
+            label="Received Amount"
+            value={values.receivedAmount}
+            onChange={handleReceivedAmountChange}
             InputProps={{
               startAdornment: <InputAdornment position="start">$</InputAdornment>,
             }} />
@@ -142,7 +134,7 @@ const ReceivePaymentDialog: React.FC<ReceivePaymentDialogProps> =
           <Button
             variant='contained'
             color='primary'
-            onClick={handleSubmit(receivePayment)}>
+            onClick={handleSubmit}>
             Receive Payment
           </Button>
         </DialogActions>

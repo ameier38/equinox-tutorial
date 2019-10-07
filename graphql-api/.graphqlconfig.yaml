@@ -3,4 +3,4 @@ projects:
     schemaPath: schema.graphql
     extensions:
       endpoints:
-        dev: 'http://${env:GRAPHQL_HOST}:${env:GRAPHQL_PORT}'
+        dev: 'http://localhost:4000'

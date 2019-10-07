@@ -1,0 +1,9 @@
+# Set all line endings to LF except Windows scripts
+* text=auto eol=lf
+*.{cmd,[cC][mM][dD]} text eol=crlf
+*.{bat,[bB][aA][tT]} text eol=crlf
+
+# Don't modify binary files
+*.png binary
+*.jpg binary
+*.jpeg binary

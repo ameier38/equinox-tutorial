@@ -6,8 +6,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Server.Config.fs" />
+    <Compile Include="Server.Infrastructure.fs" />
     <Compile Include="Server.Root.fs" />
-    <Compile Include="Server.JsonConverters.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>

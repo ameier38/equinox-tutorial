@@ -8,27 +8,6 @@ open Grpc.Core
 open Serilog.Core
 open System.Threading.Tasks
 
-// ref: https://cloud.google.com/apis/design/design_patterns#list_pagination
-// pageToken contains the zero-based index of the starting element
-module Pagination =
-    let getPage (pageToken:PageToken) (pageSize:PageSize) (s:seq<'T>) =
-        let start = pageToken |> PageToken.decode
-        let cnt = s |> Seq.length
-        let remaining = cnt - start
-        let toTake = min remaining %pageSize
-        let page = s |> Seq.skip start |> Seq.take toTake
-        let prevPageToken =
-            match start - %pageSize with
-            | c when c <= 0 -> "" |> UMX.tag<pageToken>
-            | c -> c |> PageToken.encode
-        let nextPageToken = 
-            match start + %pageSize with
-            | c when c >= cnt -> "" |> UMX.tag<pageToken>
-            | c -> c |> PageToken.encode
-        {| PrevPageToken = prevPageToken
-           NextPageToken = nextPageToken
-           Page = page |}
-
 module AsOfDate =
     let fromProto (proto:Tutorial.Lease.V1.AsOfDate) =
         { AsAt = %proto.AsAtTime.ToDateTime()
@@ -115,18 +94,9 @@ type LeaseAPIImpl
 
     let leaseResolver = StreamResolver(store, codec, "Lease", Aggregate.foldLeaseStream, Aggregate.initialLeaseStream)
     let leaseEventListResolver = StreamResolver(store, codec, "LeaseEventList", Aggregate.foldLeaseEventList, [])
-    let leaseCreatedListResolver = StreamResolver(store, codec, "LeaseCreatedList", Aggregate.foldLeaseList, [])
-    let leaseCreatedListStreamId = Equinox.StreamName("LeaseCreated")
-    let leaseCreatedListStream = Equinox.Stream(logger, leaseCreatedListResolver.Resolve leaseCreatedListStreamId, 3)
     let (|LeaseStreamId|) (leaseId: LeaseId) = Equinox.AggregateId("Lease", LeaseId.toStringN leaseId)
     let (|LeaseStream|) (LeaseStreamId leaseId) = Equinox.Stream(logger, leaseResolver.Resolve leaseId, 3)
     let (|LeaseEventListStream|) (LeaseStreamId leaseId) = Equinox.Stream(logger, leaseEventListResolver.Resolve leaseId, 3)
-    let listLeases (asOfDate:AsOfDate) =
-        leaseCreatedListStream.Query(fun leaseCreatedList ->
-            leaseCreatedList
-            |> List.filter (fun (ctx, _) ->
-                (ctx.EventCreatedTime <= asOfDate.AsAt) && (ctx.EventEffectiveDate <= asOfDate.AsOn))
-            |> List.map snd)
     let listLeaseEvents (LeaseEventListStream stream) (asOf:AsOfDate) =
         stream.Query(fun leaseEventList -> 
             leaseEventList 
@@ -154,18 +124,37 @@ type LeaseAPIImpl
         : Task<Tutorial.Lease.V1.ListLeasesResponse> =
         async {
             logger.Debug(sprintf "received req: %A" req)
-            let asOfDate = req.AsOfDate |> AsOfDate.fromProto
-            let pageSize = req.PageSize |> UMX.tag<pageSize>
             let pageToken = req.PageToken |> UMX.tag<pageToken>
-            let! leases = listLeases asOfDate
-            let totalCount = leases |> List.length
-            let pageInfo = leases |> Pagination.getPage pageToken pageSize
+            let streamStart = pageToken |> PageToken.decode |> int64
+            let! streamSlice = store.ReadStream("LeaseCreated", streamStart, req.PageSize)
+            let totalCount = streamSlice.LastEventNumber + 1L |> int
+            let prevPageToken =
+                match (streamStart |> int) - req.PageSize with
+                | c when c <= 0 -> "" |> UMX.tag<pageToken>
+                | c -> c |> PageToken.encode
+            let nextPageToken = 
+                if streamSlice.IsEndOfStream then "" |> UMX.tag<pageToken> 
+                else streamSlice.NextEventNumber |> int |> PageToken.encode
+            let tryDecode (resolvedEvent:EventStore.ClientAPI.ResolvedEvent) =
+                resolvedEvent
+                |> Equinox.EventStore.UnionEncoderAdapters.encodedEventOfResolvedEvent
+                |> codec.TryDecode
+            let tryGetLeaseCreated = function
+                | LeaseEvent.LeaseCreated (_, lease) -> Some lease
+                | _ -> None
+            let leases =
+                streamSlice.Events
+                |> Seq.choose (
+                    tryDecode 
+                    >> Option.bind Aggregate.StoredEvent.tryToLeaseEvent
+                    >> Option.bind tryGetLeaseCreated)
+                |> Seq.map Lease.toProto
             let res = 
                 Tutorial.Lease.V1.ListLeasesResponse(
-                    PrevPageToken = %pageInfo.PrevPageToken,
-                    NextPageToken = %pageInfo.NextPageToken,
+                    PrevPageToken = %prevPageToken,
+                    NextPageToken = %nextPageToken,
                     TotalCount = totalCount)
-            res.Leases.AddRange(pageInfo.Page |> Seq.map Lease.toProto)
+            res.Leases.AddRange(leases)
             return res
         } |> Async.StartAsTask
 
@@ -179,14 +168,9 @@ type LeaseAPIImpl
             let pageToken = req.PageToken |> UMX.tag<pageToken>
             let! leaseEvents = listLeaseEvents leaseId asOfDate
             let totalCount = leaseEvents |> List.length
-            if totalCount = 0 then
-                let msg = sprintf "could not find Lease-%s" req.LeaseId
-                RpcException(Status(StatusCode.NotFound, msg))
-                |> raise
             let pageInfo = leaseEvents |> Pagination.getPage pageToken pageSize
             let res = 
                 Tutorial.Lease.V1.ListLeaseEventsResponse(
-                    PrevPageToken = %pageInfo.PrevPageToken,
                     NextPageToken = %pageInfo.NextPageToken,
                     TotalCount = totalCount)
             res.Events.AddRange(pageInfo.Page |> Seq.map (LeaseEvent.toProto codec))

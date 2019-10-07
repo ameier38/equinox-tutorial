@@ -56,4 +56,6 @@ RUN git clone https://github.com/googleapis/googleapis.git ${PROTOTOOL_PROTOC_WK
 COPY ./entrypoint.sh /usr/bin/prototool-action
 RUN chmod +x /usr/bin/prototool-action
 
+WORKDIR /work
+
 ENTRYPOINT [ "prototool-action" ]
