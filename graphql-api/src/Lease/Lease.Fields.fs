@@ -85,6 +85,8 @@ let LeaseObservationType =
         description = "Observation of a lease as of a particular date",
         fields = [
             Define.AutoField("lease", LeaseType)
+            Define.Field("createdTime", Date, fun _ obs -> obs.CreatedTime.ToDateTime())
+            Define.Field("updatedTime", Date, fun _ obs -> obs.UpdatedTime.ToDateTime())
             Define.Field("totalScheduled", Float, fun _ obs -> obs.TotalScheduled.DecimalValue |> float)
             Define.Field("totalPaid", Float, fun _ obs -> obs.TotalPaid.DecimalValue |> float)
             Define.Field("amountDue", Float, fun _ obs -> obs.AmountDue.DecimalValue |> float)

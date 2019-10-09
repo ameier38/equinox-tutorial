@@ -3,19 +3,18 @@ namespace Lease
 open System
 
 type AsOfDate =
-    { AsAt: EventCreatedTime 
+    { AsAt: EventCreatedAt 
       AsOn: EventEffectiveDate }
 
 type EventContext =
     { EventId: EventId 
-      EventCreatedTime: EventCreatedTime 
+      EventCreatedAt: EventCreatedTime 
       EventEffectiveDate: EventEffectiveDate }
 
 type Lease =
     { LeaseId: LeaseId 
       UserId: UserId 
-      StartDate: DateTime 
-      MaturityDate: DateTime 
+      CreatedOn: DateTime 
       MonthlyPaymentAmount: MonthlyPaymentAmount }
 
 type ScheduledPayment =
@@ -62,8 +61,8 @@ type LeaseStatus =
 
 type LeaseObservation =
     { Lease: Lease
-      CreatedTime: EventCreatedTime
-      UpdatedTime: EventCreatedTime
+      CreatedAt: EventCreatedTime
+      UpdatedAt: EventCreatedTime
       TotalScheduled: USD
       TotalPaid: USD
       AmountDue: USD

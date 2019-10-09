@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import gql from 'graphql-tag'
-import { useMutation, useQuery, useApolloClient } from '@apollo/react-hooks'
+import { useMutation, useQuery } from 'graphql-hooks'
 import { Theme } from '@material-ui/core/styles'
 import { makeStyles, createStyles } from '@material-ui/styles'
 import { v4 as uuid } from 'uuid'
@@ -19,7 +18,7 @@ import {
 import { 
     Lease,
     MutationCreateLeaseArgs 
-} from '../generated/graphql';
+} from '../../generated/graphql';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,35 +29,37 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const CREATE_LEASE = gql`
+const CREATE_LEASE = `
 mutation CreateLease($input: CreateLeaseInput!){
   createLease(input: $input)
 }`
 
-const CREATE_LEASE_DIALOG_OPEN = gql`
-query CreateLeaseDialogOpen {
-    createLeaseDialogOpen @client
+type CreateLeaseDialogProps = {
+    open: boolean,
+    setOpen: (open:boolean) => void,
+    refetch: () => Promise<any>
 }
-`
 
-export const CreateLeaseDialog: React.FC = () => {
+export const CreateLeaseDialog: React.FC<CreateLeaseDialogProps> = ({
+    open,
+    setOpen,
+    refetch
+}) => {
 
     const addMonths = (d:Date, months:number) => 
       new Date(d.setMonth(d.getMonth() + months))
 
-    const initState = () => ({
+    const initialState = {
         leaseId: uuid(),
         userId: uuid(),
         startDate: new Date(),
         maturityDate: addMonths(new Date(), 12),
         monthlyPaymentAmount: 0
-    })
+    }
 
     const classes = useStyles()
-    const client = useApolloClient()
-    const [values, setValues] = useState<Lease>(initState())
+    const [values, setValues] = useState<Lease>(initialState)
     const [createLease] = useMutation<string, MutationCreateLeaseArgs>(CREATE_LEASE)
-    const { data } = useQuery(CREATE_LEASE_DIALOG_OPEN)
 
     const handleChange = (name: keyof Lease) => 
       (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,7 +72,8 @@ export const CreateLeaseDialog: React.FC = () => {
       }
 
     const handleClose = () => {
-        client.writeData({ data: { createLeaseDialogOpen: false } })
+        setOpen(false)
+        setValues(initialState)
     }
 
     const handleSubmit = () => {
@@ -80,20 +82,14 @@ export const CreateLeaseDialog: React.FC = () => {
                 input: values 
             }
         }).then(() => {
-            let newDate = new Date()
-            newDate.setSeconds(newDate.getSeconds() + 10)
-            client.writeData({
-                data: {
-                    asAt: newDate,
-                    asOn: newDate,
-                    createLeaseDialogOpen: false
-                }
-            })
+            refetch()
+            setOpen(false)
+            setValues(initialState)
         })
       }
 
     return (
-          <Dialog open={data.createLeaseDialogOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
+          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Create Lease</DialogTitle>
             <DialogContent>
               <Grid container>

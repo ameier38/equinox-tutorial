@@ -11,9 +11,9 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
 import { v4 as uuid } from 'uuid'
-import { useMutation, useQuery, useApolloClient } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
-import { MutationReceivePaymentArgs } from '../generated/graphql'
+import { useMutation } from 'graphql-hooks'
+import { MutationReceivePaymentArgs } from '../../generated/graphql'
+import moment from 'moment'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,27 +37,25 @@ type ReceivePaymentDialogState = {
 
 type ReceivePaymentDialogProps = {
   leaseId: string,
+  open: boolean,
+  setOpen: (open:boolean) => void,
 }
 
-const RECEIVE_PAYMENT_DIALOG_OPEN = gql`
-query ReceivePaymentDialogOpen {
-    receivePaymentDialogOpen @client
-}
-`
-
-const RECEIVE_PAYMENT = gql`
+const RECEIVE_PAYMENT = `
 mutation ReceivePayment($input: ReceivePaymentInput!){
   receivePayment(input: $input)
 }`
 
-export const ReceivePaymentDialog: React.FC<ReceivePaymentDialogProps> = ({ leaseId }) => {
+export const ReceivePaymentDialog: React.FC<ReceivePaymentDialogProps> = ({ 
+    leaseId,
+    open,
+    setOpen
+}) => {
 
     const classes = useStyles()
     const [receivePayment] = useMutation<string,MutationReceivePaymentArgs>(RECEIVE_PAYMENT)
-    const { data } = useQuery(RECEIVE_PAYMENT_DIALOG_OPEN)
-    const client = useApolloClient()
     const [values, setValues] = useState<ReceivePaymentDialogState>({
-      receivedDate: new Date(),
+      receivedDate: moment.utc().toDate(),
       receivedAmount: ''
     })
 
@@ -73,35 +71,27 @@ export const ReceivePaymentDialog: React.FC<ReceivePaymentDialogProps> = ({ leas
 
     const handleSubmit = () => {
         if (values.receivedDate && typeof values.receivedAmount !== 'string') {
-          receivePayment({
-            variables: {
-              input: {
-                leaseId,
-                paymentId: uuid(),
-                receivedDate: values.receivedDate,
-                receivedAmount: values.receivedAmount
-              },
-            }
-          }).then(() => {
-            let newDate = new Date()
-            newDate.setSeconds(newDate.getSeconds() + 10)
-            client.writeData({
-                data: {
-                    asAt: newDate,
-                    asOn: newDate,
-                    receivePaymentDialogOpen: false
+            receivePayment({
+                variables: {
+                    input: {
+                        leaseId,
+                        paymentId: uuid(),
+                        receivedDate: values.receivedDate,
+                        receivedAmount: values.receivedAmount
+                    },
                 }
+            }).then(() => {
+                setOpen(false)
             })
-          })
         }
       }
 
     const handleClose = () => {
-        client.writeData({ data: { receivePaymentDialogOpen: false } })
+        setOpen(false)
     }
 
     return (
-      <Dialog open={data.receivePaymentDialogOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Receive Payment</DialogTitle>
         <DialogContent>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>

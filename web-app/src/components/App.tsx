@@ -1,66 +1,51 @@
-import React, { useState } from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
-import Container from '@material-ui/core/Container'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
-import Fab from '@material-ui/core/Fab'
-import AddIcon from '@material-ui/icons/Add'
-import LeaseTable from './LeaseTable'
-import LeaseForm from './LeaseForm'
-import { AsOfDate } from '../types'
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom'
+import { makeStyles, createStyles } from '@material-ui/core/styles'
+import { 
+    Container,
+    AppBar,
+    Toolbar,
+    Typography,
+    Button
+} from '@material-ui/core'
+import { LeaseSummary } from './LeaseSummary'
+import { LeaseDetail } from './LeaseDetail'
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     container: {
       paddingTop: 20,
     },
-    fab: {
-      position: 'fixed',
-      right: 10,
-      bottom: 10,
-      zIndex: 2000,
-    }
   })
 )
 
+const TitleButton: React.FC = () => {
+    const history = useHistory()
+    return (
+        <Button onClick={() => history.push('/')}>
+            <Typography variant="h6" color="inherit">
+                Equinox Tutorial
+            </Typography>
+        </Button>
+    )
+}
+
 export const App: React.FC = () => {
-  const classes = useStyles()
-  const [formOpen, setFormOpen] = useState(false)
-  const [asOfDate, setAsOfDate] = useState<AsOfDate>({
-    asAt: new Date(),
-    asOn: new Date()
-  })
+    const classes = useStyles()
 
-  const handleFabClick = () => {
-    setFormOpen(!formOpen)
-  }
-
-  return (
-    <>
-      <AppBar position="static" color="primary">
-        <Toolbar>
-          <Typography variant="h6" color="inherit">
-            Equinox Tutorial
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Container className={classes.container} maxWidth="lg">
-        <LeaseTable
-          asOfDate={asOfDate}
-          setAsOfDate={setAsOfDate} />
-        <LeaseForm
-          setAsOfDate={setAsOfDate}
-          open={formOpen}
-          setOpen={setFormOpen} />
-        <Fab 
-          color="primary" 
-          aria-label="Add" 
-          className={classes.fab}
-          onClick={handleFabClick}>
-          <AddIcon />
-        </Fab>
-      </Container>
-    </>
-  )
+    return (
+        <Router>
+            <AppBar position="static" color="primary">
+                <Toolbar>
+                    <TitleButton />
+                </Toolbar>
+            </AppBar>
+            <Container className={classes.container} maxWidth="lg">
+                <Switch>
+                    <Route exact path='/' component={LeaseSummary} />
+                    <Route path='/:leaseId' component={LeaseDetail} />
+                </Switch>
+            </Container>
+        </Router>
+    )
 }

@@ -1,77 +1,123 @@
-import React, { useState } from 'react'
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
+import React, { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import { useManualQuery, useQuery } from 'graphql-hooks'
+import Plot from 'react-plotly.js'
+import { LinearProgress, CircularProgress } from '@material-ui/core'
+import { AsOfDateSlider } from './AsOfDateSlider'
+import { CommandPanel } from './CommandPanel'
+import { LeaseEventTable } from './LeaseEventTable'
+import { ReceivePaymentDialog } from './ReceivePaymentDialog'
+import { SchedulePaymentDialog } from './SchedulePaymentDialog'
 import { 
-  GET_LEASE, 
-  SCHEDULE_PAYMENT,
-  RECEIVE_PAYMENT,
-  DELETE_LEASE_EVENT,
-  GetLeaseResponse, 
-  PaymentRequest,
-  SchedulePaymentResponse,
-  ReceivePaymentResponse,
-  DeleteLeaseEventRequest,
-  DeleteLeaseEventResponse,
-  LeaseEvent 
-} from './GQL'
-import grey from '@material-ui/core/colors/grey'
-import Grid from '@material-ui/core/Grid'
-import Card from '@material-ui/core/Card'
-import CardActions from '@material-ui/core/CardActions'
-import CardContent from '@material-ui/core/CardContent'
-import LinearProgress from '@material-ui/core/LinearProgress'
-import MaterialTable from 'material-table'
-import { AsOfDate } from './Types'
+    Query, 
+    QueryGetLeaseArgs, 
+    AsOfDate,
+    QueryListLeaseEventsArgs
+} from '../../generated/graphql'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      padding: theme.spacing(1)
-    },
-    textField: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
-    },
-    lightPaper: {
-      backgroundColor: theme.palette.grey[600]
+const GET_LEASE = `
+query GetLease($input: GetLeaseInput!) {
+    getLease(input: $input) {
+        lease {
+            startDate
+            maturityDate
+        }
+        createdTime
+        updatedTime
+        totalScheduled
+        totalPaid
+        amountDue
+        leaseStatus
     }
-  })
-)
+}`
 
-const moneyFormatter = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-})
+const LIST_LEASE_EVENTS = `
+query ListLeaseEvents($input: ListLeaseEventsInput!) {
+    listLeaseEvents(input: $input) {
+        events {
+            eventId
+            eventCreatedTime
+            eventEffectiveDate
+            eventType
+            eventPayload
+        }
+        prevPageToken
+        nextPageToken
+        totalCount
+    }
+}`
 
-type LeaseDetailPanelProps = {
-    setAsOfDate: (asOf:AsOfDate) => void,
-    asOfDate: AsOfDate,
-    leaseId: string
-}
+type RouteParams = { leaseId: string }
 
-const LeaseDetailPanel: React.FC<LeaseDetailPanelProps> = 
-  ({ setAsOfDate, asOfDate, leaseId }) => {
+export const LeaseDetail = () => {
+    const { leaseId } = useParams<RouteParams>()
+    const [asAt, setAsAt] = useState(new Date())
+    const [asOn, setAsOn] = useState(new Date())
+    const [pageSize, setPageSize] = useState(5)
+    const [pageToken, setPageToken] = useState("")
+    const [schedulePaymentDialogOpen, setSchedulePaymentDialogOpen] = useState(false)
+    const [receivePaymentDialogOpen, setReceivePaymentDialogOpen] = useState(false)
+    const [fetchLease, { data, loading, error }] = useManualQuery<Query,QueryGetLeaseArgs>(
+        GET_LEASE,
+        { variables: { input: { leaseId }}})
+    const listLeaseEventsResult = useQuery<Query,QueryListLeaseEventsArgs>(
+        LIST_LEASE_EVENTS,
+        { variables: { input: { leaseId, pageSize, pageToken } } })
 
-    const classes = useStyles()
+    const xData = data ? [
+        data.getLease.totalScheduled,
+        data.getLease.totalPaid,
+        data.getLease.amountDue
+    ] : []
+    const yData = data ? [
+        'Total Scheduled',
+        'Total Paid',
+        'Amount Due'
+    ] : []
 
-    if (loading) return <LinearProgress />
-    if (error) return `Error!: ${error.message}`
+    useEffect(() => {
+        fetchLease()
+    }, [asAt, asOn])
+
+    if (error) return <p>{JSON.stringify(error)}</p>
+
     return (
-            if (data) {
-              return(
-                <div className={classes.root}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                      <LeaseEventTable 
-                        leaseId={leaseId} 
-                        leaseEvents={data.getLease.listEvents.events} />
-                    </Grid>
-                  </Grid>
-                </div>
-              )
-            }          
-          }}
-      </Query>
+        <React.Fragment>
+            {/* {loading || (!leaseData) ? 
+                <React.Fragment>
+                    <Plot
+                        data={[
+                            { type: 'bar', x: xData, y: yData }
+                        ]}
+                        layout={{ width: 300, height: 300, title: leaseId }} />
+                </React.Fragment>
+                : <CircularProgress />} */}
+            {loading || !data ? <LinearProgress /> : 
+                <AsOfDateSlider 
+                    startDate={new Date(data.getLease.lease.startDate)}
+                    updatedTime={new Date(data.getLease.updatedTime)}
+                    asAt={asAt}
+                    setAsAt={setAsAt}
+                    asOn={asOn}
+                    setAsOn={setAsOn} /> 
+            }
+            <CommandPanel
+                setReceivePaymentDialogOpen={setReceivePaymentDialogOpen}
+                setSchedulePaymentDialogOpen={setSchedulePaymentDialogOpen} />
+            <LeaseEventTable 
+                leaseId={leaseId}
+                setPageSize={setPageSize}
+                setPageToken={setPageToken}
+                pageSize={pageSize}
+                listLeaseEventsResult={listLeaseEventsResult} />
+            <ReceivePaymentDialog 
+                leaseId={leaseId}
+                open={receivePaymentDialogOpen}
+                setOpen={setReceivePaymentDialogOpen} />
+            <SchedulePaymentDialog 
+                leaseId={leaseId}
+                open={schedulePaymentDialogOpen}
+                setOpen={setSchedulePaymentDialogOpen} />
+        </React.Fragment>
     )
-  }
-
-export default LeaseDetailPanel
+}

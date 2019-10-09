@@ -1,109 +1,142 @@
 import React, { useState } from 'react'
-import gql from 'graphql-tag'
-import { useQuery, useMutation } from '@apollo/react-hooks'
-import MaterialTable, { Column } from 'material-table'
-import { LinearProgress } from '@material-ui/core'
+import { useHistory } from 'react-router'
+import { useMutation, UseQueryResult } from 'graphql-hooks'
+import { 
+    IconButton,
+    LinearProgress,
+    Paper,
+    Table,
+    TableHead,
+    TableBody,
+    TableRow,
+    TableCell,
+    TableFooter,
+    TablePagination
+} from '@material-ui/core'
+import { Delete } from '@material-ui/icons'
+import { makeStyles, createStyles } from '@material-ui/core/styles'
 import { grey } from '@material-ui/core/colors'
 import {
     Query,
     LeaseEvent,
     MutationDeleteLeaseEventArgs,
-    ListLeaseEventsInput
+    QueryListLeaseEventsArgs
 } from '../../generated/graphql'
 
-const LIST_LEASE_EVENTS = gql`
-query ListLeaseEvents($input: ListLeaseEventsInput!) {
-    listLeaseEvents(input: $input) {
-        events {
-            eventId
-            eventCreatedTime
-            eventEffectiveDate
-            eventType
-        }
-        prevPageToken
-        nextPageToken
-        totalCount
-    }
-}`
+const useStyles = makeStyles(() =>
+  createStyles({
+    tableRoot: {
+      margin: 10,
+    },
+  })
+)
 
-const DELETE_LEASE_EVENT = gql`
+const DELETE_LEASE_EVENT = `
 mutation DeleteLeaseEvent($input: DeleteLeaseEventInput) {
     deleteLeaseEvent(input: $input)
 }`
 
-type LeaseEventTableProps = {
-  leaseId: string,
-  leaseEvents: LeaseEvent[]
+type Column = {
+    title: string,
+    field: keyof LeaseEvent,
 }
 
-export const LeaseEventTable: React.FC<LeaseEventTableProps> = ({ leaseId }) => {
+type LeaseEventTableProps = {
+    leaseId: string,
+    setPageToken: (pageToken:string) => void,
+    setPageSize: (pageSize:number) => void,
+    pageSize: number,
+    listLeaseEventsResult: UseQueryResult<Query,QueryListLeaseEventsArgs>
+}
 
-    const [page, setPage] = useState(1)
-    const [pageSize, setPageSize] = useState(5)
-    const [pageToken, setPageToken] = useState("")
-    const [prevPageToken, setPrevPageToken] = useState("")
-    const [nextPageToken, setNextPageToken] = useState("")
-    const { data, loading, error } = useQuery<Query,ListLeaseEventsInput>(
-        LIST_LEASE_EVENTS,
-        { variables: { leaseId, pageSize, pageToken } })
+export const LeaseEventTable: React.FC<LeaseEventTableProps> = ({ 
+    leaseId,
+    setPageSize,
+    setPageToken,
+    pageSize,
+    listLeaseEventsResult
+}) => {
+    const classes = useStyles()
+    const [page, setPage] = useState(0)
     const [deleteLeaseEvent] = useMutation<string,MutationDeleteLeaseEventArgs>(DELETE_LEASE_EVENT)
+    let { data, loading, error, refetch } = listLeaseEventsResult
 
-    const columns: Column<LeaseEvent>[] = [
+    const columns: Column[] = [
         { title: "Event ID", field: "eventId"},
         { title: "Event Created Time", field: "eventCreatedTime"},
         { title: "Event Effective Date", field: "eventEffectiveDate"},
-        { title: "Event Type", field: "eventType"}
+        { title: "Event Type", field: "eventType"},
     ]
 
-    const handleChangePage = (newPage:number) => {
+    const handleChangePage = (prevToken:string, nextToken:string) => (evt:unknown, newPage:number) => {
       if (newPage > page) {
         setPage(newPage)
-        setPageToken(nextPageToken)
+        setPageToken(nextToken)
       }
       else {
         setPage(newPage)
-        setPageToken(prevPageToken)
+        setPageToken(prevToken)
       }
     }
 
-    const handleChangeRowsPerPage = (newPageSize:number) => {
-      setPageSize(newPageSize)
+    const handleChangeRowsPerPage = (evt:React.ChangeEvent<HTMLInputElement>) => {
+      setPageSize(+evt.target.value)
     }
 
+    const handleDeleteLeaseEvent = (eventId:number) => {
+        deleteLeaseEvent({
+            variables: {
+                input: {
+                    leaseId,
+                    eventId
+                }
+            }
+        }).then(() => {
+            return refetch()
+        })
+    }
 
     if (loading) return <LinearProgress />
-    if (error) return (<p>`Error!: ${error.message}`</p>)
-    if (data) {
-        setPrevPageToken(data.listLeases.prevPageToken)
-        setNextPageToken(data.listLeases.nextPageToken)
-    }
+    if (error) return (<p>`Error!: ${error}`</p>)
     return (
-        <MaterialTable
-            title="Lease Events"
-            style={{
-                backgroundColor: grey[600],
-                padding: 10,
-            }}
-            columns={columns}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-            data={data ? data.listLeaseEvents.events : []}
-            options={{
-                search: false,
-                headerStyle: {
-                    backgroundColor: grey[600],
-                },
-            }}
-            editable={{
-                onRowDelete: row =>
-                    deleteLeaseEvent({
-                        variables: {
-                            input: {
-                                leaseId,
-                                eventId: row.eventId
-                            }
-                        }
-                    }).then()
-            }} />
+        <Paper className={classes.tableRoot}>
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Delete</TableCell>
+                        {columns.map((col, idx) => (
+                            <TableCell key={idx} align='center'>{col.title}</TableCell>
+                        ))}
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {data.listLeaseEvents.events.map((event, rIdx) => (
+                        <TableRow key={rIdx} >
+                            <TableCell 
+                                onClick={() => deleteLeaseEvent({ 
+                                    variables: { input: { leaseId, eventId: event.eventId } } })}>
+                                <IconButton>
+                                    <Delete />
+                                </IconButton>
+                            </TableCell>
+                            {columns.map((col, cIdx) => (
+                                <TableCell key={cIdx} align='center'>{event[col.field]}</TableCell>
+                            ))}
+                        </TableRow>
+                    ))}
+                </TableBody>
+                <TableFooter>
+                    <TableRow>
+                        <TablePagination
+                            rowsPerPageOptions={[5, 10, 20]}
+                            count={data.listLeaseEvents.totalCount}
+                            page={page}
+                            rowsPerPage={pageSize}
+                            onChangePage={handleChangePage(data.listLeaseEvents.prevPageToken, data.listLeaseEvents.nextPageToken)}
+                            onChangeRowsPerPage={handleChangeRowsPerPage} />
+                    </TableRow>
+                </TableFooter>
+            </Table>
+        </Paper>
     )
 }

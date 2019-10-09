@@ -1,14 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { ApolloProvider } from '@apollo/react-hooks'
+import { GraphQLClient, ClientContext } from 'graphql-hooks'
 import { ThemeProvider } from '@material-ui/styles'
 import { createMuiTheme } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import purple from '@material-ui/core/colors/purple'
 import './index.css'
-import { App } from './components/App'
-import { client } from './apollo'
+import * as config from './config'
 import * as serviceWorker from './serviceWorker'
+import { App } from './components/App'
 
 const theme = createMuiTheme({
     palette: {
@@ -17,12 +17,16 @@ const theme = createMuiTheme({
     }
 })
 
+const client = new GraphQLClient({
+    url: config.GraphQLConfig.url
+})
+
 const Root = () => (
     <ThemeProvider theme={theme}>
-        <ApolloProvider client={client}>
+        <ClientContext.Provider value={client}>
             <CssBaseline />
             <App />
-        </ApolloProvider>
+        </ClientContext.Provider>
     </ThemeProvider>
 )
 

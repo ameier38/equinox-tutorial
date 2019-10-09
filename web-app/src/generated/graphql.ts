@@ -83,10 +83,12 @@ export type LeaseEvent = {
 export type LeaseObservation = {
    __typename?: 'LeaseObservation',
   amountDue: Scalars['Float'],
+  createdTime: Scalars['Date'],
   lease: Lease,
   leaseStatus: LeaseStatus,
   totalPaid: Scalars['Float'],
   totalScheduled: Scalars['Float'],
+  updatedTime: Scalars['Date'],
 };
 
 /** Status of the lease */

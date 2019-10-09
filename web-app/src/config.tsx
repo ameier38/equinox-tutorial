@@ -1,9 +1,7 @@
-const {
-    REACT_APP_GRAPHQL_PROTOCOL: graphQLProtocol,
-    REACT_APP_GRAPHQL_HOST: graphQLHost,
-    REACT_APP_GRAPHQL_PORT: graphQLPort
-} = process.env
+const graphQLProtocol = process.env.REACT_APP_GRAPHQL_PROTOCOL || 'http'
+const graphQLHost = process.env.REACT_APP_GRAPHQL_HOST || 'localhost'
+const graphQLPort = process.env.REACT_APP_GRAPHQL_PORT || '4000'
 
 export const GraphQLConfig = {
-    uri: `${graphQLProtocol}://${graphQLHost}:${graphQLPort}`
+    url: `${graphQLProtocol}://${graphQLHost}:${graphQLPort}`
 }

@@ -28,14 +28,14 @@ type EventId = int<eventId>
 [<Measure>] type eventType
 type EventType = string<eventType>
 
-[<Measure>] type eventEffectiveDate
-type EventEffectiveDate = DateTime<eventEffectiveDate>
+[<Measure>] type eventEffectiveOn
+type EventEffectiveOn = DateTime<eventEffectiveOn>
 
 [<Measure>] type eventEffectiveOrder
 type EventEffectiveOrder = int<eventEffectiveOrder>
 
-[<Measure>] type eventCreatedTime
-type EventCreatedTime = DateTime<eventCreatedTime>
+[<Measure>] type eventCreatedAt
+type EventCreatedAt = DateTime<eventCreatedAt>
 
 [<Measure>] type pageToken
 type PageToken = string<pageToken>
