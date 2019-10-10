@@ -47,11 +47,11 @@ let serverCtx =
 
 let getLease leaseId asAt asOn =
     async {
-        let asOfDate =
-            Tutorial.Lease.V1.AsOfDate(
+        let asOf =
+            Tutorial.Lease.V1.AsOf(
                 AsAtTime = !@@asAt,
                 AsOnDate = !@asOn)
-        let req = Tutorial.Lease.V1.GetLeaseRequest(LeaseId = leaseId, AsOfDate = asOfDate)
+        let req = Tutorial.Lease.V1.GetLeaseRequest(LeaseId = leaseId, AsOf = asOf)
         let! res = leaseAPI.GetLease(req, serverCtx) |> Async.AwaitTask
         return res.Lease
     }
@@ -59,14 +59,14 @@ let getLease leaseId asAt asOn =
 let getLeaseEvents leaseId asAt asOn =
     let rec recurse pageToken =
         seq {
-            let asOfDate =
-                Tutorial.Lease.V1.AsOfDate(
+            let asOf =
+                Tutorial.Lease.V1.AsOf(
                     AsAtTime = !@@asAt,
                     AsOnDate = !@asOn)
             let req = 
                 Tutorial.Lease.V1.ListLeaseEventsRequest(
                     LeaseId = leaseId, 
-                    AsOfDate = asOfDate,
+                    AsOf = asOf,
                     PageSize = 1,
                     PageToken = pageToken)
             let res = leaseAPI.ListLeaseEvents(req, serverCtx) |> Async.AwaitTask |> Async.RunSynchronously
@@ -138,23 +138,29 @@ let testCreateLease =
         let now = getUtcNow()
         let leaseId = Guid.create()
         let userId = Guid.create()
-        let startDate = DateTime(2019, 1, 1)
+        let commencementDate = DateTime(2019, 1, 1)
+        let expirationDate = DateTime(2019, 12, 31)
         let lease =
             Tutorial.Lease.V1.Lease(
                 LeaseId = leaseId,
                 UserId = userId,
-                StartDate = !@startDate,
-                MaturityDate = !@DateTime(2019, 12, 31),
+                CommencementDate = !@commencementDate,
+                ExpirationDate = !@expirationDate,
                 MonthlyPaymentAmount = !!50.0m)
         let! actualRes = createLease lease
         let expectedRes = sprintf "successfully created Lease-%s" leaseId
         actualRes |> Expect.equal "should equal expected response" expectedRes
-        let! actualLeaseObs = getLease leaseId now startDate
+        let! actualLeaseObs = getLease leaseId now commencementDate
         let expectedLeaseObs =
             Tutorial.Lease.V1.LeaseObservation(
-                Lease = lease,
-                CreatedTime = !@@now,
-                UpdatedTime = !@@now,
+                CreatedAtTime = !@@now,
+                UpdatedAtTime = !@@now,
+                UpdatedOnDate = !@commencementDate,
+                LeaseId = leaseId,
+                UserId = userId,
+                CommencementDate = !@commencementDate,
+                ExpirationDate = !@expirationDate,
+                MonthlyPaymentAmount = !!50.0m,
                 TotalScheduled = !!0m,
                 TotalPaid = !!0m,
                 AmountDue = !!0m,
@@ -169,13 +175,14 @@ let testSchedulePayment =
         let leaseId = Guid.create()
         let userId = Guid.create()
         let s1Id = Guid.create()
-        let startDate = DateTime(2019, 1, 1)
+        let commencementDate = DateTime(2019, 1, 1)
+        let expirationDate = DateTime(2019, 12, 31)
         let lease =
             Tutorial.Lease.V1.Lease(
                 LeaseId = leaseId,
                 UserId = userId,
-                StartDate = !@startDate,
-                MaturityDate = !@DateTime(2019, 12, 31),
+                CommencementDate = !@commencementDate,
+                ExpirationDate = !@expirationDate,
                 MonthlyPaymentAmount = !!50.0m)
         do! createLease lease |> Async.Ignore
         let s1Date = DateTime(2019, 2, 1)
@@ -185,22 +192,32 @@ let testSchedulePayment =
                 ScheduledDate = !@s1Date,
                 ScheduledAmount = !!50m)
         do! schedulePayment leaseId scheduledPayment |> Async.Ignore
-        let! leaseObsAtStart = getLease leaseId now startDate
+        let! leaseObsAtStart = getLease leaseId now commencementDate
         let! leaseObsAtS1 = getLease leaseId now s1Date
         let expectedLeaseObsAtStart =
             Tutorial.Lease.V1.LeaseObservation(
-                Lease = lease,
-                CreatedTime = !@@now,
-                UpdatedTime = !@@now,
+                CreatedAtTime = !@@now,
+                UpdatedAtTime = !@@now,
+                UpdatedOnDate = !@commencementDate,
+                LeaseId = leaseId,
+                UserId = userId,
+                CommencementDate = !@commencementDate,
+                ExpirationDate = !@expirationDate,
+                MonthlyPaymentAmount = !!50.0m,
                 TotalScheduled = !!0m,
                 TotalPaid = !!0m,
                 AmountDue = !!0m,
                 LeaseStatus = Tutorial.Lease.V1.LeaseStatus.Outstanding)
         let expectedLeaseObsAtS1 =
             Tutorial.Lease.V1.LeaseObservation(
-                Lease = lease,
-                CreatedTime = !@@now,
-                UpdatedTime = !@@now,
+                CreatedAtTime = !@@now,
+                UpdatedAtTime = !@@now,
+                UpdatedOnDate = !@s1Date,
+                LeaseId = leaseId,
+                UserId = userId,
+                CommencementDate = !@commencementDate,
+                ExpirationDate = !@expirationDate,
+                MonthlyPaymentAmount = !!50.0m,
                 TotalScheduled = !!50m,
                 TotalPaid = !!0m,
                 AmountDue = !!50m,
@@ -218,13 +235,14 @@ let testReceivePayment =
         let userId = Guid.create()
         let s1Id = Guid.create()
         let p1Id = Guid.create()
-        let startDate = DateTime(2019, 1, 1)
+        let commencementDate = DateTime(2019, 1, 1)
+        let expirationDate = DateTime(2019, 12, 31)
         let lease =
             Tutorial.Lease.V1.Lease(
                 LeaseId = leaseId,
                 UserId = userId,
-                StartDate = !@startDate,
-                MaturityDate = !@DateTime(2019, 12, 31),
+                CommencementDate = !@commencementDate,
+                ExpirationDate = !@expirationDate,
                 MonthlyPaymentAmount = !!50.0m)
         do! createLease lease |> Async.Ignore
         let s1Date = DateTime(2019, 2, 1)
@@ -241,14 +259,19 @@ let testReceivePayment =
                 ReceivedDate = !@p1Date,
                 ReceivedAmount = !!40m)
         do! receivePayment leaseId receivedPayment |> Async.Ignore 
-        let! loanObsAtStart = getLease leaseId now startDate
+        let! loanObsAtStart = getLease leaseId now commencementDate
         let! loanObsAtS1 = getLease leaseId now s1Date
         let! loanObsAtP1 = getLease leaseId now p1Date
         let expectedLeaseObsAtStart =
             Tutorial.Lease.V1.LeaseObservation(
-                Lease = lease,
-                CreatedTime = !@@now,
-                UpdatedTime = !@@now,
+                CreatedAtTime = !@@now,
+                UpdatedAtTime = !@@now,
+                UpdatedOnDate = !@commencementDate,
+                LeaseId = leaseId,
+                UserId = userId,
+                CommencementDate = !@commencementDate,
+                ExpirationDate = !@expirationDate,
+                MonthlyPaymentAmount = !!50.0m,
                 TotalScheduled = !!0m,
                 TotalPaid = !!0m,
                 AmountDue = !!0m,
@@ -257,9 +280,14 @@ let testReceivePayment =
         |> Expect.equal "should equal expected lease at start date" expectedLeaseObsAtStart
         let expectedLeaseObsAtS1 =
             Tutorial.Lease.V1.LeaseObservation(
-                Lease = lease,
-                CreatedTime = !@@now,
-                UpdatedTime = !@@now,
+                CreatedAtTime = !@@now,
+                UpdatedAtTime = !@@now,
+                UpdatedOnDate = !@s1Date,
+                LeaseId = leaseId,
+                UserId = userId,
+                CommencementDate = !@commencementDate,
+                ExpirationDate = !@expirationDate,
+                MonthlyPaymentAmount = !!50.0m,
                 TotalScheduled = !!50m,
                 TotalPaid = !!0m,
                 AmountDue = !!50m,
@@ -268,9 +296,14 @@ let testReceivePayment =
         |> Expect.equal "should equal expected lease at s1 date" expectedLeaseObsAtS1
         let expectedLeaseObsAtP1 =
             Tutorial.Lease.V1.LeaseObservation(
-                Lease = lease,
-                CreatedTime = !@@now,
-                UpdatedTime = !@@now,
+                CreatedAtTime = !@@now,
+                UpdatedAtTime = !@@now,
+                UpdatedOnDate = !@p1Date,
+                LeaseId = leaseId,
+                UserId = userId,
+                CommencementDate = !@commencementDate,
+                ExpirationDate = !@expirationDate,
+                MonthlyPaymentAmount = !!50.0m,
                 TotalScheduled = !!50m,
                 TotalPaid = !!40m,
                 AmountDue = !!10m,
@@ -294,7 +327,7 @@ let testReceivePayment =
               Tutorial.Lease.V1.LeaseEvent(
                 EventId = 1,
                 EventCreatedTime = !@@getUtcNow(),
-                EventEffectiveDate = !@startDate,
+                EventEffectiveDate = !@commencementDate,
                 EventType = "LeaseCreated") ]
         p1Events
         |> Expect.sequenceEqual "should equal expected events at p1" expectedP1Events
@@ -311,7 +344,7 @@ let testReceivePayment =
               Tutorial.Lease.V1.LeaseEvent(
                 EventId = 1,
                 EventCreatedTime = !@@getUtcNow(),
-                EventEffectiveDate = !@startDate,
+                EventEffectiveDate = !@commencementDate,
                 EventType = "LeaseCreated") ]
         p1EventsAfterDelete
         |> Expect.sequenceEqual "should equal expected events at p1 after delete" expectedP1EventsAfterDelete
@@ -325,7 +358,8 @@ let testTerminateLease =
         let now = getUtcNow()
         let leaseId = Guid.create()
         let userId = Guid.create()
-        let startDate = DateTime(2019, 1, 1)
+        let commmencementDate = DateTime(2019, 1, 1)
+        let expirationDate = DateTime(2019, 12, 31)
         let beforeTeminationDate = DateTime(2019, 4, 29)
         let terminationDate = DateTime(2019, 4, 30)
         let afterTerminationDate = DateTime(2019, 5, 1)
@@ -333,8 +367,8 @@ let testTerminateLease =
             Tutorial.Lease.V1.Lease(
                 LeaseId = leaseId,
                 UserId = userId,
-                StartDate = !@startDate,
-                MaturityDate = !@DateTime(2019, 12, 31),
+                CommencementDate = !@commmencementDate,
+                ExpirationDate = !@expirationDate,
                 MonthlyPaymentAmount = !!50.0m)
         do! createLease lease |> Async.Ignore
         let termination =
@@ -344,18 +378,28 @@ let testTerminateLease =
         do! terminateLease leaseId termination |> Async.Ignore
         let expectedLeaseObsBeforeTermination =
             Tutorial.Lease.V1.LeaseObservation(
-                Lease = lease,
-                CreatedTime = !@@now,
-                UpdatedTime = !@@now,
+                CreatedAtTime = !@@now,
+                UpdatedAtTime = !@@now,
+                UpdatedOnDate = !@commmencementDate,
+                LeaseId = leaseId,
+                UserId = userId,
+                CommencementDate = !@commmencementDate,
+                ExpirationDate = !@expirationDate,
+                MonthlyPaymentAmount = !!50.0m,
                 TotalScheduled = !!0m,
                 TotalPaid = !!0m,
                 AmountDue = !!0m,
                 LeaseStatus = Tutorial.Lease.V1.LeaseStatus.Outstanding)
         let expectedLeaseObsAfterTermination =
             Tutorial.Lease.V1.LeaseObservation(
-                Lease = lease,
-                CreatedTime = !@@now,
-                UpdatedTime = !@@now,
+                CreatedAtTime = !@@now,
+                UpdatedAtTime = !@@now,
+                UpdatedOnDate = !@terminationDate,
+                LeaseId = leaseId,
+                UserId = userId,
+                CommencementDate = !@commmencementDate,
+                ExpirationDate = !@expirationDate,
+                MonthlyPaymentAmount = !!50.0m,
                 TotalScheduled = !!0m,
                 TotalPaid = !!0m,
                 AmountDue = !!0m,

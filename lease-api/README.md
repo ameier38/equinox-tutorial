@@ -1,6 +1,30 @@
 # Lease API
 gRPC API for interacting with leases.
 
+## Setup
+Install the .NET SDK. and Docker Desktop
+```
+choco install -y dotnetcore-sdk
+choco install -y docker-desktop
+```
+> Commands must be run as Administrator
+
+Install FAKE.
+```
+dotnet tool install fake-cli -g
+```
+
+Add tool path to `PATH`.
+
+_Linux/macOS_
+```shell
+export PATH = "$PATH:$HOME/.dotnet/tools"
+```
+_Windows Powershell_
+```powershell
+$env:PATH += ";C:/Users/<user>/.dotnet/tools"
+```
+
 ## Usage
 Start EventStore.
 ```
@@ -14,14 +38,6 @@ fake build -t Serve
 > The gRPC server listens on port 50051.
 
 ## Development
-
-### Setup
-Install the .NET SDK. and Docker Desktop
-```
-choco install -y dotnetcore-sdk
-choco install -y docker-desktop
-```
-> Commands must be run as Administrator
 
 ### Updating protobuf files
 Update the protobuf files and generate the new outputs. 

@@ -55,7 +55,7 @@ message ListLeasesResponse {
 
 message GetLeaseRequest {
   string lease_id = 1;
-  AsOfDate as_of_date = 2;
+  AsOf as_of = 2;
 }
 
 message GetLeaseResponse {
@@ -64,7 +64,7 @@ message GetLeaseResponse {
 
 message ListLeaseEventsRequest {
   string lease_id = 1;
-  AsOfDate as_of_date = 2;
+  AsOf as_of = 2;
   int32 page_size = 3;
   string page_token = 4;
 }

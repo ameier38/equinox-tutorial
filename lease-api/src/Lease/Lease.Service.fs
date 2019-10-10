@@ -8,8 +8,8 @@ open Grpc.Core
 open Serilog.Core
 open System.Threading.Tasks
 
-module AsOfDate =
-    let fromProto (proto:Tutorial.Lease.V1.AsOfDate) =
+module AsOf =
+    let fromProto (proto:Tutorial.Lease.V1.AsOf) =
         { AsAt = %proto.AsAtTime.ToDateTime()
           AsOn = %proto.AsOnDate.ToDateTime() }
 
@@ -18,15 +18,15 @@ module Lease =
         Tutorial.Lease.V1.Lease(
             LeaseId = (lease.LeaseId |> LeaseId.toStringN),
             UserId = (lease.UserId |> UserId.toStringN),
-            StartDate = !@lease.StartDate,
-            MaturityDate = !@lease.MaturityDate,
+            CommencementDate = !@lease.CommencementDate,
+            ExpirationDate = !@lease.ExpirationDate,
             MonthlyPaymentAmount = !!lease.MonthlyPaymentAmount)
     let fromProto (proto:Tutorial.Lease.V1.Lease) =
         let userId = proto.UserId |> UserId.parse
         { LeaseId = proto.LeaseId |> LeaseId.parse
           UserId = userId
-          StartDate = proto.StartDate.ToDateTime()
-          MaturityDate = proto.MaturityDate.ToDateTime()
+          CommencementDate = proto.CommencementDate.ToDateTime()
+          ExpirationDate = proto.ExpirationDate.ToDateTime()
           MonthlyPaymentAmount = proto.MonthlyPaymentAmount |> Money.toUSD |> fun usd -> usd * 1M<1/month> }
 
 module LeaseEvent =
@@ -74,11 +74,15 @@ module Termination =
 
 module LeaseObservation =
     let toProto (leaseObs:LeaseObservation) =
-        let lease = leaseObs.Lease |> Lease.toProto
         Tutorial.Lease.V1.LeaseObservation(
-            Lease = lease,
-            CreatedTime = !@@leaseObs.CreatedTime,
-            UpdatedTime = !@@leaseObs.UpdatedTime,
+            CreatedAtTime = !@@leaseObs.CreatedAt,
+            UpdatedAtTime = !@@leaseObs.UpdatedAt,
+            UpdatedOnDate = !@leaseObs.UpdatedOn,
+            LeaseId = (leaseObs.LeaseId |> LeaseId.toStringN),
+            UserId = (leaseObs.UserId |> UserId.toStringN),
+            CommencementDate = !@leaseObs.CommencementDate,
+            ExpirationDate = !@leaseObs.ExpirationDate,
+            MonthlyPaymentAmount = !!leaseObs.MonthlyPaymentAmount,
             TotalScheduled = !!leaseObs.TotalScheduled,
             TotalPaid = !!leaseObs.TotalPaid,
             AmountDue = !!leaseObs.AmountDue,
@@ -97,13 +101,13 @@ type LeaseAPIImpl
     let (|LeaseStreamId|) (leaseId: LeaseId) = Equinox.AggregateId("Lease", LeaseId.toStringN leaseId)
     let (|LeaseStream|) (LeaseStreamId leaseId) = Equinox.Stream(logger, leaseResolver.Resolve leaseId, 3)
     let (|LeaseEventListStream|) (LeaseStreamId leaseId) = Equinox.Stream(logger, leaseEventListResolver.Resolve leaseId, 3)
-    let listLeaseEvents (LeaseEventListStream stream) (asOf:AsOfDate) =
+    let listLeaseEvents (LeaseEventListStream stream) (asOf:AsOf) =
         stream.Query(fun leaseEventList -> 
             leaseEventList 
             |> List.filter (Aggregate.LeaseEvent.asAtOrBefore asOf.AsAt)
             |> List.filter (Aggregate.LeaseEvent.asOnOrBefore asOf.AsOn None))
-    let getLease ((LeaseStream stream) as leaseId) (asOfDate:AsOfDate) =
-        stream.Query(Aggregate.reconstitute leaseId asOfDate None)
+    let getLease ((LeaseStream stream) as leaseId) (asOf:AsOf) =
+        stream.Query(Aggregate.reconstitute leaseId asOf None)
     let execute ((LeaseStream stream) as leaseId) (command:Command) =
         stream.Transact(Aggregate.interpret getUtcNow leaseId command)
 
@@ -162,11 +166,11 @@ type LeaseAPIImpl
         : Task<Tutorial.Lease.V1.ListLeaseEventsResponse> =
         async {
             logger.Debug(sprintf "received req: %A" req)
-            let asOfDate = req.AsOfDate |> AsOfDate.fromProto
+            let asOf = req.AsOf |> AsOf.fromProto
             let leaseId = req.LeaseId |> LeaseId.parse
             let pageSize = req.PageSize |> UMX.tag<pageSize>
             let pageToken = req.PageToken |> UMX.tag<pageToken>
-            let! leaseEvents = listLeaseEvents leaseId asOfDate
+            let! leaseEvents = listLeaseEvents leaseId asOf
             let totalCount = leaseEvents |> List.length
             let pageInfo = leaseEvents |> Pagination.getPage pageToken pageSize
             let res = 
@@ -181,9 +185,9 @@ type LeaseAPIImpl
         : Task<Tutorial.Lease.V1.GetLeaseResponse> =
         async {
             logger.Debug(sprintf "received req: %A" req)
-            let asOfDate = req.AsOfDate |> AsOfDate.fromProto
+            let asOf = req.AsOf |> AsOf.fromProto
             let leaseId = req.LeaseId |> LeaseId.parse
-            let! leaseState = getLease leaseId asOfDate
+            let! leaseState = getLease leaseId asOf
             let res =
                 match leaseState with
                 | Some leaseObs -> 

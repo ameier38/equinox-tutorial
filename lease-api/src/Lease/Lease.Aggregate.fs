@@ -85,9 +85,14 @@ module LeaseObservation =
     let createLease 
         (eventCreatedTime:EventCreatedTime)
         (lease:Lease) =
-        { Lease = lease
-          CreatedTime = eventCreatedTime
-          UpdatedTime = eventCreatedTime
+        { CreatedAt = eventCreatedTime
+          UpdatedAt = eventCreatedTime
+          UpdatedOn = %lease.CommencementDate
+          LeaseId = lease.LeaseId
+          UserId = lease.UserId
+          CommencementDate = lease.CommencementDate
+          ExpirationDate = lease.ExpirationDate
+          MonthlyPaymentAmount = lease.MonthlyPaymentAmount
           TotalScheduled = 0m<usd> 
           TotalPaid = 0m<usd> 
           AmountDue = 0m<usd> 
@@ -100,7 +105,8 @@ module LeaseObservation =
             let totalScheduled = leaseObs.TotalScheduled + payment.ScheduledAmount
             let amountDue = totalScheduled - leaseObs.TotalPaid
             { leaseObs with
-                UpdatedTime = eventCreatedTime
+                UpdatedAt = eventCreatedTime
+                UpdatedOn = %payment.ScheduledDate
                 TotalScheduled = totalScheduled
                 AmountDue = amountDue }
     let receivePayment 
@@ -110,7 +116,8 @@ module LeaseObservation =
             let totalPaid = leaseObs.TotalPaid + payment.ReceivedAmount
             let amountDue = leaseObs.TotalScheduled - totalPaid
             { leaseObs with
-                UpdatedTime = eventCreatedTime
+                UpdatedAt = eventCreatedTime
+                UpdatedOn = %payment.ReceivedDate
                 TotalPaid = totalPaid
                 AmountDue = amountDue }
     let terminateLease
@@ -118,7 +125,8 @@ module LeaseObservation =
         (termination: Termination) =
         fun leaseObs ->
             { leaseObs with
-                UpdatedTime = eventCreatedTime
+                UpdatedAt = eventCreatedTime
+                UpdatedOn = %termination.TerminationDate
                 LeaseStatus = Terminated
                 TerminatedDate = Some termination.TerminationDate }
 
@@ -179,7 +187,7 @@ module LeaseStream =
                 notDeleted && atOrBeforeAsAt)
     // Get non-deleted events created at or before asAt and effective on or before asOn.
     let getEffectiveLeaseEventsAsOf
-        (asOf:AsOfDate)
+        (asOf:AsOf)
         (effOrderOpt:EventEffectiveOrder option) =
         fun (leaseStream:LeaseStream) ->
             leaseStream
@@ -188,12 +196,12 @@ module LeaseStream =
 
 let reconstitute
     (leaseId:LeaseId)
-    (asOfDate:AsOfDate)
+    (asOf:AsOf)
     (effOrderOpt: EventEffectiveOrder option) 
     : LeaseStream -> LeaseState =
     fun streamState ->
         streamState
-        |> LeaseStream.getEffectiveLeaseEventsAsOf asOfDate effOrderOpt
+        |> LeaseStream.getEffectiveLeaseEventsAsOf asOf effOrderOpt
         |> List.sortBy LeaseEvent.getSortOrder
         |> List.fold (evolveLeaseState leaseId) None
 
@@ -203,12 +211,12 @@ let interpret
     : Command -> LeaseStream -> StoredEvent list =
     fun command leaseStream ->
         let leaseIdStr = leaseId |> LeaseId.toStringN
-        let getAsOfDate (effDate:EventEffectiveDate) =
+        let getAsOf (effDate:EventEffectiveDate) =
             { AsAt = %getUtcNow(); AsOn = effDate }
         let createEventContext = 
             EventContext.create getUtcNow
-        let reconstitute' asOfDate effOrderOpt =
-            leaseStream |> reconstitute leaseId asOfDate effOrderOpt
+        let reconstitute' asOf effOrderOpt =
+            leaseStream |> reconstitute leaseId asOf effOrderOpt
         match command with
         | DeleteEvent eventId ->
             let alreadyDeleted =
@@ -224,27 +232,27 @@ let interpret
         | LeaseCommand leaseCommand ->
             match leaseCommand with
             | CreateLease lease ->
-                let asOfDate = getAsOfDate %lease.StartDate
+                let asOf = getAsOf %lease.CommencementDate
                 let alreadyCreated =
                     leaseStream
-                    |> LeaseStream.getEffectiveLeaseEventsAsAt asOfDate.AsAt 
+                    |> LeaseStream.getEffectiveLeaseEventsAsAt asOf.AsAt 
                     |> List.exists (function LeaseEvent.LeaseCreated _ -> true | _ -> false)
                 if alreadyCreated then
                     sprintf "Lease-%s already created" leaseIdStr
                     |> RpcException.raiseAlreadyExists
-                let ctx = createEventContext %lease.StartDate leaseStream.NextEventId
+                let ctx = createEventContext %lease.CommencementDate leaseStream.NextEventId
                 let leaseCreated = LeaseEvent.LeaseCreated (ctx, lease)
                 let effOrderOpt = leaseCreated |> LeaseEvent.getEventEffectiveOrder |> Some
-                match reconstitute' asOfDate effOrderOpt with
+                match reconstitute' asOf effOrderOpt with
                 | None -> leaseCreated |> LeaseEvent.toStoredEvent |> List.singleton
                 | Some _ -> 
                     sprintf "cannot create lease; Lease-%s already exists" leaseIdStr
                     |> RpcException.raiseInternal
             | SchedulePayment payment ->
-                let asOfDate = getAsOfDate %payment.ScheduledDate
+                let asOf = getAsOf %payment.ScheduledDate
                 let alreadyScheduled =
                     leaseStream
-                    |> LeaseStream.getEffectiveLeaseEventsAsAt asOfDate.AsAt
+                    |> LeaseStream.getEffectiveLeaseEventsAsAt asOf.AsAt
                     |> List.exists (function 
                         | LeaseEvent.PaymentScheduled (_, p) -> p.PaymentId = payment.PaymentId 
                         | _ -> false)
@@ -254,7 +262,7 @@ let interpret
                 let ctx = createEventContext %payment.ScheduledDate leaseStream.NextEventId
                 let paymentScheduled = LeaseEvent.PaymentScheduled (ctx, payment)
                 let effOrderOpt = paymentScheduled |> LeaseEvent.getEventEffectiveOrder |> Some
-                match reconstitute' asOfDate effOrderOpt with
+                match reconstitute' asOf effOrderOpt with
                 | None -> 
                     sprintf "cannot schedule payment; Lease-%s does not exist" leaseIdStr
                     |> RpcException.raiseInternal
@@ -265,10 +273,10 @@ let interpret
                         |> RpcException.raiseInternal
                     | Outstanding -> paymentScheduled |> LeaseEvent.toStoredEvent |> List.singleton
             | ReceivePayment payment ->
-                let asOfDate = getAsOfDate %payment.ReceivedDate
+                let asOf = getAsOf %payment.ReceivedDate
                 let alreadyReceived =
                     leaseStream
-                    |> LeaseStream.getEffectiveLeaseEventsAsAt asOfDate.AsAt
+                    |> LeaseStream.getEffectiveLeaseEventsAsAt asOf.AsAt
                     |> List.exists (function 
                         | LeaseEvent.PaymentReceived (_, p) -> p.PaymentId = payment.PaymentId
                         | _ -> false)
@@ -278,16 +286,16 @@ let interpret
                 let ctx = createEventContext %payment.ReceivedDate leaseStream.NextEventId
                 let paymentReceived = LeaseEvent.PaymentReceived (ctx, payment)
                 let effOrderOpt = paymentReceived |> LeaseEvent.getEventEffectiveOrder |> Some
-                match reconstitute' asOfDate effOrderOpt with
+                match reconstitute' asOf effOrderOpt with
                 | None -> 
                     sprintf "cannot receive payment; Lease-%s does not exist" leaseIdStr
                     |> RpcException.raiseInternal
                 | Some _ -> paymentReceived |> LeaseEvent.toStoredEvent |> List.singleton
             | TerminateLease termination ->
-                let asOfDate = getAsOfDate %termination.TerminationDate
+                let asOf = getAsOf %termination.TerminationDate
                 let alreadyTerminated =
                     leaseStream
-                    |> LeaseStream.getEffectiveLeaseEventsAsAt asOfDate.AsAt
+                    |> LeaseStream.getEffectiveLeaseEventsAsAt asOf.AsAt
                     |> List.exists (function 
                         | LeaseEvent.LeaseTerminated _ -> true 
                         | _ -> false)
@@ -297,7 +305,7 @@ let interpret
                 let ctx = createEventContext %termination.TerminationDate leaseStream.NextEventId
                 let leaseTerminated = LeaseEvent.LeaseTerminated (ctx, termination)
                 let effOrderOpt = leaseTerminated |> LeaseEvent.getEventEffectiveOrder |> Some
-                match reconstitute' asOfDate effOrderOpt with
+                match reconstitute' asOf effOrderOpt with
                 | None -> 
                     sprintf "cannot terminate lease; Lease-%s does not exist" leaseIdStr
                     |> RpcException.raiseInternal

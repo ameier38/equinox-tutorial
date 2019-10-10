@@ -2,23 +2,27 @@
 Protobuf definitions.
 
 ## Setup
-It is easiest to use
-[VS Code Remote Containers](https://code.visualstudio.com/docs/remote/containers)
-as it provides a convient way to install all the dependencies.
+Install .NET Core SDK.
+```
+choco install dotnetcore-sdk -y
+```
+> Must be run as administrator.
 
-First install VS Code Insiders. On Windows you can use scoop.
+Install FAKE.
 ```
-scoop install code-insiders
-```
-
-Next open the proto directory in VS Code Insiders.
-```
-code-insiders ./proto
+dotnet tool install fake-cli -g
 ```
 
-Then type `Ctrl+Shift+p` and select 'Reopen Folder in Container'
+Add tool path to `PATH`.
 
-![reopen-in-container](./images/reopen-in-container.gif)
+_Linux/macOS_
+```shell
+export PATH = "$PATH:$HOME/.dotnet/tools"
+```
+_Windows Powershell_
+```powershell
+$env:PATH += ";C:/Users/<user>/.dotnet/tools"
+```
 
 ## Usage
 Create a new `.proto` file.
