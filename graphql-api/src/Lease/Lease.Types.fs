@@ -2,13 +2,13 @@ module Lease.Types
 
 open System
 
-type AsOfDateInputDto =
+type AsOfInputDto =
     { AsAt: string option
       AsOn: string option }
 
 type GetLeaseInputDto =
     { LeaseId: string
-      AsOfDate: AsOfDateInputDto option }
+      AsOf: AsOfInputDto option }
 
 type ListLeasesInputDto =
     { PageSize: int option
@@ -16,15 +16,15 @@ type ListLeasesInputDto =
 
 type ListLeaseEventsInputDto =
     { LeaseId: string
-      AsOfDate: AsOfDateInputDto option
+      AsOf: AsOfInputDto option
       PageSize: int option
       PageToken: string option }
 
 type CreateLeaseInputDto =
     { LeaseId: string
       UserId: string
-      StartDate: DateTime
-      MaturityDate: DateTime
+      CommencementDate: DateTime
+      ExpirationDate: DateTime
       MonthlyPaymentAmount: float }
 
 type SchedulePaymentInputDto = 

@@ -39,6 +39,7 @@ type ReceivePaymentDialogProps = {
   leaseId: string,
   open: boolean,
   setOpen: (open:boolean) => void,
+  refetch: () => Promise<any>
 }
 
 const RECEIVE_PAYMENT = `
@@ -49,7 +50,8 @@ mutation ReceivePayment($input: ReceivePaymentInput!){
 export const ReceivePaymentDialog: React.FC<ReceivePaymentDialogProps> = ({ 
     leaseId,
     open,
-    setOpen
+    setOpen,
+    refetch
 }) => {
 
     const classes = useStyles()
@@ -82,6 +84,7 @@ export const ReceivePaymentDialog: React.FC<ReceivePaymentDialogProps> = ({
                 }
             }).then(() => {
                 setOpen(false)
+                return refetch()
             })
         }
       }

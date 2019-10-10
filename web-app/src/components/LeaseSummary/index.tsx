@@ -7,8 +7,6 @@ import { LeaseTable } from './LeaseTable'
 import { CreateLeaseDialog } from './CreateLeaseDialog'
 import { 
     Query,
-    Lease,
-    MutationCreateLeaseArgs,
     QueryListLeasesArgs, 
 } from '../../generated/graphql'
 
@@ -28,8 +26,8 @@ query ListLeases($input: ListLeasesInput!) {
     listLeases(input: $input) {
         leases {
             leaseId
-            startDate
-            maturityDate
+            commencementDate
+            expirationDate
             monthlyPaymentAmount
         }
         prevPageToken

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router'
-import { useMutation, UseQueryResult } from 'graphql-hooks'
+import { useMutation, UseQueryResult, UseClientRequestResult } from 'graphql-hooks'
 import { 
     IconButton,
     LinearProgress,
@@ -15,7 +14,6 @@ import {
 } from '@material-ui/core'
 import { Delete } from '@material-ui/icons'
 import { makeStyles, createStyles } from '@material-ui/core/styles'
-import { grey } from '@material-ui/core/colors'
 import {
     Query,
     LeaseEvent,
@@ -46,7 +44,8 @@ type LeaseEventTableProps = {
     setPageToken: (pageToken:string) => void,
     setPageSize: (pageSize:number) => void,
     pageSize: number,
-    listLeaseEventsResult: UseQueryResult<Query,QueryListLeaseEventsArgs>
+    listLeaseEventsResult: UseClientRequestResult<Query>
+    refetch: () => Promise<any>
 }
 
 export const LeaseEventTable: React.FC<LeaseEventTableProps> = ({ 
@@ -54,12 +53,13 @@ export const LeaseEventTable: React.FC<LeaseEventTableProps> = ({
     setPageSize,
     setPageToken,
     pageSize,
-    listLeaseEventsResult
+    listLeaseEventsResult,
+    refetch
 }) => {
     const classes = useStyles()
     const [page, setPage] = useState(0)
     const [deleteLeaseEvent] = useMutation<string,MutationDeleteLeaseEventArgs>(DELETE_LEASE_EVENT)
-    let { data, loading, error, refetch } = listLeaseEventsResult
+    let { data, loading, error } = listLeaseEventsResult
 
     const columns: Column[] = [
         { title: "Event ID", field: "eventId"},
@@ -110,12 +110,12 @@ export const LeaseEventTable: React.FC<LeaseEventTableProps> = ({
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data.listLeaseEvents.events.map((event, rIdx) => (
+                    {data && data.listLeaseEvents.events.map((event, rIdx) => (
                         <TableRow key={rIdx} >
                             <TableCell 
                                 onClick={() => deleteLeaseEvent({ 
                                     variables: { input: { leaseId, eventId: event.eventId } } })}>
-                                <IconButton>
+                                <IconButton onClick={() => handleDeleteLeaseEvent(event.eventId)}>
                                     <Delete />
                                 </IconButton>
                             </TableCell>
@@ -127,13 +127,15 @@ export const LeaseEventTable: React.FC<LeaseEventTableProps> = ({
                 </TableBody>
                 <TableFooter>
                     <TableRow>
-                        <TablePagination
-                            rowsPerPageOptions={[5, 10, 20]}
-                            count={data.listLeaseEvents.totalCount}
-                            page={page}
-                            rowsPerPage={pageSize}
-                            onChangePage={handleChangePage(data.listLeaseEvents.prevPageToken, data.listLeaseEvents.nextPageToken)}
-                            onChangeRowsPerPage={handleChangeRowsPerPage} />
+                        {data && 
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 20]}
+                                count={data.listLeaseEvents.totalCount}
+                                page={page}
+                                rowsPerPage={pageSize}
+                                onChangePage={handleChangePage(data.listLeaseEvents.prevPageToken, data.listLeaseEvents.nextPageToken)}
+                                onChangeRowsPerPage={handleChangeRowsPerPage} />
+                        }
                     </TableRow>
                 </TableFooter>
             </Table>

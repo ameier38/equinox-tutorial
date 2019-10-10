@@ -39,6 +39,7 @@ type SchedulePaymentDialogProps = {
   leaseId: string,
   open: boolean,
   setOpen: (open:boolean) => void,
+  refetch: () => Promise<any>
 }
 
 const SCHEDULE_PAYMENT = `
@@ -49,7 +50,8 @@ mutation SchedulePayment($input: SchedulePaymentInput!){
 export const SchedulePaymentDialog: React.FC<SchedulePaymentDialogProps> = ({ 
     leaseId,
     open,
-    setOpen
+    setOpen,
+    refetch
 }) => {
 
     const classes = useStyles()
@@ -82,6 +84,7 @@ export const SchedulePaymentDialog: React.FC<SchedulePaymentDialogProps> = ({
                 }
             }).then(() => {
                 setOpen(false)
+                return refetch()
             })
         }
     }

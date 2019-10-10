@@ -22,8 +22,8 @@ export type Scalars = {
 
 
 
-/** As of date */
-export type AsOfDate = {
+/** Point in time on and at which to observe state */
+export type AsOf = {
   /** Filter events created at or before this date */
   asAt?: Maybe<Scalars['String']>,
   /** Filter events effective on or before this date */
@@ -36,10 +36,10 @@ export type CreateLeaseInput = {
   leaseId: Scalars['ID'],
   /** Unique identifier of the user */
   userId: Scalars['ID'],
-  /** Start date of the lease */
-  startDate: Scalars['Date'],
-  /** Maturity date of the lease */
-  maturityDate: Scalars['Date'],
+  /** Date on which the lease begins */
+  commencementDate: Scalars['Date'],
+  /** Date on which the lease ends */
+  expirationDate: Scalars['Date'],
   /** Monthly payment amount for the lease */
   monthlyPaymentAmount: Scalars['Float'],
 };
@@ -55,17 +55,17 @@ export type DeleteLeaseEventInput = {
 export type GetLeaseInput = {
   /** Unique identifier of a lease */
   leaseId: Scalars['ID'],
-  /** As of date */
-  asOfDate?: Maybe<AsOfDate>,
+  /** Point in time on and at which to observe state */
+  asOf?: Maybe<AsOf>,
 };
 
 /** Static information for a lease */
 export type Lease = {
    __typename?: 'Lease',
+  commencementDate: Scalars['Date'],
+  expirationDate: Scalars['Date'],
   leaseId: Scalars['ID'],
-  maturityDate: Scalars['Date'],
   monthlyPaymentAmount: Scalars['Float'],
-  startDate: Scalars['Date'],
   userId: Scalars['ID'],
 };
 
@@ -83,12 +83,17 @@ export type LeaseEvent = {
 export type LeaseObservation = {
    __typename?: 'LeaseObservation',
   amountDue: Scalars['Float'],
-  createdTime: Scalars['Date'],
-  lease: Lease,
+  commencementDate: Scalars['Date'],
+  createdAtTime: Scalars['Date'],
+  expirationDate: Scalars['Date'],
+  leaseId: Scalars['ID'],
   leaseStatus: LeaseStatus,
+  monthlyPaymentAmount: Scalars['Float'],
   totalPaid: Scalars['Float'],
   totalScheduled: Scalars['Float'],
-  updatedTime: Scalars['Date'],
+  updatedAtTime: Scalars['Date'],
+  updatedOnDate: Scalars['Date'],
+  userId: Scalars['ID'],
 };
 
 /** Status of the lease */
@@ -101,8 +106,8 @@ export enum LeaseStatus {
 export type ListLeaseEventsInput = {
   /** Unique identifier of a lease */
   leaseId: Scalars['ID'],
-  /** As of date */
-  asOfDate?: Maybe<AsOfDate>,
+  /** Point in time on and at which to observe state */
+  asOf?: Maybe<AsOf>,
   /** Maximum number of items in a page */
   pageSize?: Maybe<Scalars['Int']>,
   /** Token for page to retrieve; Empty string for first page */

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useManualQuery, useQuery } from 'graphql-hooks'
 import Plot from 'react-plotly.js'
 import { LinearProgress, CircularProgress } from '@material-ui/core'
-import { AsOfDateSlider } from './AsOfDateSlider'
+import { AsOfSlider } from './AsOfSlider'
 import { CommandPanel } from './CommandPanel'
 import { LeaseEventTable } from './LeaseEventTable'
 import { ReceivePaymentDialog } from './ReceivePaymentDialog'
@@ -11,19 +11,19 @@ import { SchedulePaymentDialog } from './SchedulePaymentDialog'
 import { 
     Query, 
     QueryGetLeaseArgs, 
-    AsOfDate,
-    QueryListLeaseEventsArgs
+    AsOf,
+    QueryListLeaseEventsArgs,
+    LeaseEvent
 } from '../../generated/graphql'
 
 const GET_LEASE = `
 query GetLease($input: GetLeaseInput!) {
     getLease(input: $input) {
-        lease {
-            startDate
-            maturityDate
-        }
-        createdTime
-        updatedTime
+        createdAtTime
+        updatedAtTime
+        updatedOnDate
+        leaseId
+        userId
         totalScheduled
         totalPaid
         amountDue
@@ -57,29 +57,74 @@ export const LeaseDetail = () => {
     const [pageToken, setPageToken] = useState("")
     const [schedulePaymentDialogOpen, setSchedulePaymentDialogOpen] = useState(false)
     const [receivePaymentDialogOpen, setReceivePaymentDialogOpen] = useState(false)
-    const [fetchLease, { data, loading, error }] = useManualQuery<Query,QueryGetLeaseArgs>(
-        GET_LEASE,
-        { variables: { input: { leaseId }}})
-    const listLeaseEventsResult = useQuery<Query,QueryListLeaseEventsArgs>(
-        LIST_LEASE_EVENTS,
-        { variables: { input: { leaseId, pageSize, pageToken } } })
+    const [currentLeaseEvents, setCurrentLeaseEvents] = useState<LeaseEvent[]>([])
 
-    const xData = data ? [
-        data.getLease.totalScheduled,
-        data.getLease.totalPaid,
-        data.getLease.amountDue
-    ] : []
-    const yData = data ? [
-        'Total Scheduled',
-        'Total Paid',
-        'Amount Due'
-    ] : []
+    const getLeaseResult = useQuery<Query,QueryGetLeaseArgs>(
+        GET_LEASE,
+        { 
+            variables: { 
+                input: { 
+                    leaseId,
+                    asOf: {
+                        asAt: asAt.toISOString(),
+                        asOn: asOn.toISOString()
+                    }
+                } 
+            } 
+        })
+
+    const [listLeaseEvents, listLeaseEventsResult] = useManualQuery<Query,QueryListLeaseEventsArgs>(
+        LIST_LEASE_EVENTS,
+        { 
+            variables: { 
+                input: { 
+                    leaseId,
+                    pageSize, 
+                    pageToken,
+                } 
+            } 
+        })
+
+    const resetCurrentLeaseEvents = () => {
+        listLeaseEvents().then(({data}) => {
+            setCurrentLeaseEvents(data.listLeaseEvents.events)
+        }) 
+    }
 
     useEffect(() => {
-        fetchLease()
+        resetCurrentLeaseEvents()
+    }, [])
+
+    useEffect(() => {
+        listLeaseEvents({
+            variables: {
+                input: { 
+                    leaseId,
+                    pageSize, 
+                    pageToken,
+                    asOf: {
+                        asAt: asAt.toISOString(),
+                        asOn: asOn.toISOString()
+                    }
+                } 
+            }
+        })
     }, [asAt, asOn])
 
-    if (error) return <p>{JSON.stringify(error)}</p>
+    const refetch = () => {
+        return Promise.all([getLeaseResult.refetch(), resetCurrentLeaseEvents()])
+    }
+
+    // const xData = data ? [
+    //     data.getLease.totalScheduled,
+    //     data.getLease.totalPaid,
+    //     data.getLease.amountDue
+    // ] : []
+    // const yData = data ? [
+    //     'Total Scheduled',
+    //     'Total Paid',
+    //     'Amount Due'
+    // ] : []
 
     return (
         <React.Fragment>
@@ -92,15 +137,10 @@ export const LeaseDetail = () => {
                         layout={{ width: 300, height: 300, title: leaseId }} />
                 </React.Fragment>
                 : <CircularProgress />} */}
-            {loading || !data ? <LinearProgress /> : 
-                <AsOfDateSlider 
-                    startDate={new Date(data.getLease.lease.startDate)}
-                    updatedTime={new Date(data.getLease.updatedTime)}
-                    asAt={asAt}
-                    setAsAt={setAsAt}
-                    asOn={asOn}
-                    setAsOn={setAsOn} /> 
-            }
+            <AsOfSlider 
+                leaseEvents={currentLeaseEvents}
+                setAsAt={setAsAt}
+                setAsOn={setAsOn} /> 
             <CommandPanel
                 setReceivePaymentDialogOpen={setReceivePaymentDialogOpen}
                 setSchedulePaymentDialogOpen={setSchedulePaymentDialogOpen} />
@@ -109,15 +149,18 @@ export const LeaseDetail = () => {
                 setPageSize={setPageSize}
                 setPageToken={setPageToken}
                 pageSize={pageSize}
-                listLeaseEventsResult={listLeaseEventsResult} />
+                listLeaseEventsResult={listLeaseEventsResult}
+                refetch={refetch} />
             <ReceivePaymentDialog 
                 leaseId={leaseId}
                 open={receivePaymentDialogOpen}
-                setOpen={setReceivePaymentDialogOpen} />
+                setOpen={setReceivePaymentDialogOpen}
+                refetch={refetch} />
             <SchedulePaymentDialog 
                 leaseId={leaseId}
                 open={schedulePaymentDialogOpen}
-                setOpen={setSchedulePaymentDialogOpen} />
+                setOpen={setSchedulePaymentDialogOpen}
+                refetch={refetch} />
         </React.Fragment>
     )
 }

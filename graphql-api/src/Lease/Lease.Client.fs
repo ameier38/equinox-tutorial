@@ -14,11 +14,11 @@ module PageToken =
         sOpt
         |> Option.defaultValue ""
 
-module AsOfDateInputDto =
-    let toProto (dtoOpt:Types.AsOfDateInputDto option) =
+module AsOfInputDto =
+    let toProto (dtoOpt:Types.AsOfInputDto option) =
         let now = DateTime.UtcNow
-        let defaultAsOfDate =
-            AsOfDate(
+        let defaultAsOf =
+            AsOf(
                 AsAtTime = !@@now,
                 AsOnDate = !@now)
         dtoOpt
@@ -31,19 +31,19 @@ module AsOfDateInputDto =
                 dto.AsOn
                 |> Option.map (DateTime.Parse >> Shared.DateTime.toProtoDate)
                 |> Option.defaultValue (now |> Shared.DateTime.toProtoDate)
-            AsOfDate(
+            AsOf(
                 AsAtTime = asAt,
                 AsOnDate = asOn))
-        |> Option.defaultValue defaultAsOfDate
+        |> Option.defaultValue defaultAsOf
 
 module GetLeaseInputDto =
     let toProto (dto:Types.GetLeaseInputDto) =
-        let asOfDate = 
-            dto.AsOfDate
-            |> AsOfDateInputDto.toProto
+        let asOf = 
+            dto.AsOf
+            |> AsOfInputDto.toProto
         GetLeaseRequest( 
             LeaseId = dto.LeaseId,
-            AsOfDate = asOfDate)
+            AsOf = asOf)
 
 module ListLeasesInputDto =
     let toProto (dto:Types.ListLeasesInputDto) =
@@ -55,14 +55,14 @@ module ListLeasesInputDto =
         
 module ListLeaseEventsInputDto =
     let toProto (dto:Types.ListLeaseEventsInputDto) =
-        let asOfDate = 
-            dto.AsOfDate
-            |> AsOfDateInputDto.toProto
+        let asOf = 
+            dto.AsOf
+            |> AsOfInputDto.toProto
         let pageSize = dto.PageSize |> PageSize.defaultValue
         let pageToken = dto.PageToken |> PageToken.defaultValue
         ListLeaseEventsRequest(
             LeaseId = dto.LeaseId,
-            AsOfDate = asOfDate,
+            AsOf = asOf,
             PageSize = pageSize,
             PageToken = pageToken)
 
@@ -72,8 +72,8 @@ module CreateLeaseInputDto =
             Lease(
                 LeaseId = dto.LeaseId,
                 UserId = dto.UserId,
-                StartDate = !@dto.StartDate,
-                MaturityDate = !@dto.MaturityDate,
+                CommencementDate = !@dto.CommencementDate,
+                ExpirationDate = !@dto.ExpirationDate,
                 MonthlyPaymentAmount = !!dto.MonthlyPaymentAmount)
         CreateLeaseRequest(Lease = lease)
 

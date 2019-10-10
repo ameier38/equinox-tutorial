@@ -22,10 +22,10 @@ let pageTokenInputField =
         typedef = Nullable ID,
         description = "Token for page to retrieve; Empty string for first page")
 
-let AsOfDateInputObject =
-    Define.InputObject<AsOfDateInputDto>(
-        name = "AsOfDate",
-        description = "As of date",
+let AsOfInputObject =
+    Define.InputObject<AsOfInputDto>(
+        name = "AsOf",
+        description = "Point in time on and at which to observe state",
         fields = [
             Define.Input(
                 name = "asAt",
@@ -38,11 +38,11 @@ let AsOfDateInputObject =
         ]
     )
 
-let asOfDateInputField = 
+let asOfInputField = 
     Define.Input(
-        name = "asOfDate", 
-        typedef = (Nullable AsOfDateInputObject),
-        description = "As of date")
+        name = "asOf", 
+        typedef = (Nullable AsOfInputObject),
+        description = "Point in time on and at which to observe state")
 
 let LeaseStatusType =
     Define.Enum<LeaseStatus>(
@@ -73,8 +73,8 @@ let LeaseType =
         fields = [
             Define.AutoField("leaseId", ID)
             Define.AutoField("userId", ID)
-            Define.Field("startDate", Date, fun _ lease -> lease.StartDate.ToDateTime())
-            Define.Field("maturityDate", Date, fun _ lease -> lease.MaturityDate.ToDateTime())
+            Define.Field("commencementDate", Date, fun _ lease -> lease.CommencementDate.ToDateTime())
+            Define.Field("expirationDate", Date, fun _ lease -> lease.ExpirationDate.ToDateTime())
             Define.Field("monthlyPaymentAmount", Float, fun _ lease -> lease.MonthlyPaymentAmount.DecimalValue |> float)
         ]
     )
@@ -84,9 +84,14 @@ let LeaseObservationType =
         name = "LeaseObservation",
         description = "Observation of a lease as of a particular date",
         fields = [
-            Define.AutoField("lease", LeaseType)
-            Define.Field("createdTime", Date, fun _ obs -> obs.CreatedTime.ToDateTime())
-            Define.Field("updatedTime", Date, fun _ obs -> obs.UpdatedTime.ToDateTime())
+            Define.Field("createdAtTime", Date, fun _ obs -> obs.CreatedAtTime.ToDateTime())
+            Define.Field("updatedAtTime", Date, fun _ obs -> obs.UpdatedAtTime.ToDateTime())
+            Define.Field("updatedOnDate", Date, fun _ obs -> obs.UpdatedOnDate.ToDateTime())
+            Define.AutoField("leaseId", ID)
+            Define.AutoField("userId", ID)
+            Define.Field("commencementDate", Date, fun _ lease -> lease.CommencementDate.ToDateTime())
+            Define.Field("expirationDate", Date, fun _ lease -> lease.ExpirationDate.ToDateTime())
+            Define.Field("monthlyPaymentAmount", Float, fun _ lease -> lease.MonthlyPaymentAmount.DecimalValue |> float)
             Define.Field("totalScheduled", Float, fun _ obs -> obs.TotalScheduled.DecimalValue |> float)
             Define.Field("totalPaid", Float, fun _ obs -> obs.TotalPaid.DecimalValue |> float)
             Define.Field("amountDue", Float, fun _ obs -> obs.AmountDue.DecimalValue |> float)
@@ -100,7 +105,7 @@ let ListLeaseEventsInputObject =
         description = "Input for listing lease events",
         fields = [
             leaseIdInputField
-            asOfDateInputField
+            asOfInputField
             pageSizeInputField
             pageTokenInputField
         ]
@@ -133,7 +138,7 @@ let listLeaseEventsField
 let GetLeaseInputObject =
     Define.InputObject<GetLeaseInputDto>(
         name = "GetLeaseInput",
-        fields = [leaseIdInputField; asOfDateInputField]
+        fields = [leaseIdInputField; asOfInputField]
     )
 
 let getLeaseField
@@ -197,13 +202,13 @@ let CreateLeaseInputObject =
                 typedef = ID,
                 description = "Unique identifier of the user")
             Define.Input(
-                name = "startDate",
+                name = "commencementDate",
                 typedef = Date,
-                description = "Start date of the lease")
+                description = "Date on which the lease begins")
             Define.Input(
-                name = "maturityDate",
+                name = "expirationDate",
                 typedef = Date,
-                description = "Maturity date of the lease")
+                description = "Date on which the lease ends")
             Define.Input(
                 name = "monthlyPaymentAmount",
                 typedef = Float,

@@ -69,8 +69,8 @@ export const LeaseTable: React.FC<LeaseTableProps> = ({
 
     const columns: Column[] = [
         { title: 'Lease ID', field: 'leaseId' },
-        { title: 'Start Date', field: 'startDate' },
-        { title: 'Maturity Date', field: 'maturityDate' },
+        { title: 'Commencement Date', field: 'commencementDate' },
+        { title: 'Expiration Date', field: 'expirationDate' },
         { title: 'Monthly Payment Amount', field: 'monthlyPaymentAmount' },
     ]
 

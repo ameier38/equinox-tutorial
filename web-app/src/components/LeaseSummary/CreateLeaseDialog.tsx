@@ -49,11 +49,11 @@ export const CreateLeaseDialog: React.FC<CreateLeaseDialogProps> = ({
     const addMonths = (d:Date, months:number) => 
       new Date(d.setMonth(d.getMonth() + months))
 
-    const initialState = {
+    const initialState : Lease = {
         leaseId: uuid(),
         userId: uuid(),
-        startDate: new Date(),
-        maturityDate: addMonths(new Date(), 12),
+        commencementDate: new Date(),
+        expirationDate: addMonths(new Date(), 12),
         monthlyPaymentAmount: 0
     }
 
@@ -108,22 +108,22 @@ export const CreateLeaseDialog: React.FC<CreateLeaseDialogProps> = ({
                     <KeyboardDatePicker
                       className={classes.textField}
                       required
-                      id='startDate'
-                      label='Start Date'
+                      id='commencementDate'
+                      label='Commencement Date'
                       format='MM/dd/yyyy'
-                      value={values.startDate}
-                      onChange={handleDateChange('startDate')}
+                      value={values.commencementDate}
+                      onChange={handleDateChange('commencementDate')}
                       margin='normal' />
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <KeyboardDatePicker
                       className={classes.textField}
                       required
-                      id='maturityDate'
-                      label='Maturity Date'
+                      id='expirationDate'
+                      label='Expiration Date'
                       format='MM/dd/yyyy'
-                      value={values.maturityDate}
-                      onChange={handleDateChange('maturityDate')}
+                      value={values.expirationDate}
+                      onChange={handleDateChange('expirationDate')}
                       margin='normal' />
                   </Grid>
                   <Grid item xs={12} md={6}>
