@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from 'react'
+import { createStyles, makeStyles } from '@material-ui/styles'
+import { Theme } from '@material-ui/core/styles'
 import { Slider, Typography } from '@material-ui/core'
 import moment from 'moment'
 import { LeaseEvent } from '../../generated/graphql'
+import { Event } from './types'
+
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            padding: theme.spacing(1)
+        }
+    })
+)
 
 type AsOfSliderProps = {
     leaseEvents: LeaseEvent[],
-    setAsAt: (dt:Date) => void,
-    setAsOn: (dt:Date) => void
+    dispatch: React.Dispatch<Event>
 }
 
 const sortDateAsc = (date1:Date, date2:Date) => {
@@ -17,45 +27,46 @@ const sortDateAsc = (date1:Date, date2:Date) => {
 
 export const AsOfSlider: React.FC<AsOfSliderProps> = ({ 
     leaseEvents,
-    setAsAt,
-    setAsOn 
+    dispatch
 }) => {
-    const [localAsAt, setLocalAsAt] = useState()
+    const now = moment.utc().toDate()
+    const classes = useStyles()
+    const [localAsAt, setLocalAsAt] = useState(now)
     const [asAtValue, setAsAtValue] = useState(0)
-    const [localAsOn, setLocalAsOn] = useState()
+    const [localAsOn, setLocalAsOn] = useState(now)
     const [asOnValue, setAsOnValue] = useState(0)
 
     const convertedLeaseEvents = leaseEvents.map(e => ({
-        ...e,
-        eventCreatedTime: new Date(e.eventCreatedTime),
-        eventEffectiveDate: new Date(e.eventEffectiveDate)
-    }))
+            ...e,
+            eventCreatedTime: new Date(e.eventCreatedTime),
+            eventEffectiveDate: new Date(e.eventEffectiveDate)
+        }))
 
-    const asAtMarks = convertedLeaseEvents
-        .sort((a, b) => {
+    const asAtMarks = convertedLeaseEvents.sort((a, b) => {
             if (a.eventCreatedTime > b.eventCreatedTime) return 1
             if (a.eventCreatedTime < b.eventCreatedTime) return -1
             return 0
-        })
-        .map((e, idx) => {
+        }).map((e, idx) => {
             return ({
                 value: idx,
                 dateValue: e.eventCreatedTime,
             })
         })
 
-    const asOnMarks = convertedLeaseEvents
-        .sort((a, b) => {
+    asAtMarks.push({value: asAtMarks.length, dateValue: now})
+
+    const asOnMarks = convertedLeaseEvents.sort((a, b) => {
             if (a.eventEffectiveDate > b.eventEffectiveDate) return 1
             if (a.eventEffectiveDate < b.eventEffectiveDate) return -1
             return 0
-        })
-        .map((e, idx) => {
+        }).map((e, idx) => {
             return ({
                 value: idx,
                 dateValue: e.eventEffectiveDate,
             })
         })
+    
+    asOnMarks.push({value: asOnMarks.length, dateValue: now})
 
     const onAsAtValueChange = (e:React.ChangeEvent<{}>, value:number | number[]) => {
         if (typeof value === 'number') {
@@ -71,7 +82,7 @@ export const AsOfSlider: React.FC<AsOfSliderProps> = ({
         if (typeof value === 'number') {
             const mark = asAtMarks.find(m => m.value === value)
             if (mark) {
-                setAsAt(localAsAt)
+                dispatch({type: 'AS_OF_UPDATED', asOf: { asAt: localAsAt }})
             }
         }
     }
@@ -90,7 +101,7 @@ export const AsOfSlider: React.FC<AsOfSliderProps> = ({
         if (typeof value === 'number') {
             const mark = asOnMarks.find(m => m.value === value)
             if (mark) {
-                setAsOn(localAsOn)
+                dispatch({type: 'AS_OF_UPDATED', asOf: { asOn: localAsOn }})
             }
         }
     }
@@ -109,7 +120,7 @@ export const AsOfSlider: React.FC<AsOfSliderProps> = ({
     }, [leaseEvents])
 
     return (
-        <React.Fragment>
+        <div className={classes.root}>
             <Typography id='as-at-slider'>As At: <span>{localAsAt && localAsAt.toISOString()}</span></Typography>
             <Slider
                 aria-labelledby='as-at-slider'
@@ -132,6 +143,6 @@ export const AsOfSlider: React.FC<AsOfSliderProps> = ({
                 value={asOnValue}
                 onChange={onAsOnValueChange}
                 onChangeCommitted={onAsOnValueChangeCommitted} />
-        </React.Fragment>
+        </div>
     )
 }

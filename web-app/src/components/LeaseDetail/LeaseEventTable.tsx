@@ -18,8 +18,8 @@ import {
     Query,
     LeaseEvent,
     MutationDeleteLeaseEventArgs,
-    QueryListLeaseEventsArgs
 } from '../../generated/graphql'
+import { Event } from './types'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -41,20 +41,16 @@ type Column = {
 
 type LeaseEventTableProps = {
     leaseId: string,
-    setPageToken: (pageToken:string) => void,
-    setPageSize: (pageSize:number) => void,
     pageSize: number,
-    listLeaseEventsResult: UseClientRequestResult<Query>
-    refetch: () => Promise<any>
+    listLeaseEventsResult: UseClientRequestResult<Query>,
+    dispatch: React.Dispatch<Event> 
 }
 
 export const LeaseEventTable: React.FC<LeaseEventTableProps> = ({ 
     leaseId,
-    setPageSize,
-    setPageToken,
     pageSize,
     listLeaseEventsResult,
-    refetch
+    dispatch
 }) => {
     const classes = useStyles()
     const [page, setPage] = useState(0)
@@ -71,20 +67,20 @@ export const LeaseEventTable: React.FC<LeaseEventTableProps> = ({
     const handleChangePage = (prevToken:string, nextToken:string) => (evt:unknown, newPage:number) => {
       if (newPage > page) {
         setPage(newPage)
-        setPageToken(nextToken)
+        dispatch({type: 'LEASE_EVENTS_PAGE_TOKEN_UPDATED', pageToken: nextToken})
       }
       else {
         setPage(newPage)
-        setPageToken(prevToken)
+        dispatch({type: 'LEASE_EVENTS_PAGE_TOKEN_UPDATED', pageToken: prevToken})
       }
     }
 
     const handleChangeRowsPerPage = (evt:React.ChangeEvent<HTMLInputElement>) => {
-      setPageSize(+evt.target.value)
+        dispatch({type: 'LEASE_EVENTS_PAGE_SIZE_UPDATED', pageSize: +evt.target.value})
     }
 
     const handleDeleteLeaseEvent = (eventId:number) => {
-        deleteLeaseEvent({
+        return deleteLeaseEvent({
             variables: {
                 input: {
                     leaseId,
@@ -92,7 +88,7 @@ export const LeaseEventTable: React.FC<LeaseEventTableProps> = ({
                 }
             }
         }).then(() => {
-            return refetch()
+            return dispatch({type: 'RESET_TOGGLED', reset: true})
         })
     }
 
@@ -100,6 +96,7 @@ export const LeaseEventTable: React.FC<LeaseEventTableProps> = ({
     if (error) return (<p>`Error!: ${error}`</p>)
     return (
         <Paper className={classes.tableRoot}>
+            { !loading && data && 
             <Table>
                 <TableHead>
                     <TableRow>
@@ -110,11 +107,9 @@ export const LeaseEventTable: React.FC<LeaseEventTableProps> = ({
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data && data.listLeaseEvents.events.map((event, rIdx) => (
+                    {data.listLeaseEvents.events.map((event, rIdx) => (
                         <TableRow key={rIdx} >
-                            <TableCell 
-                                onClick={() => deleteLeaseEvent({ 
-                                    variables: { input: { leaseId, eventId: event.eventId } } })}>
+                            <TableCell>
                                 <IconButton onClick={() => handleDeleteLeaseEvent(event.eventId)}>
                                     <Delete />
                                 </IconButton>
@@ -127,18 +122,17 @@ export const LeaseEventTable: React.FC<LeaseEventTableProps> = ({
                 </TableBody>
                 <TableFooter>
                     <TableRow>
-                        {data && 
-                            <TablePagination
-                                rowsPerPageOptions={[5, 10, 20]}
-                                count={data.listLeaseEvents.totalCount}
-                                page={page}
-                                rowsPerPage={pageSize}
-                                onChangePage={handleChangePage(data.listLeaseEvents.prevPageToken, data.listLeaseEvents.nextPageToken)}
-                                onChangeRowsPerPage={handleChangeRowsPerPage} />
-                        }
+                        <TablePagination
+                            rowsPerPageOptions={[5, 10, 20]}
+                            count={data.listLeaseEvents.totalCount}
+                            page={page}
+                            rowsPerPage={pageSize}
+                            onChangePage={handleChangePage(data.listLeaseEvents.prevPageToken, data.listLeaseEvents.nextPageToken)}
+                            onChangeRowsPerPage={handleChangeRowsPerPage} />
                     </TableRow>
                 </TableFooter>
             </Table>
+            }
         </Paper>
     )
 }

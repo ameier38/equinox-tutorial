@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useReducer, useEffect, useContext, createContext } from 'react'
 import { useParams } from 'react-router-dom'
 import { useManualQuery, useQuery } from 'graphql-hooks'
 import Plot from 'react-plotly.js'
@@ -11,10 +11,10 @@ import { SchedulePaymentDialog } from './SchedulePaymentDialog'
 import { 
     Query, 
     QueryGetLeaseArgs, 
-    AsOf,
     QueryListLeaseEventsArgs,
-    LeaseEvent
 } from '../../generated/graphql'
+import { State, Event } from './types'
+import moment from 'moment'
 
 const GET_LEASE = `
 query GetLease($input: GetLeaseInput!) {
@@ -49,71 +49,86 @@ query ListLeaseEvents($input: ListLeaseEventsInput!) {
 
 type RouteParams = { leaseId: string }
 
+const initialState : State = {
+    shouldReset: true,
+    asOf: { 
+        asAt: moment.utc().toDate(),
+        asOn: moment.utc().toDate()
+    },
+    leaseEvents: [],
+    leaseEventsPageSize: 10,
+    leaseEventsPageToken: "",
+    schedulePaymentDialogOpen: false,
+    receivePaymentDialogOpen: false
+}
+
+const reducer = (state:State, event:Event) : State => {
+    switch(event.type) {
+        case 'RESET_TOGGLED':
+            console.log(event, state)
+            const newState = {...state, shouldReset: event.reset}
+            console.log(newState)
+            return newState
+        case 'LEASE_EVENTS_RESET':
+            return {...state, leaseEvents: event.leaseEvents}
+        case 'AS_OF_UPDATED':
+            const asAt = event.asOf.asAt ? event.asOf.asAt : state.asOf.asAt
+            const asOn = event.asOf.asOn ? event.asOf.asOn : state.asOf.asOn
+            return {...state, asOf: { asAt, asOn }}
+        case 'LEASE_EVENTS_PAGE_SIZE_UPDATED':
+            return {...state, leaseEventsPageSize: event.pageSize}
+        case 'LEASE_EVENTS_PAGE_TOKEN_UPDATED':
+            return {...state, leaseEventsPageToken: event.pageToken}
+        case 'SCHEDULE_PAYMENT_DIALOG_TOGGLED':
+            return {...state, schedulePaymentDialogOpen: event.open}
+        case 'RECEIVE_PAYMENT_DIALOG_TOGGLED':
+            return {...state, receivePaymentDialogOpen: event.open}
+        default:
+            throw new Error()
+    }
+}
+
 export const LeaseDetail = () => {
     const { leaseId } = useParams<RouteParams>()
-    const [asAt, setAsAt] = useState(new Date())
-    const [asOn, setAsOn] = useState(new Date())
-    const [pageSize, setPageSize] = useState(5)
-    const [pageToken, setPageToken] = useState("")
-    const [schedulePaymentDialogOpen, setSchedulePaymentDialogOpen] = useState(false)
-    const [receivePaymentDialogOpen, setReceivePaymentDialogOpen] = useState(false)
-    const [currentLeaseEvents, setCurrentLeaseEvents] = useState<LeaseEvent[]>([])
+    const [state, dispatch] = useReducer(reducer, initialState)
 
-    const getLeaseResult = useQuery<Query,QueryGetLeaseArgs>(
+    const asOf = {
+        asAt: state.asOf.asAt.toISOString(),
+        asOn: state.asOf.asOn.toISOString()
+    }
+
+    const getLeaseInput = {
+        leaseId,
+        asOf
+    }
+
+    const listLeaseEventsInput = {
+        leaseId,
+        pageSize: state.leaseEventsPageSize, 
+        pageToken: state.leaseEventsPageToken,
+        asOf
+    }
+
+    const [getLease, getLeaseResult] = useManualQuery<Query,QueryGetLeaseArgs>(
         GET_LEASE,
-        { 
-            variables: { 
-                input: { 
-                    leaseId,
-                    asOf: {
-                        asAt: asAt.toISOString(),
-                        asOn: asOn.toISOString()
-                    }
-                } 
-            } 
-        })
+        { variables: { input: getLeaseInput } })
 
     const [listLeaseEvents, listLeaseEventsResult] = useManualQuery<Query,QueryListLeaseEventsArgs>(
         LIST_LEASE_EVENTS,
-        { 
-            variables: { 
-                input: { 
-                    leaseId,
-                    pageSize, 
-                    pageToken,
-                } 
-            } 
-        })
-
-    const resetCurrentLeaseEvents = () => {
-        listLeaseEvents().then(({data}) => {
-            setCurrentLeaseEvents(data.listLeaseEvents.events)
-        }) 
-    }
+        { variables: { input: listLeaseEventsInput } })
 
     useEffect(() => {
-        resetCurrentLeaseEvents()
-    }, [])
-
-    useEffect(() => {
-        listLeaseEvents({
-            variables: {
-                input: { 
-                    leaseId,
-                    pageSize, 
-                    pageToken,
-                    asOf: {
-                        asAt: asAt.toISOString(),
-                        asOn: asOn.toISOString()
-                    }
-                } 
-            }
-        })
-    }, [asAt, asOn])
-
-    const refetch = () => {
-        return Promise.all([getLeaseResult.refetch(), resetCurrentLeaseEvents()])
-    }
+        if (state.shouldReset) {
+            getLease()
+            listLeaseEvents().then(({data}) => {
+                dispatch({type: 'LEASE_EVENTS_RESET', leaseEvents: data.listLeaseEvents.events})
+                dispatch({type: 'RESET_TOGGLED', reset: false})
+            })
+        } else {
+            getLease()
+            listLeaseEvents()
+        }
+    }, [state.asOf])
 
     // const xData = data ? [
     //     data.getLease.totalScheduled,
@@ -138,29 +153,23 @@ export const LeaseDetail = () => {
                 </React.Fragment>
                 : <CircularProgress />} */}
             <AsOfSlider 
-                leaseEvents={currentLeaseEvents}
-                setAsAt={setAsAt}
-                setAsOn={setAsOn} /> 
+                leaseEvents={state.leaseEvents}
+                dispatch={dispatch} /> 
             <CommandPanel
-                setReceivePaymentDialogOpen={setReceivePaymentDialogOpen}
-                setSchedulePaymentDialogOpen={setSchedulePaymentDialogOpen} />
+                dispatch={dispatch} />
             <LeaseEventTable 
                 leaseId={leaseId}
-                setPageSize={setPageSize}
-                setPageToken={setPageToken}
-                pageSize={pageSize}
+                pageSize={state.leaseEventsPageSize}
                 listLeaseEventsResult={listLeaseEventsResult}
-                refetch={refetch} />
+                dispatch={dispatch} />
             <ReceivePaymentDialog 
                 leaseId={leaseId}
-                open={receivePaymentDialogOpen}
-                setOpen={setReceivePaymentDialogOpen}
-                refetch={refetch} />
+                open={state.receivePaymentDialogOpen}
+                dispatch={dispatch} />
             <SchedulePaymentDialog 
                 leaseId={leaseId}
-                open={schedulePaymentDialogOpen}
-                setOpen={setSchedulePaymentDialogOpen}
-                refetch={refetch} />
+                open={state.schedulePaymentDialogOpen}
+                dispatch={dispatch} />
         </React.Fragment>
     )
 }
