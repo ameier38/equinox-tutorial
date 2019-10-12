@@ -59,7 +59,7 @@ jobs:
         with:
           name: protos
           path: graphql-api/src/Proto/gen
-      - name: Start GraphQL API
+      - name: Start Lease API and GraphQL API
         run: docker-compose up -d --build graphql-api
       - name: Test GraphQL API
         uses: ./.github/actions/fake

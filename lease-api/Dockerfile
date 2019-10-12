@@ -38,7 +38,7 @@ RUN fake build
 
 # copy everything else and build
 COPY . .
-RUN fake build -t PublishLease
+RUN fake build -t Publish
 
 FROM mcr.microsoft.com/dotnet/core/runtime:3.0-alpine as runner
 

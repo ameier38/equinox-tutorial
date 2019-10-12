@@ -54,8 +54,8 @@ BuildTask.create "Test" [] {
     if not result.OK then failwithf "Error! %A" result.Errors
 }
 
-BuildTask.create "PublishServer" [] {
-    Trace.trace "Publishing Server..."
+BuildTask.create "Publish" [] {
+    Trace.trace "Publishing GraphQL API..."
     DotNet.publish
         (fun args -> { args with OutputPath = Some "src/Server/out"})
         "src/Server/Server.fsproj"

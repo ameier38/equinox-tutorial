@@ -34,23 +34,26 @@ $env:PATH += ";C:/Users/<user>/.dotnet/tools"
 Install [GraphQL Playground](https://github.com/prisma-labs/graphql-playground)
 > Used for interactively running queries.
 
-### Updating Protos
-If you have updated the protocol buffers in the [protos sub-repo](../protos),
-first make sure you have generated the compiled code then run the following
-to copy the generated code and rebuild the project.
+## Usage
+Start server.
+```
+docker-compose up -d graphql-api
+```
+
+Run tests.
+```
+fake build -t Test
+```
+
+## Development
+
+### Updating protobuf files
+Update the protobuf files and generate the new outputs. 
+See [proto README](../proto/README.md) for instructions.
+
+Then copy the generated files and build the Proto project.
 ```
 fake build -t UpdateProtos
-```
-
-## Usage
-Start services.
-```
-docker-compose up -d lease-api
-```
-
-Start the GraphQL API.
-```
-fake build -t Serve
 ```
 
 ## Resources

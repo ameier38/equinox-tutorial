@@ -45,7 +45,7 @@ services:
     build:
       context: ./web-app
     environment:
-      REACT_APP_GRAPHQL_HOST: graphql-api
+      REACT_APP_GRAPHQL_HOST: localhost
       REACT_APP_GRAPHQL_PORT: 4000
     volumes:
       - ./web-app:/app

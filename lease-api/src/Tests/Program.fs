@@ -320,7 +320,9 @@ let testReceivePayment =
                 EventType = "LeaseCreated") ]
         p1EventsAfterDelete
         |> Expect.sequenceEqual "should equal expected events at p1 after delete" expectedP1EventsAfterDelete
-        let loanObsAtP1AfterDelete = getLease leaseId DateTime.UtcNow p1Date
+        let loanObsAtP1AfterDelete = 
+            getLease leaseId DateTime.UtcNow p1Date
+            |> cleanLeaseObservation
         loanObsAtP1AfterDelete
         |> Expect.equal "should equal s1 lease at p1 date" expectedLeaseObsAtS1
     }

@@ -99,6 +99,8 @@ export const BalancePlot: React.FC<BalancePlotProps> = ({
                     .text(d => dollarFormatter.format(d.value))
 
             groupSelection.exit().remove()
+            rectSelection.exit().remove()
+            textSelection.exit().remove()
 
             svg.append('g').attr('transform', `translate(0, ${height})`).call(d3.axisBottom(x))
         }

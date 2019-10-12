@@ -15,7 +15,7 @@ and [gRPC](https://grpc.io/) :milky_way:.
 - Web application using [React](https://reactjs.org/) 
 and [TypeScript](https://www.typescriptlang.org/) :computer:.
 - Fully Dockerized for fast local development :whale:.
-- Integration tests and example CI using [Codefresh](https://codefresh.io/) :leaves:.
+- Integration tests and example CI using [GitHub Actions](https://github.com/features/actions) :zap:.
 - Build automation using [FAKE](https://github.com/fsharp/FAKE) :hammer:.
 
 > The domain model is a lease, such as a car lease. 
@@ -25,24 +25,23 @@ can be found in the accompanying
 
 ## TL;DR
 ```
-docker-compose up -d
+docker-compose up -d --build web-app
 ```
 Endpoints:
 - http://localhost:2113 -> Event Store UI (database; user:admin password:changeit)
-- http://localhost:5341 -> Seq UI (logging)
-- http://localhost:8080 -> GraphQL Playground
+- http://localhost:8081 -> Seq UI (logging)
 - http://localhost:3000 -> Web application
 
 ## Structure
 ```
 equinox-tutorial
 ├── README.md           --> You are here
-├── codefresh.yml       --> CI/CD
+├── .github             --> CI/CD
 ├── docker-compose.yml  --> Dockerization
-├── app                 --> Web application
+├── web-app             --> Web application
 ├── graphql-api         --> GraphQL API
 ├── lease-api           --> Lease gRPC API (business logic)
-└── proto               --> Protobuf files
+└── protos              --> Protobuf files
 ```
 
 ## Screenshots
@@ -60,15 +59,10 @@ __Event Store__
 
 ## Time Travel
 ![time-travel](./images/time-travel.gif)
-> Going back in time by changing _As At Date_ shows that only one lease existed.
-Moving forward the more recently created lease can be seen again.
 
 ## Resources
 - [Equinox](https://github.com/jet/equinox)
 - [Event Sourcing Basics](https://eventstore.org/docs/event-sourcing-basics/index.html)
 - [12 Things You Should Know About Event Sourcing](https://blog.leifbattermann.de/2017/04/21/12-things-you-should-know-about-event-sourcing/)
-- [Uber Protobuf Style Guide V2](https://github.com/uber/prototool/tree/dev/style)
-- [GraphQL CLI](https://github.com/graphql-cli/graphql-cli)
-- [Apollo GraphQL](https://www.apollographql.com/docs/react/)
-- [F# Expecto](https://github.com/haf/expecto)
+- [As Time Goes By Talk](https://youtu.be/xzekp1RuZbM)
 - [GitHub Workflow Syntax](https://help.github.com/en/articles/workflow-syntax-for-github-actions)

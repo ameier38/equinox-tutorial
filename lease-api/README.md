@@ -26,16 +26,15 @@ $env:PATH += ";C:/Users/<user>/.dotnet/tools"
 ```
 
 ## Usage
-Start EventStore.
+Start server.
 ```
-docker-compose up -d eventstore
+docker-compose up -d lease-api
 ```
 
-Start the Lease API.
+Run tests.
 ```
-fake build -t Serve
+fake build -t Test
 ```
-> The gRPC server listens on port 50051.
 
 ## Development
 
@@ -46,17 +45,6 @@ See [proto README](../proto/README.md) for instructions.
 Then copy the generated files and build the Proto project.
 ```
 fake build -t UpdateProtos
-```
-
-### Testing
-Start Event Store.
-```
-docker-compose up -d eventstore
-```
-
-Run the test suite.
-```
-fake build -t Test
 ```
 
 ## Resources
@@ -71,3 +59,4 @@ fake build -t Test
 - [.NET gRPC health probe](https://github.com/grpc/grpc/blob/master/src/csharp/Grpc.HealthCheck/HealthServiceImpl.cs)
 - [You're better off using exceptions](https://eiriktsarpalis.wordpress.com/2017/02/19/youre-better-off-using-exceptions/)
 - [gRPC on dotnetcore](https://grpc.io/blog/grpc-on-dotnetcore/)
+- [F# Expecto](https://github.com/haf/expecto)
