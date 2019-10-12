@@ -101,7 +101,6 @@ let main _ =
     let query = Root.Query leaseClient
     let mutation = Root.Mutation leaseClient
     let schema = GraphQL.Schema(query, mutation)
-    let executor = GraphQL.Executor(schema)
     let suaveConfig =
         { defaultConfig with
             bindings = [ HttpBinding.createSimple HTTP config.Server.Host config.Server.Port ]}

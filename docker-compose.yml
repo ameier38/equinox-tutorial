@@ -22,16 +22,8 @@ services:
     ports:
       - "50051:50051"
     environment:
-      SERVER_HOST: '0.0.0.0'
       SERVER_PORT: 50051
-      EVENTSTORE_PROTOCOL: tcp
       EVENTSTORE_HOST: eventstore
-      EVENTSTORE_TCP_PORT: 1113
-      EVENTSTORE_HTTP_PORT: 2113
-      EVENTSTORE_USER: admin
-      EVENTSTORE_PASSWORD: changeit
-      SEQ_HOST: seq
-      SEQ_PORT: 5341
     depends_on:
       - seq
       - eventstore
@@ -42,17 +34,19 @@ services:
     ports:
       - "4000:4000"
     environment:
-      SERVER_HOST: '0.0.0.0'
       SERVER_PORT: 4000
       LEASE_API_HOST: lease-api
       LEASE_API_PORT: 50051
-      SEQ_HOST: logs
+      SEQ_HOST: seq
       SEQ_PORT: 5341
     depends_on:
       - lease-api
   web-app:
     build:
       context: ./web-app
+    environment:
+      REACT_APP_GRAPHQL_HOST: graphql-api
+      REACT_APP_GRAPHQL_PORT: 4000
     volumes:
       - ./web-app:/app
       - /app/node_modules

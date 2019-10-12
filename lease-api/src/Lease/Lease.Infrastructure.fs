@@ -166,6 +166,13 @@ module Pagination =
           NextPageToken = nextPageToken
           Page = page }
 
+module Env = 
+    let getEnv (key:string) (defaultValueOpt:string option) =
+        match Environment.GetEnvironmentVariable(key), defaultValueOpt with
+        | value, Some defaultValue when String.IsNullOrEmpty(value) -> defaultValue
+        | value, None when String.IsNullOrEmpty(value) -> failwithf "envVar %s is not defined" key
+        | value, _ -> value
+
 module Operators =
     let (!!) (value:decimal<'u>) = %value |> Money.fromUSD
     let (!@) (value:DateTime<'u>) = %value |> DateTime.toUtc |> Google.Type.Date.FromDateTime

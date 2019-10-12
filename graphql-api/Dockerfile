@@ -1,8 +1,4 @@
-# use build image to compile
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0 as builder
-
-# set nuget package location
-ARG NUGET_PACKAGES=/home/.nuget/packages
 
 # install locales
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y locales
@@ -27,7 +23,7 @@ RUN dotnet tool install fake-cli -g
 # install paket
 RUN dotnet tool install paket -g
 
-# add fake to path
+# add tools to path
 ENV PATH="$PATH:/root/.dotnet/tools"
 
 # copy paket dependencies
@@ -42,16 +38,7 @@ RUN fake build
 
 # copy everything else and build
 COPY . .
-RUN fake build -t PublishTests
 RUN fake build -t PublishServer
-
-FROM mcr.microsoft.com/dotnet/core/runtime:3.0 as tester
-
-WORKDIR /app
-
-COPY --from=builder /app/src/Tests/out .
-
-CMD ["dotnet", "Tests.dll"]
 
 FROM mcr.microsoft.com/dotnet/core/runtime:3.0-alpine as runner
 

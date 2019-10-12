@@ -10,8 +10,8 @@
     </Content> 
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Lease.Config.fs" />
     <Compile Include="Lease.Infrastructure.fs" />
+    <Compile Include="Lease.Config.fs" />
     <Compile Include="Lease.Domain.fs" />
     <Compile Include="Lease.Aggregate.fs" />
     <Compile Include="Lease.Store.fs" />

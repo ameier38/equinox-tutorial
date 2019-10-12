@@ -12,6 +12,8 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
+WORKDIR /app
+
 # prevent sending metrics to microsoft
 ENV DOTNET_CLI_TELEMETRY_OPTOUT 1
 
@@ -23,8 +25,6 @@ RUN dotnet tool install -g paket
 
 # add tools to PATH
 ENV PATH="$PATH:/root/.dotnet/tools"
-
-WORKDIR /app
 
 # copy paket dependencies
 COPY paket.dependencies .
@@ -38,17 +38,7 @@ RUN fake build
 
 # copy everything else and build
 COPY . .
-RUN fake build -t PublishTests
 RUN fake build -t PublishLease
-
-FROM mcr.microsoft.com/dotnet/core/runtime:3.0 as tester
-
-WORKDIR /app
-
-COPY --from=builder /app/src/Tests/out .
-COPY --from=builder /app/wait-for.sh .
-
-CMD ["dotnet", "Tests.dll"]
 
 FROM mcr.microsoft.com/dotnet/core/runtime:3.0-alpine as runner
 

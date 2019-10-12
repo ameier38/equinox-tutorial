@@ -2,8 +2,15 @@ open Expecto
 open Expecto.Flip
 open System
 open FSharp.Data.GraphQL
+open Shared
 
-type LeaseProvider = GraphQLProvider<"http://localhost:4000">
+let host = Some "localhost" |> Env.getEnv "GRAPHQL_HOST"
+let port = Some "4000" |> Env.getEnv "GRAPHQL_PORT" |> int 
+let url = sprintf "http://%s:%d" host port
+
+type LeaseProvider = GraphQLProvider<"introspection.json">
+
+let runtimeContext = LeaseProvider.GetContext(url)
 
 let createLease = 
     LeaseProvider.Operation<"""
@@ -55,7 +62,7 @@ let testLeaseWorkflow =
                 commencementDate=commencementDate,
                 expirationDate=expirationDate,
                 monthlyPaymentAmount=50.0)
-        let! createLeaseResult = createLease.AsyncRun(createLeaseInput)
+        let! createLeaseResult = createLease.AsyncRun(runtimeContext, createLeaseInput)
         createLeaseResult.Data
         |> Expect.isSome "should successfully create lease"
         let schedulePaymentInput =
@@ -64,7 +71,7 @@ let testLeaseWorkflow =
                 paymentId=paymentId,
                 scheduledDate=DateTime(2019, 1, 2),
                 scheduledAmount=50.0)
-        let! schedulePaymentResult = schedulePayment.AsyncRun(schedulePaymentInput)
+        let! schedulePaymentResult = schedulePayment.AsyncRun(runtimeContext, schedulePaymentInput)
         schedulePaymentResult.Data
         |> Expect.isSome "should successfully schedule payment"
         let receivePaymentInput =
@@ -73,14 +80,14 @@ let testLeaseWorkflow =
                 paymentId=paymentId,
                 receivedDate=DateTime(2019, 1, 3),
                 receivedAmount=40.0) 
-        let! receivePaymentResult = receivePayment.AsyncRun(receivePaymentInput)
+        let! receivePaymentResult = receivePayment.AsyncRun(runtimeContext, receivePaymentInput)
         receivePaymentResult.Data
         |> Expect.isSome "should successfully receive payment"
         let getLeaseInput =
             LeaseProvider.Types.GetLeaseInput(
                 leaseId=leaseId,
                 asOf=LeaseProvider.Types.AsOf(asOn="2019-01-04"))
-        let! getLeaseResult = getLease.AsyncRun(getLeaseInput)
+        let! getLeaseResult = getLease.AsyncRun(runtimeContext, getLeaseInput)
         printfn "Data:\n%A" getLeaseResult.Data
         getLeaseResult.Data
         |> Option.map (fun res ->

@@ -3,24 +3,16 @@ open Expecto.Flip
 open FSharp.UMX
 open Google.Protobuf
 open Grpc.Core
-open Grpc.Core.Testing
-open Grpc.Core.Utils
 open Lease
 open Lease.Operators
-open Lease.Store
-open Lease.Service
-open Newtonsoft.Json
-open Serilog
 open System
-open System.Threading
 
-let getUtcNow () = DateTime(2019, 10, 1)
-let logger = LoggerConfiguration().WriteTo.Console().CreateLogger()
-let config = Config.Load()
-let store = Store(config)
-let serializationSettings = JsonSerializerSettings()
-let codec = FsCodec.NewtonsoftJson.Codec.Create<StoredEvent>(serializationSettings)
-let leaseAPI = LeaseAPIImpl(getUtcNow, store, codec, logger)
+let leaseApiHost = Some "localhost" |> Env.getEnv "LEASE_API_HOST"
+let leaseApiPort = Some "50051" |> Env.getEnv "LEASE_API_PORT" |> int
+let channelTarget = sprintf "%s:%d" leaseApiHost leaseApiPort
+
+let leaseChannel = Channel(channelTarget, ChannelCredentials.Insecure)
+let leaseAPIClient = Tutorial.Lease.V1.LeaseAPI.LeaseAPIClient(leaseChannel)
 
 module DateTime =
     let toProtoDate (dt:DateTime) =
@@ -31,30 +23,13 @@ module DateTime =
 module Guid =
     let create () = Guid.NewGuid() |> Guid.toStringN
 
-let serverCtx = 
-    TestServerCallContext.Create(
-        method = "test", 
-        host = "localhost", 
-        deadline = DateTime.UtcNow.AddHours(1.0), 
-        requestHeaders = Metadata(), 
-        cancellationToken = CancellationToken.None, 
-        peer = "127.0.0.1", 
-        authContext = null,
-        contextPropagationToken = null,
-        writeHeadersFunc = (fun _ -> TaskUtils.CompletedTask),
-        writeOptionsGetter = (fun () -> WriteOptions()),
-        writeOptionsSetter = (fun _ -> ()))
-
 let getLease leaseId asAt asOn =
-    async {
-        let asOf =
-            Tutorial.Lease.V1.AsOf(
-                AsAtTime = !@@asAt,
-                AsOnDate = !@asOn)
-        let req = Tutorial.Lease.V1.GetLeaseRequest(LeaseId = leaseId, AsOf = asOf)
-        let! res = leaseAPI.GetLease(req, serverCtx) |> Async.AwaitTask
-        return res.Lease
-    }
+    let asOf =
+        Tutorial.Lease.V1.AsOf(
+            AsAtTime = !@@asAt,
+            AsOnDate = !@asOn)
+    let req = Tutorial.Lease.V1.GetLeaseRequest(LeaseId = leaseId, AsOf = asOf)
+    leaseAPIClient.GetLease(req).Lease
 
 let getLeaseEvents leaseId asAt asOn =
     let rec recurse pageToken =
@@ -69,7 +44,7 @@ let getLeaseEvents leaseId asAt asOn =
                     AsOf = asOf,
                     PageSize = 1,
                     PageToken = pageToken)
-            let res = leaseAPI.ListLeaseEvents(req, serverCtx) |> Async.AwaitTask |> Async.RunSynchronously
+            let res = leaseAPIClient.ListLeaseEvents(req)
             yield! res.Events
             match res.NextPageToken with
             | "" -> ()
@@ -78,39 +53,44 @@ let getLeaseEvents leaseId asAt asOn =
     recurse ""
 
 let deleteLeaseEvent leaseId eventId =
-    async {
-        let req = Tutorial.Lease.V1.DeleteLeaseEventRequest(LeaseId = leaseId, EventId = eventId)
-        let! res = leaseAPI.DeleteLeaseEvent(req, serverCtx) |> Async.AwaitTask
-        return res.Message
-    }
+    let req = Tutorial.Lease.V1.DeleteLeaseEventRequest(LeaseId = leaseId, EventId = eventId)
+    leaseAPIClient.DeleteLeaseEvent(req).Message
 
 let createLease lease =
-    async {
-        let req = Tutorial.Lease.V1.CreateLeaseRequest(Lease = lease)
-        let! res = leaseAPI.CreateLease(req, serverCtx) |> Async.AwaitTask
-        return res.Message
-    }
+    let req = Tutorial.Lease.V1.CreateLeaseRequest(Lease = lease)
+    leaseAPIClient.CreateLease(req).Message
 
 let schedulePayment leaseId payment =
-    async {
-        let req = Tutorial.Lease.V1.SchedulePaymentRequest(LeaseId = leaseId, ScheduledPayment = payment)
-        let! res = leaseAPI.SchedulePayment(req, serverCtx) |> Async.AwaitTask
-        return res.Message
-    }
+    let req = Tutorial.Lease.V1.SchedulePaymentRequest(LeaseId = leaseId, ScheduledPayment = payment)
+    leaseAPIClient.SchedulePayment(req).Message
 
 let receivePayment leaseId payment =
-    async {
-        let req = Tutorial.Lease.V1.ReceivePaymentRequest(LeaseId = leaseId, ReceivedPayment = payment)
-        let! res = leaseAPI.ReceivePayment(req, serverCtx) |> Async.AwaitTask
-        return res.Message
-    }
+    let req = Tutorial.Lease.V1.ReceivePaymentRequest(LeaseId = leaseId, ReceivedPayment = payment)
+    leaseAPIClient.ReceivePayment(req).Message
 
 let terminateLease leaseId termination =
-    async {
-        let req = Tutorial.Lease.V1.TerminateLeaseRequest(LeaseId = leaseId, Termination = termination)
-        let! res = leaseAPI.TerminateLease(req, serverCtx) |> Async.AwaitTask
-        return res.Message
-    }
+    let req = Tutorial.Lease.V1.TerminateLeaseRequest(LeaseId = leaseId, Termination = termination)
+    leaseAPIClient.TerminateLease(req).Message
+
+let cleanLeaseObservation (obs:Tutorial.Lease.V1.LeaseObservation) =
+    Tutorial.Lease.V1.LeaseObservation(
+        UpdatedOnDate = obs.UpdatedOnDate,
+        LeaseId = obs.LeaseId,
+        UserId = obs.UserId,
+        CommencementDate = obs.CommencementDate,
+        ExpirationDate = obs.ExpirationDate,
+        MonthlyPaymentAmount = obs.MonthlyPaymentAmount,
+        TotalScheduled = obs.TotalScheduled,
+        TotalPaid = obs.TotalPaid,
+        AmountDue = obs.AmountDue,
+        LeaseStatus = obs.LeaseStatus,
+        TerminatedDate = obs.TerminatedDate)
+
+let cleanLeaseEvent (event:Tutorial.Lease.V1.LeaseEvent) =
+    Tutorial.Lease.V1.LeaseEvent(
+        EventId = event.EventId,
+        EventEffectiveDate = event.EventEffectiveDate,
+        EventType = event.EventType) 
 
 let testPagination =
     test "should successfully paginate" {
@@ -134,8 +114,7 @@ let testPagination =
     }
 
 let testCreateLease =
-    testAsync "should successfully create lease" {
-        let now = getUtcNow()
+    test "should successfully create lease" {
         let leaseId = Guid.create()
         let userId = Guid.create()
         let commencementDate = DateTime(2019, 1, 1)
@@ -147,14 +126,14 @@ let testCreateLease =
                 CommencementDate = !@commencementDate,
                 ExpirationDate = !@expirationDate,
                 MonthlyPaymentAmount = !!50.0m)
-        let! actualRes = createLease lease
+        let actualRes = createLease lease
         let expectedRes = sprintf "successfully created Lease-%s" leaseId
         actualRes |> Expect.equal "should equal expected response" expectedRes
-        let! actualLeaseObs = getLease leaseId now commencementDate
+        let actualLeaseObs = 
+            getLease leaseId DateTime.UtcNow commencementDate
+            |> cleanLeaseObservation
         let expectedLeaseObs =
             Tutorial.Lease.V1.LeaseObservation(
-                CreatedAtTime = !@@now,
-                UpdatedAtTime = !@@now,
                 UpdatedOnDate = !@commencementDate,
                 LeaseId = leaseId,
                 UserId = userId,
@@ -170,8 +149,7 @@ let testCreateLease =
     }
 
 let testSchedulePayment =
-    testAsync "should successfully create lease and schedule a payment" {
-        let now = getUtcNow()
+    test "should successfully create lease and schedule a payment" {
         let leaseId = Guid.create()
         let userId = Guid.create()
         let s1Id = Guid.create()
@@ -184,20 +162,22 @@ let testSchedulePayment =
                 CommencementDate = !@commencementDate,
                 ExpirationDate = !@expirationDate,
                 MonthlyPaymentAmount = !!50.0m)
-        do! createLease lease |> Async.Ignore
+        do createLease lease |> ignore
         let s1Date = DateTime(2019, 2, 1)
         let scheduledPayment =
             Tutorial.Lease.V1.ScheduledPayment(
                 PaymentId = s1Id,
                 ScheduledDate = !@s1Date,
                 ScheduledAmount = !!50m)
-        do! schedulePayment leaseId scheduledPayment |> Async.Ignore
-        let! leaseObsAtStart = getLease leaseId now commencementDate
-        let! leaseObsAtS1 = getLease leaseId now s1Date
+        do schedulePayment leaseId scheduledPayment |> ignore
+        let leaseObsAtStart = 
+            getLease leaseId DateTime.UtcNow commencementDate
+            |> cleanLeaseObservation
+        let leaseObsAtS1 = 
+            getLease leaseId DateTime.UtcNow s1Date
+            |> cleanLeaseObservation
         let expectedLeaseObsAtStart =
             Tutorial.Lease.V1.LeaseObservation(
-                CreatedAtTime = !@@now,
-                UpdatedAtTime = !@@now,
                 UpdatedOnDate = !@commencementDate,
                 LeaseId = leaseId,
                 UserId = userId,
@@ -210,8 +190,6 @@ let testSchedulePayment =
                 LeaseStatus = Tutorial.Lease.V1.LeaseStatus.Outstanding)
         let expectedLeaseObsAtS1 =
             Tutorial.Lease.V1.LeaseObservation(
-                CreatedAtTime = !@@now,
-                UpdatedAtTime = !@@now,
                 UpdatedOnDate = !@s1Date,
                 LeaseId = leaseId,
                 UserId = userId,
@@ -229,8 +207,7 @@ let testSchedulePayment =
     }
 
 let testReceivePayment =
-    testAsync "should successfully create lease, schedule payment, and receive payment" {
-        let now = getUtcNow()
+    test "should successfully create lease, schedule payment, and receive payment" {
         let leaseId = Guid.create()
         let userId = Guid.create()
         let s1Id = Guid.create()
@@ -244,28 +221,32 @@ let testReceivePayment =
                 CommencementDate = !@commencementDate,
                 ExpirationDate = !@expirationDate,
                 MonthlyPaymentAmount = !!50.0m)
-        do! createLease lease |> Async.Ignore
+        do createLease lease |> ignore
         let s1Date = DateTime(2019, 2, 1)
         let scheduledPayment =
             Tutorial.Lease.V1.ScheduledPayment(
                 PaymentId = s1Id,
                 ScheduledDate = !@s1Date,
                 ScheduledAmount = !!50m)
-        do! schedulePayment leaseId scheduledPayment |> Async.Ignore
+        do schedulePayment leaseId scheduledPayment |> ignore
         let p1Date = DateTime(2019, 2, 2)
         let receivedPayment =
             Tutorial.Lease.V1.ReceivedPayment(
                 PaymentId = p1Id,
                 ReceivedDate = !@p1Date,
                 ReceivedAmount = !!40m)
-        do! receivePayment leaseId receivedPayment |> Async.Ignore 
-        let! loanObsAtStart = getLease leaseId now commencementDate
-        let! loanObsAtS1 = getLease leaseId now s1Date
-        let! loanObsAtP1 = getLease leaseId now p1Date
+        do receivePayment leaseId receivedPayment |> ignore 
+        let loanObsAtStart = 
+            getLease leaseId DateTime.UtcNow commencementDate
+            |> cleanLeaseObservation
+        let loanObsAtS1 = 
+            getLease leaseId DateTime.UtcNow s1Date
+            |> cleanLeaseObservation
+        let loanObsAtP1 = 
+            getLease leaseId DateTime.UtcNow p1Date
+            |> cleanLeaseObservation
         let expectedLeaseObsAtStart =
             Tutorial.Lease.V1.LeaseObservation(
-                CreatedAtTime = !@@now,
-                UpdatedAtTime = !@@now,
                 UpdatedOnDate = !@commencementDate,
                 LeaseId = leaseId,
                 UserId = userId,
@@ -280,8 +261,6 @@ let testReceivePayment =
         |> Expect.equal "should equal expected lease at start date" expectedLeaseObsAtStart
         let expectedLeaseObsAtS1 =
             Tutorial.Lease.V1.LeaseObservation(
-                CreatedAtTime = !@@now,
-                UpdatedAtTime = !@@now,
                 UpdatedOnDate = !@s1Date,
                 LeaseId = leaseId,
                 UserId = userId,
@@ -296,8 +275,6 @@ let testReceivePayment =
         |> Expect.equal "should equal expected lease at s1 date" expectedLeaseObsAtS1
         let expectedLeaseObsAtP1 =
             Tutorial.Lease.V1.LeaseObservation(
-                CreatedAtTime = !@@now,
-                UpdatedAtTime = !@@now,
                 UpdatedOnDate = !@p1Date,
                 LeaseId = leaseId,
                 UserId = userId,
@@ -311,51 +288,45 @@ let testReceivePayment =
         loanObsAtP1
         |> Expect.equal "should equal expected lease at p1 date" expectedLeaseObsAtP1
         let p1Events = 
-            getLeaseEvents leaseId now p1Date
-            |> Seq.map (fun e -> e.EventPayload <- ""; e)
+            getLeaseEvents leaseId DateTime.UtcNow p1Date
+            |> Seq.map cleanLeaseEvent
         let expectedP1Events =
             [ Tutorial.Lease.V1.LeaseEvent(
                 EventId = 3,
-                EventCreatedTime = !@@getUtcNow(),
                 EventEffectiveDate = !@p1Date,
                 EventType = "PaymentReceived")
               Tutorial.Lease.V1.LeaseEvent(
                 EventId = 2,
-                EventCreatedTime = !@@getUtcNow(),
                 EventEffectiveDate = !@s1Date,
                 EventType = "PaymentScheduled")
               Tutorial.Lease.V1.LeaseEvent(
                 EventId = 1,
-                EventCreatedTime = !@@getUtcNow(),
                 EventEffectiveDate = !@commencementDate,
                 EventType = "LeaseCreated") ]
         p1Events
         |> Expect.sequenceEqual "should equal expected events at p1" expectedP1Events
-        do! deleteLeaseEvent leaseId 3 |> Async.Ignore
+        do deleteLeaseEvent leaseId 3 |> ignore
         let p1EventsAfterDelete = 
-            getLeaseEvents leaseId now p1Date
-            |> Seq.map (fun e -> e.EventPayload <- ""; e)
+            getLeaseEvents leaseId DateTime.UtcNow p1Date
+            |> Seq.map cleanLeaseEvent
         let expectedP1EventsAfterDelete =
             [ Tutorial.Lease.V1.LeaseEvent(
                 EventId = 2,
-                EventCreatedTime = !@@getUtcNow(),
                 EventEffectiveDate = !@s1Date,
                 EventType = "PaymentScheduled") 
               Tutorial.Lease.V1.LeaseEvent(
                 EventId = 1,
-                EventCreatedTime = !@@getUtcNow(),
                 EventEffectiveDate = !@commencementDate,
                 EventType = "LeaseCreated") ]
         p1EventsAfterDelete
         |> Expect.sequenceEqual "should equal expected events at p1 after delete" expectedP1EventsAfterDelete
-        let! loanObsAtP1AfterDelete = getLease leaseId now p1Date
+        let loanObsAtP1AfterDelete = getLease leaseId DateTime.UtcNow p1Date
         loanObsAtP1AfterDelete
         |> Expect.equal "should equal s1 lease at p1 date" expectedLeaseObsAtS1
     }
 
 let testTerminateLease = 
-    testAsync "should successfully create lease and then terminate it" {
-        let now = getUtcNow()
+    test "should successfully create lease and then terminate it" {
         let leaseId = Guid.create()
         let userId = Guid.create()
         let commmencementDate = DateTime(2019, 1, 1)
@@ -370,16 +341,14 @@ let testTerminateLease =
                 CommencementDate = !@commmencementDate,
                 ExpirationDate = !@expirationDate,
                 MonthlyPaymentAmount = !!50.0m)
-        do! createLease lease |> Async.Ignore
+        do createLease lease |> ignore
         let termination =
             Tutorial.Lease.V1.Termination(
                 TerminationDate = !@terminationDate,
                 TerminationReason = "Test")
-        do! terminateLease leaseId termination |> Async.Ignore
+        do terminateLease leaseId termination |> ignore
         let expectedLeaseObsBeforeTermination =
             Tutorial.Lease.V1.LeaseObservation(
-                CreatedAtTime = !@@now,
-                UpdatedAtTime = !@@now,
                 UpdatedOnDate = !@commmencementDate,
                 LeaseId = leaseId,
                 UserId = userId,
@@ -392,8 +361,6 @@ let testTerminateLease =
                 LeaseStatus = Tutorial.Lease.V1.LeaseStatus.Outstanding)
         let expectedLeaseObsAfterTermination =
             Tutorial.Lease.V1.LeaseObservation(
-                CreatedAtTime = !@@now,
-                UpdatedAtTime = !@@now,
                 UpdatedOnDate = !@terminationDate,
                 LeaseId = leaseId,
                 UserId = userId,
@@ -405,8 +372,12 @@ let testTerminateLease =
                 AmountDue = !!0m,
                 LeaseStatus = Tutorial.Lease.V1.LeaseStatus.Terminated,
                 TerminatedDate = !@terminationDate)
-        let! actualLeaseBeforeTermination = getLease leaseId now beforeTeminationDate
-        let! actualLeaseAfterTermination = getLease leaseId now afterTerminationDate
+        let actualLeaseBeforeTermination = 
+            getLease leaseId DateTime.UtcNow beforeTeminationDate
+            |> cleanLeaseObservation
+        let actualLeaseAfterTermination = 
+            getLease leaseId DateTime.UtcNow afterTerminationDate
+            |> cleanLeaseObservation
         actualLeaseBeforeTermination 
         |> Expect.equal "should equal expected lease before termination" expectedLeaseObsBeforeTermination
         actualLeaseAfterTermination
