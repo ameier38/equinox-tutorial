@@ -35,12 +35,12 @@ export const App: React.FC = () => {
 
     return (
         <Router>
-            <AppBar position="static" color="primary">
+            <AppBar position='sticky' color='primary'>
                 <Toolbar>
                     <TitleButton />
                 </Toolbar>
             </AppBar>
-            <Container className={classes.container} maxWidth="lg">
+            <Container className={classes.container} maxWidth='lg'>
                 <Switch>
                     <Route exact path='/' component={LeaseSummary} />
                     <Route path='/:leaseId' component={LeaseDetail} />

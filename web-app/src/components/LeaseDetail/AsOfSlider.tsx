@@ -10,6 +10,11 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             padding: theme.spacing(1)
+        },
+        mark: {
+            height: 8,
+            marginTop: -3,
+            backgroundColor: theme.palette.primary.main
         }
     })
 )
@@ -123,6 +128,7 @@ export const AsOfSlider: React.FC<AsOfSliderProps> = ({
         <div className={classes.root}>
             <Typography id='as-at-slider'>As At: <span>{localAsAt && localAsAt.toISOString()}</span></Typography>
             <Slider
+                classes={{mark: classes.mark}}
                 aria-labelledby='as-at-slider'
                 valueLabelDisplay='off'
                 step={null}
@@ -134,6 +140,7 @@ export const AsOfSlider: React.FC<AsOfSliderProps> = ({
                 onChangeCommitted={onAsAtValueChangeCommitted} />
             <Typography id='as-on-slider'>As On: <span>{localAsOn && localAsOn.toISOString()}</span></Typography>
             <Slider
+                classes={{mark: classes.mark}}
                 aria-labelledby='as-on-slider'
                 valueLabelDisplay='off'
                 step={null}

@@ -33,12 +33,20 @@ export const CommandPanel: React.FC<CommandPanelProps> = ({
         <div className={classes.root}>
             <Grid container spacing={2}>
                 <Grid item xs={6}>
-                    <Button className={classes.button} onClick={openSchedulePaymentDialog} variant='contained'>
+                    <Button 
+                        className={classes.button} 
+                        color='primary'
+                        onClick={openSchedulePaymentDialog} 
+                        variant='contained'>
                         Schedule Payment
                     </Button>
                 </Grid>
                 <Grid item xs={6}>
-                    <Button className={classes.button} onClick={openReceivePaymentDialog} variant='contained'>
+                    <Button 
+                        className={classes.button} 
+                        color='primary'
+                        onClick={openReceivePaymentDialog} 
+                        variant='contained'>
                         Receive Payment
                     </Button>
                 </Grid>

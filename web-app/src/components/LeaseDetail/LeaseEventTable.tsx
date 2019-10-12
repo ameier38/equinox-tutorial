@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import moment from 'moment'
 import { useMutation, UseQueryResult, UseClientRequestResult } from 'graphql-hooks'
 import { 
     IconButton,
@@ -88,7 +89,9 @@ export const LeaseEventTable: React.FC<LeaseEventTableProps> = ({
                 }
             }
         }).then(() => {
-            return dispatch({type: 'RESET_TOGGLED', reset: true})
+            const now = moment.utc().add(10, 'seconds').toDate()
+            dispatch({type: 'RESET_TOGGLED', reset: true})
+            dispatch({type: 'AS_OF_UPDATED', asOf: { asAt: now, asOn: now}})
         })
     }
 

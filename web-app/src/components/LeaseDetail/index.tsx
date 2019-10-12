@@ -1,10 +1,9 @@
-import React, { useReducer, useEffect, useContext, createContext } from 'react'
+import React, { useReducer, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { useManualQuery, useQuery } from 'graphql-hooks'
-import Plot from 'react-plotly.js'
-import { LinearProgress, CircularProgress } from '@material-ui/core'
+import { useManualQuery } from 'graphql-hooks'
 import { AsOfSlider } from './AsOfSlider'
 import { CommandPanel } from './CommandPanel'
+import { BalancePlot } from './BalancePlot'
 import { LeaseEventTable } from './LeaseEventTable'
 import { ReceivePaymentDialog } from './ReceivePaymentDialog'
 import { SchedulePaymentDialog } from './SchedulePaymentDialog'
@@ -130,31 +129,18 @@ export const LeaseDetail = () => {
         }
     }, [state.asOf])
 
-    // const xData = data ? [
-    //     data.getLease.totalScheduled,
-    //     data.getLease.totalPaid,
-    //     data.getLease.amountDue
-    // ] : []
-    // const yData = data ? [
-    //     'Total Scheduled',
-    //     'Total Paid',
-    //     'Amount Due'
-    // ] : []
+    useEffect(() => {
+        listLeaseEvents()
+    }, [state.leaseEventsPageSize, state.leaseEventsPageToken])
 
     return (
         <React.Fragment>
-            {/* {loading || (!leaseData) ? 
-                <React.Fragment>
-                    <Plot
-                        data={[
-                            { type: 'bar', x: xData, y: yData }
-                        ]}
-                        layout={{ width: 300, height: 300, title: leaseId }} />
-                </React.Fragment>
-                : <CircularProgress />} */}
             <AsOfSlider 
                 leaseEvents={state.leaseEvents}
                 dispatch={dispatch} /> 
+            <BalancePlot
+                leaseId={leaseId}
+                getLeaseResult={getLeaseResult} />
             <CommandPanel
                 dispatch={dispatch} />
             <LeaseEventTable 
