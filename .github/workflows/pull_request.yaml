@@ -39,6 +39,8 @@ jobs:
           path: lease-api/src/Proto/gen
       - name: Start Lease API
         run: docker-compose up -d --build lease-api
+      - name: Check Services
+        run: docker ps -a
       - name: Test Lease API
         uses: ./.github/actions/fake
         with:
