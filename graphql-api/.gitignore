@@ -5,4 +5,5 @@ paket-files
 build
 obj
 bin
+out
 gen

@@ -43,20 +43,20 @@ BuildTask.create "UpdateProtos" [copyGenerated] {
         "src/Proto/Proto.csproj"
 }
 
-BuildTask.create "Test" [] {
-    Trace.trace "Running tests..."
-    let result = DotNet.exec id "run" "--project src/Tests/Tests.fsproj"
-    if not result.OK then failwithf "Error!"
-}
-
 BuildTask.create "Restore" [] {
     Trace.trace "Restoring solution..."
     DotNet.restore id solution
 }
 
+BuildTask.create "Test" [] {
+    Trace.trace "Running unit tests..."
+    let result = DotNet.exec id "run" "--project src/Tests/Tests.fsproj"
+    if not result.OK then failwithf "Error! %A" result.Errors
+}
+
 BuildTask.create "PublishTests" [] {
     Trace.trace "Publishing Tests..."
-    DotNet.publish 
+    DotNet.publish
         (fun args -> { args with OutputPath = Some "src/Tests/out"})
         "src/Tests/Tests.fsproj"
 }
