@@ -1,54 +1,62 @@
 # GraphQL API
-Main client facing API which stiches together the different gRPC APIs.
-
-## Setup
-Install Node Version Manager.
-```
-scoop install nvm
-```
-
-Install Node.
-```
-nvm install 10.16.0
-```
-> You can run `nvm list available` to see all available version.
-
-Install GraphQL CLI.
-```
-npm install -g graphql-cli
-```
-
-## Usage
-Start Event Store and the Lease API.
-```
-docker-compose up -d eventstore
-docker-compose up -d lease-api
-```
-
-Start the GraphQL API.
-```
-fake build -t Serve
-```
-
-Start the GraphQL Playground.
-```
-graphql playground
-```
-> This command will start the GraphQL Playground server
-and read the `.graphqlconfig.yaml` in this repository.
+Main client facing API which stitches together the different gRPC APIs.
 
 ## Development
+
+### Setup
 Install the .NET SDK.
+```shell
+choco install dotnetcore-sdk
 ```
-scoop install dotnet-sdk
+> Must be run as administrator
+
+Install FAKE.
+```shell
+dotnet tool install fake-cli -g
 ```
 
-Create a `.graphqlconfig.yaml` file.
+Install Paket.
+```shell
+dotnet tool install paket -g
 ```
-graphql init
+
+Add tool path to `PATH`.
+
+_Linux/macOS_
+```shell
+export PATH = "$PATH:$HOME/.dotnet/tools"
 ```
-> Follow the prompts to populate the values.
+_Windows Powershell_
+```powershell
+$env:PATH += ";C:/Users/<user>/.dotnet/tools"
+```
+
+Install [GraphQL Playground](https://github.com/prisma-labs/graphql-playground)
+> Used for interactively running queries.
+
+## Usage
+Start server.
+```
+docker-compose up -d graphql-api
+```
+
+Run tests.
+```
+fake build -t Test
+```
+
+## Development
+
+### Updating protobuf files
+Update the protobuf files and generate the new outputs. 
+See [proto README](../proto/README.md) for instructions.
+
+Then copy the generated files and build the Proto project.
+```
+fake build -t UpdateProtos
+```
 
 ## Resources
 - [GraphQL](https://graphql.org/)
 - [GraphQL CLI](https://github.com/graphql-cli/graphql-cli)
+- [Designing Graphql Mutations](https://blog.apollographql.com/designing-graphql-mutations-e09de826ed97)

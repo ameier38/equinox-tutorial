@@ -1,23 +1,22 @@
-version 5.210.1
+version 5.216.0
 
 source https://www.nuget.org/api/v2
 storage: none
 
 nuget Expecto
-nuget Expecto.FsCheck
-nuget FsCheck
-nuget Equinox 2.0.0-rc1 preview
-nuget Equinox.Codec 2.0.0-rc1 preview
-nuget Equinox.EventStore 2.0.0-rc1 preview
-nuget Equinox.MemoryStore 2.0.0-rc1 preview
-nuget FsConfig
-nuget FSharp.UMX 1.0.0-preview-001 preview
+nuget Equinox 2.0.0-rc6 preview
+nuget Equinox.EventStore 2.0.0-rc6 preview
+nuget Equinox.MemoryStore 2.0.0-rc6 preview
+nuget FsCodec 1.0.0-rc2
+nuget FsCodec.NewtonsoftJson 1.0.0-rc2
+nuget FSharp.Control.AsyncSeq 2.0.21
+nuget FSharp.UMX 1.0.0
 nuget Google.Api.CommonProtos
-nuget Google.Protobuf
-nuget Grpc
-nuget Grpc.Core.Testing
+nuget Google.Protobuf 3.9.2
+nuget Grpc.Core 2.24.0
+nuget Grpc.Core.Testing 2.24.0
+nuget Grpc.Core.Api 2.24.0
 nuget Grpc.HealthCheck
-nuget Jet.JsonNet.Converters
 nuget Serilog.Sinks.Console
 nuget Serilog
 nuget Serilog.Sinks.Seq
@@ -29,3 +28,4 @@ group Fake
     nuget Fake.DotNet.Cli
     nuget Fake.IO.FileSystem
     nuget Fake.Core.Target 
+    nuget BlackFox.Fake.BuildTask

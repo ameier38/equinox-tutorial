@@ -22,7 +22,7 @@ enum LeaseStatus {
 }
 
 // Date at which a lease is observed.
-message AsOfDate {
+message AsOf {
   google.protobuf.Timestamp as_at_time = 1;
   google.type.Date as_on_date = 2;
 }
@@ -31,8 +31,8 @@ message AsOfDate {
 message Lease {
   string lease_id = 1;
   string user_id = 2;
-  google.type.Date start_date = 3;
-  google.type.Date maturity_date = 4;
+  google.type.Date commencement_date = 3;
+  google.type.Date expiration_date = 4;
   google.type.Money monthly_payment_amount = 5;
 }
 
@@ -52,8 +52,8 @@ message ReceivedPayment {
 
 // Termination of a lease.
 message Termination {
-  google.type.Date termination_date = 2;
-  string termination_reason = 3;
+  google.type.Date termination_date = 1;
+  string termination_reason = 2;
 }
 
 // Lease event that has occurred.
@@ -67,12 +67,17 @@ message LeaseEvent {
 
 // Observation of a lease at a point in time.
 message LeaseObservation {
-  Lease lease = 1;
-  google.protobuf.Timestamp created_time = 3;
-  google.protobuf.Timestamp updated_time = 4;
-  google.type.Money total_scheduled = 5;
-  google.type.Money total_paid = 6;
-  google.type.Money amount_due = 7;
-  LeaseStatus lease_status = 8;
-  google.type.Date terminated_date = 9;
+  string lease_id = 1;
+  string user_id = 2;
+  google.protobuf.Timestamp created_at_time = 3;
+  google.protobuf.Timestamp updated_at_time = 4;
+  google.type.Date updated_on_date = 5;
+  google.type.Date commencement_date = 6;
+  google.type.Date expiration_date = 7;
+  google.type.Money monthly_payment_amount = 8;
+  google.type.Money total_scheduled = 9;
+  google.type.Money total_paid = 10;
+  google.type.Money amount_due = 11;
+  LeaseStatus lease_status = 12;
+  google.type.Date terminated_date = 13;
 }

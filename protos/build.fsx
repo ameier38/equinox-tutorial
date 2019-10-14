@@ -1,5 +1,4 @@
 #r "paket:
-github googleapis/googleapis
 nuget BlackFox.Fake.BuildTask
 nuget Fake.DotNet.Cli
 nuget Fake.IO.FileSystem
@@ -23,19 +22,16 @@ let createMountArg (source:string) (target:string) =
     sprintf "--mount=type=bind,source=%s,target=%s" source target
 
 let prototool (args:string list) =
-    let googleApisDir = __SOURCE_DIRECTORY__ </> ".fake" </> "build.fsx" </> "paket-files" </> "googleapis"
-    let googleApisMountArg = createMountArg googleApisDir "/vendor/googleapis"
+    let envArg = "-e=INPUT_ROOT=/work/protos"
     let workMountArg = createMountArg __SOURCE_DIRECTORY__ "/work"
     let dockerArgs =
         [ "run"
-          googleApisMountArg
+          "--rm=true"
+          envArg
           workMountArg
           prototoolImage ]
-    let prototoolArgs =
-        [ yield! args
-          yield "protos" ]
     __SOURCE_DIRECTORY__
-    |> run "docker" (dockerArgs @ prototoolArgs) 
+    |> run "docker" (dockerArgs @ args)
 
 let buildPrototool = BuildTask.create "BuildPrototool" [] {
     __SOURCE_DIRECTORY__ // protos

@@ -1,0 +1,9 @@
+FSharp.Data.GraphQL.Server
+Google.Api.CommonProtos
+Google.Protobuf
+Grpc.Core
+Suave
+Serilog
+Serilog.Sinks.Console
+Serilog.Sinks.Seq
+Newtonsoft.Json

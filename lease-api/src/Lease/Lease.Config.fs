@@ -1,53 +1,45 @@
 namespace Lease
 
-open FsConfig
 open System
 
 type EventStoreConfig = 
-    {
-        [<DefaultValue("tcp")>]
-        Protocol: string
-        [<DefaultValue("localhost")>]
-        Host: string 
-        [<DefaultValue("1113")>]
-        TcpPort: int
-        [<DefaultValue("2113")>]
-        HttpPort: int
-        [<DefaultValue("admin")>]
-        User: string 
-        [<DefaultValue("changeit")>]
-        Password: string 
-    } with
-
-    member this.DiscoveryUri =
-        let discoveryPort = if this.Protocol = "discover" then this.HttpPort else this.TcpPort
-        sprintf "%s://%s:%d" this.Protocol this.Host discoveryPort |> Uri
+    { User: string
+      Password: string
+      Host: string
+      HttpPort: int
+      DiscoveryUri: Uri } with
+    static member Load() =
+        let protocol = Some "tcp" |> Env.getEnv "EVENTSTORE_PROTOCOL"
+        let httpPort = Some "2113" |> Env.getEnv "EVENTSTORE_HTTP_PORT" |> int
+        let tcpPort = Some "1113" |> Env.getEnv "EVENTSTORE_TCP_PORT" |> int
+        let host = Some "localhost" |> Env.getEnv "EVENTSTORE_HOST"
+        let discoveryPort = if protocol = "discover" then httpPort else tcpPort
+        { User = Some "admin" |> Env.getEnv "EVENTSTORE_USER"
+          Password = Some "changeit" |> Env.getEnv "EVENTSTORE_PASSWORD"
+          Host = host
+          HttpPort = httpPort
+          DiscoveryUri = sprintf "%s://%s:%d" protocol host discoveryPort |> Uri }
 
 type SeqConfig =
-    {
-        [<DefaultValue("http")>]
-        Protocol: string
-        [<DefaultValue("localhost")>]
-        Host: string
-        [<DefaultValue("5341")>]
-        Port: int
-    } with
+    { Url: string } with
+    static member Load() =
+        let protocol = Some "http" |> Env.getEnv "SEQ_PROTOCOL"
+        let host = Some "localhost" |> Env.getEnv "SEQ_HOST"
+        let port = Some "5341" |> Env.getEnv "SEQ_PORT"
+        { Url = sprintf "%s://%s:%s" protocol host port }
 
-    member this.Url =
-        sprintf "%s://%s:%d" this.Protocol this.Host this.Port
+type ServerConfig =
+    { Host: string
+      Port: int } with
+    static member Load() =
+        { Host = Some "0.0.0.0" |> Env.getEnv "SERVER_HOST"
+          Port = Some "50051" |> Env.getEnv "SERVER_PORT" |> int }
 
 type Config =
-    {
-        [<DefaultValue("true")>]
-        Debug: bool
-        [<DefaultValue("50051")>]
-        Port: int
-        [<CustomName("EVENTSTORE")>]
-        EventStore: EventStoreConfig 
-        Seq: SeqConfig
-    }
-module Config =
-    let load () =
-        match EnvConfig.Get<Config>() with
-        | Ok config -> config
-        | Error error -> failwithf "error loading config: %A" error
+    { Server: ServerConfig
+      EventStore: EventStoreConfig 
+      Seq: SeqConfig } with
+    static member Load() =
+        { Server = ServerConfig.Load()
+          EventStore = EventStoreConfig.Load()
+          Seq = SeqConfig.Load() }

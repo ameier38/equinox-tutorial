@@ -54,5 +54,8 @@ RUN git clone https://github.com/googleapis/googleapis.git ${PROTOTOOL_PROTOC_WK
 
 # Copy the entrypoint script.
 COPY ./entrypoint.sh /usr/bin/prototool-action
+RUN chmod +x /usr/bin/prototool-action
+
+WORKDIR /work
 
 ENTRYPOINT [ "prototool-action" ]

@@ -1,52 +1,15 @@
 module Lease.Service
 
 open Lease
+open Lease.Operators
 open Lease.Store
 open FSharp.UMX
 open Grpc.Core
 open Serilog.Core
 open System.Threading.Tasks
 
-let (!!) (value:decimal<'u>) = %value |> Money.fromUSD
-let (!@) (value:DateTime<'u>) = %value |> Google.Type.Date.FromDateTime
-let (!@@) (value:DateTime<'u>) = %value |> DateTime.toUtc |> Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime
-
-module PageToken =
-    let prefix = "lease-"
-    let decode (t:string) : int =
-        match t with
-        | "" -> 1
-        | token -> 
-            token 
-            |> String.fromBase64 
-            |> String.replace prefix ""
-            |> int 
-    let encode (cursor:int) : string =
-        sprintf "%s%d" prefix cursor 
-        |> String.toBase64
-
-module Pagination =
-    let getPage (pageToken:string) (pageSize:int) (s:seq<'T>) =
-        let cursor = pageToken |> PageToken.decode
-        let total = s |> Seq.length
-        let toSkip = cursor - 1
-        let remaining = total - toSkip
-        let toTake = min remaining pageSize
-        let page = s |> Seq.skip toSkip |> Seq.take toTake
-        let prevPageToken =
-            match cursor - pageSize with
-            | c when c < 1 -> ""
-            | c -> c |> PageToken.encode
-        let nextPageToken = 
-            match cursor + pageSize with
-            | c when c > total -> ""
-            | c -> c |> PageToken.encode
-        {| PrevPageToken = prevPageToken
-           NextPageToken = nextPageToken
-           Page = page |}
-
-module AsOfDate =
-    let fromProto (proto:Tutorial.Lease.V1.AsOfDate) =
+module AsOf =
+    let fromProto (proto:Tutorial.Lease.V1.AsOf) =
         { AsAt = %proto.AsAtTime.ToDateTime()
           AsOn = %proto.AsOnDate.ToDateTime() }
 
@@ -55,28 +18,31 @@ module Lease =
         Tutorial.Lease.V1.Lease(
             LeaseId = (lease.LeaseId |> LeaseId.toStringN),
             UserId = (lease.UserId |> UserId.toStringN),
-            StartDate = !@lease.StartDate,
-            MaturityDate = !@lease.MaturityDate,
+            CommencementDate = !@lease.CommencementDate,
+            ExpirationDate = !@lease.ExpirationDate,
             MonthlyPaymentAmount = !!lease.MonthlyPaymentAmount)
     let fromProto (proto:Tutorial.Lease.V1.Lease) =
         let userId = proto.UserId |> UserId.parse
         { LeaseId = proto.LeaseId |> LeaseId.parse
           UserId = userId
-          StartDate = proto.StartDate.ToDateTime() |> UMX.tag<leaseStartDate>
-          MaturityDate = proto.MaturityDate.ToDateTime() |> UMX.tag<leaseMaturityDate>
+          CommencementDate = proto.CommencementDate.ToDateTime()
+          ExpirationDate = proto.ExpirationDate.ToDateTime()
           MonthlyPaymentAmount = proto.MonthlyPaymentAmount |> Money.toUSD |> fun usd -> usd * 1M<1/month> }
 
 module LeaseEvent =
-    let toProto (leaseEvent:LeaseEvent) =
-        let { EventId = eventId 
-              EventCreatedTime = createdTime 
-              EventEffectiveDate = effDate } = leaseEvent |> Aggregate.LeaseEvent.getEventContext
+    let toProto (codec:FsCodec.IUnionEncoder<StoredEvent,byte[]>) (leaseEvent:LeaseEvent) =
+        let ctx = leaseEvent |> Aggregate.LeaseEvent.getEventContext
         let eventType = leaseEvent |> Aggregate.LeaseEvent.getEventType
+        let eventPayload = 
+            leaseEvent 
+            |> Aggregate.LeaseEvent.toStoredEvent 
+            |> codec.Encode
         Tutorial.Lease.V1.LeaseEvent(
-            EventId = %eventId,
-            EventCreatedTime = !@@createdTime,
-            EventEffectiveDate = !@effDate,
-            EventType = %eventType)
+            EventId = %ctx.EventId,
+            EventCreatedTime = !@@ctx.EventCreatedTime,
+            EventEffectiveDate = !@ctx.EventEffectiveDate,
+            EventType = %eventType,
+            EventPayload = (eventPayload.Data |> String.fromBytes))
 
 module LeaseStatus =
     let fromProto (proto:Tutorial.Lease.V1.LeaseStatus) =
@@ -89,59 +55,71 @@ module LeaseStatus =
         | Outstanding -> Tutorial.Lease.V1.LeaseStatus.Outstanding
         | Terminated -> Tutorial.Lease.V1.LeaseStatus.Terminated
 
-module Payment =
-    let fromProto (proto:Tutorial.Lease.V1.Payment) =
+module ScheduledPayment =
+    let fromProto (proto:Tutorial.Lease.V1.ScheduledPayment) =
         { PaymentId = proto.PaymentId |> PaymentId.parse
-          PaymentDate = proto.PaymentDate.ToDateTime() |> UMX.tag<paymentDate>
-          PaymentAmount = proto.PaymentAmount |> Money.toUSD }
+          ScheduledDate = proto.ScheduledDate.ToDateTime()
+          ScheduledAmount = proto.ScheduledAmount |> Money.toUSD }
+
+module ReceivedPayment =
+    let fromProto(proto:Tutorial.Lease.V1.ReceivedPayment) =
+        { PaymentId = proto.PaymentId |> PaymentId.parse
+          ReceivedDate = proto.ReceivedDate.ToDateTime()
+          ReceivedAmount = proto.ReceivedAmount |> Money.toUSD }
+
+module Termination =
+    let fromProto (proto:Tutorial.Lease.V1.Termination) =
+        { TerminationDate = proto.TerminationDate.ToDateTime()
+          TerminationReason = proto.TerminationReason }
 
 module LeaseObservation =
     let toProto (leaseObs:LeaseObservation) =
-        let lease = leaseObs.Lease |> Lease.toProto
         Tutorial.Lease.V1.LeaseObservation(
-            Lease = lease,
+            CreatedAtTime = !@@leaseObs.CreatedAt,
+            UpdatedAtTime = !@@leaseObs.UpdatedAt,
+            UpdatedOnDate = !@leaseObs.UpdatedOn,
+            LeaseId = (leaseObs.LeaseId |> LeaseId.toStringN),
+            UserId = (leaseObs.UserId |> UserId.toStringN),
+            CommencementDate = !@leaseObs.CommencementDate,
+            ExpirationDate = !@leaseObs.ExpirationDate,
+            MonthlyPaymentAmount = !!leaseObs.MonthlyPaymentAmount,
             TotalScheduled = !!leaseObs.TotalScheduled,
             TotalPaid = !!leaseObs.TotalPaid,
             AmountDue = !!leaseObs.AmountDue,
-            LeaseStatus = (leaseObs.LeaseStatus |> LeaseStatus.toProto))
+            LeaseStatus = (leaseObs.LeaseStatus |> LeaseStatus.toProto),
+            TerminatedDate = match leaseObs.TerminatedDate with Some d -> !@d | None -> null)
 
 type LeaseAPIImpl
     (   getUtcNow:unit -> System.DateTime,
-        leaseResolver:StreamResolver<StoredEvent,LeaseStream>,
-        leaseEventListResolver:StreamResolver<StoredEvent,LeaseEventList>,
-        leaseListResolver:StreamResolver<StoredEvent,LeaseList>,
+        store:Store,
+        codec:FsCodec.IUnionEncoder<StoredEvent,byte[]>,
         logger:Logger) =
     inherit Tutorial.Lease.V1.LeaseAPI.LeaseAPIBase()
 
-    let leaseListStreamId = Equinox.DeprecatedRawName("leases")
-    let leaseListStream = Equinox.Stream(logger, leaseListResolver.Resolve leaseListStreamId, 3)
-    let (|LeaseStreamId|) (leaseId: LeaseId) = Equinox.AggregateId("lease", LeaseId.toStringN leaseId)
+    let leaseResolver = StreamResolver(store, codec, "Lease", Aggregate.foldLeaseStream, Aggregate.initialLeaseStream)
+    let leaseEventListResolver = StreamResolver(store, codec, "LeaseEventList", Aggregate.foldLeaseEventList, [])
+    let (|LeaseStreamId|) (leaseId: LeaseId) = Equinox.AggregateId("Lease", LeaseId.toStringN leaseId)
     let (|LeaseStream|) (LeaseStreamId leaseId) = Equinox.Stream(logger, leaseResolver.Resolve leaseId, 3)
     let (|LeaseEventListStream|) (LeaseStreamId leaseId) = Equinox.Stream(logger, leaseEventListResolver.Resolve leaseId, 3)
-    let listLeases (asOfDate:AsOfDate) =
-        leaseListStream.Query(fun leaseList ->
-            leaseList
-            |> List.filter (fun (ctx, _) ->
-                (ctx.EventCreatedTime <= asOfDate.AsAt) && (ctx.EventEffectiveDate <= asOfDate.AsOn))
-            |> List.map snd)
-    let listLeaseEvents (LeaseEventListStream stream) (asOfDate:AsOfDate) =
+    let listLeaseEvents (LeaseEventListStream stream) (asOf:AsOf) =
         stream.Query(fun leaseEventList -> 
             leaseEventList 
-            |> List.filter (Aggregate.LeaseEvent.asOfOrBefore asOfDate None))
-    let getLease ((LeaseStream stream) as leaseId) (asOfDate:AsOfDate) =
-        stream.Query(Aggregate.reconstitute leaseId asOfDate None)
+            |> List.filter (Aggregate.LeaseEvent.asAtOrBefore asOf.AsAt)
+            |> List.filter (Aggregate.LeaseEvent.asOnOrBefore asOf.AsOn None))
+    let getLease ((LeaseStream stream) as leaseId) (asOf:AsOf) =
+        stream.Query(Aggregate.reconstitute leaseId asOf None)
     let execute ((LeaseStream stream) as leaseId) (command:Command) =
         stream.Transact(Aggregate.interpret getUtcNow leaseId command)
 
     override __.DeleteLeaseEvent(req:Tutorial.Lease.V1.DeleteLeaseEventRequest, ctx:ServerCallContext)
         : Task<Tutorial.Lease.V1.DeleteLeaseEventResponse> =
         async {
-            logger.Information(sprintf "received req: %A" req)
+            logger.Debug(sprintf "received req: %A" req)
             let leaseId = req.LeaseId |> LeaseId.parse
             let eventId = req.EventId |> UMX.tag<eventId>
             let command = eventId |> DeleteEvent
             do! execute leaseId command
-            let msg = sprintf "successfully deleted event-%d for lease-%s" req.EventId req.LeaseId
+            let msg = sprintf "successfully deleted Event-%d for lease-%s" req.EventId req.LeaseId
             let res = Tutorial.Lease.V1.DeleteLeaseEventResponse(Message = msg)
             return res
         } |> Async.StartAsTask
@@ -149,60 +127,74 @@ type LeaseAPIImpl
     override __.ListLeases(req:Tutorial.Lease.V1.ListLeasesRequest, ctx:ServerCallContext) 
         : Task<Tutorial.Lease.V1.ListLeasesResponse> =
         async {
-            logger.Information(sprintf "received req: %A" req)
-            let asOfDate = req.AsOfDate |> AsOfDate.fromProto
-            let pageSize = req.PageSize
-            let pageToken = req.PageToken
-            let! leases = listLeases asOfDate
-            let totalCount = leases |> List.length
-            let pageInfo = leases |> Pagination.getPage pageToken pageSize
+            logger.Debug(sprintf "received req: %A" req)
+            let pageToken = req.PageToken |> UMX.tag<pageToken>
+            let streamStart = pageToken |> PageToken.decode |> int64
+            let! streamSlice = store.ReadStream("LeaseCreated", streamStart, req.PageSize)
+            let totalCount = streamSlice.LastEventNumber + 1L |> int
+            let prevPageToken =
+                match (streamStart |> int) - req.PageSize with
+                | c when c <= 0 -> "" |> UMX.tag<pageToken>
+                | c -> c |> PageToken.encode
+            let nextPageToken = 
+                if streamSlice.IsEndOfStream then "" |> UMX.tag<pageToken> 
+                else streamSlice.NextEventNumber |> int |> PageToken.encode
+            let tryDecode (resolvedEvent:EventStore.ClientAPI.ResolvedEvent) =
+                resolvedEvent
+                |> Equinox.EventStore.UnionEncoderAdapters.encodedEventOfResolvedEvent
+                |> codec.TryDecode
+            let tryGetLeaseCreated = function
+                | LeaseEvent.LeaseCreated (_, lease) -> Some lease
+                | _ -> None
+            let leases =
+                streamSlice.Events
+                |> Seq.choose (
+                    tryDecode 
+                    >> Option.bind Aggregate.StoredEvent.tryToLeaseEvent
+                    >> Option.bind tryGetLeaseCreated)
+                |> Seq.map Lease.toProto
             let res = 
                 Tutorial.Lease.V1.ListLeasesResponse(
-                    PrevPageToken = pageInfo.PrevPageToken,
-                    NextPageToken = pageInfo.NextPageToken,
+                    PrevPageToken = %prevPageToken,
+                    NextPageToken = %nextPageToken,
                     TotalCount = totalCount)
-            res.Leases.AddRange(pageInfo.Page |> Seq.map Lease.toProto)
+            res.Leases.AddRange(leases)
             return res
         } |> Async.StartAsTask
 
     override __.ListLeaseEvents(req:Tutorial.Lease.V1.ListLeaseEventsRequest, ctx:ServerCallContext) 
         : Task<Tutorial.Lease.V1.ListLeaseEventsResponse> =
         async {
-            logger.Information(sprintf "received req: %A" req)
-            let asOfDate = req.AsOfDate |> AsOfDate.fromProto
+            logger.Debug(sprintf "received req: %A" req)
+            let asOf = req.AsOf |> AsOf.fromProto
             let leaseId = req.LeaseId |> LeaseId.parse
-            let pageSize = req.PageSize
-            let pageToken = req.PageToken
-            let! leaseEvents = listLeaseEvents leaseId asOfDate
+            let pageSize = req.PageSize |> UMX.tag<pageSize>
+            let pageToken = req.PageToken |> UMX.tag<pageToken>
+            let! leaseEvents = listLeaseEvents leaseId asOf
             let totalCount = leaseEvents |> List.length
-            if totalCount = 0 then
-                let msg = sprintf "could not find lease-%s" req.LeaseId
-                RpcException(Status(StatusCode.NotFound, msg))
-                |> raise
             let pageInfo = leaseEvents |> Pagination.getPage pageToken pageSize
             let res = 
                 Tutorial.Lease.V1.ListLeaseEventsResponse(
-                    PrevPageToken = pageInfo.PrevPageToken,
-                    NextPageToken = pageInfo.NextPageToken,
+                    NextPageToken = %pageInfo.NextPageToken,
                     TotalCount = totalCount)
-            res.Events.AddRange(pageInfo.Page |> Seq.map LeaseEvent.toProto)
+            res.Events.AddRange(pageInfo.Page |> Seq.map (LeaseEvent.toProto codec))
             return res
         } |> Async.StartAsTask
     
     override __.GetLease(req:Tutorial.Lease.V1.GetLeaseRequest, ctx:ServerCallContext) 
         : Task<Tutorial.Lease.V1.GetLeaseResponse> =
         async {
-            logger.Information(sprintf "received req: %A" req)
-            let asOfDate = req.AsOfDate |> AsOfDate.fromProto
+            logger.Debug(sprintf "received req: %A" req)
+            let asOf = req.AsOf |> AsOf.fromProto
             let leaseId = req.LeaseId |> LeaseId.parse
-            let! leaseState = getLease leaseId asOfDate
+            let! leaseState = getLease leaseId asOf
             let res =
                 match leaseState with
                 | Some leaseObs -> 
                     Tutorial.Lease.V1.GetLeaseResponse(
                         Lease = (leaseObs |> LeaseObservation.toProto))
                 | None ->
-                    let msg = sprintf "could not find lease-%s" req.LeaseId
+                    let msg = sprintf "could not find Lease-%s" req.LeaseId
                     RpcException(Status(StatusCode.NotFound, msg))
                     |> raise
             return res
@@ -211,15 +203,14 @@ type LeaseAPIImpl
     override __.CreateLease(req:Tutorial.Lease.V1.CreateLeaseRequest, ctx:ServerCallContext)
         : Task<Tutorial.Lease.V1.CreateLeaseResponse> =
         async {
-            logger.Information(sprintf "received req: %A" req)
-            let effDate = req.Lease.StartDate.ToDateTime() |> UMX.tag<eventEffectiveDate>
+            logger.Debug(sprintf "received req: %A" req)
             let lease = req.Lease |> Lease.fromProto
             let command =
-                (effDate, lease)
+                lease
                 |> CreateLease
                 |> LeaseCommand
             do! execute lease.LeaseId command |> Async.Ignore
-            let msg = sprintf "successfully created lease-%s" req.Lease.LeaseId
+            let msg = sprintf "successfully created Lease-%s" req.Lease.LeaseId
             let res = Tutorial.Lease.V1.CreateLeaseResponse(Message = msg)
             return res
         } |> Async.StartAsTask
@@ -227,15 +218,15 @@ type LeaseAPIImpl
     override __.TerminateLease(req:Tutorial.Lease.V1.TerminateLeaseRequest, ctx:ServerCallContext)
         : Task<Tutorial.Lease.V1.TerminateLeaseResponse> =
         async {
-            logger.Information(sprintf "received req: %A" req)
+            logger.Debug(sprintf "received req: %A" req)
             let leaseId = req.LeaseId |> LeaseId.parse
-            let effDate = req.EffectiveDate.ToDateTime() |> UMX.tag<eventEffectiveDate>
+            let termination = req.Termination |> Termination.fromProto
             let command =
-                effDate
+                termination
                 |> TerminateLease
                 |> LeaseCommand
             do! execute leaseId command |> Async.Ignore
-            let msg = sprintf "successfully terminated lease-%s" req.LeaseId
+            let msg = sprintf "successfully terminated Lease-%s" req.LeaseId
             let res = Tutorial.Lease.V1.TerminateLeaseResponse(Message = msg)
             return res
         } |> Async.StartAsTask
@@ -243,16 +234,15 @@ type LeaseAPIImpl
     override __.SchedulePayment(req:Tutorial.Lease.V1.SchedulePaymentRequest, ctx:ServerCallContext)
         : Task<Tutorial.Lease.V1.SchedulePaymentResponse> =
         async {
-            logger.Information(sprintf "received req: %A" req)
+            logger.Debug(sprintf "received req: %A" req)
             let leaseId = req.LeaseId |> LeaseId.parse
-            let effDate = req.Payment.PaymentDate.ToDateTime() |> UMX.tag<eventEffectiveDate>
-            let payment = req.Payment |> Payment.fromProto
+            let payment = req.ScheduledPayment |> ScheduledPayment.fromProto
             let command =
-                (effDate, payment)
+                payment
                 |> SchedulePayment
                 |> LeaseCommand
             do! execute leaseId command |> Async.Ignore
-            let msg = sprintf "successfully scheduled payment-%s for lease-%s" req.Payment.PaymentId req.LeaseId
+            let msg = sprintf "successfully scheduled Payment-%s for Lease-%s" req.ScheduledPayment.PaymentId req.LeaseId
             let res = Tutorial.Lease.V1.SchedulePaymentResponse(Message = msg)
             return res
         } |> Async.StartAsTask
@@ -260,16 +250,15 @@ type LeaseAPIImpl
     override __.ReceivePayment(req:Tutorial.Lease.V1.ReceivePaymentRequest, ctx:ServerCallContext)
         : Task<Tutorial.Lease.V1.ReceivePaymentResponse> =
         async {
-            logger.Information(sprintf "received req: %A" req)
+            logger.Debug(sprintf "received req: %A" req)
             let leaseId = req.LeaseId |> LeaseId.parse
-            let effDate = req.Payment.PaymentDate.ToDateTime() |> UMX.tag<eventEffectiveDate>
-            let payment = req.Payment |> Payment.fromProto
+            let payment = req.ReceivedPayment |> ReceivedPayment.fromProto
             let command =
-                (effDate, payment)
+                payment
                 |> ReceivePayment
                 |> LeaseCommand
             do! execute leaseId command |> Async.Ignore
-            let msg = sprintf "successfully received payment-%s for lease-%s" req.Payment.PaymentId req.LeaseId
+            let msg = sprintf "successfully received Payment-%s for Lease-%s" req.ReceivedPayment.PaymentId req.LeaseId
             let res = Tutorial.Lease.V1.ReceivePaymentResponse(Message = msg)
             return res
         } |> Async.StartAsTask

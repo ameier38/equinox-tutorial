@@ -22,16 +22,16 @@ type ProjectionManager(config:Config, logger: Core.Logger) =
     let { Host = host; HttpPort = port; User = user; Password = password } = config.EventStore
     let endpoint = DnsEndPoint(host, port)
     let creds = UserCredentials(user, password)
-    let projectionsDir = Path.Combine(__SOURCE_DIRECTORY__,  "projections")
+    let projectionsDir = Path.Combine(AppContext.BaseDirectory,  "projections")
     let projectionManager = ProjectionsManager(log, endpoint, TimeSpan.FromSeconds(5.0))
-    let projections = [ "leases" ]
+    let projections = [ "LeaseCreated" ]
 
     let rec retry work = async {
         try
             let! res = work
             return res
         with ex ->
-            logger.Warning(ex, "failed to create projection; retrying...")
+            logger.Warning(ex, "work failed; retrying...")
             do! Async.Sleep(10000)
             return! retry work
         }
@@ -64,7 +64,7 @@ type ProjectionManager(config:Config, logger: Core.Logger) =
     member __.StartProjections() =
         logger.Information(sprintf "starting projections on %s:%d 👓" host port)
         projections
-        |> List.map startProjection
+        |> List.map (startProjection >> retry)
         |> Async.Parallel
         |> Async.Ignore
         |> Async.RunSynchronously

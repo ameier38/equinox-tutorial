@@ -10,9 +10,10 @@ if [ ! -z "$INPUT_ROOT" ]; then
 fi
 
 if [ ! -z "$INPUT_TARGET" ]; then
-    FAKE_COMMAND="fake build"
-else
     FAKE_COMMAND="fake build -t $INPUT_TARGET"
+else
+    FAKE_COMMAND="fake build"
 fi
 
+echo "Running $FAKE_COMMAND"
 bash -c "$FAKE_COMMAND"

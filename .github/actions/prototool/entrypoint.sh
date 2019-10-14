@@ -9,6 +9,7 @@ if [ ! -z "$INPUT_ROOT" ]; then
     echo "ROOT: $INPUT_ROOT"
 fi
 
-# Run target
 PROTOTOOL_COMMAND="prototool $*"
+
+echo "Running: $PROTOTOOL_COMMAND"
 bash -c "$PROTOTOOL_COMMAND"

@@ -2,7 +2,7 @@ name: Tutorial Pull Request
 on: [pull_request]
 
 jobs:
-  test_protos:
+  generate_protos:
     # ref: https://github.com/actions/virtual-environments/issues/2
     runs-on: ubuntu-16.04
     steps:
@@ -16,17 +16,10 @@ jobs:
       - name: Compile protos
         uses: ./.github/actions/prototool
         with:
-          # `root` will get translated into `INPUT_ROOT` env var
           root: protos
           args: compile
-  generate_protos:
-    runs-on: ubuntu-16.04
-    needs: [test_protos]
-    steps:
-      - uses: actions/checkout@v1
       - uses: ./.github/actions/prototool
         with:
-          # `root` will get translated into `INPUT_ROOT` env var
           root: protos
           args: generate
       - run: sudo chmod -R 777 protos/gen
@@ -34,3 +27,36 @@ jobs:
         with:
           name: protos
           path: protos/gen
+  test_lease_api:
+    runs-on: ubuntu-16.04
+    needs: [generate_protos]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Download protos to Lease API
+        uses: actions/download-artifact@v1
+        with:
+          name: protos
+          path: lease-api/src/Proto/gen
+      - name: Start Lease API
+        run: docker-compose up -d --build lease-api
+      - name: Test Lease API
+        run: docker-compose run --rm test-lease-api
+  test_graphql_api:
+    runs-on: ubuntu-16.04
+    needs: [generate_protos,test_lease_api]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Download protos to Lease API
+        uses: actions/download-artifact@v1
+        with:
+          name: protos
+          path: lease-api/src/Proto/gen
+      - name: Download protos to GraphQL API
+        uses: actions/download-artifact@v1
+        with:
+          name: protos
+          path: graphql-api/src/Proto/gen
+      - name: Start Lease API and GraphQL API
+        run: docker-compose up -d --build graphql-api
+      - name: Test GraphQL API
+        run: docker-compose run --rm test-graphql-api

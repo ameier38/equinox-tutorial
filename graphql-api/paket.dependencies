@@ -1,14 +1,15 @@
-version 5.210.1
+version 5.216.0
 
 source https://www.nuget.org/api/v2
 storage: none
 
 nuget Expecto
-nuget FsConfig
-nuget FSharp.Data.GraphQL.Server 1.0.0-beta9 beta
+nuget FSharp.Data.GraphQL.Server
+nuget FSharp.Data.GraphQL.Client
 nuget Google.Api.CommonProtos
-nuget Google.Protobuf
-nuget Grpc
+nuget Google.Protobuf 3.9.2
+nuget Grpc.Core 2.24.0
+nuget Grpc.Core.Api 2.24.0
 nuget Newtonsoft.Json
 nuget Serilog
 nuget Serilog.Sinks.Console
@@ -19,6 +20,7 @@ nuget Suave
 group Fake
     source https://www.nuget.org/api/v2
     storage: none
+    nuget BlackFox.Fake.BuildTask
     nuget Fake.DotNet.Cli
     nuget Fake.IO.FileSystem
     nuget Fake.Core.Target 

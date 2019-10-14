@@ -1,10 +1,8 @@
 .fake
 .paket
 .ionide
-packages
 paket-files
-build
 obj
 bin
-scratch.fsx
-
+out
+gen

@@ -5,5 +5,5 @@ paket-files
 build
 obj
 bin
-scratch.fsx
-
+out
+gen
