@@ -39,13 +39,8 @@ jobs:
           path: lease-api/src/Proto/gen
       - name: Start Lease API
         run: docker-compose up -d --build lease-api
-      - name: Check Services
-        run: docker ps -a
       - name: Test Lease API
-        uses: ./.github/actions/fake
-        with:
-          root: lease-api
-          target: Test
+        run: docker-compose run --rm test-lease-api
   test_graphql_api:
     runs-on: ubuntu-16.04
     needs: [generate_protos,test_lease_api]
@@ -64,7 +59,4 @@ jobs:
       - name: Start Lease API and GraphQL API
         run: docker-compose up -d --build graphql-api
       - name: Test GraphQL API
-        uses: ./.github/actions/fake
-        with:
-          root: graphql-api
-          target: Test
+        run: docker-compose run --rm test-graphql-api

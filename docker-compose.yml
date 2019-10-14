@@ -27,6 +27,15 @@ services:
     depends_on:
       - seq
       - eventstore
+  test-lease-api:
+    build:
+      context: ./lease-api
+      target: tester
+    environment:
+      LEASE_API_HOST: lease-api
+      LEASE_API_PORT: 50051
+    depends_on:
+      - lease-api
   graphql-api:
     build:
       context: ./graphql-api
@@ -41,6 +50,15 @@ services:
       SEQ_PORT: 5341
     depends_on:
       - lease-api
+  test-graphql-api:
+    build:
+      context: ./graphql-api
+      target: tester
+    environment:
+      GRAPHQL_API_HOST: graphql-api
+      GRAPHQL_API_PORT: 4000
+    depends_on:
+      - graphql-api
   web-app:
     build:
       context: ./web-app

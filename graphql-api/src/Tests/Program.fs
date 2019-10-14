@@ -4,8 +4,8 @@ open System
 open FSharp.Data.GraphQL
 open Shared
 
-let host = Some "localhost" |> Env.getEnv "GRAPHQL_HOST"
-let port = Some "4000" |> Env.getEnv "GRAPHQL_PORT" |> int 
+let host = Some "localhost" |> Env.getEnv "GRAPHQL_API_HOST"
+let port = Some "4000" |> Env.getEnv "GRAPHQL_API_PORT" |> int 
 let url = sprintf "http://%s:%d" host port
 
 type LeaseProvider = GraphQLProvider<"introspection.json">
@@ -88,7 +88,6 @@ let testLeaseWorkflow =
                 leaseId=leaseId,
                 asOf=LeaseProvider.Types.AsOf(asOn="2019-01-04"))
         let! getLeaseResult = getLease.AsyncRun(runtimeContext, getLeaseInput)
-        printfn "Data:\n%A" getLeaseResult.Data
         getLeaseResult.Data
         |> Option.map (fun res ->
             let obs = res.GetLease

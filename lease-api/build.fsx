@@ -55,6 +55,13 @@ BuildTask.create "Test" [] {
     if not result.OK then failwith "Error!"
 }
 
+BuildTask.create "PublishTests" [] {
+    Trace.trace "Publishing Tests..."
+    DotNet.publish
+        (fun args -> { args with OutputPath = Some "src/Tests/out"})
+        "src/Tests/Tests.fsproj"
+}
+
 BuildTask.create "Publish" [] {
     Trace.trace "Publishing Lease API..."
     DotNet.publish
