@@ -48,6 +48,13 @@ let receivePayment =
     }
     """>()
 
+let deleteLeaseEvent =
+    LeaseProvider.Operation<"""
+    mutation DeleteLeaseEvent($input: DeleteLeaseEventInput!) {
+        deleteLeaseEvent(input: $input)
+    }
+    """>()
+
 let testLeaseWorkflow =
     testAsync "Can successfully run lease workflow" {
         let leaseId = Guid.NewGuid().ToString("N")
@@ -94,11 +101,30 @@ let testLeaseWorkflow =
             obs.LeaseId |> Expect.equal "should equal created leaseId" leaseId
             obs.CommencementDate |> Expect.equal "should equal commencementDate" commencementDate
             obs.ExpirationDate |> Expect.equal "should equal expirationDate" expirationDate
-            obs.TotalScheduled |> Expect.equal "should equal zero" 50.0
-            obs.TotalPaid |> Expect.equal "should equal zero" 40.0
-            obs.AmountDue |> Expect.equal "should equal difference between scheduled and paid" 10.0
-            )
+            obs.TotalScheduled |> Expect.equal "should equal fifty" 50.0
+            obs.TotalPaid |> Expect.equal "should equal forty" 40.0
+            obs.AmountDue |> Expect.equal "should equal difference between scheduled and paid" 10.0)
         |> Expect.isSome "getLease should complete successfully"
+        let deleteLeaseEventInput =
+            LeaseProvider.Types.DeleteLeaseEventInput(
+                leaseId=leaseId,
+                eventId=3)
+        do! deleteLeaseEvent.AsyncRun(runtimeContext, deleteLeaseEventInput) |> Async.Ignore
+        let getAfterDeleteLeaseInput =
+            LeaseProvider.Types.GetLeaseInput(
+                leaseId=leaseId,
+                asOf=LeaseProvider.Types.AsOf(asOn="2019-01-04"))
+        let! getAfterDeleteLeaseResult = getLease.AsyncRun(runtimeContext, getAfterDeleteLeaseInput)
+        getAfterDeleteLeaseResult.Data
+        |> Option.map (fun res ->
+            let obs = res.GetLease
+            obs.LeaseId |> Expect.equal "should equal created leaseId" leaseId
+            obs.CommencementDate |> Expect.equal "should equal commencementDate" commencementDate
+            obs.ExpirationDate |> Expect.equal "should equal expirationDate" expirationDate
+            obs.TotalScheduled |> Expect.equal "total scheduled should equal fifty" 50.0
+            obs.TotalPaid |> Expect.equal "total paid should equal zero" 0.0
+            obs.AmountDue |> Expect.equal "should equal difference between scheduled and paid" 50.0)
+        |> Expect.isSome "getAfterDeleteLease should complete successfully"
     }
 
 let tests =

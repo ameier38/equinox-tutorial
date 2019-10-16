@@ -31,7 +31,7 @@ const useStyles = makeStyles(() =>
 )
 
 const DELETE_LEASE_EVENT = `
-mutation DeleteLeaseEvent($input: DeleteLeaseEventInput) {
+mutation DeleteLeaseEvent($input: DeleteLeaseEventInput!) {
     deleteLeaseEvent(input: $input)
 }`
 
