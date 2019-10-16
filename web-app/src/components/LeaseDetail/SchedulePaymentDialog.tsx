@@ -12,7 +12,7 @@ import {
     InputAdornment
 } from '@material-ui/core';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
-import DateFnsUtils from '@date-io/date-fns'
+import MomentUtils from '@date-io/moment'
 import { v4 as uuid } from 'uuid'
 import { useMutation } from 'graphql-hooks'
 import { MutationSchedulePaymentArgs } from '../../generated/graphql'
@@ -62,13 +62,20 @@ export const SchedulePaymentDialog: React.FC<SchedulePaymentDialogProps> = ({
         scheduledAmount: ''
     })
 
+    const reset = () => {
+        setValues({
+            scheduledDate: moment.utc().toDate(),
+            scheduledAmount: ''
+        })
+    }
+
     const handleScheduledAmountChange = (e:React.ChangeEvent<HTMLInputElement>) => {
         setValues({...values, scheduledAmount: parseFloat(e.target.value)})
     }
 
-    const handleScheduledDateChange = (date:Date | null) => {
+    const handleScheduledDateChange = (date:moment.Moment | null) => {
         if (date) {
-            setValues({...values, scheduledDate: date})
+            setValues({...values, scheduledDate: date.toDate()})
         }
     }
 
@@ -85,6 +92,7 @@ export const SchedulePaymentDialog: React.FC<SchedulePaymentDialogProps> = ({
                 }
             }).then(() => {
                 const now = moment.utc().add(10, 'seconds').toDate()
+                reset()
                 dispatch({type: 'SCHEDULE_PAYMENT_DIALOG_TOGGLED', open: false})
                 dispatch({type: 'RESET_TOGGLED', reset: true})
                 dispatch({type: 'AS_OF_UPDATED', asOf: { asAt: now, asOn: now}})
@@ -100,13 +108,13 @@ export const SchedulePaymentDialog: React.FC<SchedulePaymentDialogProps> = ({
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Schedule Payment</DialogTitle>
             <DialogContent>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <MuiPickersUtilsProvider utils={MomentUtils}>
                     <KeyboardDatePicker
                         className={classes.textField}
                         required
                         id='startDate'
                         label='Scheduled Date'
-                        format='MM/dd/yyyy'
+                        format='MM/DD/YYYY'
                         value={values.scheduledDate}
                         onChange={handleScheduledDateChange}
                         margin='normal' />

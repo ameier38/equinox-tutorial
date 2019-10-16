@@ -22,21 +22,11 @@ jobs:
         with:
           root: protos
           args: generate
-      - run: sudo chmod -R 777 protos/gen
-      - uses: actions/upload-artifact@v1
-        with:
-          name: protos
-          path: protos/gen
   test_lease_api:
     runs-on: ubuntu-16.04
     needs: [generate_protos]
     steps:
       - uses: actions/checkout@v1
-      - name: Download protos to Lease API
-        uses: actions/download-artifact@v1
-        with:
-          name: protos
-          path: lease-api/src/Proto/gen
       - name: Start Lease API
         run: docker-compose up -d --build lease-api
       - name: Test Lease API
@@ -46,16 +36,6 @@ jobs:
     needs: [generate_protos,test_lease_api]
     steps:
       - uses: actions/checkout@v1
-      - name: Download protos to Lease API
-        uses: actions/download-artifact@v1
-        with:
-          name: protos
-          path: lease-api/src/Proto/gen
-      - name: Download protos to GraphQL API
-        uses: actions/download-artifact@v1
-        with:
-          name: protos
-          path: graphql-api/src/Proto/gen
       - name: Start Lease API and GraphQL API
         run: docker-compose up -d --build graphql-api
       - name: Test GraphQL API

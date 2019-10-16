@@ -12,7 +12,7 @@ import {
     InputAdornment
 } from '@material-ui/core';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
-import DateFnsUtils from '@date-io/date-fns'
+import MomentUtils from '@date-io/moment'
 import { v4 as uuid } from 'uuid'
 import { useMutation } from 'graphql-hooks'
 import { MutationReceivePaymentArgs } from '../../generated/graphql'
@@ -73,9 +73,9 @@ export const ReceivePaymentDialog: React.FC<ReceivePaymentDialogProps> = ({
         setValues({...values, receivedAmount: parseFloat(e.target.value)})
     }
 
-    const handleReceivedDateChange = (date:Date | null) => {
+    const handleReceivedDateChange = (date:moment.Moment | null) => {
         if (date) {
-            setValues({...values, receivedDate: date})
+            setValues({...values, receivedDate: date.toDate()})
         }
     }
 
@@ -92,6 +92,7 @@ export const ReceivePaymentDialog: React.FC<ReceivePaymentDialogProps> = ({
                 }
             }).then(() => {
                 const now = moment.utc().add(10, 'seconds').toDate()
+                reset()
                 dispatch({type: 'RECEIVE_PAYMENT_DIALOG_TOGGLED', open: false})
                 dispatch({type: 'RESET_TOGGLED', reset: true})
                 dispatch({type: 'AS_OF_UPDATED', asOf: { asAt: now, asOn: now}})
@@ -107,13 +108,13 @@ export const ReceivePaymentDialog: React.FC<ReceivePaymentDialogProps> = ({
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Receive Payment</DialogTitle>
             <DialogContent>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <MuiPickersUtilsProvider utils={MomentUtils}>
                     <KeyboardDatePicker
                     className={classes.textField}
                     required
                     id='startDate'
                     label='Received Date'
-                    format='MM/dd/yyyy'
+                    format='MM/DD/YYYY'
                     value={values.receivedDate}
                     onChange={handleReceivedDateChange}
                     margin='normal' />

@@ -48,26 +48,10 @@ query ListLeaseEvents($input: ListLeaseEventsInput!) {
 
 type RouteParams = { leaseId: string }
 
-const initialState : State = {
-    shouldReset: true,
-    asOf: { 
-        asAt: moment.utc().toDate(),
-        asOn: moment.utc().toDate()
-    },
-    leaseEvents: [],
-    leaseEventsPageSize: 10,
-    leaseEventsPageToken: "",
-    schedulePaymentDialogOpen: false,
-    receivePaymentDialogOpen: false
-}
-
 const reducer = (state:State, event:Event) : State => {
     switch(event.type) {
         case 'RESET_TOGGLED':
-            console.log(event, state)
-            const newState = {...state, shouldReset: event.reset}
-            console.log(newState)
-            return newState
+            return {...state, shouldReset: event.reset}
         case 'LEASE_EVENTS_RESET':
             return {...state, leaseEvents: event.leaseEvents}
         case 'AS_OF_UPDATED':
@@ -89,7 +73,18 @@ const reducer = (state:State, event:Event) : State => {
 
 export const LeaseDetail = () => {
     const { leaseId } = useParams<RouteParams>()
-    const [state, dispatch] = useReducer(reducer, initialState)
+    const [state, dispatch] = useReducer(reducer, {
+        shouldReset: true,
+        asOf: { 
+            asAt: moment.utc().toDate(),
+            asOn: moment.utc().toDate()
+        },
+        leaseEvents: [],
+        leaseEventsPageSize: 10,
+        leaseEventsPageToken: "",
+        schedulePaymentDialogOpen: false,
+        receivePaymentDialogOpen: false
+    })
 
     const asOf = {
         asAt: state.asOf.asAt.toISOString(),
@@ -127,11 +122,11 @@ export const LeaseDetail = () => {
             getLease()
             listLeaseEvents()
         }
-    }, [state.asOf])
+    }, [state.asOf, state.shouldReset, getLease, listLeaseEvents])
 
     useEffect(() => {
         listLeaseEvents()
-    }, [state.leaseEventsPageSize, state.leaseEventsPageToken])
+    }, [state.leaseEventsPageSize, state.leaseEventsPageToken, listLeaseEvents])
 
     return (
         <React.Fragment>
@@ -139,7 +134,6 @@ export const LeaseDetail = () => {
                 leaseEvents={state.leaseEvents}
                 dispatch={dispatch} /> 
             <BalancePlot
-                leaseId={leaseId}
                 getLeaseResult={getLeaseResult} />
             <CommandPanel
                 dispatch={dispatch} />
