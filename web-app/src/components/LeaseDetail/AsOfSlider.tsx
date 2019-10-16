@@ -24,54 +24,23 @@ type AsOfSliderProps = {
     dispatch: React.Dispatch<Event>
 }
 
-const sortDateAsc = (date1:Date, date2:Date) => {
-    if (date1 > date2) return 1;
-    if (date1 < date2) return -1;
-    return 0;
-};
+type Mark = {
+    value: number,
+    dateValue: Date
+}
 
 export const AsOfSlider: React.FC<AsOfSliderProps> = ({ 
     leaseEvents,
     dispatch
 }) => {
-    const now = moment.utc().toDate()
     const classes = useStyles()
-    const [localAsAt, setLocalAsAt] = useState(now)
+    const [localAsAt, setLocalAsAt] = useState<Date|null>(null)
     const [asAtValue, setAsAtValue] = useState(0)
-    const [localAsOn, setLocalAsOn] = useState(now)
+    const [localAsOn, setLocalAsOn] = useState<Date|null>(null)
     const [asOnValue, setAsOnValue] = useState(0)
+    const [asOnMarks, setAsOnMarks] = useState<Mark[]>([])
+    const [asAtMarks, setAsAtMarks] = useState<Mark[]>([])
 
-    const convertedLeaseEvents = leaseEvents.map(e => ({
-            ...e,
-            eventCreatedTime: new Date(e.eventCreatedTime),
-            eventEffectiveDate: new Date(e.eventEffectiveDate)
-        }))
-
-    const asAtMarks = convertedLeaseEvents.sort((a, b) => {
-            if (a.eventCreatedTime > b.eventCreatedTime) return 1
-            if (a.eventCreatedTime < b.eventCreatedTime) return -1
-            return 0
-        }).map((e, idx) => {
-            return ({
-                value: idx,
-                dateValue: e.eventCreatedTime,
-            })
-        })
-
-    asAtMarks.push({value: asAtMarks.length, dateValue: now})
-
-    const asOnMarks = convertedLeaseEvents.sort((a, b) => {
-            if (a.eventEffectiveDate > b.eventEffectiveDate) return 1
-            if (a.eventEffectiveDate < b.eventEffectiveDate) return -1
-            return 0
-        }).map((e, idx) => {
-            return ({
-                value: idx,
-                dateValue: e.eventEffectiveDate,
-            })
-        })
-    
-    asOnMarks.push({value: asOnMarks.length, dateValue: now})
 
     const onAsAtValueChange = (e:React.ChangeEvent<{}>, value:number | number[]) => {
         if (typeof value === 'number') {
@@ -86,7 +55,7 @@ export const AsOfSlider: React.FC<AsOfSliderProps> = ({
     const onAsAtValueChangeCommitted = (e:React.ChangeEvent<{}>, value:number | number[]) => {
         if (typeof value === 'number') {
             const mark = asAtMarks.find(m => m.value === value)
-            if (mark) {
+            if (mark && localAsAt) {
                 dispatch({type: 'AS_OF_UPDATED', asOf: { asAt: localAsAt }})
             }
         }
@@ -105,21 +74,59 @@ export const AsOfSlider: React.FC<AsOfSliderProps> = ({
     const onAsOnValueChangeCommitted = (e:React.ChangeEvent<{}>, value:number | number[]) => {
         if (typeof value === 'number') {
             const mark = asOnMarks.find(m => m.value === value)
-            if (mark) {
+            if (mark && localAsOn) {
                 dispatch({type: 'AS_OF_UPDATED', asOf: { asOn: localAsOn }})
             }
         }
     }
 
     useEffect(() => {
-        if (asAtMarks.length > 0) {
-            const lastIndex = asAtMarks.length - 1
-            setLocalAsAt(asAtMarks[lastIndex].dateValue)
+        const now = moment.utc().toDate()
+
+        const convertedLeaseEvents = leaseEvents.map(e => ({
+                ...e,
+                eventCreatedTime: new Date(e.eventCreatedTime),
+                eventEffectiveDate: new Date(e.eventEffectiveDate)
+            }))
+
+        const asAts = convertedLeaseEvents.sort((a, b) => {
+                if (a.eventCreatedTime > b.eventCreatedTime) return 1
+                if (a.eventCreatedTime < b.eventCreatedTime) return -1
+                return 0
+            }).map((e, idx) => {
+                return ({
+                    value: idx,
+                    dateValue: e.eventCreatedTime,
+                })
+            })
+
+        asAts.push({value: asAts.length, dateValue: now})
+
+        setAsAtMarks(asAts)
+
+        const asOns = convertedLeaseEvents.sort((a, b) => {
+                if (a.eventEffectiveDate > b.eventEffectiveDate) return 1
+                if (a.eventEffectiveDate < b.eventEffectiveDate) return -1
+                return 0
+            }).map((e, idx) => {
+                return ({
+                    value: idx,
+                    dateValue: e.eventEffectiveDate,
+                })
+            })
+        
+        asOns.push({value: asOns.length, dateValue: now})
+
+        setAsOnMarks(asOns)
+
+        if (asAts.length > 0) {
+            const lastIndex = asAts.length - 1
+            setLocalAsAt(asAts[lastIndex].dateValue)
             setAsAtValue(lastIndex)
         }
-        if (asOnMarks.length > 0) {
-            const lastIndex = asOnMarks.length - 1
-            setLocalAsOn(asOnMarks[lastIndex].dateValue)
+        if (asOns.length > 0) {
+            const lastIndex = asOns.length - 1
+            setLocalAsOn(asOns[lastIndex].dateValue)
             setAsOnValue(lastIndex)
         }
     }, [leaseEvents])

@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { useMutation, useQuery } from 'graphql-hooks'
+import { useMutation } from 'graphql-hooks'
 import { Theme } from '@material-ui/core/styles'
 import { makeStyles, createStyles } from '@material-ui/styles'
 import { v4 as uuid } from 'uuid'
+import moment from 'moment'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -10,7 +11,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import DateFnsUtils from '@date-io/date-fns'
+import MomentUtils from '@date-io/moment'
 import { 
   MuiPickersUtilsProvider, 
   KeyboardDatePicker
@@ -67,7 +68,7 @@ export const CreateLeaseDialog: React.FC<CreateLeaseDialogProps> = ({
       }
 
     const handleDateChange = (name: keyof Lease) => 
-      (date: Date | null) => {
+      (date:moment.Moment|null) => {
         setValues({ ...values, [name]: date })
       }
 
@@ -93,7 +94,7 @@ export const CreateLeaseDialog: React.FC<CreateLeaseDialogProps> = ({
             <DialogTitle id="form-dialog-title">Create Lease</DialogTitle>
             <DialogContent>
               <Grid container>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <MuiPickersUtilsProvider utils={MomentUtils}>
                   <Grid item xs={12} md={6}>
                     <TextField
                       className={classes.textField}
@@ -110,7 +111,7 @@ export const CreateLeaseDialog: React.FC<CreateLeaseDialogProps> = ({
                       required
                       id='commencementDate'
                       label='Commencement Date'
-                      format='MM/dd/yyyy'
+                      format='MM/DD/YYYY'
                       value={values.commencementDate}
                       onChange={handleDateChange('commencementDate')}
                       margin='normal' />
@@ -121,7 +122,7 @@ export const CreateLeaseDialog: React.FC<CreateLeaseDialogProps> = ({
                       required
                       id='expirationDate'
                       label='Expiration Date'
-                      format='MM/dd/yyyy'
+                      format='MM/DD/YYYY'
                       value={values.expirationDate}
                       onChange={handleDateChange('expirationDate')}
                       margin='normal' />

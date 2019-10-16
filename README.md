@@ -1,5 +1,4 @@
 # Equinox Tutorial
-___
 Practical example for learning how to model a bi-temporal domain using
 [Jet.com's Equinox Event Sourcing Platform](https://github.com/jet/equinox).
 
