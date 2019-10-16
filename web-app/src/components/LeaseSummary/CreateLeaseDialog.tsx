@@ -47,14 +47,11 @@ export const CreateLeaseDialog: React.FC<CreateLeaseDialogProps> = ({
     refetch
 }) => {
 
-    const addMonths = (d:Date, months:number) => 
-      new Date(d.setMonth(d.getMonth() + months))
-
     const initialState : Lease = {
         leaseId: uuid(),
         userId: uuid(),
-        commencementDate: new Date(),
-        expirationDate: addMonths(new Date(), 12),
+        commencementDate: moment.utc().toDate(),
+        expirationDate: moment.utc().add(12, 'months').toDate(),
         monthlyPaymentAmount: 0
     }
 
@@ -151,4 +148,4 @@ export const CreateLeaseDialog: React.FC<CreateLeaseDialogProps> = ({
             </DialogActions>
           </Dialog>
     )
-  }
+}

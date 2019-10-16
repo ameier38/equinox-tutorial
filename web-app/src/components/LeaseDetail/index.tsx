@@ -48,19 +48,6 @@ query ListLeaseEvents($input: ListLeaseEventsInput!) {
 
 type RouteParams = { leaseId: string }
 
-const initialState : State = {
-    shouldReset: true,
-    asOf: { 
-        asAt: moment.utc().toDate(),
-        asOn: moment.utc().toDate()
-    },
-    leaseEvents: [],
-    leaseEventsPageSize: 10,
-    leaseEventsPageToken: "",
-    schedulePaymentDialogOpen: false,
-    receivePaymentDialogOpen: false
-}
-
 const reducer = (state:State, event:Event) : State => {
     switch(event.type) {
         case 'RESET_TOGGLED':
@@ -86,7 +73,18 @@ const reducer = (state:State, event:Event) : State => {
 
 export const LeaseDetail = () => {
     const { leaseId } = useParams<RouteParams>()
-    const [state, dispatch] = useReducer(reducer, initialState)
+    const [state, dispatch] = useReducer(reducer, {
+        shouldReset: true,
+        asOf: { 
+            asAt: moment.utc().toDate(),
+            asOn: moment.utc().toDate()
+        },
+        leaseEvents: [],
+        leaseEventsPageSize: 10,
+        leaseEventsPageToken: "",
+        schedulePaymentDialogOpen: false,
+        receivePaymentDialogOpen: false
+    })
 
     const asOf = {
         asAt: state.asOf.asAt.toISOString(),
