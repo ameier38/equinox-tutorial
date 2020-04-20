@@ -8,8 +8,20 @@ open BlackFox.Fake
 open Fake.Core
 open Fake.IO
 open Fake.IO.FileSystemOperators
+open Fake.IO.Globbing.Operators
+open System.IO
 
-let prototoolImage = "prototool:latest"
+let vendorDir = __SOURCE_DIRECTORY__ </> "vendor"
+let protoDir = __SOURCE_DIRECTORY__ </> "proto"
+let genDir = __SOURCE_DIRECTORY__ </> "gen"
+let googleApisCommit = "d4aa417ed2bba89c2d216900282bddfdafef6128"
+let googleApisDir = vendorDir </> "github.com" </> "googleapis" </> "googleapis"
+
+type ProtocConfig =
+    { ProtoPaths: string list
+      PluginName: string
+      PluginOut: string
+      PluginOpt: string }
 
 let run (command:string) (args:string list) (workDir:string) =
     CreateProcess.fromRawCommand command args
@@ -18,49 +30,65 @@ let run (command:string) (args:string list) (workDir:string) =
     |> Proc.run
     |> ignore
 
-let createMountArg (source:string) (target:string) =
-    sprintf "--mount=type=bind,source=%s,target=%s" source target
+let buf (args: string list) (workDir:string) =
+    run "buf" args workDir
 
-let prototool (args:string list) =
-    let envArg = "-e=INPUT_ROOT=/work/protos"
-    let workMountArg = createMountArg __SOURCE_DIRECTORY__ "/work"
-    let dockerArgs =
-        [ "run"
-          "--rm=true"
-          envArg
-          workMountArg
-          prototoolImage ]
+let protoc (args:string list) (workDir:string) =
+    run "protoc" args workDir
+
+let git (args:string list) (workDir:string) =
+    run "git" args workDir
+
+let cloneGoogleApis = BuildTask.create "CloneGoogleApis" [] {
+    if not (Directory.Exists(googleApisDir)) then
+        __SOURCE_DIRECTORY__
+        |> git ["clone"; "https://github.com/googleapis/googleapis.git"; googleApisDir]
+    googleApisDir
+    |> git ["reset"; "--hard"; googleApisCommit]
+}
+
+let cleanVendor = BuildTask.create "CleanVendor" [] {
+    Shell.cleanDir vendorDir
+}
+
+let lint = BuildTask.create "Lint" [] {
     __SOURCE_DIRECTORY__
-    |> run "docker" (dockerArgs @ args)
-
-let buildPrototool = BuildTask.create "BuildPrototool" [] {
-    __SOURCE_DIRECTORY__ // protos
-    |> Path.getDirectory // equinox-tutorial
-    </> ".github" </> "actions" </> "prototool"
-    |> run "docker" ["build"; "-t"; prototoolImage; "."]
+    |> buf ["check"; "lint"]
 }
 
-let clean = BuildTask.create "Clean" [] {
-    Shell.cleanDir "gen"
+let protos = !! (protoDir </> "**/*.proto")
+let protoPaths = [ googleApisDir; protoDir ]
+
+let generateCsharp = BuildTask.create "GenerateCsharp" [ lint ] {
+    let csharpGenDir = genDir </> "csharp"
+    csharpGenDir |> Directory.ensure
+    csharpGenDir |> Shell.cleanDir
+    let csharpArgs =
+        [ "--plugin=protoc-gen-grpc=/usr/local/bin/grpc_csharp_plugin"
+          sprintf "--grpc_out=%s" (genDir </> "csharp")
+          sprintf "--csharp_out=%s" (genDir </> "csharp") ]
+    let pathArgs =
+        [ for path in protoPaths ->
+            sprintf "--proto_path=%s" path ]
+    __SOURCE_DIRECTORY__
+    |> protoc [yield! pathArgs; yield! csharpArgs; yield! protos ]
 }
 
-let format = BuildTask.create "Format" [buildPrototool] {
-    prototool ["format"; "-w"]
-}    
-
-let lint = BuildTask.create "Lint" [buildPrototool; format] {
-    prototool ["lint"]
+let generateGo = BuildTask.create "GenerateGo" [ lint ] {
+    let goGenDir = genDir </> "go"
+    goGenDir |> Directory.ensure
+    goGenDir |> Shell.cleanDir
+    let goArgs =
+        [ "--plugin=protoc-gen-go-grpc=/root/go/bin/protoc-gen-go"
+          sprintf "--go-grpc_out=%s" (genDir </> "go") ]
+    let pathArgs =
+        [ for path in protoPaths ->
+            sprintf "--proto_path=%s" path ]
+    __SOURCE_DIRECTORY__
+    |> protoc [yield! pathArgs; yield! goArgs; yield! protos ]
 }
 
-let compile = BuildTask.create "Compile" [buildPrototool; lint] {
-    prototool ["compile"]
-}
-
-BuildTask.create "Generate" [buildPrototool; clean; compile] {
-    prototool ["generate"; "--debug"]
-}
-
-BuildTask.createEmpty "Test" [buildPrototool; compile]
+let generate = BuildTask.createEmpty "Generate" [ generateCsharp; generateGo ]
 
 let _default = BuildTask.createEmpty "Default" []
 

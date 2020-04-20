@@ -49,7 +49,22 @@ Generate the gRPC files.
 fake build -t Generate
 ```
 
+## Plugins
+To get protoc to use the plugin, do one of the following:
+
+Place the plugin binary somewhere in the PATH and give it the name "protoc-gen-NAME"
+(replacing "NAME" with the name of your plugin). If you then invoke protoc with the
+parameter –NAME_out=OUT_DIR (again, replace "NAME" with your plugin's name), protoc
+will invoke your plugin to generate the output, which will be placed in OUT_DIR.
+
+Place the plugin binary anywhere, with any name, and pass the –plugin parameter to protoc to direct it to your plugin like so:
+```
+protoc --plugin=protoc-gen-NAME=path/to/mybinary --NAME_out=OUT_DIR
+```
+> Copied from [here](https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.compiler.plugin).
+
 ## Resources
 - [VS Code Remote Containers](https://code.visualstudio.com/docs/remote/containers)
-- [Uber's Prototool](https://github.com/uber/prototool)
-- [Uber's Protobuf Style Guide V2](https://github.com/uber/prototool/tree/dev/style)
+- [Protocol Buffer Development Guide](https://developers.google.com/protocol-buffers/docs/overview)
+- [Buf](https://buf.build)
+- [Buf Style Guide](https://buf.build/docs/style-guide)

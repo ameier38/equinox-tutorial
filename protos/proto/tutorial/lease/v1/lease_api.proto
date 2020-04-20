@@ -1,0 +1,113 @@
+syntax = "proto3";
+
+package tutorial.lease.v1;
+
+option csharp_namespace = "Tutorial.Lease.V1";
+option go_package = "tutorial/lease/v1";
+option java_multiple_files = true;
+option java_outer_classname = "LeaseApiProto";
+option java_package = "com.tutorial.lease.v1";
+option objc_class_prefix = "TLX";
+option php_namespace = "Tutorial\\Lease\\V1";
+
+import "tutorial/lease/v1/lease.proto";
+
+// API to handle interactions with the Lease.
+service LeaseService {
+  // Delete a lease event.
+  rpc DeleteLeaseEvent(DeleteLeaseEventRequest) returns (DeleteLeaseEventResponse);
+  // List the leases that have been created.
+  rpc ListLeases(ListLeasesRequest) returns (ListLeasesResponse);
+  // List the lease events that have occurred as of a point in time.
+  rpc ListLeaseEvents(ListLeaseEventsRequest) returns (ListLeaseEventsResponse);
+  // Get a lease as of a point in time.
+  rpc GetLease(GetLeaseRequest) returns (GetLeaseResponse);
+  // Create a new lease.
+  rpc CreateLease(CreateLeaseRequest) returns (CreateLeaseResponse);
+  // Terminate an existing lease.
+  rpc TerminateLease(TerminateLeaseRequest) returns (TerminateLeaseResponse);
+  // Schedule a payment.
+  rpc SchedulePayment(SchedulePaymentRequest) returns (SchedulePaymentResponse);
+  // Receive a payment.
+  rpc ReceivePayment(ReceivePaymentRequest) returns (ReceivePaymentResponse);
+}
+
+message DeleteLeaseEventRequest {
+  string lease_id = 1;
+  int32 event_id = 2;
+}
+
+message DeleteLeaseEventResponse {
+  string message = 1;
+}
+
+message ListLeasesRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+}
+
+message ListLeasesResponse {
+  repeated Lease leases = 1;
+  string prev_page_token = 2;
+  string next_page_token = 3;
+  int32 total_count = 4;
+}
+
+message GetLeaseRequest {
+  string lease_id = 1;
+  AsOf as_of = 2;
+}
+
+message GetLeaseResponse {
+  LeaseObservation lease = 1;
+}
+
+message ListLeaseEventsRequest {
+  string lease_id = 1;
+  AsOf as_of = 2;
+  int32 page_size = 3;
+  string page_token = 4;
+}
+
+message ListLeaseEventsResponse {
+  string lease_id = 1;
+  repeated LeaseEvent events = 2;
+  string prev_page_token = 3;
+  string next_page_token = 4;
+  int32 total_count = 5;
+}
+
+message CreateLeaseRequest {
+  Lease lease = 1;
+}
+
+message CreateLeaseResponse {
+  string message = 1;
+}
+
+message TerminateLeaseRequest {
+  string lease_id = 1;
+  Termination termination = 2;
+}
+
+message TerminateLeaseResponse {
+  string message = 1;
+}
+
+message SchedulePaymentRequest {
+  string lease_id = 1;
+  ScheduledPayment scheduled_payment = 2;
+}
+
+message SchedulePaymentResponse {
+  string message = 1;
+}
+
+message ReceivePaymentRequest {
+  string lease_id = 1;
+  ReceivedPayment received_payment = 2;
+}
+
+message ReceivePaymentResponse {
+  string message = 1;
+}

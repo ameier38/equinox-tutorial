@@ -1,17 +1,48 @@
-FROM golang:1.12 as builder
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1
 
-RUN apt-get update && \
-    apt-get install -y curl git unzip && \ 
-    rm -rf /var/lib/apt/lists/*
+# Avoid warnings by switching to noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
+# Opt out of dotnet telemetry
+ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 
-ENV PROTOC_VERSION=3.9.2 \
-    GO_PROTOC_PLUGIN_VERSION=1.3.2 \
-    GO_GRPC_PLUGIN_VERSION=1.24.0 \
-    CSHARP_GRPC_PLUGIN_VERSION=2.24.0 \
-    PROTOTOOL_VERSION=1.8.0 \
-    PROTOTOOL_PROTOC_BIN_PATH=/usr/local/bin/protoc \
-    PROTOTOOL_PROTOC_WKT_PATH=/usr/local/include
+# Specify environment and versions
+ENV PATH="$PATH:/usr/local/go/bin:/root/.dotnet/tools" \
+    GO111MODULE=on \
+    GO_VERSION=1.14.2 \
+    BUF_VERSION=0.11.0 \
+    PROTOC_VERSION=3.11.2 \
+    GO_PLUGIN_VERSION=1.21.0 \
+    GO_GRPC_PLUGIN_VERSION=1.28.1 \
+    CSHARP_GRPC_PLUGIN_VERSION=2.28.1 \
+    INCLUDE_PATH=/usr/local/include
 
+# Configure apt and install packages
+RUN apt-get update \
+    && apt-get -y install --no-install-recommends apt-utils dialog 2>&1 \
+    # Verify git, process tools, lsb-release (common in install instructions for CLIs) installed
+    && apt-get -y install git unzip openssh-client less iproute2 procps lsb-release \
+    # Clean up
+    && apt-get autoremove -y \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install go
+# ref: https://golang.org/doc/install
+RUN mkdir /tmp/go && \
+    curl -sSL \
+        https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz \
+        -o /tmp/go/go.tar.gz && \
+    tar -C /usr/local -xzf /tmp/go/go.tar.gz && \
+    rm -rf /tmp/go
+
+# Download buf
+# ref: https://buf.build/docs/introduction
+RUN curl -sSL \
+        https://github.com/bufbuild/buf/releases/download/v${BUF_VERSION}/buf-$(uname -s)-$(uname -m) \
+        -o /usr/local/bin/buf && \
+    chmod +x /usr/local/bin/buf
+
+# Download protocol buffer compiler (protoc) and well known type definitions
 # ref: https://github.com/protocolbuffers/protobuf/releases
 RUN mkdir /tmp/protoc && \
     curl -sSL \
@@ -19,19 +50,14 @@ RUN mkdir /tmp/protoc && \
         -o /tmp/protoc/protoc.zip && \
     cd /tmp/protoc && \
     unzip protoc.zip && \
-    mv /tmp/protoc/include/google ${PROTOTOOL_PROTOC_WKT_PATH}/google && \
-    mv /tmp/protoc/bin/protoc ${PROTOTOOL_PROTOC_BIN_PATH} && \
-    chmod +x ${PROTOTOOL_PROTOC_BIN_PATH} && \
+    mv /tmp/protoc/include/google ${INCLUDE_PATH}/google && \
+    mv /tmp/protoc/bin/protoc /usr/local/bin/protoc && \
+    chmod +x /usr/local/bin/protoc && \
     rm -rf /tmp/protoc
 
-# ref: https://github.com/golang/protobuf/releases
-RUN GO111MODULE=on go get github.com/golang/protobuf/protoc-gen-go@v${GO_PROTOC_PLUGIN_VERSION} && \
-    mv /go/bin/protoc-gen-go /usr/local/bin/ && \
-    chmod +x /usr/local/bin/protoc-gen-go
-
-# ref: https://github.com/grpc/grpc-go
-RUN GO111MODULE=on go get google.golang.org/grpc@v${GO_GRPC_PLUGIN_VERSION}
-
+# Download C# gRPC plugin
+# note: nuget packages are just zip files
+# note: protoc already includes protoc-gen-csharp (used for csharp_out option)
 # ref: https://www.nuget.org/packages/Grpc.Tools/
 RUN mkdir /tmp/grpc_tools && \
     curl -sSL \
@@ -39,19 +65,20 @@ RUN mkdir /tmp/grpc_tools && \
         -o /tmp/grpc_tools/grpc_tools.nupkg && \
     cd /tmp/grpc_tools && \
     unzip grpc_tools.nupkg && \
-    mv /tmp/grpc_tools/tools/linux_x64/grpc_csharp_plugin /usr/bin/grpc_csharp_plugin && \
-    chmod +x /usr/bin/grpc_csharp_plugin && \
+    mv /tmp/grpc_tools/tools/linux_x64/grpc_csharp_plugin /usr/local/bin/grpc_csharp_plugin && \
+    chmod +x /usr/local/bin/grpc_csharp_plugin && \
     rm -rf /tmp/gprc_tools
 
-# ref: https://github.com/uber/prototool/releases
-RUN curl -sSL \ 
-        https://github.com/uber/prototool/releases/download/v${PROTOTOOL_VERSION}/prototool-$(uname -s)-$(uname -m) \ 
-        -o /usr/local/bin/prototool && \ 
-    chmod +x /usr/local/bin/prototool
+# Download go grpc and protoc language plugin
+# note: protoc-gen-go will be in $GOPATH/bin (/root/go/bin)
+# ref: https://github.com/grpc/grpc-go
+# ref: https://github.com/protocolbuffers/protobuf-go
+RUN go get google.golang.org/grpc@v${GO_GRPC_PLUGIN_VERSION} && \
+    go get google.golang.org/protobuf/cmd/protoc-gen-go@v${GO_PLUGIN_VERSION}
 
-# ref: https://github.com/googleapis/googleapis
-RUN git clone https://github.com/googleapis/googleapis.git ${PROTOTOOL_PROTOC_WKT_PATH}/google/googleapis
+# Install dotnet tools
+RUN dotnet tool install fake-cli -g \
+    && dotnet tool install paket -g
 
-WORKDIR /work
-
-ENTRYPOINT [ "prototool" ]
+# Switch back to dialog for any ad-hoc use of apt-get
+ENV DEBIAN_FRONTEND=dialog

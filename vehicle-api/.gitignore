@@ -1,5 +1,8 @@
-.fake
+.vscode
 .ionide
+.fake
 .paket
 paket-files
-vendor
+obj
+bin
+gen

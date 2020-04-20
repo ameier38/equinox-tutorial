@@ -1,0 +1,10 @@
+build:
+  roots:
+    - proto
+    - vendor/github.com/googleapis/googleapis
+lint:
+  use:
+    - DEFAULT
+  ignore:
+    - google
+    - grafeas
