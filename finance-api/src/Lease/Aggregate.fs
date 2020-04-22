@@ -4,10 +4,13 @@ open FSharp.UMX
 open System
 
 module EventContext =
-    let create (getUtcNow: unit -> DateTimeOffset) =
-        fun effDate ->
-            { CreatedAt = getUtcNow() |> UMX.tag<createdDate>
-              EffectiveAt = effDate }
+    let create 
+        (getUtcNow: unit -> DateTimeOffset) =
+        fun eventEffectiveDate eventEffectiveOrder eventType ->
+            { EventCreatedAt = getUtcNow() |> UMX.tag<eventCreatedDate>
+              EventEffectiveAt = eventEffectiveDate
+              EventEffectiveOrder = eventEffectiveOrder
+              EventType = eventType }
 
 module LeaseEvent =
     let getEventType : LeaseEvent -> EventType =
@@ -18,7 +21,7 @@ module LeaseEvent =
         | PaymentSettled _ -> %"PaymentSettled"
         | PaymentReturned _ -> %"PaymentReturned"
         | VehicleReturned _ -> %"VehicleReturned"
-    let getEventOrder : LeaseEvent -> EventOrder =
+    let getEventEffectiveOrder : LeaseEvent -> EventEffectiveOrder =
         function
         | LeaseAccepted _ -> %0
         | PaymentRequested _ -> %1
@@ -36,125 +39,75 @@ module LeaseEvent =
         | VehicleReturned p -> p.EventContext
     let getSortOrder leaseEvent = 
         let ctx = getEventContext leaseEvent
-        let order = getEventOrder leaseEvent
-        ctx.EffectiveAt, order, ctx.CreatedAt
+        let order = getEventEffectiveOrder leaseEvent
+        ctx.EventEffectiveAt, order, ctx.EventCreatedAt
     let asAtOrBefore 
-        (asAt:CreatedDate) = 
+        (asAt:EventCreatedDate) = 
         fun (event:LeaseEvent) ->
             let ctx = getEventContext event
-            ctx.CreatedAt <= asAt
+            ctx.EventCreatedAt <= asAt
     let asOfOrBefore 
-        (asOf:EffectiveDate)
-        (eventOrderOpt:EventOrder option) =
+        (asOf:EventEffectiveDate)
+        (orderOpt:EventEffectiveOrder option) =
         fun (event:LeaseEvent) ->
             let ctx = getEventContext event
-            let eventOrder = getEventOrder event
-            match eventOrderOpt with
-            | Some effOrder when ctx.EffectiveAt = asOn ->
-                (eventEffectiveOrder <= effOrder)
+            let eventEffOrder = getEventEffectiveOrder event
+            match orderOpt with
+            | Some order when ctx.EventEffectiveAt = asOf ->
+                (eventEffOrder <= order)
             | _ ->
-                (eventEffectiveDate <= asOn)
-    let toStoredEvent = function
-        | LeaseEvent.LeaseCreated (ctx, lease) ->
-            {| EventContext = ctx; Lease = lease |}
-            |> LeaseCreated
-        | LeaseEvent.PaymentScheduled (ctx, payment) ->
-            {| EventContext = ctx; ScheduledPayment = payment |}
-            |> PaymentScheduled
-        | LeaseEvent.PaymentReceived (ctx, payment) ->
-            {| EventContext = ctx; ReceivedPayment = payment |}
-            |> PaymentReceived
-        | LeaseEvent.LeaseTerminated (ctx, termination) ->
-            {| EventContext = ctx; Termination = termination |}
-            |> LeaseTerminated
+                (ctx.EventEffectiveAt <= asOf)
 
-module LeaseObservation =
-    let createLease 
-        (eventCreatedTime:EventCreatedTime)
-        (lease:Lease) =
-        { CreatedAt = eventCreatedTime
-          UpdatedAt = eventCreatedTime
-          UpdatedOn = %lease.CommencementDate
-          LeaseId = lease.LeaseId
-          UserId = lease.UserId
-          CommencementDate = lease.CommencementDate
-          ExpirationDate = lease.ExpirationDate
-          MonthlyPaymentAmount = lease.MonthlyPaymentAmount
-          TotalScheduled = 0m<usd> 
-          TotalPaid = 0m<usd> 
-          AmountDue = 0m<usd> 
-          LeaseStatus = Outstanding
-          TerminatedDate = None }
-    let schedulePayment 
-        (eventCreatedTime:EventCreatedTime)
-        (payment:ScheduledPayment) =
-        fun leaseObs ->
-            let totalScheduled = leaseObs.TotalScheduled + payment.ScheduledAmount
-            let amountDue = totalScheduled - leaseObs.TotalPaid
-            { leaseObs with
-                UpdatedAt = eventCreatedTime
-                UpdatedOn = %payment.ScheduledDate
-                TotalScheduled = totalScheduled
-                AmountDue = amountDue }
-    let receivePayment 
-        (eventCreatedTime:EventCreatedTime)
-        (payment:ReceivedPayment) =
-        fun leaseObs ->
-            let totalPaid = leaseObs.TotalPaid + payment.ReceivedAmount
-            let amountDue = leaseObs.TotalScheduled - totalPaid
-            { leaseObs with
-                UpdatedAt = eventCreatedTime
-                UpdatedOn = %payment.ReceivedDate
-                TotalPaid = totalPaid
-                AmountDue = amountDue }
-    let terminateLease
-        (eventCreatedTime:EventCreatedTime)
-        (termination: Termination) =
-        fun leaseObs ->
-            { leaseObs with
-                UpdatedAt = eventCreatedTime
-                UpdatedOn = %termination.TerminationDate
-                LeaseStatus = Terminated
-                TerminatedDate = Some termination.TerminationDate }
+module LeaseState =
+    let init (leaseId:LeaseId) =
+        { LeaseId = leaseId
+          EventContext = None
+          AcceptedLease = None
+          ReturnedVehicle = None
+          Payments = Map.empty
+          CumPaymentAmountScheduled = 0m<usd>
+          CumPaymentAmountReceived = 0m<usd>
+          CumPaymentAmountChargedOff = 0m<usd>
+          DaysPastDue = 0<day>
+          OutstandingPaymentAmount = 0m<usd>
+          UnpaidPaymentAmount = 0m<usd> }
 
-let evolveLeaseState 
-    (leaseId:LeaseId)
-    : LeaseState -> LeaseEvent -> LeaseState =
-    let leaseIdStr = leaseId |> LeaseId.toStringN
-    fun state -> function
-        | LeaseEvent.LeaseCreated (ctx, lease) as event ->
-            match state with
-            | None -> LeaseObservation.createLease ctx.EventCreatedTime lease |> Some
-            | Some _ -> 
-                sprintf "cannot observe %A; Lease-%s already exists" event leaseIdStr
-                |> RpcException.raiseInternal
-        | LeaseEvent.PaymentScheduled (ctx, payment) as event ->
-            match state with
-            | None -> 
-                sprintf "cannot observe %A; Lease-%s does not exist" event leaseIdStr
-                |> RpcException.raiseInternal
-            | Some leaseObs -> 
-                leaseObs 
-                |> LeaseObservation.schedulePayment ctx.EventCreatedTime payment 
-                |> Some
-        | LeaseEvent.PaymentReceived (ctx, payment) as event ->
-            match state with
-            | None -> 
-                sprintf "cannot observe %A; Lease-%s does not exist" event leaseIdStr
-                |> RpcException.raiseInternal
-            | Some leaseObs -> 
-                leaseObs 
-                |> LeaseObservation.receivePayment ctx.EventCreatedTime payment 
-                |> Some
-        | LeaseEvent.LeaseTerminated (ctx, termination) as event ->
-            match state with
-            | None -> 
-                sprintf "cannot observe %A; Lease-%s does not exist" event leaseIdStr
-                |> RpcException.raiseInternal
-            | Some leaseObs -> 
-                leaseObs
-                |> LeaseObservation.terminateLease ctx.EventCreatedTime termination
-                |> Some
+let evolveLeaseState : LeaseState -> LeaseEvent -> LeaseState =
+    fun state event ->
+        let ctx = event |> LeaseEvent.getEventContext
+        match event with
+        | Stored storedEvent ->
+            match storedEvent with
+            | LeaseAccepted payload ->
+                { state with
+                    EventContext = Some ctx
+                    AcceptedLease = Some payload.AcceptedLease }
+            | PaymentRequested payload ->
+                let transactionId = payload.RequestedPayment.TransactionId
+                let pmtState =
+                    { PaymentStatus = Requested
+                      PaymentAmount = payload.RequestedPayment.RequestedAmount
+                      RequestedAt = payload.RequestedPayment.RequestedAt
+                      RejectedAt = None
+                      SettledAt = None
+                      ReceivedAt = None
+                      ReturnedAt = None }
+                { state with
+                    EventContext = Some ctx
+                    Payments = state.Payments |> Map.add transactionId pmtState }
+            | PaymentRejected payload ->
+                let transactionId = payload.RejectedPayment.TransactionId
+                let pmtState = state.Payments |> Map.find transactionId
+                let newPmtState =
+                    { pmtState with 
+                        PaymentStatus = Rejected
+                        RejectedAmount = payload.RejectedPayment.RejectedAmount }
+                { state with
+                    EventContext = Some ctx
+                    Payments = state.Payments |> Map.add transactionId newPmtState }
+            | PaymentSettled payload ->
+                let transactionId = payload.SettledPayment.TransactionId
+                let pmtState = state.Payments |> Map.find transactionId
             
 module LeaseStream =
     // Get non-deleted events created at or before asAt.

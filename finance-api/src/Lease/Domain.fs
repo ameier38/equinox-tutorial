@@ -3,12 +3,14 @@ namespace Lease
 open System
 
 type AsOn =
-    { AsAt: CreatedDate 
-      AsOf: EffectiveDate }
+    { AsAt: EventCreatedDate 
+      AsOf: EventEffectiveDate }
 
 type EventContext =
-    { CreatedAt: CreatedDate
-      EffectiveAt: EffectiveDate }
+    { EventCreatedAt: EventCreatedDate
+      EventEffectiveAt: EventEffectiveDate
+      EventEffectiveOrder: EventEffectiveOrder
+      EventType: EventType }
 
 type AcceptedLease =
     { UserId: UserId
@@ -16,12 +18,11 @@ type AcceptedLease =
       AcceptedAt: DateTimeOffset
       StartDate: DateTimeOffset 
       MaturityDate: DateTimeOffset
-      InterestRate: decimal<1/year>
+      MoneyFactor: decimal
       SalesTax: decimal
       VehicleValue: USD
-      ResidualPercentage: decimal
+      ResidualValue: decimal
       DownPayment: USD
-      TradeInValue: USD
       MonthlyPaymentAmount: decimal<usd/month>
       StartVehicleOdometer: Mile
       MilesPerYear: int<mile/year>
@@ -35,22 +36,37 @@ type RequestedPayment =
 type RejectedPayment =
     { TransactionId: TransactionId
       RejectedAt: DateTimeOffset
-      RejectedAmount: USD }
+      RejectedReason: string }
 
 type SettledPayment =
     { TransactionId: TransactionId
-      SettledAt: DateTimeOffset
-      SettledAmount: USD }
+      SettledAt: DateTimeOffset }
 
 type ReturnedPayment =
     { TransactionId: TransactionId
       ReturnedAt: DateTimeOffset
-      ReturnedAmount: USD }
+      ReturnedReason: string }
 
 type ReturnedVehicle =
     { VehicleId: VehicleId
       VehicleOdometer: Mile
       DamageCharge: USD }
+
+type PaymentStatus =
+    | Requested
+    | Rejected
+    | Settled
+    | Received
+    | Returned
+
+type PaymentState =
+    { PaymentStatus: PaymentStatus
+      PaymentAmount: USD
+      RequestedAt: DateTimeOffset
+      RejectedAt: DateTimeOffset option
+      SettledAt: DateTimeOffset option
+      ReceivedAt: DateTimeOffset option
+      ReturnedAt: DateTimeOffset option }
 
 type LeaseCommand =
     | AcceptLease of AcceptedLease
@@ -60,7 +76,7 @@ type LeaseCommand =
     | ReturnPayment of ReturnedPayment
     | ReturnVehicle of ReturnedVehicle
 
-type LeaseEvent =
+type StoredLeaseEvent =
     | LeaseAccepted of {| EventContext: EventContext; AcceptedLease: AcceptedLease |}
     | PaymentRequested of {| EventContext: EventContext; RequestedPayment: RequestedPayment |}
     | PaymentRejected of {| EventContext: EventContext; RejectedPayment: RejectedPayment |}
@@ -69,28 +85,21 @@ type LeaseEvent =
     | VehicleReturned of {| EventContext: EventContext; ReturnedVehicle: ReturnedVehicle |}
     interface TypeShape.UnionContract.IUnionContract
 
-type LeaseStatus =
-    | Requested
-    | Accepted
+type LeaseEvent =
+    | Stored of StoredLeaseEvent
+    | DayEnded of DateTimeOffset
 
-type LeaseObservation =
+type LeaseState =
     { LeaseId: LeaseId
-      ObservedAt: EffectiveDate
-      EventOrder: EventOrder
-      EventType: EventType
-      AcceptedLease: AcceptedLease
+      EventContext: EventContext option
+      AcceptedLease: AcceptedLease option
       ReturnedVehicle: ReturnedVehicle option
-      PendingPayments: SettledPayment list
+      Payments: Map<TransactionId,PaymentState>
       CumPaymentAmountScheduled: USD
-      CumPaymentAmountRequested: USD
-      CumPaymentAmountRejected: USD
-      CumPaymentAmountSettled: USD
-      CumPaymentAmountReturned: USD
+      CumPaymentAmountReceived: USD
       CumPaymentAmountChargedOff: USD
-      DaysPastDue: USD
+      DaysPastDue: Day
       OutstandingPaymentAmount: USD
       UnpaidPaymentAmount: USD }
-
-type LeaseState = LeaseObservation option
 
 type LeaseStream = LeaseEvent list

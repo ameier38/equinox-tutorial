@@ -5,6 +5,9 @@ open Grpc.Core
 open System
 open System.Text
 
+[<Measure>] type day
+type Day = int<day>
+
 [<Measure>] type month
 
 [<Measure>] type year
@@ -27,23 +30,23 @@ type LeaseId = Guid<leaseId>
 [<Measure>] type transactionId
 type TransactionId = Guid<transactionId>
 
+[<Measure>] type eventCreatedDate
+type EventCreatedDate = DateTimeOffset<eventCreatedDate>
+
+[<Measure>] type eventEffectiveDate
+type EventEffectiveDate = DateTimeOffset<eventEffectiveDate>
+
+[<Measure>] type eventEffectiveOrder
+type EventEffectiveOrder = int<eventEffectiveOrder>
+
 [<Measure>] type eventType
 type EventType = string<eventType>
-
-[<Measure>] type eventOrder
-type EventOrder = int<eventOrder>
 
 [<Measure>] type pageToken
 type PageToken = string<pageToken>
 
 [<Measure>] type pageSize
 type PageSize = int<pageSize>
-
-[<Measure>] type createdDate
-type CreatedDate = DateTimeOffset<createdDate>
-
-[<Measure>] type effectiveDate
-type EffectiveDate = DateTimeOffset<effectiveDate>
 
 module DateTime =
     let toUtc (dt:DateTime) = DateTime.SpecifyKind(dt, DateTimeKind.Utc)
