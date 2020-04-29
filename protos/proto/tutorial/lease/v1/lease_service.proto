@@ -1,0 +1,101 @@
+syntax = "proto3";
+
+package tutorial.lease.v1;
+
+option csharp_namespace = "Tutorial.Lease.V1";
+option go_package = "tutorial/lease/v1";
+
+import "tutorial/lease/v1/lease.proto";
+import "google/type/money.proto";
+
+// API to handle interactions with the Lease.
+service LeaseService {
+  // Request a lease for a vehicle.
+  rpc RequestLease(RequestLeaseRequest) returns (RequestLeaseResponse);
+  // List the leases that have been created.
+  rpc ListLeases(ListLeasesRequest) returns (ListLeasesResponse);
+  // Get a lease as of a point in time.
+  rpc GetLease(GetLeaseRequest) returns (GetLeaseResponse);
+  // Accept a new lease.
+  rpc AcceptLease(AcceptLeaseRequest) returns (AcceptLeaseResponse);
+  // Create a payment.
+  rpc CreatePayment(CreatePaymentRequest) returns (CreatePaymentResponse);
+  // Settle a payment.
+  rpc SettlePayment(SettlePaymentRequest) returns (SettlePaymentResponse);
+  // Return a payment.
+  rpc ReturnPayment(ReturnPaymentRequest) returns (ReturnPaymentResponse);
+  // Return a vehicle.
+  rpc ReturnVehicle(ReturnVehicleRequest) returns (ReturnVehicleResponse);
+}
+
+message RequestLeaseRequest {
+  string lease_id = 1;
+  string vehicle_id = 2;
+  int32 term = 3;
+  google.type.Money down_payment = 4;
+}
+
+message RequestLeaseResponse {
+    Lease lease = 1;
+}
+
+message ListLeasesRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+}
+
+message ListLeasesResponse {
+  repeated Lease leases = 1;
+  string prev_page_token = 2;
+  string next_page_token = 3;
+  int32 total_count = 4;
+}
+
+message GetLeaseRequest {
+  string lease_id = 1;
+  AsOn as_on = 2;
+}
+
+message GetLeaseResponse {
+  LeaseObservation lease_observation = 1;
+}
+
+message AcceptLeaseRequest {
+  Lease lease = 1;
+}
+
+message AcceptLeaseResponse {
+  string message = 1;
+}
+
+message CreatePaymentRequest {
+  CreatedPayment created_payment = 1;
+}
+
+message CreatePaymentResponse {
+  string message = 1;
+}
+
+message SettlePaymentRequest {
+  SettledPayment settled_payment = 1;
+}
+
+message SettlePaymentResponse {
+  string message = 1;
+}
+
+message ReturnPaymentRequest {
+  ReturnedPayment returned_payment = 1;
+}
+
+message ReturnPaymentResponse {
+  string message = 1;
+}
+
+message ReturnVehicleRequest {
+  ReturnedVehicle returned_vehicle = 1;
+}
+
+message ReturnVehicleResponse {
+  string message = 1;
+}

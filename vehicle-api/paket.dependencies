@@ -21,10 +21,10 @@ nuget Serilog.Sinks.Console
 nuget Serilog.Sinks.Seq
 
 // [ FAKE GROUP ]
-group Fake
-    source https://www.nuget.org/api/v2
-    storage: none
+group Build
+    storage none
+    source https://api.nuget.org/v3/index.json
     nuget Fake.DotNet.Cli
     nuget Fake.IO.FileSystem
-    nuget Fake.Core.Target 
+    nuget Fake.Core.Target
     nuget BlackFox.Fake.BuildTask

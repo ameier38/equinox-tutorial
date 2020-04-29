@@ -1,0 +1,10 @@
+Equinox
+Equinox.EventStore
+FSharp.UMX
+FsCodec
+FsCodec.NewtonsoftJson
+Grpc.Core
+Grpc.HealthCheck
+Serilog
+Serilog.Sinks.Console
+Serilog.Sinks.Seq

@@ -30,11 +30,11 @@ type LeaseId = Guid<leaseId>
 [<Measure>] type transactionId
 type TransactionId = Guid<transactionId>
 
-[<Measure>] type eventCreatedDate
-type EventCreatedDate = DateTimeOffset<eventCreatedDate>
+[<Measure>] type eventCreatedAt
+type EventCreatedAt = DateTimeOffset<eventCreatedAt>
 
-[<Measure>] type eventEffectiveDate
-type EventEffectiveDate = DateTimeOffset<eventEffectiveDate>
+[<Measure>] type eventEffectiveAt
+type EventEffectiveAt = DateTimeOffset<eventEffectiveAt>
 
 [<Measure>] type eventEffectiveOrder
 type EventEffectiveOrder = int<eventEffectiveOrder>
@@ -48,8 +48,31 @@ type PageToken = string<pageToken>
 [<Measure>] type pageSize
 type PageSize = int<pageSize>
 
-module DateTime =
-    let toUtc (dt:DateTime) = DateTime.SpecifyKind(dt, DateTimeKind.Utc)
+module DateTimeOffset =
+    let addDays (n:float) (dt:DateTimeOffset<'t>) =
+        let dt = dt |> UMX.untag
+        dt.AddDays(n)
+        |> UMX.tag<'t>
+    let addTicks (n:int64) (dt:DateTimeOffset<'t>) =
+        let dt = dt |> UMX.untag
+        dt.AddTicks(n)
+        |> UMX.tag<'t>
+    let toStartOfDay (dt:DateTimeOffset<'t>) =
+        let dt = dt |> UMX.untag
+        dt.Date
+        |> DateTimeOffset
+        |> UMX.tag<'t>
+    let toEndOfDay (dt:DateTimeOffset<'t>) =
+        dt
+        |> toStartOfDay
+        |> addDays 1.0
+        |> addTicks -1L
+    let range (periodStart:DateTimeOffset<'t>) (periodEnd:DateTimeOffset<'t>) =
+        let periodStart = periodStart |> toStartOfDay
+        let periodEnd = periodEnd |> toStartOfDay
+        Seq.initInfinite float
+        |> Seq.map (fun idx -> periodStart |> addDays idx)
+        |> Seq.takeWhile (fun dt -> dt < periodEnd)
 
 module Decimal =
     let round (decimalPlaces:int) (value:decimal<'u>) = 
@@ -64,10 +87,12 @@ module String =
     let fromBase64 (s:string) = s |> Convert.FromBase64String |> fromBytes
 
 module Guid =
-    let inline toStringN (x: Guid) = x.ToString "N"
-    let tryParse (s:string) =
+    let inline toStringN (x: Guid<'t>) =
+        let x = x |> UMX.untag
+        x.ToString("N")
+    let tryParse<[<Measure>] 't>(s:string): Guid<'t> option =
         match Guid.TryParse(s) with
-        | (true, d) -> Some d
+        | (true, d) -> d |> UMX.tag<'t> |> Some
         | _ -> None
 
 module Int =
@@ -89,36 +114,6 @@ module Money =
     let fromUSD (d:USD) =
         let value = d |> UMX.untag |> Decimal.round 9 
         Google.Type.Money(DecimalValue = value, CurrencyCode = "USD")
-
-module UserId = 
-    let toStringN (value: UserId) = Guid.toStringN %value
-    let parse (x:string) : UserId = 
-        match Guid.tryParse x with
-        | Some userId -> %userId
-        | None -> 
-            let msg = sprintf "could not parse %s into UserId" x
-            RpcException(Status(StatusCode.InvalidArgument, msg))
-            |> raise
-
-module LeaseId = 
-    let toStringN (value:LeaseId) = Guid.toStringN %value
-    let parse (x:string) : LeaseId = 
-        match Guid.tryParse x with
-        | Some leaseId -> %leaseId
-        | None -> 
-            let msg = sprintf "could not parse %s into LeaseId" x
-            RpcException(Status(StatusCode.InvalidArgument, msg))
-            |> raise
-
-module TransactionId = 
-    let toStringN (value: TransactionId) = Guid.toStringN %value
-    let parse (x:string) : TransactionId = 
-        match Guid.tryParse x with
-        | Some paymentId -> %paymentId
-        | None -> 
-            let msg = sprintf "could not parse %s into TransactionId" x
-            RpcException(Status(StatusCode.InvalidArgument, msg))
-            |> raise
 
 module RpcException =
     let raiseInternal (msg:string) =
@@ -175,5 +170,5 @@ module Env =
 
 module Operators =
     let (!!) (value:decimal<'u>) = %value |> Money.fromUSD
-    let (!@) (value:DateTime<'u>) = %value |> DateTime.toUtc |> Google.Type.Date.FromDateTime
-    let (!@@) (value:DateTime<'u>) = %value |> DateTime.toUtc |> Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime
+    let (!@) (value:DateTimeOffset<'u>) = %value |> Google.Type.Date.FromDateTimeOffset
+    let (!@@) (value:DateTimeOffset<'u>) = %value |> Google.Protobuf.WellKnownTypes.Timestamp.FromDateTimeOffset

@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package tutorial.vehicle.v1;
+
+option csharp_namespace = "Tutorial.Vehicle.V1";
+option go_package = "tutorial/vehicle/v1";
+
+import "tutorial/vehicle/v1/vehicle.proto";
+
+// Service to handle interactions with Vehicles.
+service VehicleService {
+  // Add a vehicle to inventory.
+  rpc AddVehicle(AddVehicleRequest) returns (AddVehicleResponse);
+  // Remove a vehicle from inventory.
+  rpc RemoveVehicle(RemoveVehicleRequest) returns (RemoveVehicleResponse);
+  // Lease a vehicle.
+  rpc LeaseVehicle(LeaseVehicleRequest) returns (LeaseVehicleResponse);
+}
+
+message AddVehicleRequest {
+  Vehicle vehicle = 1;
+}
+
+message AddVehicleResponse {
+  string vehicle_id = 1;
+}
+
+message RemoveVehicleRequest {
+  string vehicle_id = 1;
+}
+
+message RemoveVehicleResponse {
+  string message = 1;
+}
+
+message LeaseVehicleRequest {
+  string vehicle_id = 1;
+}
+
+message LeaseVehicleResponse {
+  string message = 1;
+}

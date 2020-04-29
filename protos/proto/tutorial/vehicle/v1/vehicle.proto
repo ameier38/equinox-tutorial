@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package tutorial.vehicle.v1;
+
+option csharp_namespace = "Tutorial.Vehicle.V1";
+option go_package = "tutorial/vehicle/v1";
+
+message Vehicle {
+    string make = 2;
+    string model = 3;
+    int32 year = 4;
+}

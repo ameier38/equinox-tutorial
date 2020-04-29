@@ -26,79 +26,97 @@ namespace Tutorial.Lease.V1 {
           string.Concat(
             "Ch10dXRvcmlhbC9sZWFzZS92MS9sZWFzZS5wcm90bxIRdHV0b3JpYWwubGVh",
             "c2UudjEaH2dvb2dsZS9wcm90b2J1Zi90aW1lc3RhbXAucHJvdG8aFmdvb2ds",
-            "ZS90eXBlL2RhdGUucHJvdG8aF2dvb2dsZS90eXBlL21vbmV5LnByb3RvIl0K",
-            "BEFzT2YSLgoKYXNfYXRfdGltZRgBIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5U",
-            "aW1lc3RhbXASJQoKYXNfb25fZGF0ZRgCIAEoCzIRLmdvb2dsZS50eXBlLkRh",
-            "dGUiuAEKBUxlYXNlEhAKCGxlYXNlX2lkGAEgASgJEg8KB3VzZXJfaWQYAiAB",
-            "KAkSLAoRY29tbWVuY2VtZW50X2RhdGUYAyABKAsyES5nb29nbGUudHlwZS5E",
-            "YXRlEioKD2V4cGlyYXRpb25fZGF0ZRgEIAEoCzIRLmdvb2dsZS50eXBlLkRh",
-            "dGUSMgoWbW9udGhseV9wYXltZW50X2Ftb3VudBgFIAEoCzISLmdvb2dsZS50",
-            "eXBlLk1vbmV5In8KEFNjaGVkdWxlZFBheW1lbnQSEgoKcGF5bWVudF9pZBgB",
-            "IAEoCRIpCg5zY2hlZHVsZWRfZGF0ZRgCIAEoCzIRLmdvb2dsZS50eXBlLkRh",
-            "dGUSLAoQc2NoZWR1bGVkX2Ftb3VudBgDIAEoCzISLmdvb2dsZS50eXBlLk1v",
-            "bmV5InwKD1JlY2VpdmVkUGF5bWVudBISCgpwYXltZW50X2lkGAEgASgJEigK",
-            "DXJlY2VpdmVkX2RhdGUYAiABKAsyES5nb29nbGUudHlwZS5EYXRlEisKD3Jl",
-            "Y2VpdmVkX2Ftb3VudBgDIAEoCzISLmdvb2dsZS50eXBlLk1vbmV5IlYKC1Rl",
-            "cm1pbmF0aW9uEisKEHRlcm1pbmF0aW9uX2RhdGUYASABKAsyES5nb29nbGUu",
-            "dHlwZS5EYXRlEhoKEnRlcm1pbmF0aW9uX3JlYXNvbhgCIAEoCSKyAQoKTGVh",
-            "c2VFdmVudBIQCghldmVudF9pZBgBIAEoBRI2ChJldmVudF9jcmVhdGVkX3Rp",
-            "bWUYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi8KFGV2ZW50",
-            "X2VmZmVjdGl2ZV9kYXRlGAMgASgLMhEuZ29vZ2xlLnR5cGUuRGF0ZRISCgpl",
-            "dmVudF90eXBlGAQgASgJEhUKDWV2ZW50X3BheWxvYWQYBSABKAkiuAQKEExl",
-            "YXNlT2JzZXJ2YXRpb24SEAoIbGVhc2VfaWQYASABKAkSDwoHdXNlcl9pZBgC",
-            "IAEoCRIzCg9jcmVhdGVkX2F0X3RpbWUYAyABKAsyGi5nb29nbGUucHJvdG9i",
-            "dWYuVGltZXN0YW1wEjMKD3VwZGF0ZWRfYXRfdGltZRgEIAEoCzIaLmdvb2ds",
-            "ZS5wcm90b2J1Zi5UaW1lc3RhbXASKgoPdXBkYXRlZF9vbl9kYXRlGAUgASgL",
-            "MhEuZ29vZ2xlLnR5cGUuRGF0ZRIsChFjb21tZW5jZW1lbnRfZGF0ZRgGIAEo",
-            "CzIRLmdvb2dsZS50eXBlLkRhdGUSKgoPZXhwaXJhdGlvbl9kYXRlGAcgASgL",
-            "MhEuZ29vZ2xlLnR5cGUuRGF0ZRIyChZtb250aGx5X3BheW1lbnRfYW1vdW50",
-            "GAggASgLMhIuZ29vZ2xlLnR5cGUuTW9uZXkSKwoPdG90YWxfc2NoZWR1bGVk",
-            "GAkgASgLMhIuZ29vZ2xlLnR5cGUuTW9uZXkSJgoKdG90YWxfcGFpZBgKIAEo",
-            "CzISLmdvb2dsZS50eXBlLk1vbmV5EiYKCmFtb3VudF9kdWUYCyABKAsyEi5n",
-            "b29nbGUudHlwZS5Nb25leRI0CgxsZWFzZV9zdGF0dXMYDCABKA4yHi50dXRv",
-            "cmlhbC5sZWFzZS52MS5MZWFzZVN0YXR1cxIqCg90ZXJtaW5hdGVkX2RhdGUY",
-            "DSABKAsyES5nb29nbGUudHlwZS5EYXRlKmYKC0xlYXNlU3RhdHVzEhwKGExF",
-            "QVNFX1NUQVRVU19VTlNQRUNJRklFRBAAEhwKGExFQVNFX1NUQVRVU19PVVRT",
-            "VEFORElORxABEhsKF0xFQVNFX1NUQVRVU19URVJNSU5BVEVEEAJCZgoVY29t",
-            "LnR1dG9yaWFsLmxlYXNlLnYxQgpMZWFzZVByb3RvUAFaEXR1dG9yaWFsL2xl",
-            "YXNlL3YxogIDVExYqgIRVHV0b3JpYWwuTGVhc2UuVjHKAhFUdXRvcmlhbFxM",
-            "ZWFzZVxWMWIGcHJvdG8z"));
+            "ZS90eXBlL2RhdGUucHJvdG8aF2dvb2dsZS90eXBlL21vbmV5LnByb3RvIlMK",
+            "BEFzT24SKQoFYXNfYXQYASABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0",
+            "YW1wEiAKBWFzX29mGAIgASgLMhEuZ29vZ2xlLnR5cGUuRGF0ZSKHBAoFTGVh",
+            "c2USEAoIbGVhc2VfaWQYASABKAkSDwoHdXNlcl9pZBgCIAEoCRISCgp2ZWhp",
+            "Y2xlX2lkGAMgASgJEi8KC2FjY2VwdGVkX2F0GAQgASgLMhouZ29vZ2xlLnBy",
+            "b3RvYnVmLlRpbWVzdGFtcBIlCgpzdGFydF9kYXRlGAUgASgLMhEuZ29vZ2xl",
+            "LnR5cGUuRGF0ZRIoCg1tYXR1cml0eV9kYXRlGAYgASgLMhEuZ29vZ2xlLnR5",
+            "cGUuRGF0ZRIUCgxtb25leV9mYWN0b3IYByABKAESFgoOc2FsZXNfdGF4X3Jh",
+            "dGUYCCABKAESKQoNdmVoaWNsZV92YWx1ZRgJIAEoCzISLmdvb2dsZS50eXBl",
+            "Lk1vbmV5EjIKFnZlaGljbGVfcmVzaWR1YWxfdmFsdWUYCiABKAsyEi5nb29n",
+            "bGUudHlwZS5Nb25leRIoCgxkb3duX3BheW1lbnQYCyABKAsyEi5nb29nbGUu",
+            "dHlwZS5Nb25leRIrCg9tb250aGx5X3BheW1lbnQYDCABKAsyEi5nb29nbGUu",
+            "dHlwZS5Nb25leRIYChB2ZWhpY2xlX29kb21ldGVyGA0gASgFEhYKDm1pbGVz",
+            "X3Blcl95ZWFyGA4gASgFEi8KE21pbGVfb3ZlcmFnZV9jaGFyZ2UYDyABKAsy",
+            "Ei5nb29nbGUudHlwZS5Nb25leSKEAQoOQ3JlYXRlZFBheW1lbnQSFgoOdHJh",
+            "bnNhY3Rpb25faWQYASABKAkSLgoKY3JlYXRlZF9hdBgCIAEoCzIaLmdvb2ds",
+            "ZS5wcm90b2J1Zi5UaW1lc3RhbXASKgoOcGF5bWVudF9hbW91bnQYAyABKAsy",
+            "Ei5nb29nbGUudHlwZS5Nb25leSJYCg5TZXR0bGVkUGF5bWVudBIWCg50cmFu",
+            "c2FjdGlvbl9pZBgBIAEoCRIuCgpzZXR0bGVkX2F0GAIgASgLMhouZ29vZ2xl",
+            "LnByb3RvYnVmLlRpbWVzdGFtcCJzCg9SZXR1cm5lZFBheW1lbnQSFgoOdHJh",
+            "bnNhY3Rpb25faWQYASABKAkSLwoLcmV0dXJuZWRfYXQYAiABKAsyGi5nb29n",
+            "bGUucHJvdG9idWYuVGltZXN0YW1wEhcKD3JldHVybmVkX3JlYXNvbhgDIAEo",
+            "CSKbAQoPUmV0dXJuZWRWZWhpY2xlEhIKCnZlaGljbGVfaWQYASABKAkSLwoL",
+            "cmV0dXJuZWRfYXQYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1w",
+            "EhgKEHZlaGljbGVfb2RvbWV0ZXIYAyABKAUSKQoNZGFtYWdlX2NoYXJnZRgE",
+            "IAEoCzISLmdvb2dsZS50eXBlLk1vbmV5ItkHCgdQYXltZW50EhYKDnRyYW5z",
+            "YWN0aW9uX2lkGAEgASgJEjUKB2NyZWF0ZWQYAiABKAsyIi50dXRvcmlhbC5s",
+            "ZWFzZS52MS5QYXltZW50LkNyZWF0ZWRIABI1CgdzZXR0bGVkGAMgASgLMiIu",
+            "dHV0b3JpYWwubGVhc2UudjEuUGF5bWVudC5TZXR0bGVkSAASNwoIcmVjZWl2",
+            "ZWQYBCABKAsyIy50dXRvcmlhbC5sZWFzZS52MS5QYXltZW50LlJlY2VpdmVk",
+            "SAASNwoIcmV0dXJuZWQYBSABKAsyIy50dXRvcmlhbC5sZWFzZS52MS5QYXlt",
+            "ZW50LlJldHVybmVkSAAaZQoHQ3JlYXRlZBIqCg5wYXltZW50X2Ftb3VudBgB",
+            "IAEoCzISLmdvb2dsZS50eXBlLk1vbmV5Ei4KCmNyZWF0ZWRfYXQYAiABKAsy",
+            "Gi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wGpUBCgdTZXR0bGVkEioKDnBh",
+            "eW1lbnRfYW1vdW50GAEgASgLMhIuZ29vZ2xlLnR5cGUuTW9uZXkSLgoKY3Jl",
+            "YXRlZF9hdBgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoK",
+            "c2V0dGxlZF9hdBgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAa",
+            "xwEKCFJlY2VpdmVkEioKDnBheW1lbnRfYW1vdW50GAEgASgLMhIuZ29vZ2xl",
+            "LnR5cGUuTW9uZXkSLgoKY3JlYXRlZF9hdBgCIAEoCzIaLmdvb2dsZS5wcm90",
+            "b2J1Zi5UaW1lc3RhbXASLgoKc2V0dGxlZF9hdBgDIAEoCzIaLmdvb2dsZS5w",
+            "cm90b2J1Zi5UaW1lc3RhbXASLwoLcmVjZWl2ZWRfYXQYBCABKAsyGi5nb29n",
+            "bGUucHJvdG9idWYuVGltZXN0YW1wGoMCCghSZXR1cm5lZBIqCg5wYXltZW50",
+            "X2Ftb3VudBgBIAEoCzISLmdvb2dsZS50eXBlLk1vbmV5Ei4KCmNyZWF0ZWRf",
+            "YXQYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnNldHRs",
+            "ZWRfYXQYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEisKBXZh",
+            "bHVlGAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgAEi8KC3Jl",
+            "dHVybmVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIN",
+            "CgtyZWNlaXZlZF9hdEIHCgVzdGF0ZSL3BAoQTGVhc2VPYnNlcnZhdGlvbhIv",
+            "CgtvYnNlcnZlZF9hdBgBIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3Rh",
+            "bXASGQoRb2JzZXJ2YXRpb25fb3JkZXIYAiABKAUSHwoXb2JzZXJ2YXRpb25f",
+            "ZGVzY3JpcHRpb24YAyABKAkSJwoFbGVhc2UYBCABKAsyGC50dXRvcmlhbC5s",
+            "ZWFzZS52MS5MZWFzZRIzCgV2YWx1ZRgFIAEoCzIiLnR1dG9yaWFsLmxlYXNl",
+            "LnYxLlJldHVybmVkVmVoaWNsZUgAEiwKCHBheW1lbnRzGAYgAygLMhoudHV0",
+            "b3JpYWwubGVhc2UudjEuUGF5bWVudBIVCg1kYXlzX3Bhc3RfZHVlGAcgASgF",
+            "EjQKGHBheW1lbnRfYW1vdW50X3NjaGVkdWxlZBgIIAEoCzISLmdvb2dsZS50",
+            "eXBlLk1vbmV5EjMKF3BheW1lbnRfYW1vdW50X3JlY2VpdmVkGAkgASgLMhIu",
+            "Z29vZ2xlLnR5cGUuTW9uZXkSNgoacGF5bWVudF9hbW91bnRfY2hhcmdlZF9v",
+            "ZmYYCiABKAsyEi5nb29nbGUudHlwZS5Nb25leRI2ChpwYXltZW50X2Ftb3Vu",
+            "dF9vdXRzdGFuZGluZxgLIAEoCzISLmdvb2dsZS50eXBlLk1vbmV5EjEKFXBh",
+            "eW1lbnRfYW1vdW50X2NyZWRpdBgMIAEoCzISLmdvb2dsZS50eXBlLk1vbmV5",
+            "EjEKFXBheW1lbnRfYW1vdW50X3VucGFpZBgNIAEoCzISLmdvb2dsZS50eXBl",
+            "Lk1vbmV5QhIKEHJldHVybmVkX3ZlaGljbGVCJ1oRdHV0b3JpYWwvbGVhc2Uv",
+            "djGqAhFUdXRvcmlhbC5MZWFzZS5WMWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, global::Google.Type.DateReflection.Descriptor, global::Google.Type.MoneyReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Tutorial.Lease.V1.LeaseStatus), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.AsOf), global::Tutorial.Lease.V1.AsOf.Parser, new[]{ "AsAtTime", "AsOnDate" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.Lease), global::Tutorial.Lease.V1.Lease.Parser, new[]{ "LeaseId", "UserId", "CommencementDate", "ExpirationDate", "MonthlyPaymentAmount" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ScheduledPayment), global::Tutorial.Lease.V1.ScheduledPayment.Parser, new[]{ "PaymentId", "ScheduledDate", "ScheduledAmount" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ReceivedPayment), global::Tutorial.Lease.V1.ReceivedPayment.Parser, new[]{ "PaymentId", "ReceivedDate", "ReceivedAmount" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.Termination), global::Tutorial.Lease.V1.Termination.Parser, new[]{ "TerminationDate", "TerminationReason" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.LeaseEvent), global::Tutorial.Lease.V1.LeaseEvent.Parser, new[]{ "EventId", "EventCreatedTime", "EventEffectiveDate", "EventType", "EventPayload" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.LeaseObservation), global::Tutorial.Lease.V1.LeaseObservation.Parser, new[]{ "LeaseId", "UserId", "CreatedAtTime", "UpdatedAtTime", "UpdatedOnDate", "CommencementDate", "ExpirationDate", "MonthlyPaymentAmount", "TotalScheduled", "TotalPaid", "AmountDue", "LeaseStatus", "TerminatedDate" }, null, null, null, null)
+          new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.AsOn), global::Tutorial.Lease.V1.AsOn.Parser, new[]{ "AsAt", "AsOf" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.Lease), global::Tutorial.Lease.V1.Lease.Parser, new[]{ "LeaseId", "UserId", "VehicleId", "AcceptedAt", "StartDate", "MaturityDate", "MoneyFactor", "SalesTaxRate", "VehicleValue", "VehicleResidualValue", "DownPayment", "MonthlyPayment", "VehicleOdometer", "MilesPerYear", "MileOverageCharge" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.CreatedPayment), global::Tutorial.Lease.V1.CreatedPayment.Parser, new[]{ "TransactionId", "CreatedAt", "PaymentAmount" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.SettledPayment), global::Tutorial.Lease.V1.SettledPayment.Parser, new[]{ "TransactionId", "SettledAt" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ReturnedPayment), global::Tutorial.Lease.V1.ReturnedPayment.Parser, new[]{ "TransactionId", "ReturnedAt", "ReturnedReason" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ReturnedVehicle), global::Tutorial.Lease.V1.ReturnedVehicle.Parser, new[]{ "VehicleId", "ReturnedAt", "VehicleOdometer", "DamageCharge" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.Payment), global::Tutorial.Lease.V1.Payment.Parser, new[]{ "TransactionId", "Created", "Settled", "Received", "Returned" }, new[]{ "State" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.Payment.Types.Created), global::Tutorial.Lease.V1.Payment.Types.Created.Parser, new[]{ "PaymentAmount", "CreatedAt" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.Payment.Types.Settled), global::Tutorial.Lease.V1.Payment.Types.Settled.Parser, new[]{ "PaymentAmount", "CreatedAt", "SettledAt" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.Payment.Types.Received), global::Tutorial.Lease.V1.Payment.Types.Received.Parser, new[]{ "PaymentAmount", "CreatedAt", "SettledAt", "ReceivedAt" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.Payment.Types.Returned), global::Tutorial.Lease.V1.Payment.Types.Returned.Parser, new[]{ "PaymentAmount", "CreatedAt", "SettledAt", "Value", "ReturnedAt" }, new[]{ "ReceivedAt" }, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.LeaseObservation), global::Tutorial.Lease.V1.LeaseObservation.Parser, new[]{ "ObservedAt", "ObservationOrder", "ObservationDescription", "Lease", "Value", "Payments", "DaysPastDue", "PaymentAmountScheduled", "PaymentAmountReceived", "PaymentAmountChargedOff", "PaymentAmountOutstanding", "PaymentAmountCredit", "PaymentAmountUnpaid" }, new[]{ "ReturnedVehicle" }, null, null, null)
           }));
     }
     #endregion
 
   }
-  #region Enums
-  /// <summary>
-  /// Status of the lease.
-  /// </summary>
-  public enum LeaseStatus {
-    [pbr::OriginalName("LEASE_STATUS_UNSPECIFIED")] Unspecified = 0,
-    [pbr::OriginalName("LEASE_STATUS_OUTSTANDING")] Outstanding = 1,
-    [pbr::OriginalName("LEASE_STATUS_TERMINATED")] Terminated = 2,
-  }
-
-  #endregion
-
   #region Messages
   /// <summary>
   /// Date at which a lease is observed.
   /// </summary>
-  public sealed partial class AsOf : pb::IMessage<AsOf> {
-    private static readonly pb::MessageParser<AsOf> _parser = new pb::MessageParser<AsOf>(() => new AsOf());
+  public sealed partial class AsOn : pb::IMessage<AsOn> {
+    private static readonly pb::MessageParser<AsOn> _parser = new pb::MessageParser<AsOn>(() => new AsOn());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<AsOf> Parser { get { return _parser; } }
+    public static pb::MessageParser<AsOn> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -111,69 +129,69 @@ namespace Tutorial.Lease.V1 {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public AsOf() {
+    public AsOn() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public AsOf(AsOf other) : this() {
-      asAtTime_ = other.asAtTime_ != null ? other.asAtTime_.Clone() : null;
-      asOnDate_ = other.asOnDate_ != null ? other.asOnDate_.Clone() : null;
+    public AsOn(AsOn other) : this() {
+      asAt_ = other.asAt_ != null ? other.asAt_.Clone() : null;
+      asOf_ = other.asOf_ != null ? other.asOf_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public AsOf Clone() {
-      return new AsOf(this);
+    public AsOn Clone() {
+      return new AsOn(this);
     }
 
-    /// <summary>Field number for the "as_at_time" field.</summary>
-    public const int AsAtTimeFieldNumber = 1;
-    private global::Google.Protobuf.WellKnownTypes.Timestamp asAtTime_;
+    /// <summary>Field number for the "as_at" field.</summary>
+    public const int AsAtFieldNumber = 1;
+    private global::Google.Protobuf.WellKnownTypes.Timestamp asAt_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Protobuf.WellKnownTypes.Timestamp AsAtTime {
-      get { return asAtTime_; }
+    public global::Google.Protobuf.WellKnownTypes.Timestamp AsAt {
+      get { return asAt_; }
       set {
-        asAtTime_ = value;
+        asAt_ = value;
       }
     }
 
-    /// <summary>Field number for the "as_on_date" field.</summary>
-    public const int AsOnDateFieldNumber = 2;
-    private global::Google.Type.Date asOnDate_;
+    /// <summary>Field number for the "as_of" field.</summary>
+    public const int AsOfFieldNumber = 2;
+    private global::Google.Type.Date asOf_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Type.Date AsOnDate {
-      get { return asOnDate_; }
+    public global::Google.Type.Date AsOf {
+      get { return asOf_; }
       set {
-        asOnDate_ = value;
+        asOf_ = value;
       }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as AsOf);
+      return Equals(other as AsOn);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(AsOf other) {
+    public bool Equals(AsOn other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (!object.Equals(AsAtTime, other.AsAtTime)) return false;
-      if (!object.Equals(AsOnDate, other.AsOnDate)) return false;
+      if (!object.Equals(AsAt, other.AsAt)) return false;
+      if (!object.Equals(AsOf, other.AsOf)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (asAtTime_ != null) hash ^= AsAtTime.GetHashCode();
-      if (asOnDate_ != null) hash ^= AsOnDate.GetHashCode();
+      if (asAt_ != null) hash ^= AsAt.GetHashCode();
+      if (asOf_ != null) hash ^= AsOf.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -187,13 +205,13 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (asAtTime_ != null) {
+      if (asAt_ != null) {
         output.WriteRawTag(10);
-        output.WriteMessage(AsAtTime);
+        output.WriteMessage(AsAt);
       }
-      if (asOnDate_ != null) {
+      if (asOf_ != null) {
         output.WriteRawTag(18);
-        output.WriteMessage(AsOnDate);
+        output.WriteMessage(AsOf);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -203,11 +221,11 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (asAtTime_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(AsAtTime);
+      if (asAt_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(AsAt);
       }
-      if (asOnDate_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(AsOnDate);
+      if (asOf_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(AsOf);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -216,21 +234,21 @@ namespace Tutorial.Lease.V1 {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(AsOf other) {
+    public void MergeFrom(AsOn other) {
       if (other == null) {
         return;
       }
-      if (other.asAtTime_ != null) {
-        if (asAtTime_ == null) {
-          AsAtTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+      if (other.asAt_ != null) {
+        if (asAt_ == null) {
+          AsAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
         }
-        AsAtTime.MergeFrom(other.AsAtTime);
+        AsAt.MergeFrom(other.AsAt);
       }
-      if (other.asOnDate_ != null) {
-        if (asOnDate_ == null) {
-          AsOnDate = new global::Google.Type.Date();
+      if (other.asOf_ != null) {
+        if (asOf_ == null) {
+          AsOf = new global::Google.Type.Date();
         }
-        AsOnDate.MergeFrom(other.AsOnDate);
+        AsOf.MergeFrom(other.AsOf);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -244,17 +262,17 @@ namespace Tutorial.Lease.V1 {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            if (asAtTime_ == null) {
-              AsAtTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            if (asAt_ == null) {
+              AsAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
             }
-            input.ReadMessage(AsAtTime);
+            input.ReadMessage(AsAt);
             break;
           }
           case 18: {
-            if (asOnDate_ == null) {
-              AsOnDate = new global::Google.Type.Date();
+            if (asOf_ == null) {
+              AsOf = new global::Google.Type.Date();
             }
-            input.ReadMessage(AsOnDate);
+            input.ReadMessage(AsOf);
             break;
           }
         }
@@ -264,7 +282,7 @@ namespace Tutorial.Lease.V1 {
   }
 
   /// <summary>
-  /// Lease static information.
+  /// Lease.
   /// </summary>
   public sealed partial class Lease : pb::IMessage<Lease> {
     private static readonly pb::MessageParser<Lease> _parser = new pb::MessageParser<Lease>(() => new Lease());
@@ -293,9 +311,19 @@ namespace Tutorial.Lease.V1 {
     public Lease(Lease other) : this() {
       leaseId_ = other.leaseId_;
       userId_ = other.userId_;
-      commencementDate_ = other.commencementDate_ != null ? other.commencementDate_.Clone() : null;
-      expirationDate_ = other.expirationDate_ != null ? other.expirationDate_.Clone() : null;
-      monthlyPaymentAmount_ = other.monthlyPaymentAmount_ != null ? other.monthlyPaymentAmount_.Clone() : null;
+      vehicleId_ = other.vehicleId_;
+      acceptedAt_ = other.acceptedAt_ != null ? other.acceptedAt_.Clone() : null;
+      startDate_ = other.startDate_ != null ? other.startDate_.Clone() : null;
+      maturityDate_ = other.maturityDate_ != null ? other.maturityDate_.Clone() : null;
+      moneyFactor_ = other.moneyFactor_;
+      salesTaxRate_ = other.salesTaxRate_;
+      vehicleValue_ = other.vehicleValue_ != null ? other.vehicleValue_.Clone() : null;
+      vehicleResidualValue_ = other.vehicleResidualValue_ != null ? other.vehicleResidualValue_.Clone() : null;
+      downPayment_ = other.downPayment_ != null ? other.downPayment_.Clone() : null;
+      monthlyPayment_ = other.monthlyPayment_ != null ? other.monthlyPayment_.Clone() : null;
+      vehicleOdometer_ = other.vehicleOdometer_;
+      milesPerYear_ = other.milesPerYear_;
+      mileOverageCharge_ = other.mileOverageCharge_ != null ? other.mileOverageCharge_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -326,36 +354,146 @@ namespace Tutorial.Lease.V1 {
       }
     }
 
-    /// <summary>Field number for the "commencement_date" field.</summary>
-    public const int CommencementDateFieldNumber = 3;
-    private global::Google.Type.Date commencementDate_;
+    /// <summary>Field number for the "vehicle_id" field.</summary>
+    public const int VehicleIdFieldNumber = 3;
+    private string vehicleId_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Type.Date CommencementDate {
-      get { return commencementDate_; }
+    public string VehicleId {
+      get { return vehicleId_; }
       set {
-        commencementDate_ = value;
+        vehicleId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
-    /// <summary>Field number for the "expiration_date" field.</summary>
-    public const int ExpirationDateFieldNumber = 4;
-    private global::Google.Type.Date expirationDate_;
+    /// <summary>Field number for the "accepted_at" field.</summary>
+    public const int AcceptedAtFieldNumber = 4;
+    private global::Google.Protobuf.WellKnownTypes.Timestamp acceptedAt_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Type.Date ExpirationDate {
-      get { return expirationDate_; }
+    public global::Google.Protobuf.WellKnownTypes.Timestamp AcceptedAt {
+      get { return acceptedAt_; }
       set {
-        expirationDate_ = value;
+        acceptedAt_ = value;
       }
     }
 
-    /// <summary>Field number for the "monthly_payment_amount" field.</summary>
-    public const int MonthlyPaymentAmountFieldNumber = 5;
-    private global::Google.Type.Money monthlyPaymentAmount_;
+    /// <summary>Field number for the "start_date" field.</summary>
+    public const int StartDateFieldNumber = 5;
+    private global::Google.Type.Date startDate_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Type.Money MonthlyPaymentAmount {
-      get { return monthlyPaymentAmount_; }
+    public global::Google.Type.Date StartDate {
+      get { return startDate_; }
       set {
-        monthlyPaymentAmount_ = value;
+        startDate_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "maturity_date" field.</summary>
+    public const int MaturityDateFieldNumber = 6;
+    private global::Google.Type.Date maturityDate_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Type.Date MaturityDate {
+      get { return maturityDate_; }
+      set {
+        maturityDate_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "money_factor" field.</summary>
+    public const int MoneyFactorFieldNumber = 7;
+    private double moneyFactor_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public double MoneyFactor {
+      get { return moneyFactor_; }
+      set {
+        moneyFactor_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "sales_tax_rate" field.</summary>
+    public const int SalesTaxRateFieldNumber = 8;
+    private double salesTaxRate_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public double SalesTaxRate {
+      get { return salesTaxRate_; }
+      set {
+        salesTaxRate_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "vehicle_value" field.</summary>
+    public const int VehicleValueFieldNumber = 9;
+    private global::Google.Type.Money vehicleValue_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Type.Money VehicleValue {
+      get { return vehicleValue_; }
+      set {
+        vehicleValue_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "vehicle_residual_value" field.</summary>
+    public const int VehicleResidualValueFieldNumber = 10;
+    private global::Google.Type.Money vehicleResidualValue_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Type.Money VehicleResidualValue {
+      get { return vehicleResidualValue_; }
+      set {
+        vehicleResidualValue_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "down_payment" field.</summary>
+    public const int DownPaymentFieldNumber = 11;
+    private global::Google.Type.Money downPayment_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Type.Money DownPayment {
+      get { return downPayment_; }
+      set {
+        downPayment_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "monthly_payment" field.</summary>
+    public const int MonthlyPaymentFieldNumber = 12;
+    private global::Google.Type.Money monthlyPayment_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Type.Money MonthlyPayment {
+      get { return monthlyPayment_; }
+      set {
+        monthlyPayment_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "vehicle_odometer" field.</summary>
+    public const int VehicleOdometerFieldNumber = 13;
+    private int vehicleOdometer_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int VehicleOdometer {
+      get { return vehicleOdometer_; }
+      set {
+        vehicleOdometer_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "miles_per_year" field.</summary>
+    public const int MilesPerYearFieldNumber = 14;
+    private int milesPerYear_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int MilesPerYear {
+      get { return milesPerYear_; }
+      set {
+        milesPerYear_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "mile_overage_charge" field.</summary>
+    public const int MileOverageChargeFieldNumber = 15;
+    private global::Google.Type.Money mileOverageCharge_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Type.Money MileOverageCharge {
+      get { return mileOverageCharge_; }
+      set {
+        mileOverageCharge_ = value;
       }
     }
 
@@ -374,9 +512,19 @@ namespace Tutorial.Lease.V1 {
       }
       if (LeaseId != other.LeaseId) return false;
       if (UserId != other.UserId) return false;
-      if (!object.Equals(CommencementDate, other.CommencementDate)) return false;
-      if (!object.Equals(ExpirationDate, other.ExpirationDate)) return false;
-      if (!object.Equals(MonthlyPaymentAmount, other.MonthlyPaymentAmount)) return false;
+      if (VehicleId != other.VehicleId) return false;
+      if (!object.Equals(AcceptedAt, other.AcceptedAt)) return false;
+      if (!object.Equals(StartDate, other.StartDate)) return false;
+      if (!object.Equals(MaturityDate, other.MaturityDate)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(MoneyFactor, other.MoneyFactor)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(SalesTaxRate, other.SalesTaxRate)) return false;
+      if (!object.Equals(VehicleValue, other.VehicleValue)) return false;
+      if (!object.Equals(VehicleResidualValue, other.VehicleResidualValue)) return false;
+      if (!object.Equals(DownPayment, other.DownPayment)) return false;
+      if (!object.Equals(MonthlyPayment, other.MonthlyPayment)) return false;
+      if (VehicleOdometer != other.VehicleOdometer) return false;
+      if (MilesPerYear != other.MilesPerYear) return false;
+      if (!object.Equals(MileOverageCharge, other.MileOverageCharge)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -385,9 +533,19 @@ namespace Tutorial.Lease.V1 {
       int hash = 1;
       if (LeaseId.Length != 0) hash ^= LeaseId.GetHashCode();
       if (UserId.Length != 0) hash ^= UserId.GetHashCode();
-      if (commencementDate_ != null) hash ^= CommencementDate.GetHashCode();
-      if (expirationDate_ != null) hash ^= ExpirationDate.GetHashCode();
-      if (monthlyPaymentAmount_ != null) hash ^= MonthlyPaymentAmount.GetHashCode();
+      if (VehicleId.Length != 0) hash ^= VehicleId.GetHashCode();
+      if (acceptedAt_ != null) hash ^= AcceptedAt.GetHashCode();
+      if (startDate_ != null) hash ^= StartDate.GetHashCode();
+      if (maturityDate_ != null) hash ^= MaturityDate.GetHashCode();
+      if (MoneyFactor != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(MoneyFactor);
+      if (SalesTaxRate != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(SalesTaxRate);
+      if (vehicleValue_ != null) hash ^= VehicleValue.GetHashCode();
+      if (vehicleResidualValue_ != null) hash ^= VehicleResidualValue.GetHashCode();
+      if (downPayment_ != null) hash ^= DownPayment.GetHashCode();
+      if (monthlyPayment_ != null) hash ^= MonthlyPayment.GetHashCode();
+      if (VehicleOdometer != 0) hash ^= VehicleOdometer.GetHashCode();
+      if (MilesPerYear != 0) hash ^= MilesPerYear.GetHashCode();
+      if (mileOverageCharge_ != null) hash ^= MileOverageCharge.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -409,17 +567,57 @@ namespace Tutorial.Lease.V1 {
         output.WriteRawTag(18);
         output.WriteString(UserId);
       }
-      if (commencementDate_ != null) {
+      if (VehicleId.Length != 0) {
         output.WriteRawTag(26);
-        output.WriteMessage(CommencementDate);
+        output.WriteString(VehicleId);
       }
-      if (expirationDate_ != null) {
+      if (acceptedAt_ != null) {
         output.WriteRawTag(34);
-        output.WriteMessage(ExpirationDate);
+        output.WriteMessage(AcceptedAt);
       }
-      if (monthlyPaymentAmount_ != null) {
+      if (startDate_ != null) {
         output.WriteRawTag(42);
-        output.WriteMessage(MonthlyPaymentAmount);
+        output.WriteMessage(StartDate);
+      }
+      if (maturityDate_ != null) {
+        output.WriteRawTag(50);
+        output.WriteMessage(MaturityDate);
+      }
+      if (MoneyFactor != 0D) {
+        output.WriteRawTag(57);
+        output.WriteDouble(MoneyFactor);
+      }
+      if (SalesTaxRate != 0D) {
+        output.WriteRawTag(65);
+        output.WriteDouble(SalesTaxRate);
+      }
+      if (vehicleValue_ != null) {
+        output.WriteRawTag(74);
+        output.WriteMessage(VehicleValue);
+      }
+      if (vehicleResidualValue_ != null) {
+        output.WriteRawTag(82);
+        output.WriteMessage(VehicleResidualValue);
+      }
+      if (downPayment_ != null) {
+        output.WriteRawTag(90);
+        output.WriteMessage(DownPayment);
+      }
+      if (monthlyPayment_ != null) {
+        output.WriteRawTag(98);
+        output.WriteMessage(MonthlyPayment);
+      }
+      if (VehicleOdometer != 0) {
+        output.WriteRawTag(104);
+        output.WriteInt32(VehicleOdometer);
+      }
+      if (MilesPerYear != 0) {
+        output.WriteRawTag(112);
+        output.WriteInt32(MilesPerYear);
+      }
+      if (mileOverageCharge_ != null) {
+        output.WriteRawTag(122);
+        output.WriteMessage(MileOverageCharge);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -435,14 +633,44 @@ namespace Tutorial.Lease.V1 {
       if (UserId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(UserId);
       }
-      if (commencementDate_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(CommencementDate);
+      if (VehicleId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleId);
       }
-      if (expirationDate_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ExpirationDate);
+      if (acceptedAt_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(AcceptedAt);
       }
-      if (monthlyPaymentAmount_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(MonthlyPaymentAmount);
+      if (startDate_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(StartDate);
+      }
+      if (maturityDate_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(MaturityDate);
+      }
+      if (MoneyFactor != 0D) {
+        size += 1 + 8;
+      }
+      if (SalesTaxRate != 0D) {
+        size += 1 + 8;
+      }
+      if (vehicleValue_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(VehicleValue);
+      }
+      if (vehicleResidualValue_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(VehicleResidualValue);
+      }
+      if (downPayment_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(DownPayment);
+      }
+      if (monthlyPayment_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(MonthlyPayment);
+      }
+      if (VehicleOdometer != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(VehicleOdometer);
+      }
+      if (MilesPerYear != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MilesPerYear);
+      }
+      if (mileOverageCharge_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(MileOverageCharge);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -461,23 +689,68 @@ namespace Tutorial.Lease.V1 {
       if (other.UserId.Length != 0) {
         UserId = other.UserId;
       }
-      if (other.commencementDate_ != null) {
-        if (commencementDate_ == null) {
-          CommencementDate = new global::Google.Type.Date();
-        }
-        CommencementDate.MergeFrom(other.CommencementDate);
+      if (other.VehicleId.Length != 0) {
+        VehicleId = other.VehicleId;
       }
-      if (other.expirationDate_ != null) {
-        if (expirationDate_ == null) {
-          ExpirationDate = new global::Google.Type.Date();
+      if (other.acceptedAt_ != null) {
+        if (acceptedAt_ == null) {
+          AcceptedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
         }
-        ExpirationDate.MergeFrom(other.ExpirationDate);
+        AcceptedAt.MergeFrom(other.AcceptedAt);
       }
-      if (other.monthlyPaymentAmount_ != null) {
-        if (monthlyPaymentAmount_ == null) {
-          MonthlyPaymentAmount = new global::Google.Type.Money();
+      if (other.startDate_ != null) {
+        if (startDate_ == null) {
+          StartDate = new global::Google.Type.Date();
         }
-        MonthlyPaymentAmount.MergeFrom(other.MonthlyPaymentAmount);
+        StartDate.MergeFrom(other.StartDate);
+      }
+      if (other.maturityDate_ != null) {
+        if (maturityDate_ == null) {
+          MaturityDate = new global::Google.Type.Date();
+        }
+        MaturityDate.MergeFrom(other.MaturityDate);
+      }
+      if (other.MoneyFactor != 0D) {
+        MoneyFactor = other.MoneyFactor;
+      }
+      if (other.SalesTaxRate != 0D) {
+        SalesTaxRate = other.SalesTaxRate;
+      }
+      if (other.vehicleValue_ != null) {
+        if (vehicleValue_ == null) {
+          VehicleValue = new global::Google.Type.Money();
+        }
+        VehicleValue.MergeFrom(other.VehicleValue);
+      }
+      if (other.vehicleResidualValue_ != null) {
+        if (vehicleResidualValue_ == null) {
+          VehicleResidualValue = new global::Google.Type.Money();
+        }
+        VehicleResidualValue.MergeFrom(other.VehicleResidualValue);
+      }
+      if (other.downPayment_ != null) {
+        if (downPayment_ == null) {
+          DownPayment = new global::Google.Type.Money();
+        }
+        DownPayment.MergeFrom(other.DownPayment);
+      }
+      if (other.monthlyPayment_ != null) {
+        if (monthlyPayment_ == null) {
+          MonthlyPayment = new global::Google.Type.Money();
+        }
+        MonthlyPayment.MergeFrom(other.MonthlyPayment);
+      }
+      if (other.VehicleOdometer != 0) {
+        VehicleOdometer = other.VehicleOdometer;
+      }
+      if (other.MilesPerYear != 0) {
+        MilesPerYear = other.MilesPerYear;
+      }
+      if (other.mileOverageCharge_ != null) {
+        if (mileOverageCharge_ == null) {
+          MileOverageCharge = new global::Google.Type.Money();
+        }
+        MileOverageCharge.MergeFrom(other.MileOverageCharge);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -499,24 +772,79 @@ namespace Tutorial.Lease.V1 {
             break;
           }
           case 26: {
-            if (commencementDate_ == null) {
-              CommencementDate = new global::Google.Type.Date();
-            }
-            input.ReadMessage(CommencementDate);
+            VehicleId = input.ReadString();
             break;
           }
           case 34: {
-            if (expirationDate_ == null) {
-              ExpirationDate = new global::Google.Type.Date();
+            if (acceptedAt_ == null) {
+              AcceptedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
             }
-            input.ReadMessage(ExpirationDate);
+            input.ReadMessage(AcceptedAt);
             break;
           }
           case 42: {
-            if (monthlyPaymentAmount_ == null) {
-              MonthlyPaymentAmount = new global::Google.Type.Money();
+            if (startDate_ == null) {
+              StartDate = new global::Google.Type.Date();
             }
-            input.ReadMessage(MonthlyPaymentAmount);
+            input.ReadMessage(StartDate);
+            break;
+          }
+          case 50: {
+            if (maturityDate_ == null) {
+              MaturityDate = new global::Google.Type.Date();
+            }
+            input.ReadMessage(MaturityDate);
+            break;
+          }
+          case 57: {
+            MoneyFactor = input.ReadDouble();
+            break;
+          }
+          case 65: {
+            SalesTaxRate = input.ReadDouble();
+            break;
+          }
+          case 74: {
+            if (vehicleValue_ == null) {
+              VehicleValue = new global::Google.Type.Money();
+            }
+            input.ReadMessage(VehicleValue);
+            break;
+          }
+          case 82: {
+            if (vehicleResidualValue_ == null) {
+              VehicleResidualValue = new global::Google.Type.Money();
+            }
+            input.ReadMessage(VehicleResidualValue);
+            break;
+          }
+          case 90: {
+            if (downPayment_ == null) {
+              DownPayment = new global::Google.Type.Money();
+            }
+            input.ReadMessage(DownPayment);
+            break;
+          }
+          case 98: {
+            if (monthlyPayment_ == null) {
+              MonthlyPayment = new global::Google.Type.Money();
+            }
+            input.ReadMessage(MonthlyPayment);
+            break;
+          }
+          case 104: {
+            VehicleOdometer = input.ReadInt32();
+            break;
+          }
+          case 112: {
+            MilesPerYear = input.ReadInt32();
+            break;
+          }
+          case 122: {
+            if (mileOverageCharge_ == null) {
+              MileOverageCharge = new global::Google.Type.Money();
+            }
+            input.ReadMessage(MileOverageCharge);
             break;
           }
         }
@@ -526,13 +854,13 @@ namespace Tutorial.Lease.V1 {
   }
 
   /// <summary>
-  /// Scheduled payment.
+  /// Created payment.
   /// </summary>
-  public sealed partial class ScheduledPayment : pb::IMessage<ScheduledPayment> {
-    private static readonly pb::MessageParser<ScheduledPayment> _parser = new pb::MessageParser<ScheduledPayment>(() => new ScheduledPayment());
+  public sealed partial class CreatedPayment : pb::IMessage<CreatedPayment> {
+    private static readonly pb::MessageParser<CreatedPayment> _parser = new pb::MessageParser<CreatedPayment>(() => new CreatedPayment());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<ScheduledPayment> Parser { get { return _parser; } }
+    public static pb::MessageParser<CreatedPayment> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -545,83 +873,83 @@ namespace Tutorial.Lease.V1 {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ScheduledPayment() {
+    public CreatedPayment() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ScheduledPayment(ScheduledPayment other) : this() {
-      paymentId_ = other.paymentId_;
-      scheduledDate_ = other.scheduledDate_ != null ? other.scheduledDate_.Clone() : null;
-      scheduledAmount_ = other.scheduledAmount_ != null ? other.scheduledAmount_.Clone() : null;
+    public CreatedPayment(CreatedPayment other) : this() {
+      transactionId_ = other.transactionId_;
+      createdAt_ = other.createdAt_ != null ? other.createdAt_.Clone() : null;
+      paymentAmount_ = other.paymentAmount_ != null ? other.paymentAmount_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ScheduledPayment Clone() {
-      return new ScheduledPayment(this);
+    public CreatedPayment Clone() {
+      return new CreatedPayment(this);
     }
 
-    /// <summary>Field number for the "payment_id" field.</summary>
-    public const int PaymentIdFieldNumber = 1;
-    private string paymentId_ = "";
+    /// <summary>Field number for the "transaction_id" field.</summary>
+    public const int TransactionIdFieldNumber = 1;
+    private string transactionId_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string PaymentId {
-      get { return paymentId_; }
+    public string TransactionId {
+      get { return transactionId_; }
       set {
-        paymentId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        transactionId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
-    /// <summary>Field number for the "scheduled_date" field.</summary>
-    public const int ScheduledDateFieldNumber = 2;
-    private global::Google.Type.Date scheduledDate_;
+    /// <summary>Field number for the "created_at" field.</summary>
+    public const int CreatedAtFieldNumber = 2;
+    private global::Google.Protobuf.WellKnownTypes.Timestamp createdAt_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Type.Date ScheduledDate {
-      get { return scheduledDate_; }
+    public global::Google.Protobuf.WellKnownTypes.Timestamp CreatedAt {
+      get { return createdAt_; }
       set {
-        scheduledDate_ = value;
+        createdAt_ = value;
       }
     }
 
-    /// <summary>Field number for the "scheduled_amount" field.</summary>
-    public const int ScheduledAmountFieldNumber = 3;
-    private global::Google.Type.Money scheduledAmount_;
+    /// <summary>Field number for the "payment_amount" field.</summary>
+    public const int PaymentAmountFieldNumber = 3;
+    private global::Google.Type.Money paymentAmount_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Type.Money ScheduledAmount {
-      get { return scheduledAmount_; }
+    public global::Google.Type.Money PaymentAmount {
+      get { return paymentAmount_; }
       set {
-        scheduledAmount_ = value;
+        paymentAmount_ = value;
       }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as ScheduledPayment);
+      return Equals(other as CreatedPayment);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(ScheduledPayment other) {
+    public bool Equals(CreatedPayment other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (PaymentId != other.PaymentId) return false;
-      if (!object.Equals(ScheduledDate, other.ScheduledDate)) return false;
-      if (!object.Equals(ScheduledAmount, other.ScheduledAmount)) return false;
+      if (TransactionId != other.TransactionId) return false;
+      if (!object.Equals(CreatedAt, other.CreatedAt)) return false;
+      if (!object.Equals(PaymentAmount, other.PaymentAmount)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (PaymentId.Length != 0) hash ^= PaymentId.GetHashCode();
-      if (scheduledDate_ != null) hash ^= ScheduledDate.GetHashCode();
-      if (scheduledAmount_ != null) hash ^= ScheduledAmount.GetHashCode();
+      if (TransactionId.Length != 0) hash ^= TransactionId.GetHashCode();
+      if (createdAt_ != null) hash ^= CreatedAt.GetHashCode();
+      if (paymentAmount_ != null) hash ^= PaymentAmount.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -635,17 +963,17 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (PaymentId.Length != 0) {
+      if (TransactionId.Length != 0) {
         output.WriteRawTag(10);
-        output.WriteString(PaymentId);
+        output.WriteString(TransactionId);
       }
-      if (scheduledDate_ != null) {
+      if (createdAt_ != null) {
         output.WriteRawTag(18);
-        output.WriteMessage(ScheduledDate);
+        output.WriteMessage(CreatedAt);
       }
-      if (scheduledAmount_ != null) {
+      if (paymentAmount_ != null) {
         output.WriteRawTag(26);
-        output.WriteMessage(ScheduledAmount);
+        output.WriteMessage(PaymentAmount);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -655,14 +983,14 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (PaymentId.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(PaymentId);
+      if (TransactionId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(TransactionId);
       }
-      if (scheduledDate_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ScheduledDate);
+      if (createdAt_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(CreatedAt);
       }
-      if (scheduledAmount_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ScheduledAmount);
+      if (paymentAmount_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(PaymentAmount);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -671,24 +999,24 @@ namespace Tutorial.Lease.V1 {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(ScheduledPayment other) {
+    public void MergeFrom(CreatedPayment other) {
       if (other == null) {
         return;
       }
-      if (other.PaymentId.Length != 0) {
-        PaymentId = other.PaymentId;
+      if (other.TransactionId.Length != 0) {
+        TransactionId = other.TransactionId;
       }
-      if (other.scheduledDate_ != null) {
-        if (scheduledDate_ == null) {
-          ScheduledDate = new global::Google.Type.Date();
+      if (other.createdAt_ != null) {
+        if (createdAt_ == null) {
+          CreatedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
         }
-        ScheduledDate.MergeFrom(other.ScheduledDate);
+        CreatedAt.MergeFrom(other.CreatedAt);
       }
-      if (other.scheduledAmount_ != null) {
-        if (scheduledAmount_ == null) {
-          ScheduledAmount = new global::Google.Type.Money();
+      if (other.paymentAmount_ != null) {
+        if (paymentAmount_ == null) {
+          PaymentAmount = new global::Google.Type.Money();
         }
-        ScheduledAmount.MergeFrom(other.ScheduledAmount);
+        PaymentAmount.MergeFrom(other.PaymentAmount);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -702,21 +1030,21 @@ namespace Tutorial.Lease.V1 {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            PaymentId = input.ReadString();
+            TransactionId = input.ReadString();
             break;
           }
           case 18: {
-            if (scheduledDate_ == null) {
-              ScheduledDate = new global::Google.Type.Date();
+            if (createdAt_ == null) {
+              CreatedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
             }
-            input.ReadMessage(ScheduledDate);
+            input.ReadMessage(CreatedAt);
             break;
           }
           case 26: {
-            if (scheduledAmount_ == null) {
-              ScheduledAmount = new global::Google.Type.Money();
+            if (paymentAmount_ == null) {
+              PaymentAmount = new global::Google.Type.Money();
             }
-            input.ReadMessage(ScheduledAmount);
+            input.ReadMessage(PaymentAmount);
             break;
           }
         }
@@ -726,13 +1054,13 @@ namespace Tutorial.Lease.V1 {
   }
 
   /// <summary>
-  /// Received payment.
+  /// Settled payment.
   /// </summary>
-  public sealed partial class ReceivedPayment : pb::IMessage<ReceivedPayment> {
-    private static readonly pb::MessageParser<ReceivedPayment> _parser = new pb::MessageParser<ReceivedPayment>(() => new ReceivedPayment());
+  public sealed partial class SettledPayment : pb::IMessage<SettledPayment> {
+    private static readonly pb::MessageParser<SettledPayment> _parser = new pb::MessageParser<SettledPayment>(() => new SettledPayment());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<ReceivedPayment> Parser { get { return _parser; } }
+    public static pb::MessageParser<SettledPayment> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -745,83 +1073,69 @@ namespace Tutorial.Lease.V1 {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ReceivedPayment() {
+    public SettledPayment() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ReceivedPayment(ReceivedPayment other) : this() {
-      paymentId_ = other.paymentId_;
-      receivedDate_ = other.receivedDate_ != null ? other.receivedDate_.Clone() : null;
-      receivedAmount_ = other.receivedAmount_ != null ? other.receivedAmount_.Clone() : null;
+    public SettledPayment(SettledPayment other) : this() {
+      transactionId_ = other.transactionId_;
+      settledAt_ = other.settledAt_ != null ? other.settledAt_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ReceivedPayment Clone() {
-      return new ReceivedPayment(this);
+    public SettledPayment Clone() {
+      return new SettledPayment(this);
     }
 
-    /// <summary>Field number for the "payment_id" field.</summary>
-    public const int PaymentIdFieldNumber = 1;
-    private string paymentId_ = "";
+    /// <summary>Field number for the "transaction_id" field.</summary>
+    public const int TransactionIdFieldNumber = 1;
+    private string transactionId_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string PaymentId {
-      get { return paymentId_; }
+    public string TransactionId {
+      get { return transactionId_; }
       set {
-        paymentId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        transactionId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
-    /// <summary>Field number for the "received_date" field.</summary>
-    public const int ReceivedDateFieldNumber = 2;
-    private global::Google.Type.Date receivedDate_;
+    /// <summary>Field number for the "settled_at" field.</summary>
+    public const int SettledAtFieldNumber = 2;
+    private global::Google.Protobuf.WellKnownTypes.Timestamp settledAt_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Type.Date ReceivedDate {
-      get { return receivedDate_; }
+    public global::Google.Protobuf.WellKnownTypes.Timestamp SettledAt {
+      get { return settledAt_; }
       set {
-        receivedDate_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "received_amount" field.</summary>
-    public const int ReceivedAmountFieldNumber = 3;
-    private global::Google.Type.Money receivedAmount_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Type.Money ReceivedAmount {
-      get { return receivedAmount_; }
-      set {
-        receivedAmount_ = value;
+        settledAt_ = value;
       }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as ReceivedPayment);
+      return Equals(other as SettledPayment);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(ReceivedPayment other) {
+    public bool Equals(SettledPayment other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (PaymentId != other.PaymentId) return false;
-      if (!object.Equals(ReceivedDate, other.ReceivedDate)) return false;
-      if (!object.Equals(ReceivedAmount, other.ReceivedAmount)) return false;
+      if (TransactionId != other.TransactionId) return false;
+      if (!object.Equals(SettledAt, other.SettledAt)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (PaymentId.Length != 0) hash ^= PaymentId.GetHashCode();
-      if (receivedDate_ != null) hash ^= ReceivedDate.GetHashCode();
-      if (receivedAmount_ != null) hash ^= ReceivedAmount.GetHashCode();
+      if (TransactionId.Length != 0) hash ^= TransactionId.GetHashCode();
+      if (settledAt_ != null) hash ^= SettledAt.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -835,17 +1149,13 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (PaymentId.Length != 0) {
+      if (TransactionId.Length != 0) {
         output.WriteRawTag(10);
-        output.WriteString(PaymentId);
+        output.WriteString(TransactionId);
       }
-      if (receivedDate_ != null) {
+      if (settledAt_ != null) {
         output.WriteRawTag(18);
-        output.WriteMessage(ReceivedDate);
-      }
-      if (receivedAmount_ != null) {
-        output.WriteRawTag(26);
-        output.WriteMessage(ReceivedAmount);
+        output.WriteMessage(SettledAt);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -855,14 +1165,11 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (PaymentId.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(PaymentId);
+      if (TransactionId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(TransactionId);
       }
-      if (receivedDate_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ReceivedDate);
-      }
-      if (receivedAmount_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ReceivedAmount);
+      if (settledAt_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(SettledAt);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -871,24 +1178,18 @@ namespace Tutorial.Lease.V1 {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(ReceivedPayment other) {
+    public void MergeFrom(SettledPayment other) {
       if (other == null) {
         return;
       }
-      if (other.PaymentId.Length != 0) {
-        PaymentId = other.PaymentId;
+      if (other.TransactionId.Length != 0) {
+        TransactionId = other.TransactionId;
       }
-      if (other.receivedDate_ != null) {
-        if (receivedDate_ == null) {
-          ReceivedDate = new global::Google.Type.Date();
+      if (other.settledAt_ != null) {
+        if (settledAt_ == null) {
+          SettledAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
         }
-        ReceivedDate.MergeFrom(other.ReceivedDate);
-      }
-      if (other.receivedAmount_ != null) {
-        if (receivedAmount_ == null) {
-          ReceivedAmount = new global::Google.Type.Money();
-        }
-        ReceivedAmount.MergeFrom(other.ReceivedAmount);
+        SettledAt.MergeFrom(other.SettledAt);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -902,21 +1203,14 @@ namespace Tutorial.Lease.V1 {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            PaymentId = input.ReadString();
+            TransactionId = input.ReadString();
             break;
           }
           case 18: {
-            if (receivedDate_ == null) {
-              ReceivedDate = new global::Google.Type.Date();
+            if (settledAt_ == null) {
+              SettledAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
             }
-            input.ReadMessage(ReceivedDate);
-            break;
-          }
-          case 26: {
-            if (receivedAmount_ == null) {
-              ReceivedAmount = new global::Google.Type.Money();
-            }
-            input.ReadMessage(ReceivedAmount);
+            input.ReadMessage(SettledAt);
             break;
           }
         }
@@ -926,13 +1220,13 @@ namespace Tutorial.Lease.V1 {
   }
 
   /// <summary>
-  /// Termination of a lease.
+  /// Returned payment.
   /// </summary>
-  public sealed partial class Termination : pb::IMessage<Termination> {
-    private static readonly pb::MessageParser<Termination> _parser = new pb::MessageParser<Termination>(() => new Termination());
+  public sealed partial class ReturnedPayment : pb::IMessage<ReturnedPayment> {
+    private static readonly pb::MessageParser<ReturnedPayment> _parser = new pb::MessageParser<ReturnedPayment>(() => new ReturnedPayment());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<Termination> Parser { get { return _parser; } }
+    public static pb::MessageParser<ReturnedPayment> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -945,69 +1239,83 @@ namespace Tutorial.Lease.V1 {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Termination() {
+    public ReturnedPayment() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Termination(Termination other) : this() {
-      terminationDate_ = other.terminationDate_ != null ? other.terminationDate_.Clone() : null;
-      terminationReason_ = other.terminationReason_;
+    public ReturnedPayment(ReturnedPayment other) : this() {
+      transactionId_ = other.transactionId_;
+      returnedAt_ = other.returnedAt_ != null ? other.returnedAt_.Clone() : null;
+      returnedReason_ = other.returnedReason_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Termination Clone() {
-      return new Termination(this);
+    public ReturnedPayment Clone() {
+      return new ReturnedPayment(this);
     }
 
-    /// <summary>Field number for the "termination_date" field.</summary>
-    public const int TerminationDateFieldNumber = 1;
-    private global::Google.Type.Date terminationDate_;
+    /// <summary>Field number for the "transaction_id" field.</summary>
+    public const int TransactionIdFieldNumber = 1;
+    private string transactionId_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Type.Date TerminationDate {
-      get { return terminationDate_; }
+    public string TransactionId {
+      get { return transactionId_; }
       set {
-        terminationDate_ = value;
+        transactionId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
-    /// <summary>Field number for the "termination_reason" field.</summary>
-    public const int TerminationReasonFieldNumber = 2;
-    private string terminationReason_ = "";
+    /// <summary>Field number for the "returned_at" field.</summary>
+    public const int ReturnedAtFieldNumber = 2;
+    private global::Google.Protobuf.WellKnownTypes.Timestamp returnedAt_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string TerminationReason {
-      get { return terminationReason_; }
+    public global::Google.Protobuf.WellKnownTypes.Timestamp ReturnedAt {
+      get { return returnedAt_; }
       set {
-        terminationReason_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        returnedAt_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "returned_reason" field.</summary>
+    public const int ReturnedReasonFieldNumber = 3;
+    private string returnedReason_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string ReturnedReason {
+      get { return returnedReason_; }
+      set {
+        returnedReason_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as Termination);
+      return Equals(other as ReturnedPayment);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(Termination other) {
+    public bool Equals(ReturnedPayment other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (!object.Equals(TerminationDate, other.TerminationDate)) return false;
-      if (TerminationReason != other.TerminationReason) return false;
+      if (TransactionId != other.TransactionId) return false;
+      if (!object.Equals(ReturnedAt, other.ReturnedAt)) return false;
+      if (ReturnedReason != other.ReturnedReason) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (terminationDate_ != null) hash ^= TerminationDate.GetHashCode();
-      if (TerminationReason.Length != 0) hash ^= TerminationReason.GetHashCode();
+      if (TransactionId.Length != 0) hash ^= TransactionId.GetHashCode();
+      if (returnedAt_ != null) hash ^= ReturnedAt.GetHashCode();
+      if (ReturnedReason.Length != 0) hash ^= ReturnedReason.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1021,13 +1329,17 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (terminationDate_ != null) {
+      if (TransactionId.Length != 0) {
         output.WriteRawTag(10);
-        output.WriteMessage(TerminationDate);
+        output.WriteString(TransactionId);
       }
-      if (TerminationReason.Length != 0) {
+      if (returnedAt_ != null) {
         output.WriteRawTag(18);
-        output.WriteString(TerminationReason);
+        output.WriteMessage(ReturnedAt);
+      }
+      if (ReturnedReason.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(ReturnedReason);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -1037,11 +1349,14 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (terminationDate_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(TerminationDate);
+      if (TransactionId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(TransactionId);
       }
-      if (TerminationReason.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(TerminationReason);
+      if (returnedAt_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ReturnedAt);
+      }
+      if (ReturnedReason.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ReturnedReason);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1050,18 +1365,21 @@ namespace Tutorial.Lease.V1 {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(Termination other) {
+    public void MergeFrom(ReturnedPayment other) {
       if (other == null) {
         return;
       }
-      if (other.terminationDate_ != null) {
-        if (terminationDate_ == null) {
-          TerminationDate = new global::Google.Type.Date();
-        }
-        TerminationDate.MergeFrom(other.TerminationDate);
+      if (other.TransactionId.Length != 0) {
+        TransactionId = other.TransactionId;
       }
-      if (other.TerminationReason.Length != 0) {
-        TerminationReason = other.TerminationReason;
+      if (other.returnedAt_ != null) {
+        if (returnedAt_ == null) {
+          ReturnedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+        }
+        ReturnedAt.MergeFrom(other.ReturnedAt);
+      }
+      if (other.ReturnedReason.Length != 0) {
+        ReturnedReason = other.ReturnedReason;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1075,14 +1393,18 @@ namespace Tutorial.Lease.V1 {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            if (terminationDate_ == null) {
-              TerminationDate = new global::Google.Type.Date();
-            }
-            input.ReadMessage(TerminationDate);
+            TransactionId = input.ReadString();
             break;
           }
           case 18: {
-            TerminationReason = input.ReadString();
+            if (returnedAt_ == null) {
+              ReturnedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            input.ReadMessage(ReturnedAt);
+            break;
+          }
+          case 26: {
+            ReturnedReason = input.ReadString();
             break;
           }
         }
@@ -1092,13 +1414,13 @@ namespace Tutorial.Lease.V1 {
   }
 
   /// <summary>
-  /// Lease event that has occurred.
+  /// Returned vehicle.
   /// </summary>
-  public sealed partial class LeaseEvent : pb::IMessage<LeaseEvent> {
-    private static readonly pb::MessageParser<LeaseEvent> _parser = new pb::MessageParser<LeaseEvent>(() => new LeaseEvent());
+  public sealed partial class ReturnedVehicle : pb::IMessage<ReturnedVehicle> {
+    private static readonly pb::MessageParser<ReturnedVehicle> _parser = new pb::MessageParser<ReturnedVehicle>(() => new ReturnedVehicle());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<LeaseEvent> Parser { get { return _parser; } }
+    public static pb::MessageParser<ReturnedVehicle> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -1111,111 +1433,97 @@ namespace Tutorial.Lease.V1 {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public LeaseEvent() {
+    public ReturnedVehicle() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public LeaseEvent(LeaseEvent other) : this() {
-      eventId_ = other.eventId_;
-      eventCreatedTime_ = other.eventCreatedTime_ != null ? other.eventCreatedTime_.Clone() : null;
-      eventEffectiveDate_ = other.eventEffectiveDate_ != null ? other.eventEffectiveDate_.Clone() : null;
-      eventType_ = other.eventType_;
-      eventPayload_ = other.eventPayload_;
+    public ReturnedVehicle(ReturnedVehicle other) : this() {
+      vehicleId_ = other.vehicleId_;
+      returnedAt_ = other.returnedAt_ != null ? other.returnedAt_.Clone() : null;
+      vehicleOdometer_ = other.vehicleOdometer_;
+      damageCharge_ = other.damageCharge_ != null ? other.damageCharge_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public LeaseEvent Clone() {
-      return new LeaseEvent(this);
+    public ReturnedVehicle Clone() {
+      return new ReturnedVehicle(this);
     }
 
-    /// <summary>Field number for the "event_id" field.</summary>
-    public const int EventIdFieldNumber = 1;
-    private int eventId_;
+    /// <summary>Field number for the "vehicle_id" field.</summary>
+    public const int VehicleIdFieldNumber = 1;
+    private string vehicleId_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int EventId {
-      get { return eventId_; }
+    public string VehicleId {
+      get { return vehicleId_; }
       set {
-        eventId_ = value;
+        vehicleId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
-    /// <summary>Field number for the "event_created_time" field.</summary>
-    public const int EventCreatedTimeFieldNumber = 2;
-    private global::Google.Protobuf.WellKnownTypes.Timestamp eventCreatedTime_;
+    /// <summary>Field number for the "returned_at" field.</summary>
+    public const int ReturnedAtFieldNumber = 2;
+    private global::Google.Protobuf.WellKnownTypes.Timestamp returnedAt_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Protobuf.WellKnownTypes.Timestamp EventCreatedTime {
-      get { return eventCreatedTime_; }
+    public global::Google.Protobuf.WellKnownTypes.Timestamp ReturnedAt {
+      get { return returnedAt_; }
       set {
-        eventCreatedTime_ = value;
+        returnedAt_ = value;
       }
     }
 
-    /// <summary>Field number for the "event_effective_date" field.</summary>
-    public const int EventEffectiveDateFieldNumber = 3;
-    private global::Google.Type.Date eventEffectiveDate_;
+    /// <summary>Field number for the "vehicle_odometer" field.</summary>
+    public const int VehicleOdometerFieldNumber = 3;
+    private int vehicleOdometer_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Type.Date EventEffectiveDate {
-      get { return eventEffectiveDate_; }
+    public int VehicleOdometer {
+      get { return vehicleOdometer_; }
       set {
-        eventEffectiveDate_ = value;
+        vehicleOdometer_ = value;
       }
     }
 
-    /// <summary>Field number for the "event_type" field.</summary>
-    public const int EventTypeFieldNumber = 4;
-    private string eventType_ = "";
+    /// <summary>Field number for the "damage_charge" field.</summary>
+    public const int DamageChargeFieldNumber = 4;
+    private global::Google.Type.Money damageCharge_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string EventType {
-      get { return eventType_; }
+    public global::Google.Type.Money DamageCharge {
+      get { return damageCharge_; }
       set {
-        eventType_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    /// <summary>Field number for the "event_payload" field.</summary>
-    public const int EventPayloadFieldNumber = 5;
-    private string eventPayload_ = "";
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string EventPayload {
-      get { return eventPayload_; }
-      set {
-        eventPayload_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        damageCharge_ = value;
       }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as LeaseEvent);
+      return Equals(other as ReturnedVehicle);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(LeaseEvent other) {
+    public bool Equals(ReturnedVehicle other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (EventId != other.EventId) return false;
-      if (!object.Equals(EventCreatedTime, other.EventCreatedTime)) return false;
-      if (!object.Equals(EventEffectiveDate, other.EventEffectiveDate)) return false;
-      if (EventType != other.EventType) return false;
-      if (EventPayload != other.EventPayload) return false;
+      if (VehicleId != other.VehicleId) return false;
+      if (!object.Equals(ReturnedAt, other.ReturnedAt)) return false;
+      if (VehicleOdometer != other.VehicleOdometer) return false;
+      if (!object.Equals(DamageCharge, other.DamageCharge)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (EventId != 0) hash ^= EventId.GetHashCode();
-      if (eventCreatedTime_ != null) hash ^= EventCreatedTime.GetHashCode();
-      if (eventEffectiveDate_ != null) hash ^= EventEffectiveDate.GetHashCode();
-      if (EventType.Length != 0) hash ^= EventType.GetHashCode();
-      if (EventPayload.Length != 0) hash ^= EventPayload.GetHashCode();
+      if (VehicleId.Length != 0) hash ^= VehicleId.GetHashCode();
+      if (returnedAt_ != null) hash ^= ReturnedAt.GetHashCode();
+      if (VehicleOdometer != 0) hash ^= VehicleOdometer.GetHashCode();
+      if (damageCharge_ != null) hash ^= DamageCharge.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1229,25 +1537,21 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (EventId != 0) {
-        output.WriteRawTag(8);
-        output.WriteInt32(EventId);
+      if (VehicleId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(VehicleId);
       }
-      if (eventCreatedTime_ != null) {
+      if (returnedAt_ != null) {
         output.WriteRawTag(18);
-        output.WriteMessage(EventCreatedTime);
+        output.WriteMessage(ReturnedAt);
       }
-      if (eventEffectiveDate_ != null) {
-        output.WriteRawTag(26);
-        output.WriteMessage(EventEffectiveDate);
+      if (VehicleOdometer != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(VehicleOdometer);
       }
-      if (EventType.Length != 0) {
+      if (damageCharge_ != null) {
         output.WriteRawTag(34);
-        output.WriteString(EventType);
-      }
-      if (EventPayload.Length != 0) {
-        output.WriteRawTag(42);
-        output.WriteString(EventPayload);
+        output.WriteMessage(DamageCharge);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -1257,20 +1561,17 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (EventId != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(EventId);
+      if (VehicleId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleId);
       }
-      if (eventCreatedTime_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(EventCreatedTime);
+      if (returnedAt_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ReturnedAt);
       }
-      if (eventEffectiveDate_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(EventEffectiveDate);
+      if (VehicleOdometer != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(VehicleOdometer);
       }
-      if (EventType.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(EventType);
-      }
-      if (EventPayload.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(EventPayload);
+      if (damageCharge_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(DamageCharge);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1279,30 +1580,27 @@ namespace Tutorial.Lease.V1 {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(LeaseEvent other) {
+    public void MergeFrom(ReturnedVehicle other) {
       if (other == null) {
         return;
       }
-      if (other.EventId != 0) {
-        EventId = other.EventId;
+      if (other.VehicleId.Length != 0) {
+        VehicleId = other.VehicleId;
       }
-      if (other.eventCreatedTime_ != null) {
-        if (eventCreatedTime_ == null) {
-          EventCreatedTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+      if (other.returnedAt_ != null) {
+        if (returnedAt_ == null) {
+          ReturnedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
         }
-        EventCreatedTime.MergeFrom(other.EventCreatedTime);
+        ReturnedAt.MergeFrom(other.ReturnedAt);
       }
-      if (other.eventEffectiveDate_ != null) {
-        if (eventEffectiveDate_ == null) {
-          EventEffectiveDate = new global::Google.Type.Date();
+      if (other.VehicleOdometer != 0) {
+        VehicleOdometer = other.VehicleOdometer;
+      }
+      if (other.damageCharge_ != null) {
+        if (damageCharge_ == null) {
+          DamageCharge = new global::Google.Type.Money();
         }
-        EventEffectiveDate.MergeFrom(other.EventEffectiveDate);
-      }
-      if (other.EventType.Length != 0) {
-        EventType = other.EventType;
-      }
-      if (other.EventPayload.Length != 0) {
-        EventPayload = other.EventPayload;
+        DamageCharge.MergeFrom(other.DamageCharge);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1315,30 +1613,26 @@ namespace Tutorial.Lease.V1 {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 8: {
-            EventId = input.ReadInt32();
+          case 10: {
+            VehicleId = input.ReadString();
             break;
           }
           case 18: {
-            if (eventCreatedTime_ == null) {
-              EventCreatedTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            if (returnedAt_ == null) {
+              ReturnedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
             }
-            input.ReadMessage(EventCreatedTime);
+            input.ReadMessage(ReturnedAt);
             break;
           }
-          case 26: {
-            if (eventEffectiveDate_ == null) {
-              EventEffectiveDate = new global::Google.Type.Date();
-            }
-            input.ReadMessage(EventEffectiveDate);
+          case 24: {
+            VehicleOdometer = input.ReadInt32();
             break;
           }
           case 34: {
-            EventType = input.ReadString();
-            break;
-          }
-          case 42: {
-            EventPayload = input.ReadString();
+            if (damageCharge_ == null) {
+              DamageCharge = new global::Google.Type.Money();
+            }
+            input.ReadMessage(DamageCharge);
             break;
           }
         }
@@ -1348,7 +1642,1237 @@ namespace Tutorial.Lease.V1 {
   }
 
   /// <summary>
-  /// Observation of a lease at a point in time.
+  /// A payment and its state.
+  /// </summary>
+  public sealed partial class Payment : pb::IMessage<Payment> {
+    private static readonly pb::MessageParser<Payment> _parser = new pb::MessageParser<Payment>(() => new Payment());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<Payment> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Tutorial.Lease.V1.LeaseReflection.Descriptor.MessageTypes[6]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Payment() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Payment(Payment other) : this() {
+      transactionId_ = other.transactionId_;
+      switch (other.StateCase) {
+        case StateOneofCase.Created:
+          Created = other.Created.Clone();
+          break;
+        case StateOneofCase.Settled:
+          Settled = other.Settled.Clone();
+          break;
+        case StateOneofCase.Received:
+          Received = other.Received.Clone();
+          break;
+        case StateOneofCase.Returned:
+          Returned = other.Returned.Clone();
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Payment Clone() {
+      return new Payment(this);
+    }
+
+    /// <summary>Field number for the "transaction_id" field.</summary>
+    public const int TransactionIdFieldNumber = 1;
+    private string transactionId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string TransactionId {
+      get { return transactionId_; }
+      set {
+        transactionId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "created" field.</summary>
+    public const int CreatedFieldNumber = 2;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Tutorial.Lease.V1.Payment.Types.Created Created {
+      get { return stateCase_ == StateOneofCase.Created ? (global::Tutorial.Lease.V1.Payment.Types.Created) state_ : null; }
+      set {
+        state_ = value;
+        stateCase_ = value == null ? StateOneofCase.None : StateOneofCase.Created;
+      }
+    }
+
+    /// <summary>Field number for the "settled" field.</summary>
+    public const int SettledFieldNumber = 3;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Tutorial.Lease.V1.Payment.Types.Settled Settled {
+      get { return stateCase_ == StateOneofCase.Settled ? (global::Tutorial.Lease.V1.Payment.Types.Settled) state_ : null; }
+      set {
+        state_ = value;
+        stateCase_ = value == null ? StateOneofCase.None : StateOneofCase.Settled;
+      }
+    }
+
+    /// <summary>Field number for the "received" field.</summary>
+    public const int ReceivedFieldNumber = 4;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Tutorial.Lease.V1.Payment.Types.Received Received {
+      get { return stateCase_ == StateOneofCase.Received ? (global::Tutorial.Lease.V1.Payment.Types.Received) state_ : null; }
+      set {
+        state_ = value;
+        stateCase_ = value == null ? StateOneofCase.None : StateOneofCase.Received;
+      }
+    }
+
+    /// <summary>Field number for the "returned" field.</summary>
+    public const int ReturnedFieldNumber = 5;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Tutorial.Lease.V1.Payment.Types.Returned Returned {
+      get { return stateCase_ == StateOneofCase.Returned ? (global::Tutorial.Lease.V1.Payment.Types.Returned) state_ : null; }
+      set {
+        state_ = value;
+        stateCase_ = value == null ? StateOneofCase.None : StateOneofCase.Returned;
+      }
+    }
+
+    private object state_;
+    /// <summary>Enum of possible cases for the "state" oneof.</summary>
+    public enum StateOneofCase {
+      None = 0,
+      Created = 2,
+      Settled = 3,
+      Received = 4,
+      Returned = 5,
+    }
+    private StateOneofCase stateCase_ = StateOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public StateOneofCase StateCase {
+      get { return stateCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearState() {
+      stateCase_ = StateOneofCase.None;
+      state_ = null;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as Payment);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(Payment other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (TransactionId != other.TransactionId) return false;
+      if (!object.Equals(Created, other.Created)) return false;
+      if (!object.Equals(Settled, other.Settled)) return false;
+      if (!object.Equals(Received, other.Received)) return false;
+      if (!object.Equals(Returned, other.Returned)) return false;
+      if (StateCase != other.StateCase) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (TransactionId.Length != 0) hash ^= TransactionId.GetHashCode();
+      if (stateCase_ == StateOneofCase.Created) hash ^= Created.GetHashCode();
+      if (stateCase_ == StateOneofCase.Settled) hash ^= Settled.GetHashCode();
+      if (stateCase_ == StateOneofCase.Received) hash ^= Received.GetHashCode();
+      if (stateCase_ == StateOneofCase.Returned) hash ^= Returned.GetHashCode();
+      hash ^= (int) stateCase_;
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (TransactionId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(TransactionId);
+      }
+      if (stateCase_ == StateOneofCase.Created) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Created);
+      }
+      if (stateCase_ == StateOneofCase.Settled) {
+        output.WriteRawTag(26);
+        output.WriteMessage(Settled);
+      }
+      if (stateCase_ == StateOneofCase.Received) {
+        output.WriteRawTag(34);
+        output.WriteMessage(Received);
+      }
+      if (stateCase_ == StateOneofCase.Returned) {
+        output.WriteRawTag(42);
+        output.WriteMessage(Returned);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (TransactionId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(TransactionId);
+      }
+      if (stateCase_ == StateOneofCase.Created) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Created);
+      }
+      if (stateCase_ == StateOneofCase.Settled) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Settled);
+      }
+      if (stateCase_ == StateOneofCase.Received) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Received);
+      }
+      if (stateCase_ == StateOneofCase.Returned) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Returned);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(Payment other) {
+      if (other == null) {
+        return;
+      }
+      if (other.TransactionId.Length != 0) {
+        TransactionId = other.TransactionId;
+      }
+      switch (other.StateCase) {
+        case StateOneofCase.Created:
+          if (Created == null) {
+            Created = new global::Tutorial.Lease.V1.Payment.Types.Created();
+          }
+          Created.MergeFrom(other.Created);
+          break;
+        case StateOneofCase.Settled:
+          if (Settled == null) {
+            Settled = new global::Tutorial.Lease.V1.Payment.Types.Settled();
+          }
+          Settled.MergeFrom(other.Settled);
+          break;
+        case StateOneofCase.Received:
+          if (Received == null) {
+            Received = new global::Tutorial.Lease.V1.Payment.Types.Received();
+          }
+          Received.MergeFrom(other.Received);
+          break;
+        case StateOneofCase.Returned:
+          if (Returned == null) {
+            Returned = new global::Tutorial.Lease.V1.Payment.Types.Returned();
+          }
+          Returned.MergeFrom(other.Returned);
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            TransactionId = input.ReadString();
+            break;
+          }
+          case 18: {
+            global::Tutorial.Lease.V1.Payment.Types.Created subBuilder = new global::Tutorial.Lease.V1.Payment.Types.Created();
+            if (stateCase_ == StateOneofCase.Created) {
+              subBuilder.MergeFrom(Created);
+            }
+            input.ReadMessage(subBuilder);
+            Created = subBuilder;
+            break;
+          }
+          case 26: {
+            global::Tutorial.Lease.V1.Payment.Types.Settled subBuilder = new global::Tutorial.Lease.V1.Payment.Types.Settled();
+            if (stateCase_ == StateOneofCase.Settled) {
+              subBuilder.MergeFrom(Settled);
+            }
+            input.ReadMessage(subBuilder);
+            Settled = subBuilder;
+            break;
+          }
+          case 34: {
+            global::Tutorial.Lease.V1.Payment.Types.Received subBuilder = new global::Tutorial.Lease.V1.Payment.Types.Received();
+            if (stateCase_ == StateOneofCase.Received) {
+              subBuilder.MergeFrom(Received);
+            }
+            input.ReadMessage(subBuilder);
+            Received = subBuilder;
+            break;
+          }
+          case 42: {
+            global::Tutorial.Lease.V1.Payment.Types.Returned subBuilder = new global::Tutorial.Lease.V1.Payment.Types.Returned();
+            if (stateCase_ == StateOneofCase.Returned) {
+              subBuilder.MergeFrom(Returned);
+            }
+            input.ReadMessage(subBuilder);
+            Returned = subBuilder;
+            break;
+          }
+        }
+      }
+    }
+
+    #region Nested types
+    /// <summary>Container for nested types declared in the Payment message type.</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static partial class Types {
+      public sealed partial class Created : pb::IMessage<Created> {
+        private static readonly pb::MessageParser<Created> _parser = new pb::MessageParser<Created>(() => new Created());
+        private pb::UnknownFieldSet _unknownFields;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pb::MessageParser<Created> Parser { get { return _parser; } }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pbr::MessageDescriptor Descriptor {
+          get { return global::Tutorial.Lease.V1.Payment.Descriptor.NestedTypes[0]; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        pbr::MessageDescriptor pb::IMessage.Descriptor {
+          get { return Descriptor; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Created() {
+          OnConstruction();
+        }
+
+        partial void OnConstruction();
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Created(Created other) : this() {
+          paymentAmount_ = other.paymentAmount_ != null ? other.paymentAmount_.Clone() : null;
+          createdAt_ = other.createdAt_ != null ? other.createdAt_.Clone() : null;
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Created Clone() {
+          return new Created(this);
+        }
+
+        /// <summary>Field number for the "payment_amount" field.</summary>
+        public const int PaymentAmountFieldNumber = 1;
+        private global::Google.Type.Money paymentAmount_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public global::Google.Type.Money PaymentAmount {
+          get { return paymentAmount_; }
+          set {
+            paymentAmount_ = value;
+          }
+        }
+
+        /// <summary>Field number for the "created_at" field.</summary>
+        public const int CreatedAtFieldNumber = 2;
+        private global::Google.Protobuf.WellKnownTypes.Timestamp createdAt_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public global::Google.Protobuf.WellKnownTypes.Timestamp CreatedAt {
+          get { return createdAt_; }
+          set {
+            createdAt_ = value;
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override bool Equals(object other) {
+          return Equals(other as Created);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool Equals(Created other) {
+          if (ReferenceEquals(other, null)) {
+            return false;
+          }
+          if (ReferenceEquals(other, this)) {
+            return true;
+          }
+          if (!object.Equals(PaymentAmount, other.PaymentAmount)) return false;
+          if (!object.Equals(CreatedAt, other.CreatedAt)) return false;
+          return Equals(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override int GetHashCode() {
+          int hash = 1;
+          if (paymentAmount_ != null) hash ^= PaymentAmount.GetHashCode();
+          if (createdAt_ != null) hash ^= CreatedAt.GetHashCode();
+          if (_unknownFields != null) {
+            hash ^= _unknownFields.GetHashCode();
+          }
+          return hash;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override string ToString() {
+          return pb::JsonFormatter.ToDiagnosticString(this);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void WriteTo(pb::CodedOutputStream output) {
+          if (paymentAmount_ != null) {
+            output.WriteRawTag(10);
+            output.WriteMessage(PaymentAmount);
+          }
+          if (createdAt_ != null) {
+            output.WriteRawTag(18);
+            output.WriteMessage(CreatedAt);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(output);
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public int CalculateSize() {
+          int size = 0;
+          if (paymentAmount_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(PaymentAmount);
+          }
+          if (createdAt_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(CreatedAt);
+          }
+          if (_unknownFields != null) {
+            size += _unknownFields.CalculateSize();
+          }
+          return size;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(Created other) {
+          if (other == null) {
+            return;
+          }
+          if (other.paymentAmount_ != null) {
+            if (paymentAmount_ == null) {
+              PaymentAmount = new global::Google.Type.Money();
+            }
+            PaymentAmount.MergeFrom(other.PaymentAmount);
+          }
+          if (other.createdAt_ != null) {
+            if (createdAt_ == null) {
+              CreatedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            CreatedAt.MergeFrom(other.CreatedAt);
+          }
+          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(pb::CodedInputStream input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+                break;
+              case 10: {
+                if (paymentAmount_ == null) {
+                  PaymentAmount = new global::Google.Type.Money();
+                }
+                input.ReadMessage(PaymentAmount);
+                break;
+              }
+              case 18: {
+                if (createdAt_ == null) {
+                  CreatedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+                }
+                input.ReadMessage(CreatedAt);
+                break;
+              }
+            }
+          }
+        }
+
+      }
+
+      public sealed partial class Settled : pb::IMessage<Settled> {
+        private static readonly pb::MessageParser<Settled> _parser = new pb::MessageParser<Settled>(() => new Settled());
+        private pb::UnknownFieldSet _unknownFields;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pb::MessageParser<Settled> Parser { get { return _parser; } }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pbr::MessageDescriptor Descriptor {
+          get { return global::Tutorial.Lease.V1.Payment.Descriptor.NestedTypes[1]; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        pbr::MessageDescriptor pb::IMessage.Descriptor {
+          get { return Descriptor; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Settled() {
+          OnConstruction();
+        }
+
+        partial void OnConstruction();
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Settled(Settled other) : this() {
+          paymentAmount_ = other.paymentAmount_ != null ? other.paymentAmount_.Clone() : null;
+          createdAt_ = other.createdAt_ != null ? other.createdAt_.Clone() : null;
+          settledAt_ = other.settledAt_ != null ? other.settledAt_.Clone() : null;
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Settled Clone() {
+          return new Settled(this);
+        }
+
+        /// <summary>Field number for the "payment_amount" field.</summary>
+        public const int PaymentAmountFieldNumber = 1;
+        private global::Google.Type.Money paymentAmount_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public global::Google.Type.Money PaymentAmount {
+          get { return paymentAmount_; }
+          set {
+            paymentAmount_ = value;
+          }
+        }
+
+        /// <summary>Field number for the "created_at" field.</summary>
+        public const int CreatedAtFieldNumber = 2;
+        private global::Google.Protobuf.WellKnownTypes.Timestamp createdAt_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public global::Google.Protobuf.WellKnownTypes.Timestamp CreatedAt {
+          get { return createdAt_; }
+          set {
+            createdAt_ = value;
+          }
+        }
+
+        /// <summary>Field number for the "settled_at" field.</summary>
+        public const int SettledAtFieldNumber = 3;
+        private global::Google.Protobuf.WellKnownTypes.Timestamp settledAt_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public global::Google.Protobuf.WellKnownTypes.Timestamp SettledAt {
+          get { return settledAt_; }
+          set {
+            settledAt_ = value;
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override bool Equals(object other) {
+          return Equals(other as Settled);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool Equals(Settled other) {
+          if (ReferenceEquals(other, null)) {
+            return false;
+          }
+          if (ReferenceEquals(other, this)) {
+            return true;
+          }
+          if (!object.Equals(PaymentAmount, other.PaymentAmount)) return false;
+          if (!object.Equals(CreatedAt, other.CreatedAt)) return false;
+          if (!object.Equals(SettledAt, other.SettledAt)) return false;
+          return Equals(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override int GetHashCode() {
+          int hash = 1;
+          if (paymentAmount_ != null) hash ^= PaymentAmount.GetHashCode();
+          if (createdAt_ != null) hash ^= CreatedAt.GetHashCode();
+          if (settledAt_ != null) hash ^= SettledAt.GetHashCode();
+          if (_unknownFields != null) {
+            hash ^= _unknownFields.GetHashCode();
+          }
+          return hash;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override string ToString() {
+          return pb::JsonFormatter.ToDiagnosticString(this);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void WriteTo(pb::CodedOutputStream output) {
+          if (paymentAmount_ != null) {
+            output.WriteRawTag(10);
+            output.WriteMessage(PaymentAmount);
+          }
+          if (createdAt_ != null) {
+            output.WriteRawTag(18);
+            output.WriteMessage(CreatedAt);
+          }
+          if (settledAt_ != null) {
+            output.WriteRawTag(26);
+            output.WriteMessage(SettledAt);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(output);
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public int CalculateSize() {
+          int size = 0;
+          if (paymentAmount_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(PaymentAmount);
+          }
+          if (createdAt_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(CreatedAt);
+          }
+          if (settledAt_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(SettledAt);
+          }
+          if (_unknownFields != null) {
+            size += _unknownFields.CalculateSize();
+          }
+          return size;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(Settled other) {
+          if (other == null) {
+            return;
+          }
+          if (other.paymentAmount_ != null) {
+            if (paymentAmount_ == null) {
+              PaymentAmount = new global::Google.Type.Money();
+            }
+            PaymentAmount.MergeFrom(other.PaymentAmount);
+          }
+          if (other.createdAt_ != null) {
+            if (createdAt_ == null) {
+              CreatedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            CreatedAt.MergeFrom(other.CreatedAt);
+          }
+          if (other.settledAt_ != null) {
+            if (settledAt_ == null) {
+              SettledAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            SettledAt.MergeFrom(other.SettledAt);
+          }
+          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(pb::CodedInputStream input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+                break;
+              case 10: {
+                if (paymentAmount_ == null) {
+                  PaymentAmount = new global::Google.Type.Money();
+                }
+                input.ReadMessage(PaymentAmount);
+                break;
+              }
+              case 18: {
+                if (createdAt_ == null) {
+                  CreatedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+                }
+                input.ReadMessage(CreatedAt);
+                break;
+              }
+              case 26: {
+                if (settledAt_ == null) {
+                  SettledAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+                }
+                input.ReadMessage(SettledAt);
+                break;
+              }
+            }
+          }
+        }
+
+      }
+
+      public sealed partial class Received : pb::IMessage<Received> {
+        private static readonly pb::MessageParser<Received> _parser = new pb::MessageParser<Received>(() => new Received());
+        private pb::UnknownFieldSet _unknownFields;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pb::MessageParser<Received> Parser { get { return _parser; } }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pbr::MessageDescriptor Descriptor {
+          get { return global::Tutorial.Lease.V1.Payment.Descriptor.NestedTypes[2]; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        pbr::MessageDescriptor pb::IMessage.Descriptor {
+          get { return Descriptor; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Received() {
+          OnConstruction();
+        }
+
+        partial void OnConstruction();
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Received(Received other) : this() {
+          paymentAmount_ = other.paymentAmount_ != null ? other.paymentAmount_.Clone() : null;
+          createdAt_ = other.createdAt_ != null ? other.createdAt_.Clone() : null;
+          settledAt_ = other.settledAt_ != null ? other.settledAt_.Clone() : null;
+          receivedAt_ = other.receivedAt_ != null ? other.receivedAt_.Clone() : null;
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Received Clone() {
+          return new Received(this);
+        }
+
+        /// <summary>Field number for the "payment_amount" field.</summary>
+        public const int PaymentAmountFieldNumber = 1;
+        private global::Google.Type.Money paymentAmount_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public global::Google.Type.Money PaymentAmount {
+          get { return paymentAmount_; }
+          set {
+            paymentAmount_ = value;
+          }
+        }
+
+        /// <summary>Field number for the "created_at" field.</summary>
+        public const int CreatedAtFieldNumber = 2;
+        private global::Google.Protobuf.WellKnownTypes.Timestamp createdAt_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public global::Google.Protobuf.WellKnownTypes.Timestamp CreatedAt {
+          get { return createdAt_; }
+          set {
+            createdAt_ = value;
+          }
+        }
+
+        /// <summary>Field number for the "settled_at" field.</summary>
+        public const int SettledAtFieldNumber = 3;
+        private global::Google.Protobuf.WellKnownTypes.Timestamp settledAt_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public global::Google.Protobuf.WellKnownTypes.Timestamp SettledAt {
+          get { return settledAt_; }
+          set {
+            settledAt_ = value;
+          }
+        }
+
+        /// <summary>Field number for the "received_at" field.</summary>
+        public const int ReceivedAtFieldNumber = 4;
+        private global::Google.Protobuf.WellKnownTypes.Timestamp receivedAt_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public global::Google.Protobuf.WellKnownTypes.Timestamp ReceivedAt {
+          get { return receivedAt_; }
+          set {
+            receivedAt_ = value;
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override bool Equals(object other) {
+          return Equals(other as Received);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool Equals(Received other) {
+          if (ReferenceEquals(other, null)) {
+            return false;
+          }
+          if (ReferenceEquals(other, this)) {
+            return true;
+          }
+          if (!object.Equals(PaymentAmount, other.PaymentAmount)) return false;
+          if (!object.Equals(CreatedAt, other.CreatedAt)) return false;
+          if (!object.Equals(SettledAt, other.SettledAt)) return false;
+          if (!object.Equals(ReceivedAt, other.ReceivedAt)) return false;
+          return Equals(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override int GetHashCode() {
+          int hash = 1;
+          if (paymentAmount_ != null) hash ^= PaymentAmount.GetHashCode();
+          if (createdAt_ != null) hash ^= CreatedAt.GetHashCode();
+          if (settledAt_ != null) hash ^= SettledAt.GetHashCode();
+          if (receivedAt_ != null) hash ^= ReceivedAt.GetHashCode();
+          if (_unknownFields != null) {
+            hash ^= _unknownFields.GetHashCode();
+          }
+          return hash;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override string ToString() {
+          return pb::JsonFormatter.ToDiagnosticString(this);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void WriteTo(pb::CodedOutputStream output) {
+          if (paymentAmount_ != null) {
+            output.WriteRawTag(10);
+            output.WriteMessage(PaymentAmount);
+          }
+          if (createdAt_ != null) {
+            output.WriteRawTag(18);
+            output.WriteMessage(CreatedAt);
+          }
+          if (settledAt_ != null) {
+            output.WriteRawTag(26);
+            output.WriteMessage(SettledAt);
+          }
+          if (receivedAt_ != null) {
+            output.WriteRawTag(34);
+            output.WriteMessage(ReceivedAt);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(output);
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public int CalculateSize() {
+          int size = 0;
+          if (paymentAmount_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(PaymentAmount);
+          }
+          if (createdAt_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(CreatedAt);
+          }
+          if (settledAt_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(SettledAt);
+          }
+          if (receivedAt_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(ReceivedAt);
+          }
+          if (_unknownFields != null) {
+            size += _unknownFields.CalculateSize();
+          }
+          return size;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(Received other) {
+          if (other == null) {
+            return;
+          }
+          if (other.paymentAmount_ != null) {
+            if (paymentAmount_ == null) {
+              PaymentAmount = new global::Google.Type.Money();
+            }
+            PaymentAmount.MergeFrom(other.PaymentAmount);
+          }
+          if (other.createdAt_ != null) {
+            if (createdAt_ == null) {
+              CreatedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            CreatedAt.MergeFrom(other.CreatedAt);
+          }
+          if (other.settledAt_ != null) {
+            if (settledAt_ == null) {
+              SettledAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            SettledAt.MergeFrom(other.SettledAt);
+          }
+          if (other.receivedAt_ != null) {
+            if (receivedAt_ == null) {
+              ReceivedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            ReceivedAt.MergeFrom(other.ReceivedAt);
+          }
+          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(pb::CodedInputStream input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+                break;
+              case 10: {
+                if (paymentAmount_ == null) {
+                  PaymentAmount = new global::Google.Type.Money();
+                }
+                input.ReadMessage(PaymentAmount);
+                break;
+              }
+              case 18: {
+                if (createdAt_ == null) {
+                  CreatedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+                }
+                input.ReadMessage(CreatedAt);
+                break;
+              }
+              case 26: {
+                if (settledAt_ == null) {
+                  SettledAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+                }
+                input.ReadMessage(SettledAt);
+                break;
+              }
+              case 34: {
+                if (receivedAt_ == null) {
+                  ReceivedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+                }
+                input.ReadMessage(ReceivedAt);
+                break;
+              }
+            }
+          }
+        }
+
+      }
+
+      public sealed partial class Returned : pb::IMessage<Returned> {
+        private static readonly pb::MessageParser<Returned> _parser = new pb::MessageParser<Returned>(() => new Returned());
+        private pb::UnknownFieldSet _unknownFields;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pb::MessageParser<Returned> Parser { get { return _parser; } }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pbr::MessageDescriptor Descriptor {
+          get { return global::Tutorial.Lease.V1.Payment.Descriptor.NestedTypes[3]; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        pbr::MessageDescriptor pb::IMessage.Descriptor {
+          get { return Descriptor; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Returned() {
+          OnConstruction();
+        }
+
+        partial void OnConstruction();
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Returned(Returned other) : this() {
+          paymentAmount_ = other.paymentAmount_ != null ? other.paymentAmount_.Clone() : null;
+          createdAt_ = other.createdAt_ != null ? other.createdAt_.Clone() : null;
+          settledAt_ = other.settledAt_ != null ? other.settledAt_.Clone() : null;
+          returnedAt_ = other.returnedAt_ != null ? other.returnedAt_.Clone() : null;
+          switch (other.ReceivedAtCase) {
+            case ReceivedAtOneofCase.Value:
+              Value = other.Value.Clone();
+              break;
+          }
+
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Returned Clone() {
+          return new Returned(this);
+        }
+
+        /// <summary>Field number for the "payment_amount" field.</summary>
+        public const int PaymentAmountFieldNumber = 1;
+        private global::Google.Type.Money paymentAmount_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public global::Google.Type.Money PaymentAmount {
+          get { return paymentAmount_; }
+          set {
+            paymentAmount_ = value;
+          }
+        }
+
+        /// <summary>Field number for the "created_at" field.</summary>
+        public const int CreatedAtFieldNumber = 2;
+        private global::Google.Protobuf.WellKnownTypes.Timestamp createdAt_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public global::Google.Protobuf.WellKnownTypes.Timestamp CreatedAt {
+          get { return createdAt_; }
+          set {
+            createdAt_ = value;
+          }
+        }
+
+        /// <summary>Field number for the "settled_at" field.</summary>
+        public const int SettledAtFieldNumber = 3;
+        private global::Google.Protobuf.WellKnownTypes.Timestamp settledAt_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public global::Google.Protobuf.WellKnownTypes.Timestamp SettledAt {
+          get { return settledAt_; }
+          set {
+            settledAt_ = value;
+          }
+        }
+
+        /// <summary>Field number for the "value" field.</summary>
+        public const int ValueFieldNumber = 4;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public global::Google.Protobuf.WellKnownTypes.Timestamp Value {
+          get { return receivedAtCase_ == ReceivedAtOneofCase.Value ? (global::Google.Protobuf.WellKnownTypes.Timestamp) receivedAt_ : null; }
+          set {
+            receivedAt_ = value;
+            receivedAtCase_ = value == null ? ReceivedAtOneofCase.None : ReceivedAtOneofCase.Value;
+          }
+        }
+
+        /// <summary>Field number for the "returned_at" field.</summary>
+        public const int ReturnedAtFieldNumber = 5;
+        private global::Google.Protobuf.WellKnownTypes.Timestamp returnedAt_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public global::Google.Protobuf.WellKnownTypes.Timestamp ReturnedAt {
+          get { return returnedAt_; }
+          set {
+            returnedAt_ = value;
+          }
+        }
+
+        private object receivedAt_;
+        /// <summary>Enum of possible cases for the "received_at" oneof.</summary>
+        public enum ReceivedAtOneofCase {
+          None = 0,
+          Value = 4,
+        }
+        private ReceivedAtOneofCase receivedAtCase_ = ReceivedAtOneofCase.None;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public ReceivedAtOneofCase ReceivedAtCase {
+          get { return receivedAtCase_; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearReceivedAt() {
+          receivedAtCase_ = ReceivedAtOneofCase.None;
+          receivedAt_ = null;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override bool Equals(object other) {
+          return Equals(other as Returned);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool Equals(Returned other) {
+          if (ReferenceEquals(other, null)) {
+            return false;
+          }
+          if (ReferenceEquals(other, this)) {
+            return true;
+          }
+          if (!object.Equals(PaymentAmount, other.PaymentAmount)) return false;
+          if (!object.Equals(CreatedAt, other.CreatedAt)) return false;
+          if (!object.Equals(SettledAt, other.SettledAt)) return false;
+          if (!object.Equals(Value, other.Value)) return false;
+          if (!object.Equals(ReturnedAt, other.ReturnedAt)) return false;
+          if (ReceivedAtCase != other.ReceivedAtCase) return false;
+          return Equals(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override int GetHashCode() {
+          int hash = 1;
+          if (paymentAmount_ != null) hash ^= PaymentAmount.GetHashCode();
+          if (createdAt_ != null) hash ^= CreatedAt.GetHashCode();
+          if (settledAt_ != null) hash ^= SettledAt.GetHashCode();
+          if (receivedAtCase_ == ReceivedAtOneofCase.Value) hash ^= Value.GetHashCode();
+          if (returnedAt_ != null) hash ^= ReturnedAt.GetHashCode();
+          hash ^= (int) receivedAtCase_;
+          if (_unknownFields != null) {
+            hash ^= _unknownFields.GetHashCode();
+          }
+          return hash;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override string ToString() {
+          return pb::JsonFormatter.ToDiagnosticString(this);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void WriteTo(pb::CodedOutputStream output) {
+          if (paymentAmount_ != null) {
+            output.WriteRawTag(10);
+            output.WriteMessage(PaymentAmount);
+          }
+          if (createdAt_ != null) {
+            output.WriteRawTag(18);
+            output.WriteMessage(CreatedAt);
+          }
+          if (settledAt_ != null) {
+            output.WriteRawTag(26);
+            output.WriteMessage(SettledAt);
+          }
+          if (receivedAtCase_ == ReceivedAtOneofCase.Value) {
+            output.WriteRawTag(34);
+            output.WriteMessage(Value);
+          }
+          if (returnedAt_ != null) {
+            output.WriteRawTag(42);
+            output.WriteMessage(ReturnedAt);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(output);
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public int CalculateSize() {
+          int size = 0;
+          if (paymentAmount_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(PaymentAmount);
+          }
+          if (createdAt_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(CreatedAt);
+          }
+          if (settledAt_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(SettledAt);
+          }
+          if (receivedAtCase_ == ReceivedAtOneofCase.Value) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(Value);
+          }
+          if (returnedAt_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(ReturnedAt);
+          }
+          if (_unknownFields != null) {
+            size += _unknownFields.CalculateSize();
+          }
+          return size;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(Returned other) {
+          if (other == null) {
+            return;
+          }
+          if (other.paymentAmount_ != null) {
+            if (paymentAmount_ == null) {
+              PaymentAmount = new global::Google.Type.Money();
+            }
+            PaymentAmount.MergeFrom(other.PaymentAmount);
+          }
+          if (other.createdAt_ != null) {
+            if (createdAt_ == null) {
+              CreatedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            CreatedAt.MergeFrom(other.CreatedAt);
+          }
+          if (other.settledAt_ != null) {
+            if (settledAt_ == null) {
+              SettledAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            SettledAt.MergeFrom(other.SettledAt);
+          }
+          if (other.returnedAt_ != null) {
+            if (returnedAt_ == null) {
+              ReturnedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            ReturnedAt.MergeFrom(other.ReturnedAt);
+          }
+          switch (other.ReceivedAtCase) {
+            case ReceivedAtOneofCase.Value:
+              if (Value == null) {
+                Value = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+              }
+              Value.MergeFrom(other.Value);
+              break;
+          }
+
+          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(pb::CodedInputStream input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+                break;
+              case 10: {
+                if (paymentAmount_ == null) {
+                  PaymentAmount = new global::Google.Type.Money();
+                }
+                input.ReadMessage(PaymentAmount);
+                break;
+              }
+              case 18: {
+                if (createdAt_ == null) {
+                  CreatedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+                }
+                input.ReadMessage(CreatedAt);
+                break;
+              }
+              case 26: {
+                if (settledAt_ == null) {
+                  SettledAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+                }
+                input.ReadMessage(SettledAt);
+                break;
+              }
+              case 34: {
+                global::Google.Protobuf.WellKnownTypes.Timestamp subBuilder = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+                if (receivedAtCase_ == ReceivedAtOneofCase.Value) {
+                  subBuilder.MergeFrom(Value);
+                }
+                input.ReadMessage(subBuilder);
+                Value = subBuilder;
+                break;
+              }
+              case 42: {
+                if (returnedAt_ == null) {
+                  ReturnedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+                }
+                input.ReadMessage(ReturnedAt);
+                break;
+              }
+            }
+          }
+        }
+
+      }
+
+    }
+    #endregion
+
+  }
+
+  /// <summary>
+  /// Lease observation.
   /// </summary>
   public sealed partial class LeaseObservation : pb::IMessage<LeaseObservation> {
     private static readonly pb::MessageParser<LeaseObservation> _parser = new pb::MessageParser<LeaseObservation>(() => new LeaseObservation());
@@ -1358,7 +2882,7 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Lease.V1.LeaseReflection.Descriptor.MessageTypes[6]; }
+      get { return global::Tutorial.Lease.V1.LeaseReflection.Descriptor.MessageTypes[7]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1375,19 +2899,24 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public LeaseObservation(LeaseObservation other) : this() {
-      leaseId_ = other.leaseId_;
-      userId_ = other.userId_;
-      createdAtTime_ = other.createdAtTime_ != null ? other.createdAtTime_.Clone() : null;
-      updatedAtTime_ = other.updatedAtTime_ != null ? other.updatedAtTime_.Clone() : null;
-      updatedOnDate_ = other.updatedOnDate_ != null ? other.updatedOnDate_.Clone() : null;
-      commencementDate_ = other.commencementDate_ != null ? other.commencementDate_.Clone() : null;
-      expirationDate_ = other.expirationDate_ != null ? other.expirationDate_.Clone() : null;
-      monthlyPaymentAmount_ = other.monthlyPaymentAmount_ != null ? other.monthlyPaymentAmount_.Clone() : null;
-      totalScheduled_ = other.totalScheduled_ != null ? other.totalScheduled_.Clone() : null;
-      totalPaid_ = other.totalPaid_ != null ? other.totalPaid_.Clone() : null;
-      amountDue_ = other.amountDue_ != null ? other.amountDue_.Clone() : null;
-      leaseStatus_ = other.leaseStatus_;
-      terminatedDate_ = other.terminatedDate_ != null ? other.terminatedDate_.Clone() : null;
+      observedAt_ = other.observedAt_ != null ? other.observedAt_.Clone() : null;
+      observationOrder_ = other.observationOrder_;
+      observationDescription_ = other.observationDescription_;
+      lease_ = other.lease_ != null ? other.lease_.Clone() : null;
+      payments_ = other.payments_.Clone();
+      daysPastDue_ = other.daysPastDue_;
+      paymentAmountScheduled_ = other.paymentAmountScheduled_ != null ? other.paymentAmountScheduled_.Clone() : null;
+      paymentAmountReceived_ = other.paymentAmountReceived_ != null ? other.paymentAmountReceived_.Clone() : null;
+      paymentAmountChargedOff_ = other.paymentAmountChargedOff_ != null ? other.paymentAmountChargedOff_.Clone() : null;
+      paymentAmountOutstanding_ = other.paymentAmountOutstanding_ != null ? other.paymentAmountOutstanding_.Clone() : null;
+      paymentAmountCredit_ = other.paymentAmountCredit_ != null ? other.paymentAmountCredit_.Clone() : null;
+      paymentAmountUnpaid_ = other.paymentAmountUnpaid_ != null ? other.paymentAmountUnpaid_.Clone() : null;
+      switch (other.ReturnedVehicleCase) {
+        case ReturnedVehicleOneofCase.Value:
+          Value = other.Value.Clone();
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1396,147 +2925,164 @@ namespace Tutorial.Lease.V1 {
       return new LeaseObservation(this);
     }
 
-    /// <summary>Field number for the "lease_id" field.</summary>
-    public const int LeaseIdFieldNumber = 1;
-    private string leaseId_ = "";
+    /// <summary>Field number for the "observed_at" field.</summary>
+    public const int ObservedAtFieldNumber = 1;
+    private global::Google.Protobuf.WellKnownTypes.Timestamp observedAt_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string LeaseId {
-      get { return leaseId_; }
+    public global::Google.Protobuf.WellKnownTypes.Timestamp ObservedAt {
+      get { return observedAt_; }
       set {
-        leaseId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        observedAt_ = value;
       }
     }
 
-    /// <summary>Field number for the "user_id" field.</summary>
-    public const int UserIdFieldNumber = 2;
-    private string userId_ = "";
+    /// <summary>Field number for the "observation_order" field.</summary>
+    public const int ObservationOrderFieldNumber = 2;
+    private int observationOrder_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string UserId {
-      get { return userId_; }
+    public int ObservationOrder {
+      get { return observationOrder_; }
       set {
-        userId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        observationOrder_ = value;
       }
     }
 
-    /// <summary>Field number for the "created_at_time" field.</summary>
-    public const int CreatedAtTimeFieldNumber = 3;
-    private global::Google.Protobuf.WellKnownTypes.Timestamp createdAtTime_;
+    /// <summary>Field number for the "observation_description" field.</summary>
+    public const int ObservationDescriptionFieldNumber = 3;
+    private string observationDescription_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Protobuf.WellKnownTypes.Timestamp CreatedAtTime {
-      get { return createdAtTime_; }
+    public string ObservationDescription {
+      get { return observationDescription_; }
       set {
-        createdAtTime_ = value;
+        observationDescription_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
-    /// <summary>Field number for the "updated_at_time" field.</summary>
-    public const int UpdatedAtTimeFieldNumber = 4;
-    private global::Google.Protobuf.WellKnownTypes.Timestamp updatedAtTime_;
+    /// <summary>Field number for the "lease" field.</summary>
+    public const int LeaseFieldNumber = 4;
+    private global::Tutorial.Lease.V1.Lease lease_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Protobuf.WellKnownTypes.Timestamp UpdatedAtTime {
-      get { return updatedAtTime_; }
+    public global::Tutorial.Lease.V1.Lease Lease {
+      get { return lease_; }
       set {
-        updatedAtTime_ = value;
+        lease_ = value;
       }
     }
 
-    /// <summary>Field number for the "updated_on_date" field.</summary>
-    public const int UpdatedOnDateFieldNumber = 5;
-    private global::Google.Type.Date updatedOnDate_;
+    /// <summary>Field number for the "value" field.</summary>
+    public const int ValueFieldNumber = 5;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Type.Date UpdatedOnDate {
-      get { return updatedOnDate_; }
+    public global::Tutorial.Lease.V1.ReturnedVehicle Value {
+      get { return returnedVehicleCase_ == ReturnedVehicleOneofCase.Value ? (global::Tutorial.Lease.V1.ReturnedVehicle) returnedVehicle_ : null; }
       set {
-        updatedOnDate_ = value;
+        returnedVehicle_ = value;
+        returnedVehicleCase_ = value == null ? ReturnedVehicleOneofCase.None : ReturnedVehicleOneofCase.Value;
       }
     }
 
-    /// <summary>Field number for the "commencement_date" field.</summary>
-    public const int CommencementDateFieldNumber = 6;
-    private global::Google.Type.Date commencementDate_;
+    /// <summary>Field number for the "payments" field.</summary>
+    public const int PaymentsFieldNumber = 6;
+    private static readonly pb::FieldCodec<global::Tutorial.Lease.V1.Payment> _repeated_payments_codec
+        = pb::FieldCodec.ForMessage(50, global::Tutorial.Lease.V1.Payment.Parser);
+    private readonly pbc::RepeatedField<global::Tutorial.Lease.V1.Payment> payments_ = new pbc::RepeatedField<global::Tutorial.Lease.V1.Payment>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Type.Date CommencementDate {
-      get { return commencementDate_; }
+    public pbc::RepeatedField<global::Tutorial.Lease.V1.Payment> Payments {
+      get { return payments_; }
+    }
+
+    /// <summary>Field number for the "days_past_due" field.</summary>
+    public const int DaysPastDueFieldNumber = 7;
+    private int daysPastDue_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int DaysPastDue {
+      get { return daysPastDue_; }
       set {
-        commencementDate_ = value;
+        daysPastDue_ = value;
       }
     }
 
-    /// <summary>Field number for the "expiration_date" field.</summary>
-    public const int ExpirationDateFieldNumber = 7;
-    private global::Google.Type.Date expirationDate_;
+    /// <summary>Field number for the "payment_amount_scheduled" field.</summary>
+    public const int PaymentAmountScheduledFieldNumber = 8;
+    private global::Google.Type.Money paymentAmountScheduled_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Type.Date ExpirationDate {
-      get { return expirationDate_; }
+    public global::Google.Type.Money PaymentAmountScheduled {
+      get { return paymentAmountScheduled_; }
       set {
-        expirationDate_ = value;
+        paymentAmountScheduled_ = value;
       }
     }
 
-    /// <summary>Field number for the "monthly_payment_amount" field.</summary>
-    public const int MonthlyPaymentAmountFieldNumber = 8;
-    private global::Google.Type.Money monthlyPaymentAmount_;
+    /// <summary>Field number for the "payment_amount_received" field.</summary>
+    public const int PaymentAmountReceivedFieldNumber = 9;
+    private global::Google.Type.Money paymentAmountReceived_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Type.Money MonthlyPaymentAmount {
-      get { return monthlyPaymentAmount_; }
+    public global::Google.Type.Money PaymentAmountReceived {
+      get { return paymentAmountReceived_; }
       set {
-        monthlyPaymentAmount_ = value;
+        paymentAmountReceived_ = value;
       }
     }
 
-    /// <summary>Field number for the "total_scheduled" field.</summary>
-    public const int TotalScheduledFieldNumber = 9;
-    private global::Google.Type.Money totalScheduled_;
+    /// <summary>Field number for the "payment_amount_charged_off" field.</summary>
+    public const int PaymentAmountChargedOffFieldNumber = 10;
+    private global::Google.Type.Money paymentAmountChargedOff_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Type.Money TotalScheduled {
-      get { return totalScheduled_; }
+    public global::Google.Type.Money PaymentAmountChargedOff {
+      get { return paymentAmountChargedOff_; }
       set {
-        totalScheduled_ = value;
+        paymentAmountChargedOff_ = value;
       }
     }
 
-    /// <summary>Field number for the "total_paid" field.</summary>
-    public const int TotalPaidFieldNumber = 10;
-    private global::Google.Type.Money totalPaid_;
+    /// <summary>Field number for the "payment_amount_outstanding" field.</summary>
+    public const int PaymentAmountOutstandingFieldNumber = 11;
+    private global::Google.Type.Money paymentAmountOutstanding_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Type.Money TotalPaid {
-      get { return totalPaid_; }
+    public global::Google.Type.Money PaymentAmountOutstanding {
+      get { return paymentAmountOutstanding_; }
       set {
-        totalPaid_ = value;
+        paymentAmountOutstanding_ = value;
       }
     }
 
-    /// <summary>Field number for the "amount_due" field.</summary>
-    public const int AmountDueFieldNumber = 11;
-    private global::Google.Type.Money amountDue_;
+    /// <summary>Field number for the "payment_amount_credit" field.</summary>
+    public const int PaymentAmountCreditFieldNumber = 12;
+    private global::Google.Type.Money paymentAmountCredit_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Type.Money AmountDue {
-      get { return amountDue_; }
+    public global::Google.Type.Money PaymentAmountCredit {
+      get { return paymentAmountCredit_; }
       set {
-        amountDue_ = value;
+        paymentAmountCredit_ = value;
       }
     }
 
-    /// <summary>Field number for the "lease_status" field.</summary>
-    public const int LeaseStatusFieldNumber = 12;
-    private global::Tutorial.Lease.V1.LeaseStatus leaseStatus_ = global::Tutorial.Lease.V1.LeaseStatus.Unspecified;
+    /// <summary>Field number for the "payment_amount_unpaid" field.</summary>
+    public const int PaymentAmountUnpaidFieldNumber = 13;
+    private global::Google.Type.Money paymentAmountUnpaid_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Tutorial.Lease.V1.LeaseStatus LeaseStatus {
-      get { return leaseStatus_; }
+    public global::Google.Type.Money PaymentAmountUnpaid {
+      get { return paymentAmountUnpaid_; }
       set {
-        leaseStatus_ = value;
+        paymentAmountUnpaid_ = value;
       }
     }
 
-    /// <summary>Field number for the "terminated_date" field.</summary>
-    public const int TerminatedDateFieldNumber = 13;
-    private global::Google.Type.Date terminatedDate_;
+    private object returnedVehicle_;
+    /// <summary>Enum of possible cases for the "returned_vehicle" oneof.</summary>
+    public enum ReturnedVehicleOneofCase {
+      None = 0,
+      Value = 5,
+    }
+    private ReturnedVehicleOneofCase returnedVehicleCase_ = ReturnedVehicleOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Type.Date TerminatedDate {
-      get { return terminatedDate_; }
-      set {
-        terminatedDate_ = value;
-      }
+    public ReturnedVehicleOneofCase ReturnedVehicleCase {
+      get { return returnedVehicleCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearReturnedVehicle() {
+      returnedVehicleCase_ = ReturnedVehicleOneofCase.None;
+      returnedVehicle_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1552,38 +3098,40 @@ namespace Tutorial.Lease.V1 {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (LeaseId != other.LeaseId) return false;
-      if (UserId != other.UserId) return false;
-      if (!object.Equals(CreatedAtTime, other.CreatedAtTime)) return false;
-      if (!object.Equals(UpdatedAtTime, other.UpdatedAtTime)) return false;
-      if (!object.Equals(UpdatedOnDate, other.UpdatedOnDate)) return false;
-      if (!object.Equals(CommencementDate, other.CommencementDate)) return false;
-      if (!object.Equals(ExpirationDate, other.ExpirationDate)) return false;
-      if (!object.Equals(MonthlyPaymentAmount, other.MonthlyPaymentAmount)) return false;
-      if (!object.Equals(TotalScheduled, other.TotalScheduled)) return false;
-      if (!object.Equals(TotalPaid, other.TotalPaid)) return false;
-      if (!object.Equals(AmountDue, other.AmountDue)) return false;
-      if (LeaseStatus != other.LeaseStatus) return false;
-      if (!object.Equals(TerminatedDate, other.TerminatedDate)) return false;
+      if (!object.Equals(ObservedAt, other.ObservedAt)) return false;
+      if (ObservationOrder != other.ObservationOrder) return false;
+      if (ObservationDescription != other.ObservationDescription) return false;
+      if (!object.Equals(Lease, other.Lease)) return false;
+      if (!object.Equals(Value, other.Value)) return false;
+      if(!payments_.Equals(other.payments_)) return false;
+      if (DaysPastDue != other.DaysPastDue) return false;
+      if (!object.Equals(PaymentAmountScheduled, other.PaymentAmountScheduled)) return false;
+      if (!object.Equals(PaymentAmountReceived, other.PaymentAmountReceived)) return false;
+      if (!object.Equals(PaymentAmountChargedOff, other.PaymentAmountChargedOff)) return false;
+      if (!object.Equals(PaymentAmountOutstanding, other.PaymentAmountOutstanding)) return false;
+      if (!object.Equals(PaymentAmountCredit, other.PaymentAmountCredit)) return false;
+      if (!object.Equals(PaymentAmountUnpaid, other.PaymentAmountUnpaid)) return false;
+      if (ReturnedVehicleCase != other.ReturnedVehicleCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (LeaseId.Length != 0) hash ^= LeaseId.GetHashCode();
-      if (UserId.Length != 0) hash ^= UserId.GetHashCode();
-      if (createdAtTime_ != null) hash ^= CreatedAtTime.GetHashCode();
-      if (updatedAtTime_ != null) hash ^= UpdatedAtTime.GetHashCode();
-      if (updatedOnDate_ != null) hash ^= UpdatedOnDate.GetHashCode();
-      if (commencementDate_ != null) hash ^= CommencementDate.GetHashCode();
-      if (expirationDate_ != null) hash ^= ExpirationDate.GetHashCode();
-      if (monthlyPaymentAmount_ != null) hash ^= MonthlyPaymentAmount.GetHashCode();
-      if (totalScheduled_ != null) hash ^= TotalScheduled.GetHashCode();
-      if (totalPaid_ != null) hash ^= TotalPaid.GetHashCode();
-      if (amountDue_ != null) hash ^= AmountDue.GetHashCode();
-      if (LeaseStatus != global::Tutorial.Lease.V1.LeaseStatus.Unspecified) hash ^= LeaseStatus.GetHashCode();
-      if (terminatedDate_ != null) hash ^= TerminatedDate.GetHashCode();
+      if (observedAt_ != null) hash ^= ObservedAt.GetHashCode();
+      if (ObservationOrder != 0) hash ^= ObservationOrder.GetHashCode();
+      if (ObservationDescription.Length != 0) hash ^= ObservationDescription.GetHashCode();
+      if (lease_ != null) hash ^= Lease.GetHashCode();
+      if (returnedVehicleCase_ == ReturnedVehicleOneofCase.Value) hash ^= Value.GetHashCode();
+      hash ^= payments_.GetHashCode();
+      if (DaysPastDue != 0) hash ^= DaysPastDue.GetHashCode();
+      if (paymentAmountScheduled_ != null) hash ^= PaymentAmountScheduled.GetHashCode();
+      if (paymentAmountReceived_ != null) hash ^= PaymentAmountReceived.GetHashCode();
+      if (paymentAmountChargedOff_ != null) hash ^= PaymentAmountChargedOff.GetHashCode();
+      if (paymentAmountOutstanding_ != null) hash ^= PaymentAmountOutstanding.GetHashCode();
+      if (paymentAmountCredit_ != null) hash ^= PaymentAmountCredit.GetHashCode();
+      if (paymentAmountUnpaid_ != null) hash ^= PaymentAmountUnpaid.GetHashCode();
+      hash ^= (int) returnedVehicleCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1597,57 +3145,54 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (LeaseId.Length != 0) {
+      if (observedAt_ != null) {
         output.WriteRawTag(10);
-        output.WriteString(LeaseId);
+        output.WriteMessage(ObservedAt);
       }
-      if (UserId.Length != 0) {
-        output.WriteRawTag(18);
-        output.WriteString(UserId);
+      if (ObservationOrder != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(ObservationOrder);
       }
-      if (createdAtTime_ != null) {
+      if (ObservationDescription.Length != 0) {
         output.WriteRawTag(26);
-        output.WriteMessage(CreatedAtTime);
+        output.WriteString(ObservationDescription);
       }
-      if (updatedAtTime_ != null) {
+      if (lease_ != null) {
         output.WriteRawTag(34);
-        output.WriteMessage(UpdatedAtTime);
+        output.WriteMessage(Lease);
       }
-      if (updatedOnDate_ != null) {
+      if (returnedVehicleCase_ == ReturnedVehicleOneofCase.Value) {
         output.WriteRawTag(42);
-        output.WriteMessage(UpdatedOnDate);
+        output.WriteMessage(Value);
       }
-      if (commencementDate_ != null) {
-        output.WriteRawTag(50);
-        output.WriteMessage(CommencementDate);
+      payments_.WriteTo(output, _repeated_payments_codec);
+      if (DaysPastDue != 0) {
+        output.WriteRawTag(56);
+        output.WriteInt32(DaysPastDue);
       }
-      if (expirationDate_ != null) {
-        output.WriteRawTag(58);
-        output.WriteMessage(ExpirationDate);
-      }
-      if (monthlyPaymentAmount_ != null) {
+      if (paymentAmountScheduled_ != null) {
         output.WriteRawTag(66);
-        output.WriteMessage(MonthlyPaymentAmount);
+        output.WriteMessage(PaymentAmountScheduled);
       }
-      if (totalScheduled_ != null) {
+      if (paymentAmountReceived_ != null) {
         output.WriteRawTag(74);
-        output.WriteMessage(TotalScheduled);
+        output.WriteMessage(PaymentAmountReceived);
       }
-      if (totalPaid_ != null) {
+      if (paymentAmountChargedOff_ != null) {
         output.WriteRawTag(82);
-        output.WriteMessage(TotalPaid);
+        output.WriteMessage(PaymentAmountChargedOff);
       }
-      if (amountDue_ != null) {
+      if (paymentAmountOutstanding_ != null) {
         output.WriteRawTag(90);
-        output.WriteMessage(AmountDue);
+        output.WriteMessage(PaymentAmountOutstanding);
       }
-      if (LeaseStatus != global::Tutorial.Lease.V1.LeaseStatus.Unspecified) {
-        output.WriteRawTag(96);
-        output.WriteEnum((int) LeaseStatus);
+      if (paymentAmountCredit_ != null) {
+        output.WriteRawTag(98);
+        output.WriteMessage(PaymentAmountCredit);
       }
-      if (terminatedDate_ != null) {
+      if (paymentAmountUnpaid_ != null) {
         output.WriteRawTag(106);
-        output.WriteMessage(TerminatedDate);
+        output.WriteMessage(PaymentAmountUnpaid);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -1657,44 +3202,42 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (LeaseId.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(LeaseId);
+      if (observedAt_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ObservedAt);
       }
-      if (UserId.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(UserId);
+      if (ObservationOrder != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(ObservationOrder);
       }
-      if (createdAtTime_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(CreatedAtTime);
+      if (ObservationDescription.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ObservationDescription);
       }
-      if (updatedAtTime_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(UpdatedAtTime);
+      if (lease_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Lease);
       }
-      if (updatedOnDate_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(UpdatedOnDate);
+      if (returnedVehicleCase_ == ReturnedVehicleOneofCase.Value) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Value);
       }
-      if (commencementDate_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(CommencementDate);
+      size += payments_.CalculateSize(_repeated_payments_codec);
+      if (DaysPastDue != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(DaysPastDue);
       }
-      if (expirationDate_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ExpirationDate);
+      if (paymentAmountScheduled_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(PaymentAmountScheduled);
       }
-      if (monthlyPaymentAmount_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(MonthlyPaymentAmount);
+      if (paymentAmountReceived_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(PaymentAmountReceived);
       }
-      if (totalScheduled_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(TotalScheduled);
+      if (paymentAmountChargedOff_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(PaymentAmountChargedOff);
       }
-      if (totalPaid_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(TotalPaid);
+      if (paymentAmountOutstanding_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(PaymentAmountOutstanding);
       }
-      if (amountDue_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(AmountDue);
+      if (paymentAmountCredit_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(PaymentAmountCredit);
       }
-      if (LeaseStatus != global::Tutorial.Lease.V1.LeaseStatus.Unspecified) {
-        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) LeaseStatus);
-      }
-      if (terminatedDate_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(TerminatedDate);
+      if (paymentAmountUnpaid_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(PaymentAmountUnpaid);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1707,75 +3250,73 @@ namespace Tutorial.Lease.V1 {
       if (other == null) {
         return;
       }
-      if (other.LeaseId.Length != 0) {
-        LeaseId = other.LeaseId;
-      }
-      if (other.UserId.Length != 0) {
-        UserId = other.UserId;
-      }
-      if (other.createdAtTime_ != null) {
-        if (createdAtTime_ == null) {
-          CreatedAtTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+      if (other.observedAt_ != null) {
+        if (observedAt_ == null) {
+          ObservedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
         }
-        CreatedAtTime.MergeFrom(other.CreatedAtTime);
+        ObservedAt.MergeFrom(other.ObservedAt);
       }
-      if (other.updatedAtTime_ != null) {
-        if (updatedAtTime_ == null) {
-          UpdatedAtTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+      if (other.ObservationOrder != 0) {
+        ObservationOrder = other.ObservationOrder;
+      }
+      if (other.ObservationDescription.Length != 0) {
+        ObservationDescription = other.ObservationDescription;
+      }
+      if (other.lease_ != null) {
+        if (lease_ == null) {
+          Lease = new global::Tutorial.Lease.V1.Lease();
         }
-        UpdatedAtTime.MergeFrom(other.UpdatedAtTime);
+        Lease.MergeFrom(other.Lease);
       }
-      if (other.updatedOnDate_ != null) {
-        if (updatedOnDate_ == null) {
-          UpdatedOnDate = new global::Google.Type.Date();
+      payments_.Add(other.payments_);
+      if (other.DaysPastDue != 0) {
+        DaysPastDue = other.DaysPastDue;
+      }
+      if (other.paymentAmountScheduled_ != null) {
+        if (paymentAmountScheduled_ == null) {
+          PaymentAmountScheduled = new global::Google.Type.Money();
         }
-        UpdatedOnDate.MergeFrom(other.UpdatedOnDate);
+        PaymentAmountScheduled.MergeFrom(other.PaymentAmountScheduled);
       }
-      if (other.commencementDate_ != null) {
-        if (commencementDate_ == null) {
-          CommencementDate = new global::Google.Type.Date();
+      if (other.paymentAmountReceived_ != null) {
+        if (paymentAmountReceived_ == null) {
+          PaymentAmountReceived = new global::Google.Type.Money();
         }
-        CommencementDate.MergeFrom(other.CommencementDate);
+        PaymentAmountReceived.MergeFrom(other.PaymentAmountReceived);
       }
-      if (other.expirationDate_ != null) {
-        if (expirationDate_ == null) {
-          ExpirationDate = new global::Google.Type.Date();
+      if (other.paymentAmountChargedOff_ != null) {
+        if (paymentAmountChargedOff_ == null) {
+          PaymentAmountChargedOff = new global::Google.Type.Money();
         }
-        ExpirationDate.MergeFrom(other.ExpirationDate);
+        PaymentAmountChargedOff.MergeFrom(other.PaymentAmountChargedOff);
       }
-      if (other.monthlyPaymentAmount_ != null) {
-        if (monthlyPaymentAmount_ == null) {
-          MonthlyPaymentAmount = new global::Google.Type.Money();
+      if (other.paymentAmountOutstanding_ != null) {
+        if (paymentAmountOutstanding_ == null) {
+          PaymentAmountOutstanding = new global::Google.Type.Money();
         }
-        MonthlyPaymentAmount.MergeFrom(other.MonthlyPaymentAmount);
+        PaymentAmountOutstanding.MergeFrom(other.PaymentAmountOutstanding);
       }
-      if (other.totalScheduled_ != null) {
-        if (totalScheduled_ == null) {
-          TotalScheduled = new global::Google.Type.Money();
+      if (other.paymentAmountCredit_ != null) {
+        if (paymentAmountCredit_ == null) {
+          PaymentAmountCredit = new global::Google.Type.Money();
         }
-        TotalScheduled.MergeFrom(other.TotalScheduled);
+        PaymentAmountCredit.MergeFrom(other.PaymentAmountCredit);
       }
-      if (other.totalPaid_ != null) {
-        if (totalPaid_ == null) {
-          TotalPaid = new global::Google.Type.Money();
+      if (other.paymentAmountUnpaid_ != null) {
+        if (paymentAmountUnpaid_ == null) {
+          PaymentAmountUnpaid = new global::Google.Type.Money();
         }
-        TotalPaid.MergeFrom(other.TotalPaid);
+        PaymentAmountUnpaid.MergeFrom(other.PaymentAmountUnpaid);
       }
-      if (other.amountDue_ != null) {
-        if (amountDue_ == null) {
-          AmountDue = new global::Google.Type.Money();
-        }
-        AmountDue.MergeFrom(other.AmountDue);
+      switch (other.ReturnedVehicleCase) {
+        case ReturnedVehicleOneofCase.Value:
+          if (Value == null) {
+            Value = new global::Tutorial.Lease.V1.ReturnedVehicle();
+          }
+          Value.MergeFrom(other.Value);
+          break;
       }
-      if (other.LeaseStatus != global::Tutorial.Lease.V1.LeaseStatus.Unspecified) {
-        LeaseStatus = other.LeaseStatus;
-      }
-      if (other.terminatedDate_ != null) {
-        if (terminatedDate_ == null) {
-          TerminatedDate = new global::Google.Type.Date();
-        }
-        TerminatedDate.MergeFrom(other.TerminatedDate);
-      }
+
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -1788,85 +3329,84 @@ namespace Tutorial.Lease.V1 {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            LeaseId = input.ReadString();
+            if (observedAt_ == null) {
+              ObservedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            input.ReadMessage(ObservedAt);
             break;
           }
-          case 18: {
-            UserId = input.ReadString();
+          case 16: {
+            ObservationOrder = input.ReadInt32();
             break;
           }
           case 26: {
-            if (createdAtTime_ == null) {
-              CreatedAtTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
-            }
-            input.ReadMessage(CreatedAtTime);
+            ObservationDescription = input.ReadString();
             break;
           }
           case 34: {
-            if (updatedAtTime_ == null) {
-              UpdatedAtTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            if (lease_ == null) {
+              Lease = new global::Tutorial.Lease.V1.Lease();
             }
-            input.ReadMessage(UpdatedAtTime);
+            input.ReadMessage(Lease);
             break;
           }
           case 42: {
-            if (updatedOnDate_ == null) {
-              UpdatedOnDate = new global::Google.Type.Date();
+            global::Tutorial.Lease.V1.ReturnedVehicle subBuilder = new global::Tutorial.Lease.V1.ReturnedVehicle();
+            if (returnedVehicleCase_ == ReturnedVehicleOneofCase.Value) {
+              subBuilder.MergeFrom(Value);
             }
-            input.ReadMessage(UpdatedOnDate);
+            input.ReadMessage(subBuilder);
+            Value = subBuilder;
             break;
           }
           case 50: {
-            if (commencementDate_ == null) {
-              CommencementDate = new global::Google.Type.Date();
-            }
-            input.ReadMessage(CommencementDate);
+            payments_.AddEntriesFrom(input, _repeated_payments_codec);
             break;
           }
-          case 58: {
-            if (expirationDate_ == null) {
-              ExpirationDate = new global::Google.Type.Date();
-            }
-            input.ReadMessage(ExpirationDate);
+          case 56: {
+            DaysPastDue = input.ReadInt32();
             break;
           }
           case 66: {
-            if (monthlyPaymentAmount_ == null) {
-              MonthlyPaymentAmount = new global::Google.Type.Money();
+            if (paymentAmountScheduled_ == null) {
+              PaymentAmountScheduled = new global::Google.Type.Money();
             }
-            input.ReadMessage(MonthlyPaymentAmount);
+            input.ReadMessage(PaymentAmountScheduled);
             break;
           }
           case 74: {
-            if (totalScheduled_ == null) {
-              TotalScheduled = new global::Google.Type.Money();
+            if (paymentAmountReceived_ == null) {
+              PaymentAmountReceived = new global::Google.Type.Money();
             }
-            input.ReadMessage(TotalScheduled);
+            input.ReadMessage(PaymentAmountReceived);
             break;
           }
           case 82: {
-            if (totalPaid_ == null) {
-              TotalPaid = new global::Google.Type.Money();
+            if (paymentAmountChargedOff_ == null) {
+              PaymentAmountChargedOff = new global::Google.Type.Money();
             }
-            input.ReadMessage(TotalPaid);
+            input.ReadMessage(PaymentAmountChargedOff);
             break;
           }
           case 90: {
-            if (amountDue_ == null) {
-              AmountDue = new global::Google.Type.Money();
+            if (paymentAmountOutstanding_ == null) {
+              PaymentAmountOutstanding = new global::Google.Type.Money();
             }
-            input.ReadMessage(AmountDue);
+            input.ReadMessage(PaymentAmountOutstanding);
             break;
           }
-          case 96: {
-            LeaseStatus = (global::Tutorial.Lease.V1.LeaseStatus) input.ReadEnum();
+          case 98: {
+            if (paymentAmountCredit_ == null) {
+              PaymentAmountCredit = new global::Google.Type.Money();
+            }
+            input.ReadMessage(PaymentAmountCredit);
             break;
           }
           case 106: {
-            if (terminatedDate_ == null) {
-              TerminatedDate = new global::Google.Type.Date();
+            if (paymentAmountUnpaid_ == null) {
+              PaymentAmountUnpaid = new global::Google.Type.Money();
             }
-            input.ReadMessage(TerminatedDate);
+            input.ReadMessage(PaymentAmountUnpaid);
             break;
           }
         }

@@ -4,80 +4,114 @@ package tutorial.lease.v1;
 
 option csharp_namespace = "Tutorial.Lease.V1";
 option go_package = "tutorial/lease/v1";
-option java_multiple_files = true;
-option java_outer_classname = "LeaseProto";
-option java_package = "com.tutorial.lease.v1";
-option objc_class_prefix = "TLX";
-option php_namespace = "Tutorial\\Lease\\V1";
 
 import "google/protobuf/timestamp.proto";
 import "google/type/date.proto";
 import "google/type/money.proto";
 
-// Status of the lease.
-enum LeaseStatus {
-  LEASE_STATUS_UNSPECIFIED = 0;
-  LEASE_STATUS_OUTSTANDING = 1;
-  LEASE_STATUS_TERMINATED = 2;
-}
-
 // Date at which a lease is observed.
-message AsOf {
-  google.protobuf.Timestamp as_at_time = 1;
-  google.type.Date as_on_date = 2;
+message AsOn {
+  google.protobuf.Timestamp as_at = 1;
+  google.type.Date as_of = 2;
 }
 
-// Lease static information.
+// Lease.
 message Lease {
   string lease_id = 1;
   string user_id = 2;
-  google.type.Date commencement_date = 3;
-  google.type.Date expiration_date = 4;
-  google.type.Money monthly_payment_amount = 5;
+  string vehicle_id = 3;
+  google.protobuf.Timestamp accepted_at = 4;
+  google.type.Date start_date = 5;
+  google.type.Date maturity_date = 6;
+  double money_factor = 7;
+  double sales_tax_rate = 8;
+  google.type.Money vehicle_value = 9;
+  google.type.Money vehicle_residual_value = 10;
+  google.type.Money down_payment = 11;
+  google.type.Money monthly_payment = 12;
+  int32 vehicle_odometer = 13;
+  int32 miles_per_year = 14;
+  google.type.Money mile_overage_charge = 15;
 }
 
-// Scheduled payment.
-message ScheduledPayment {
-  string payment_id = 1;
-  google.type.Date scheduled_date = 2;
-  google.type.Money scheduled_amount = 3;
+// Created payment.
+message CreatedPayment {
+  string transaction_id = 1;
+  google.protobuf.Timestamp created_at = 2;
+  google.type.Money payment_amount = 3;
 }
 
-// Received payment.
-message ReceivedPayment {
-  string payment_id = 1;
-  google.type.Date received_date = 2;
-  google.type.Money received_amount = 3;
+// Settled payment.
+message SettledPayment {
+  string transaction_id = 1;
+  google.protobuf.Timestamp settled_at = 2;
 }
 
-// Termination of a lease.
-message Termination {
-  google.type.Date termination_date = 1;
-  string termination_reason = 2;
+// Returned payment.
+message ReturnedPayment {
+  string transaction_id = 1;
+  google.protobuf.Timestamp returned_at = 2;
+  string returned_reason = 3;
 }
 
-// Lease event that has occurred.
-message LeaseEvent {
-  int32 event_id = 1;
-  google.protobuf.Timestamp event_created_time = 2;
-  google.type.Date event_effective_date = 3;
-  string event_type = 4;
-  string event_payload = 5;
+// Returned vehicle.
+message ReturnedVehicle {
+  string vehicle_id = 1;
+  google.protobuf.Timestamp returned_at = 2;
+  int32 vehicle_odometer = 3;
+  google.type.Money damage_charge = 4;
 }
 
-// Observation of a lease at a point in time.
+// A payment and its state.
+message Payment {
+  message Created {
+    google.type.Money payment_amount = 1;
+    google.protobuf.Timestamp created_at = 2;
+  }
+  message Settled {
+    google.type.Money payment_amount = 1;
+    google.protobuf.Timestamp created_at = 2;
+    google.protobuf.Timestamp settled_at = 3;
+  }
+  message Received {
+    google.type.Money payment_amount = 1;
+    google.protobuf.Timestamp created_at = 2;
+    google.protobuf.Timestamp settled_at = 3;
+    google.protobuf.Timestamp received_at = 4;
+  }
+  message Returned {
+    google.type.Money payment_amount = 1;
+    google.protobuf.Timestamp created_at = 2;
+    google.protobuf.Timestamp settled_at = 3;
+    oneof received_at {
+      google.protobuf.Timestamp value = 4;
+    };
+    google.protobuf.Timestamp returned_at = 5;
+  }
+  string transaction_id = 1;
+  oneof state {
+    Created created = 2;
+    Settled settled = 3;
+    Received received = 4;
+    Returned returned = 5;
+  }
+}
+
+// Lease observation.
 message LeaseObservation {
-  string lease_id = 1;
-  string user_id = 2;
-  google.protobuf.Timestamp created_at_time = 3;
-  google.protobuf.Timestamp updated_at_time = 4;
-  google.type.Date updated_on_date = 5;
-  google.type.Date commencement_date = 6;
-  google.type.Date expiration_date = 7;
-  google.type.Money monthly_payment_amount = 8;
-  google.type.Money total_scheduled = 9;
-  google.type.Money total_paid = 10;
-  google.type.Money amount_due = 11;
-  LeaseStatus lease_status = 12;
-  google.type.Date terminated_date = 13;
+  google.protobuf.Timestamp observed_at = 1;
+  int32 observation_order = 2;
+  string observation_description = 3;
+  Lease lease = 4;
+  oneof returned_vehicle {
+    ReturnedVehicle value = 5;
+  }
+  repeated Payment payments = 6;
+  int32 days_past_due = 7;
+  google.type.Money payment_amount_scheduled = 8;
+  google.type.Money payment_amount_received = 9;
+  google.type.Money payment_amount_charged_off = 10;
+  google.type.Money payment_amount_outstanding = 11;
+  google.type.Money payment_amount_credit = 12;
+  google.type.Money payment_amount_unpaid = 13;
 }
