@@ -1,5 +1,6 @@
 Equinox
 Equinox.EventStore
+Equinox.MemoryStore
 FSharp.UMX
 FsCodec
 FsCodec.NewtonsoftJson

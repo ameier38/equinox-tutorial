@@ -6,6 +6,8 @@ open Fake.IO.FileSystemOperators
 open Fake.IO.Globbing.Operators
 open BlackFox.Fake
 
+let sln = __SOURCE_DIRECTORY__ </> "VehicleApi.sln"
+
 BuildTask.create "CleanAll" [] {
     let directories =
         !! "**/out"
@@ -42,9 +44,7 @@ BuildTask.create "UpdateProtos" [copyGenerated] {
 }
 
 BuildTask.create "Restore" [] {
-    !! "src/**/*.fsproj"
-    ++ "src/**/*.csproj"
-    |> Seq.iter (DotNet.restore id)
+    DotNet.restore id sln
 }
 
 BuildTask.create "Test" [] {

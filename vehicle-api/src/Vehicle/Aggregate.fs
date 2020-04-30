@@ -16,6 +16,9 @@ let evolve : VehicleState -> VehicleEvent -> VehicleState =
         | VehicleLeased ->
             { state with
                 VehicleStatus = Leased }
+        | VehicleReturned ->
+            { state with
+                VehicleStatus = Available }
 
 let interpret
     (vehicleId:VehicleId)
@@ -55,6 +58,19 @@ let interpret
                 |> RpcException.raiseInternal
             | Unknown ->
                 sprintf "cannot lease vehicle; Vehicle-%s does not exist" vehicleIdStr
+                |> RpcException.raiseNotFound
+        | ReturnVehicle ->
+            match state.VehicleStatus with
+            | Leased ->
+                [VehicleReturned]
+            | Available ->
+                sprintf "cannot return vehicle; Vehicle-%s already returned" vehicleIdStr
+                |> RpcException.raiseInternal
+            | Removed ->
+                sprintf "cannot return vehicle; Vehicle-%s is removed" vehicleIdStr
+                |> RpcException.raiseInternal
+            | Unknown ->
+                sprintf "cannot return vehicle; Vehicle-%s does not exist" vehicleIdStr
                 |> RpcException.raiseNotFound
 
 let fold: VehicleState -> seq<VehicleEvent> -> VehicleState =

@@ -26,41 +26,63 @@ namespace Tutorial.Vehicle.V1 {
           string.Concat(
             "Cil0dXRvcmlhbC92ZWhpY2xlL3YxL3ZlaGljbGVfc2VydmljZS5wcm90bxIT",
             "dHV0b3JpYWwudmVoaWNsZS52MRohdHV0b3JpYWwvdmVoaWNsZS92MS92ZWhp",
-            "Y2xlLnByb3RvIkIKEUFkZFZlaGljbGVSZXF1ZXN0Ei0KB3ZlaGljbGUYASAB",
-            "KAsyHC50dXRvcmlhbC52ZWhpY2xlLnYxLlZlaGljbGUiKAoSQWRkVmVoaWNs",
-            "ZVJlc3BvbnNlEhIKCnZlaGljbGVfaWQYASABKAkiKgoUUmVtb3ZlVmVoaWNs",
-            "ZVJlcXVlc3QSEgoKdmVoaWNsZV9pZBgBIAEoCSIoChVSZW1vdmVWZWhpY2xl",
-            "UmVzcG9uc2USDwoHbWVzc2FnZRgBIAEoCSIpChNMZWFzZVZlaGljbGVSZXF1",
-            "ZXN0EhIKCnZlaGljbGVfaWQYASABKAkiJwoUTGVhc2VWZWhpY2xlUmVzcG9u",
-            "c2USDwoHbWVzc2FnZRgBIAEoCTK8AgoOVmVoaWNsZVNlcnZpY2USXQoKQWRk",
-            "VmVoaWNsZRImLnR1dG9yaWFsLnZlaGljbGUudjEuQWRkVmVoaWNsZVJlcXVl",
-            "c3QaJy50dXRvcmlhbC52ZWhpY2xlLnYxLkFkZFZlaGljbGVSZXNwb25zZRJm",
-            "Cg1SZW1vdmVWZWhpY2xlEikudHV0b3JpYWwudmVoaWNsZS52MS5SZW1vdmVW",
-            "ZWhpY2xlUmVxdWVzdBoqLnR1dG9yaWFsLnZlaGljbGUudjEuUmVtb3ZlVmVo",
-            "aWNsZVJlc3BvbnNlEmMKDExlYXNlVmVoaWNsZRIoLnR1dG9yaWFsLnZlaGlj",
-            "bGUudjEuTGVhc2VWZWhpY2xlUmVxdWVzdBopLnR1dG9yaWFsLnZlaGljbGUu",
-            "djEuTGVhc2VWZWhpY2xlUmVzcG9uc2VCK1oTdHV0b3JpYWwvdmVoaWNsZS92",
-            "MaoCE1R1dG9yaWFsLlZlaGljbGUuVjFiBnByb3RvMw=="));
+            "Y2xlLnByb3RvIjwKE0xpc3RWZWhpY2xlc1JlcXVlc3QSEQoJcGFnZV9zaXpl",
+            "GAEgASgFEhIKCnBhZ2VfdG9rZW4YAiABKAkikgEKFExpc3RWZWhpY2xlc1Jl",
+            "c3BvbnNlEjMKCHZlaGljbGVzGAEgAygLMiEudHV0b3JpYWwudmVoaWNsZS52",
+            "MS5WZWhpY2xlU3RhdGUSFwoPcHJldl9wYWdlX3Rva2VuGAIgASgJEhcKD25l",
+            "eHRfcGFnZV90b2tlbhgDIAEoCRITCgt0b3RhbF9jb3VudBgEIAEoBSInChFH",
+            "ZXRWZWhpY2xlUmVxdWVzdBISCgp2ZWhpY2xlX2lkGAEgASgJIkgKEkdldFZl",
+            "aGljbGVSZXNwb25zZRIyCgd2ZWhpY2xlGAEgASgLMiEudHV0b3JpYWwudmVo",
+            "aWNsZS52MS5WZWhpY2xlU3RhdGUiVgoRQWRkVmVoaWNsZVJlcXVlc3QSEgoK",
+            "dmVoaWNsZV9pZBgBIAEoCRItCgd2ZWhpY2xlGAIgASgLMhwudHV0b3JpYWwu",
+            "dmVoaWNsZS52MS5WZWhpY2xlIiUKEkFkZFZlaGljbGVSZXNwb25zZRIPCgdt",
+            "ZXNzYWdlGAEgASgJIioKFFJlbW92ZVZlaGljbGVSZXF1ZXN0EhIKCnZlaGlj",
+            "bGVfaWQYASABKAkiKAoVUmVtb3ZlVmVoaWNsZVJlc3BvbnNlEg8KB21lc3Nh",
+            "Z2UYASABKAkiKQoTTGVhc2VWZWhpY2xlUmVxdWVzdBISCgp2ZWhpY2xlX2lk",
+            "GAEgASgJIicKFExlYXNlVmVoaWNsZVJlc3BvbnNlEg8KB21lc3NhZ2UYASAB",
+            "KAkiKgoUUmV0dXJuVmVoaWNsZVJlcXVlc3QSEgoKdmVoaWNsZV9pZBgBIAEo",
+            "CSIoChVSZXR1cm5WZWhpY2xlUmVzcG9uc2USDwoHbWVzc2FnZRgBIAEoCTLo",
+            "BAoOVmVoaWNsZVNlcnZpY2USYwoMTGlzdFZlaGljbGVzEigudHV0b3JpYWwu",
+            "dmVoaWNsZS52MS5MaXN0VmVoaWNsZXNSZXF1ZXN0GikudHV0b3JpYWwudmVo",
+            "aWNsZS52MS5MaXN0VmVoaWNsZXNSZXNwb25zZRJdCgpHZXRWZWhpY2xlEiYu",
+            "dHV0b3JpYWwudmVoaWNsZS52MS5HZXRWZWhpY2xlUmVxdWVzdBonLnR1dG9y",
+            "aWFsLnZlaGljbGUudjEuR2V0VmVoaWNsZVJlc3BvbnNlEl0KCkFkZFZlaGlj",
+            "bGUSJi50dXRvcmlhbC52ZWhpY2xlLnYxLkFkZFZlaGljbGVSZXF1ZXN0Gicu",
+            "dHV0b3JpYWwudmVoaWNsZS52MS5BZGRWZWhpY2xlUmVzcG9uc2USZgoNUmVt",
+            "b3ZlVmVoaWNsZRIpLnR1dG9yaWFsLnZlaGljbGUudjEuUmVtb3ZlVmVoaWNs",
+            "ZVJlcXVlc3QaKi50dXRvcmlhbC52ZWhpY2xlLnYxLlJlbW92ZVZlaGljbGVS",
+            "ZXNwb25zZRJjCgxMZWFzZVZlaGljbGUSKC50dXRvcmlhbC52ZWhpY2xlLnYx",
+            "LkxlYXNlVmVoaWNsZVJlcXVlc3QaKS50dXRvcmlhbC52ZWhpY2xlLnYxLkxl",
+            "YXNlVmVoaWNsZVJlc3BvbnNlEmYKDVJldHVyblZlaGljbGUSKS50dXRvcmlh",
+            "bC52ZWhpY2xlLnYxLlJldHVyblZlaGljbGVSZXF1ZXN0GioudHV0b3JpYWwu",
+            "dmVoaWNsZS52MS5SZXR1cm5WZWhpY2xlUmVzcG9uc2VCK1oTdHV0b3JpYWwv",
+            "dmVoaWNsZS92MaoCE1R1dG9yaWFsLlZlaGljbGUuVjFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Tutorial.Vehicle.V1.VehicleReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Vehicle.V1.AddVehicleRequest), global::Tutorial.Vehicle.V1.AddVehicleRequest.Parser, new[]{ "Vehicle" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Vehicle.V1.AddVehicleResponse), global::Tutorial.Vehicle.V1.AddVehicleResponse.Parser, new[]{ "VehicleId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Vehicle.V1.ListVehiclesRequest), global::Tutorial.Vehicle.V1.ListVehiclesRequest.Parser, new[]{ "PageSize", "PageToken" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Vehicle.V1.ListVehiclesResponse), global::Tutorial.Vehicle.V1.ListVehiclesResponse.Parser, new[]{ "Vehicles", "PrevPageToken", "NextPageToken", "TotalCount" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Vehicle.V1.GetVehicleRequest), global::Tutorial.Vehicle.V1.GetVehicleRequest.Parser, new[]{ "VehicleId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Vehicle.V1.GetVehicleResponse), global::Tutorial.Vehicle.V1.GetVehicleResponse.Parser, new[]{ "Vehicle" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Vehicle.V1.AddVehicleRequest), global::Tutorial.Vehicle.V1.AddVehicleRequest.Parser, new[]{ "VehicleId", "Vehicle" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Vehicle.V1.AddVehicleResponse), global::Tutorial.Vehicle.V1.AddVehicleResponse.Parser, new[]{ "Message" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Vehicle.V1.RemoveVehicleRequest), global::Tutorial.Vehicle.V1.RemoveVehicleRequest.Parser, new[]{ "VehicleId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Vehicle.V1.RemoveVehicleResponse), global::Tutorial.Vehicle.V1.RemoveVehicleResponse.Parser, new[]{ "Message" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Vehicle.V1.LeaseVehicleRequest), global::Tutorial.Vehicle.V1.LeaseVehicleRequest.Parser, new[]{ "VehicleId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Vehicle.V1.LeaseVehicleResponse), global::Tutorial.Vehicle.V1.LeaseVehicleResponse.Parser, new[]{ "Message" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Vehicle.V1.LeaseVehicleResponse), global::Tutorial.Vehicle.V1.LeaseVehicleResponse.Parser, new[]{ "Message" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Vehicle.V1.ReturnVehicleRequest), global::Tutorial.Vehicle.V1.ReturnVehicleRequest.Parser, new[]{ "VehicleId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Vehicle.V1.ReturnVehicleResponse), global::Tutorial.Vehicle.V1.ReturnVehicleResponse.Parser, new[]{ "Message" }, null, null, null, null)
           }));
     }
     #endregion
 
   }
   #region Messages
-  public sealed partial class AddVehicleRequest : pb::IMessage<AddVehicleRequest> {
-    private static readonly pb::MessageParser<AddVehicleRequest> _parser = new pb::MessageParser<AddVehicleRequest>(() => new AddVehicleRequest());
+  public sealed partial class ListVehiclesRequest : pb::IMessage<ListVehiclesRequest> {
+    private static readonly pb::MessageParser<ListVehiclesRequest> _parser = new pb::MessageParser<ListVehiclesRequest>(() => new ListVehiclesRequest());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<AddVehicleRequest> Parser { get { return _parser; } }
+    public static pb::MessageParser<ListVehiclesRequest> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -73,55 +95,69 @@ namespace Tutorial.Vehicle.V1 {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public AddVehicleRequest() {
+    public ListVehiclesRequest() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public AddVehicleRequest(AddVehicleRequest other) : this() {
-      vehicle_ = other.vehicle_ != null ? other.vehicle_.Clone() : null;
+    public ListVehiclesRequest(ListVehiclesRequest other) : this() {
+      pageSize_ = other.pageSize_;
+      pageToken_ = other.pageToken_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public AddVehicleRequest Clone() {
-      return new AddVehicleRequest(this);
+    public ListVehiclesRequest Clone() {
+      return new ListVehiclesRequest(this);
     }
 
-    /// <summary>Field number for the "vehicle" field.</summary>
-    public const int VehicleFieldNumber = 1;
-    private global::Tutorial.Vehicle.V1.Vehicle vehicle_;
+    /// <summary>Field number for the "page_size" field.</summary>
+    public const int PageSizeFieldNumber = 1;
+    private int pageSize_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Tutorial.Vehicle.V1.Vehicle Vehicle {
-      get { return vehicle_; }
+    public int PageSize {
+      get { return pageSize_; }
       set {
-        vehicle_ = value;
+        pageSize_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "page_token" field.</summary>
+    public const int PageTokenFieldNumber = 2;
+    private string pageToken_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string PageToken {
+      get { return pageToken_; }
+      set {
+        pageToken_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as AddVehicleRequest);
+      return Equals(other as ListVehiclesRequest);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(AddVehicleRequest other) {
+    public bool Equals(ListVehiclesRequest other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (!object.Equals(Vehicle, other.Vehicle)) return false;
+      if (PageSize != other.PageSize) return false;
+      if (PageToken != other.PageToken) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (vehicle_ != null) hash ^= Vehicle.GetHashCode();
+      if (PageSize != 0) hash ^= PageSize.GetHashCode();
+      if (PageToken.Length != 0) hash ^= PageToken.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -135,9 +171,13 @@ namespace Tutorial.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (vehicle_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(Vehicle);
+      if (PageSize != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(PageSize);
+      }
+      if (PageToken.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(PageToken);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -147,8 +187,11 @@ namespace Tutorial.Vehicle.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (vehicle_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Vehicle);
+      if (PageSize != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(PageSize);
+      }
+      if (PageToken.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(PageToken);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -157,15 +200,212 @@ namespace Tutorial.Vehicle.V1 {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(AddVehicleRequest other) {
+    public void MergeFrom(ListVehiclesRequest other) {
       if (other == null) {
         return;
       }
-      if (other.vehicle_ != null) {
-        if (vehicle_ == null) {
-          Vehicle = new global::Tutorial.Vehicle.V1.Vehicle();
+      if (other.PageSize != 0) {
+        PageSize = other.PageSize;
+      }
+      if (other.PageToken.Length != 0) {
+        PageToken = other.PageToken;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            PageSize = input.ReadInt32();
+            break;
+          }
+          case 18: {
+            PageToken = input.ReadString();
+            break;
+          }
         }
-        Vehicle.MergeFrom(other.Vehicle);
+      }
+    }
+
+  }
+
+  public sealed partial class ListVehiclesResponse : pb::IMessage<ListVehiclesResponse> {
+    private static readonly pb::MessageParser<ListVehiclesResponse> _parser = new pb::MessageParser<ListVehiclesResponse>(() => new ListVehiclesResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<ListVehiclesResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Tutorial.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[1]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ListVehiclesResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ListVehiclesResponse(ListVehiclesResponse other) : this() {
+      vehicles_ = other.vehicles_.Clone();
+      prevPageToken_ = other.prevPageToken_;
+      nextPageToken_ = other.nextPageToken_;
+      totalCount_ = other.totalCount_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ListVehiclesResponse Clone() {
+      return new ListVehiclesResponse(this);
+    }
+
+    /// <summary>Field number for the "vehicles" field.</summary>
+    public const int VehiclesFieldNumber = 1;
+    private static readonly pb::FieldCodec<global::Tutorial.Vehicle.V1.VehicleState> _repeated_vehicles_codec
+        = pb::FieldCodec.ForMessage(10, global::Tutorial.Vehicle.V1.VehicleState.Parser);
+    private readonly pbc::RepeatedField<global::Tutorial.Vehicle.V1.VehicleState> vehicles_ = new pbc::RepeatedField<global::Tutorial.Vehicle.V1.VehicleState>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::Tutorial.Vehicle.V1.VehicleState> Vehicles {
+      get { return vehicles_; }
+    }
+
+    /// <summary>Field number for the "prev_page_token" field.</summary>
+    public const int PrevPageTokenFieldNumber = 2;
+    private string prevPageToken_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string PrevPageToken {
+      get { return prevPageToken_; }
+      set {
+        prevPageToken_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "next_page_token" field.</summary>
+    public const int NextPageTokenFieldNumber = 3;
+    private string nextPageToken_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string NextPageToken {
+      get { return nextPageToken_; }
+      set {
+        nextPageToken_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "total_count" field.</summary>
+    public const int TotalCountFieldNumber = 4;
+    private int totalCount_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int TotalCount {
+      get { return totalCount_; }
+      set {
+        totalCount_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as ListVehiclesResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(ListVehiclesResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if(!vehicles_.Equals(other.vehicles_)) return false;
+      if (PrevPageToken != other.PrevPageToken) return false;
+      if (NextPageToken != other.NextPageToken) return false;
+      if (TotalCount != other.TotalCount) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      hash ^= vehicles_.GetHashCode();
+      if (PrevPageToken.Length != 0) hash ^= PrevPageToken.GetHashCode();
+      if (NextPageToken.Length != 0) hash ^= NextPageToken.GetHashCode();
+      if (TotalCount != 0) hash ^= TotalCount.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      vehicles_.WriteTo(output, _repeated_vehicles_codec);
+      if (PrevPageToken.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(PrevPageToken);
+      }
+      if (NextPageToken.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(NextPageToken);
+      }
+      if (TotalCount != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(TotalCount);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      size += vehicles_.CalculateSize(_repeated_vehicles_codec);
+      if (PrevPageToken.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(PrevPageToken);
+      }
+      if (NextPageToken.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(NextPageToken);
+      }
+      if (TotalCount != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(TotalCount);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(ListVehiclesResponse other) {
+      if (other == null) {
+        return;
+      }
+      vehicles_.Add(other.vehicles_);
+      if (other.PrevPageToken.Length != 0) {
+        PrevPageToken = other.PrevPageToken;
+      }
+      if (other.NextPageToken.Length != 0) {
+        NextPageToken = other.NextPageToken;
+      }
+      if (other.TotalCount != 0) {
+        TotalCount = other.TotalCount;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -179,10 +419,19 @@ namespace Tutorial.Vehicle.V1 {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            if (vehicle_ == null) {
-              Vehicle = new global::Tutorial.Vehicle.V1.Vehicle();
-            }
-            input.ReadMessage(Vehicle);
+            vehicles_.AddEntriesFrom(input, _repeated_vehicles_codec);
+            break;
+          }
+          case 18: {
+            PrevPageToken = input.ReadString();
+            break;
+          }
+          case 26: {
+            NextPageToken = input.ReadString();
+            break;
+          }
+          case 32: {
+            TotalCount = input.ReadInt32();
             break;
           }
         }
@@ -191,15 +440,15 @@ namespace Tutorial.Vehicle.V1 {
 
   }
 
-  public sealed partial class AddVehicleResponse : pb::IMessage<AddVehicleResponse> {
-    private static readonly pb::MessageParser<AddVehicleResponse> _parser = new pb::MessageParser<AddVehicleResponse>(() => new AddVehicleResponse());
+  public sealed partial class GetVehicleRequest : pb::IMessage<GetVehicleRequest> {
+    private static readonly pb::MessageParser<GetVehicleRequest> _parser = new pb::MessageParser<GetVehicleRequest>(() => new GetVehicleRequest());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<AddVehicleResponse> Parser { get { return _parser; } }
+    public static pb::MessageParser<GetVehicleRequest> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[1]; }
+      get { return global::Tutorial.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -208,21 +457,21 @@ namespace Tutorial.Vehicle.V1 {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public AddVehicleResponse() {
+    public GetVehicleRequest() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public AddVehicleResponse(AddVehicleResponse other) : this() {
+    public GetVehicleRequest(GetVehicleRequest other) : this() {
       vehicleId_ = other.vehicleId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public AddVehicleResponse Clone() {
-      return new AddVehicleResponse(this);
+    public GetVehicleRequest Clone() {
+      return new GetVehicleRequest(this);
     }
 
     /// <summary>Field number for the "vehicle_id" field.</summary>
@@ -238,11 +487,11 @@ namespace Tutorial.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as AddVehicleResponse);
+      return Equals(other as GetVehicleRequest);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(AddVehicleResponse other) {
+    public bool Equals(GetVehicleRequest other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -292,7 +541,7 @@ namespace Tutorial.Vehicle.V1 {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(AddVehicleResponse other) {
+    public void MergeFrom(GetVehicleRequest other) {
       if (other == null) {
         return;
       }
@@ -320,6 +569,433 @@ namespace Tutorial.Vehicle.V1 {
 
   }
 
+  public sealed partial class GetVehicleResponse : pb::IMessage<GetVehicleResponse> {
+    private static readonly pb::MessageParser<GetVehicleResponse> _parser = new pb::MessageParser<GetVehicleResponse>(() => new GetVehicleResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<GetVehicleResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Tutorial.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[3]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetVehicleResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetVehicleResponse(GetVehicleResponse other) : this() {
+      vehicle_ = other.vehicle_ != null ? other.vehicle_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetVehicleResponse Clone() {
+      return new GetVehicleResponse(this);
+    }
+
+    /// <summary>Field number for the "vehicle" field.</summary>
+    public const int VehicleFieldNumber = 1;
+    private global::Tutorial.Vehicle.V1.VehicleState vehicle_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Tutorial.Vehicle.V1.VehicleState Vehicle {
+      get { return vehicle_; }
+      set {
+        vehicle_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as GetVehicleResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(GetVehicleResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(Vehicle, other.Vehicle)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (vehicle_ != null) hash ^= Vehicle.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (vehicle_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Vehicle);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (vehicle_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Vehicle);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(GetVehicleResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.vehicle_ != null) {
+        if (vehicle_ == null) {
+          Vehicle = new global::Tutorial.Vehicle.V1.VehicleState();
+        }
+        Vehicle.MergeFrom(other.Vehicle);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (vehicle_ == null) {
+              Vehicle = new global::Tutorial.Vehicle.V1.VehicleState();
+            }
+            input.ReadMessage(Vehicle);
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class AddVehicleRequest : pb::IMessage<AddVehicleRequest> {
+    private static readonly pb::MessageParser<AddVehicleRequest> _parser = new pb::MessageParser<AddVehicleRequest>(() => new AddVehicleRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<AddVehicleRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Tutorial.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[4]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AddVehicleRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AddVehicleRequest(AddVehicleRequest other) : this() {
+      vehicleId_ = other.vehicleId_;
+      vehicle_ = other.vehicle_ != null ? other.vehicle_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AddVehicleRequest Clone() {
+      return new AddVehicleRequest(this);
+    }
+
+    /// <summary>Field number for the "vehicle_id" field.</summary>
+    public const int VehicleIdFieldNumber = 1;
+    private string vehicleId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string VehicleId {
+      get { return vehicleId_; }
+      set {
+        vehicleId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "vehicle" field.</summary>
+    public const int VehicleFieldNumber = 2;
+    private global::Tutorial.Vehicle.V1.Vehicle vehicle_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Tutorial.Vehicle.V1.Vehicle Vehicle {
+      get { return vehicle_; }
+      set {
+        vehicle_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as AddVehicleRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(AddVehicleRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (VehicleId != other.VehicleId) return false;
+      if (!object.Equals(Vehicle, other.Vehicle)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (VehicleId.Length != 0) hash ^= VehicleId.GetHashCode();
+      if (vehicle_ != null) hash ^= Vehicle.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (VehicleId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(VehicleId);
+      }
+      if (vehicle_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Vehicle);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (VehicleId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleId);
+      }
+      if (vehicle_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Vehicle);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(AddVehicleRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.VehicleId.Length != 0) {
+        VehicleId = other.VehicleId;
+      }
+      if (other.vehicle_ != null) {
+        if (vehicle_ == null) {
+          Vehicle = new global::Tutorial.Vehicle.V1.Vehicle();
+        }
+        Vehicle.MergeFrom(other.Vehicle);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            VehicleId = input.ReadString();
+            break;
+          }
+          case 18: {
+            if (vehicle_ == null) {
+              Vehicle = new global::Tutorial.Vehicle.V1.Vehicle();
+            }
+            input.ReadMessage(Vehicle);
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class AddVehicleResponse : pb::IMessage<AddVehicleResponse> {
+    private static readonly pb::MessageParser<AddVehicleResponse> _parser = new pb::MessageParser<AddVehicleResponse>(() => new AddVehicleResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<AddVehicleResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Tutorial.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[5]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AddVehicleResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AddVehicleResponse(AddVehicleResponse other) : this() {
+      message_ = other.message_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AddVehicleResponse Clone() {
+      return new AddVehicleResponse(this);
+    }
+
+    /// <summary>Field number for the "message" field.</summary>
+    public const int MessageFieldNumber = 1;
+    private string message_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Message {
+      get { return message_; }
+      set {
+        message_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as AddVehicleResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(AddVehicleResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Message != other.Message) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Message.Length != 0) hash ^= Message.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Message.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Message);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Message.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(AddVehicleResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Message.Length != 0) {
+        Message = other.Message;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Message = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
   public sealed partial class RemoveVehicleRequest : pb::IMessage<RemoveVehicleRequest> {
     private static readonly pb::MessageParser<RemoveVehicleRequest> _parser = new pb::MessageParser<RemoveVehicleRequest>(() => new RemoveVehicleRequest());
     private pb::UnknownFieldSet _unknownFields;
@@ -328,7 +1004,7 @@ namespace Tutorial.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[2]; }
+      get { return global::Tutorial.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -457,7 +1133,7 @@ namespace Tutorial.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[3]; }
+      get { return global::Tutorial.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[7]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -586,7 +1262,7 @@ namespace Tutorial.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[4]; }
+      get { return global::Tutorial.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[8]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -715,7 +1391,7 @@ namespace Tutorial.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[5]; }
+      get { return global::Tutorial.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[9]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -809,6 +1485,264 @@ namespace Tutorial.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(LeaseVehicleResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Message.Length != 0) {
+        Message = other.Message;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Message = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class ReturnVehicleRequest : pb::IMessage<ReturnVehicleRequest> {
+    private static readonly pb::MessageParser<ReturnVehicleRequest> _parser = new pb::MessageParser<ReturnVehicleRequest>(() => new ReturnVehicleRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<ReturnVehicleRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Tutorial.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[10]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ReturnVehicleRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ReturnVehicleRequest(ReturnVehicleRequest other) : this() {
+      vehicleId_ = other.vehicleId_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ReturnVehicleRequest Clone() {
+      return new ReturnVehicleRequest(this);
+    }
+
+    /// <summary>Field number for the "vehicle_id" field.</summary>
+    public const int VehicleIdFieldNumber = 1;
+    private string vehicleId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string VehicleId {
+      get { return vehicleId_; }
+      set {
+        vehicleId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as ReturnVehicleRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(ReturnVehicleRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (VehicleId != other.VehicleId) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (VehicleId.Length != 0) hash ^= VehicleId.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (VehicleId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(VehicleId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (VehicleId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleId);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(ReturnVehicleRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.VehicleId.Length != 0) {
+        VehicleId = other.VehicleId;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            VehicleId = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class ReturnVehicleResponse : pb::IMessage<ReturnVehicleResponse> {
+    private static readonly pb::MessageParser<ReturnVehicleResponse> _parser = new pb::MessageParser<ReturnVehicleResponse>(() => new ReturnVehicleResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<ReturnVehicleResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Tutorial.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[11]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ReturnVehicleResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ReturnVehicleResponse(ReturnVehicleResponse other) : this() {
+      message_ = other.message_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ReturnVehicleResponse Clone() {
+      return new ReturnVehicleResponse(this);
+    }
+
+    /// <summary>Field number for the "message" field.</summary>
+    public const int MessageFieldNumber = 1;
+    private string message_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Message {
+      get { return message_; }
+      set {
+        message_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as ReturnVehicleResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(ReturnVehicleResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Message != other.Message) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Message.Length != 0) hash ^= Message.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Message.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Message);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Message.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(ReturnVehicleResponse other) {
       if (other == null) {
         return;
       }

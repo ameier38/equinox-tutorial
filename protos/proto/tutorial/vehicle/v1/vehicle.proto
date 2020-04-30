@@ -5,8 +5,20 @@ package tutorial.vehicle.v1;
 option csharp_namespace = "Tutorial.Vehicle.V1";
 option go_package = "tutorial/vehicle/v1";
 
+enum VehicleStatus {
+    VEHICLE_STATUS_UNSPECIFIED = 0;
+    VEHICLE_STATUS_AVAILABLE = 1;
+    VEHICLE_STATUS_REMOVED = 2;
+    VEHICLE_STATUS_LEASED = 3;
+}
+
 message Vehicle {
     string make = 2;
     string model = 3;
     int32 year = 4;
+}
+
+message VehicleState {
+    Vehicle vehicle = 1;
+    VehicleStatus vehicle_status = 2;
 }

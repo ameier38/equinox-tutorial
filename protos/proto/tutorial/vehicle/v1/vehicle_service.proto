@@ -9,20 +9,47 @@ import "tutorial/vehicle/v1/vehicle.proto";
 
 // Service to handle interactions with Vehicles.
 service VehicleService {
+  // List vehicles in inventory.
+  rpc ListVehicles(ListVehiclesRequest) returns (ListVehiclesResponse);
+  // Get a vehicle.
+  rpc GetVehicle(GetVehicleRequest) returns (GetVehicleResponse);
   // Add a vehicle to inventory.
   rpc AddVehicle(AddVehicleRequest) returns (AddVehicleResponse);
   // Remove a vehicle from inventory.
   rpc RemoveVehicle(RemoveVehicleRequest) returns (RemoveVehicleResponse);
   // Lease a vehicle.
   rpc LeaseVehicle(LeaseVehicleRequest) returns (LeaseVehicleResponse);
+  // Return a vehicle after a lease.
+  rpc ReturnVehicle(ReturnVehicleRequest) returns (ReturnVehicleResponse);
+}
+
+message ListVehiclesRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+}
+
+message ListVehiclesResponse {
+  repeated VehicleState vehicles = 1;
+  string prev_page_token = 2;
+  string next_page_token = 3;
+  int32 total_count = 4;
+}
+
+message GetVehicleRequest {
+  string vehicle_id = 1;
+}
+
+message GetVehicleResponse {
+  VehicleState vehicle = 1;
 }
 
 message AddVehicleRequest {
-  Vehicle vehicle = 1;
+  string vehicle_id = 1;
+  Vehicle vehicle = 2;
 }
 
 message AddVehicleResponse {
-  string vehicle_id = 1;
+  string message = 1;
 }
 
 message RemoveVehicleRequest {
@@ -38,5 +65,13 @@ message LeaseVehicleRequest {
 }
 
 message LeaseVehicleResponse {
+  string message = 1;
+}
+
+message ReturnVehicleRequest {
+  string vehicle_id = 1;
+}
+
+message ReturnVehicleResponse {
   string message = 1;
 }
