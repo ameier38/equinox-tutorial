@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   eventstore:
-    image: eventstore/eventstore
+    image: eventstore/eventstore:release-5.0.8
     ports:
       - "2113:2113"
       - "1113:1113"
@@ -9,33 +9,25 @@ services:
       EVENTSTORE_START_STANDARD_PROJECTIONS: "True"
       EVENTSTORE_RUN_PROJECTIONS: All
   seq:
-    image: datalust/seq
+    image: datalust/seq:5.1
     environment:
       ACCEPT_EULA: "Y"
     ports:
       - "8081:80"
       - "5341:5341"
-  lease-api:
+  vehicle-api:
     build:
-      context: ./lease-api
+      context: ./vehicle-api
       target: runner
     ports:
       - "50051:50051"
     environment:
       SERVER_PORT: 50051
       EVENTSTORE_HOST: eventstore
+      SEQ_HOST: seq
     depends_on:
       - seq
       - eventstore
-  test-lease-api:
-    build:
-      context: ./lease-api
-      target: tester
-    environment:
-      LEASE_API_HOST: lease-api
-      LEASE_API_PORT: 50051
-    depends_on:
-      - lease-api
   graphql-api:
     build:
       context: ./graphql-api
@@ -48,8 +40,6 @@ services:
       LEASE_API_PORT: 50051
       SEQ_HOST: seq
       SEQ_PORT: 5341
-    depends_on:
-      - lease-api
   test-graphql-api:
     build:
       context: ./graphql-api

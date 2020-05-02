@@ -1,6 +1,7 @@
 ﻿open Expecto
 open Expecto.Flip
 open Vehicle
+open System
 
 let testEvolve =
     test "test evolve" {
@@ -8,9 +9,10 @@ let testEvolve =
         let prevState = Aggregate.initial
         // WHEN vehicle is added
         let vehicle =
-            { Make = "Ford"
-              Model = "Taurus"
-              Year = 1998 }
+            { VehicleId = VehicleId.create()
+              Make = "Falcon"
+              Model = "9"
+              Year = 2016 }
         let vehicleAdded = VehicleAdded vehicle
         let newState = Aggregate.evolve prevState vehicleAdded
         // THEN status should be Available

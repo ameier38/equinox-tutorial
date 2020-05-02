@@ -17,12 +17,6 @@ let genDir = __SOURCE_DIRECTORY__ </> "gen"
 let googleApisCommit = "d4aa417ed2bba89c2d216900282bddfdafef6128"
 let googleApisDir = vendorDir </> "github.com" </> "googleapis" </> "googleapis"
 
-type ProtocConfig =
-    { ProtoPaths: string list
-      PluginName: string
-      PluginOut: string
-      PluginOpt: string }
-
 let run (command:string) (args:string list) (workDir:string) =
     CreateProcess.fromRawCommand command args
     |> CreateProcess.withWorkingDirectory workDir

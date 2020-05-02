@@ -3,6 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>vehicle-api</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Infrastructure.fs" />

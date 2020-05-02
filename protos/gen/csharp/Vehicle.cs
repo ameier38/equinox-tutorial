@@ -25,19 +25,19 @@ namespace Tutorial.Vehicle.V1 {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CiF0dXRvcmlhbC92ZWhpY2xlL3YxL3ZlaGljbGUucHJvdG8SE3R1dG9yaWFs",
-            "LnZlaGljbGUudjEiNAoHVmVoaWNsZRIMCgRtYWtlGAIgASgJEg0KBW1vZGVs",
-            "GAMgASgJEgwKBHllYXIYBCABKAUieQoMVmVoaWNsZVN0YXRlEi0KB3ZlaGlj",
-            "bGUYASABKAsyHC50dXRvcmlhbC52ZWhpY2xlLnYxLlZlaGljbGUSOgoOdmVo",
-            "aWNsZV9zdGF0dXMYAiABKA4yIi50dXRvcmlhbC52ZWhpY2xlLnYxLlZlaGlj",
-            "bGVTdGF0dXMqhAEKDVZlaGljbGVTdGF0dXMSHgoaVkVISUNMRV9TVEFUVVNf",
-            "VU5TUEVDSUZJRUQQABIcChhWRUhJQ0xFX1NUQVRVU19BVkFJTEFCTEUQARIa",
-            "ChZWRUhJQ0xFX1NUQVRVU19SRU1PVkVEEAISGQoVVkVISUNMRV9TVEFUVVNf",
-            "TEVBU0VEEANCK1oTdHV0b3JpYWwvdmVoaWNsZS92MaoCE1R1dG9yaWFsLlZl",
-            "aGljbGUuVjFiBnByb3RvMw=="));
+            "LnZlaGljbGUudjEiSAoHVmVoaWNsZRISCgp2ZWhpY2xlX2lkGAEgASgJEgwK",
+            "BG1ha2UYAiABKAkSDQoFbW9kZWwYAyABKAkSDAoEeWVhchgEIAEoBSJ5CgxW",
+            "ZWhpY2xlU3RhdGUSLQoHdmVoaWNsZRgBIAEoCzIcLnR1dG9yaWFsLnZlaGlj",
+            "bGUudjEuVmVoaWNsZRI6Cg52ZWhpY2xlX3N0YXR1cxgCIAEoDjIiLnR1dG9y",
+            "aWFsLnZlaGljbGUudjEuVmVoaWNsZVN0YXR1cyqEAQoNVmVoaWNsZVN0YXR1",
+            "cxIeChpWRUhJQ0xFX1NUQVRVU19VTlNQRUNJRklFRBAAEhwKGFZFSElDTEVf",
+            "U1RBVFVTX0FWQUlMQUJMRRABEhoKFlZFSElDTEVfU1RBVFVTX1JFTU9WRUQQ",
+            "AhIZChVWRUhJQ0xFX1NUQVRVU19MRUFTRUQQA0IrWhN0dXRvcmlhbC92ZWhp",
+            "Y2xlL3YxqgITVHV0b3JpYWwuVmVoaWNsZS5WMWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Tutorial.Vehicle.V1.VehicleStatus), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Vehicle.V1.Vehicle), global::Tutorial.Vehicle.V1.Vehicle.Parser, new[]{ "Make", "Model", "Year" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Vehicle.V1.Vehicle), global::Tutorial.Vehicle.V1.Vehicle.Parser, new[]{ "VehicleId", "Make", "Model", "Year" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Vehicle.V1.VehicleState), global::Tutorial.Vehicle.V1.VehicleState.Parser, new[]{ "Vehicle", "VehicleStatus" }, null, null, null, null)
           }));
     }
@@ -80,6 +80,7 @@ namespace Tutorial.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Vehicle(Vehicle other) : this() {
+      vehicleId_ = other.vehicleId_;
       make_ = other.make_;
       model_ = other.model_;
       year_ = other.year_;
@@ -89,6 +90,17 @@ namespace Tutorial.Vehicle.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Vehicle Clone() {
       return new Vehicle(this);
+    }
+
+    /// <summary>Field number for the "vehicle_id" field.</summary>
+    public const int VehicleIdFieldNumber = 1;
+    private string vehicleId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string VehicleId {
+      get { return vehicleId_; }
+      set {
+        vehicleId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
     }
 
     /// <summary>Field number for the "make" field.</summary>
@@ -137,6 +149,7 @@ namespace Tutorial.Vehicle.V1 {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (VehicleId != other.VehicleId) return false;
       if (Make != other.Make) return false;
       if (Model != other.Model) return false;
       if (Year != other.Year) return false;
@@ -146,6 +159,7 @@ namespace Tutorial.Vehicle.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
+      if (VehicleId.Length != 0) hash ^= VehicleId.GetHashCode();
       if (Make.Length != 0) hash ^= Make.GetHashCode();
       if (Model.Length != 0) hash ^= Model.GetHashCode();
       if (Year != 0) hash ^= Year.GetHashCode();
@@ -162,6 +176,10 @@ namespace Tutorial.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+      if (VehicleId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(VehicleId);
+      }
       if (Make.Length != 0) {
         output.WriteRawTag(18);
         output.WriteString(Make);
@@ -182,6 +200,9 @@ namespace Tutorial.Vehicle.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
+      if (VehicleId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleId);
+      }
       if (Make.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Make);
       }
@@ -201,6 +222,9 @@ namespace Tutorial.Vehicle.V1 {
     public void MergeFrom(Vehicle other) {
       if (other == null) {
         return;
+      }
+      if (other.VehicleId.Length != 0) {
+        VehicleId = other.VehicleId;
       }
       if (other.Make.Length != 0) {
         Make = other.Make;
@@ -222,6 +246,10 @@ namespace Tutorial.Vehicle.V1 {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
+          case 10: {
+            VehicleId = input.ReadString();
+            break;
+          }
           case 18: {
             Make = input.ReadString();
             break;

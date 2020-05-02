@@ -1,5 +1,6 @@
 namespace Vehicle
 
+open Shared
 open System
 
 type EventStoreConfig = 
@@ -41,7 +42,7 @@ type Config =
       EventStore: EventStoreConfig 
       Seq: SeqConfig } with
     static member Load() =
-        { AppName = "vehicle-api"
+        { AppName = "VehicleApi"
           Server = ServerConfig.Load()
           EventStore = EventStoreConfig.Load()
           Seq = SeqConfig.Load() }

@@ -5,10 +5,11 @@ open Fake.IO
 open Fake.IO.FileSystemOperators
 open Fake.IO.Globbing.Operators
 open BlackFox.Fake
+open System
 
 let sln = __SOURCE_DIRECTORY__ </> "VehicleApi.sln"
 
-BuildTask.create "CleanAll" [] {
+BuildTask.create "Clean" [] {
     let directories =
         !! "**/out"
         ++ "**/bin"
@@ -28,7 +29,7 @@ let cleanProto = BuildTask.create "CleanProto" [] {
 
 let copyGenerated = BuildTask.create "CopyGenerated" [cleanProto] {
     let genDir =
-        __SOURCE_DIRECTORY__ // lease-api
+        __SOURCE_DIRECTORY__ // vehicle-api
         |> Path.getDirectory // equinox-tutorial
         </> "protos" </> "gen" </> "csharp"
     let targetDir = __SOURCE_DIRECTORY__ </> "src" </> "Proto" </> "gen"
@@ -47,28 +48,42 @@ BuildTask.create "Restore" [] {
     DotNet.restore id sln
 }
 
-BuildTask.create "Test" [] {
-    Trace.trace "Running tests..."
-    let result = DotNet.exec id "run" "--project src/Tests/Tests.fsproj"
+let unitTests = BuildTask.create "UnitTests" [] {
+    Trace.trace "Running unit tests..."
+    let result = DotNet.exec id "run" "--project src/UnitTests/UnitTests.fsproj"
     if not result.OK then failwith "Error!"
 }
 
-BuildTask.create "PublishTests" [] {
-    Trace.trace "Publishing Tests..."
-    DotNet.publish
-        (fun args -> { args with OutputPath = Some "src/Tests/out"})
-        "src/Tests/Tests.fsproj"
+BuildTask.create "IntegrationTests" [] {
+    Trace.trace "Running integration tests..."
+    let result = DotNet.exec id "run" "--project src/IntegrationTests/IntegrationTests.fsproj"
+    if not result.OK then failwith "Error!"
 }
 
-BuildTask.create "Publish" [] {
-    Trace.trace "Publishing Lease API..."
-    DotNet.publish
-        (fun args -> { args with OutputPath = Some "src/Lease/out"})
-        "src/Lease/Lease.fsproj"
+BuildTask.create "Publish" [unitTests] {
+    Trace.trace "Publishing..."
+    // ref: https://docs.microsoft.com/en-us/dotnet/core/rid-catalog
+    let runtime =
+        if Environment.isLinux then "linux-musl-x64"
+        elif Environment.isWindows then "win-x64"
+        else failwithf "environment not supported"
+    // ref: https://www.hanselman.com/blog/MakingATinyNETCore30EntirelySelfcontainedSingleExecutable.aspx
+    let customParams =
+        [ "/p:PublishSingleFile=true"
+          "/p:PublishTrimmed=true"
+          sprintf "/p:RuntimeIdentifier=%s" runtime ]
+    let customParamsStr = String.Join(" ", customParams)
+    DotNet.publish (fun args ->
+        { args with
+            OutputPath = Some "src/Vehicle/out"
+            Common =
+                args.Common
+                |> DotNet.Options.withCustomParams (Some customParamsStr) })
+        "src/Vehicle/Vehicle.fsproj"
 }
 
 BuildTask.create "Serve" [] {
-    DotNet.exec id "run" "--project src/Lease/Lease.fsproj"
+    DotNet.exec id "run" "--project src/Vehicle/Vehicle.fsproj"
     |> ignore
 }
 

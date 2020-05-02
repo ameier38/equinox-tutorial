@@ -29,10 +29,10 @@ message ListVehiclesRequest {
 }
 
 message ListVehiclesResponse {
-  repeated VehicleState vehicles = 1;
+  repeated Vehicle vehicles = 1;
   string prev_page_token = 2;
   string next_page_token = 3;
-  int32 total_count = 4;
+  int64 total_count = 4;
 }
 
 message GetVehicleRequest {
@@ -44,7 +44,6 @@ message GetVehicleResponse {
 }
 
 message AddVehicleRequest {
-  string vehicle_id = 1;
   Vehicle vehicle = 2;
 }
 

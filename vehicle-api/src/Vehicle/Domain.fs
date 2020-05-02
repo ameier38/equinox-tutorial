@@ -1,7 +1,8 @@
 namespace Vehicle
 
 type Vehicle =
-    { Make: string
+    { VehicleId: VehicleId
+      Make: string
       Model: string
       Year: int }
 

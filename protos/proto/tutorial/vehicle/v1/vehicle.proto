@@ -13,6 +13,7 @@ enum VehicleStatus {
 }
 
 message Vehicle {
+    string vehicle_id = 1;
     string make = 2;
     string model = 3;
     int32 year = 4;
