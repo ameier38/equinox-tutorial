@@ -1,9 +1,9 @@
 namespace Shared
 
-open Google.Protobuf.WellKnownTypes
-open Google.Type
 open System
 open System.Text
+open Google.Protobuf.WellKnownTypes
+open Google.Type
 
 module String =
     let fromBytes (bytes:byte[]) =
@@ -27,3 +27,8 @@ module Env =
         | value, Some defaultValue when String.IsNullOrEmpty(value) -> defaultValue
         | value, None when String.IsNullOrEmpty(value) -> failwithf "envVar %s is not defined" key
         | value, _ -> value
+
+module Operators =
+    let (!!) (value:float) = value |> decimal |> Money.fromDecimal
+    let (!@) (dt:DateTime) = dt |> DateTime.toProtoDate
+    let (!@@) (dt:DateTime) = dt |> DateTime.toProtoTimestamp

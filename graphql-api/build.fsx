@@ -6,10 +6,9 @@ open Fake.DotNet
 open Fake.IO.FileSystemOperators
 open Fake.IO.Globbing.Operators
 open BlackFox.Fake
+open System
 
-let solution = __SOURCE_DIRECTORY__ </> "Solution.sln"
-
-BuildTask.create "CleanAll" [] {
+BuildTask.create "Clean" [] {
     let directories = 
         !! "**/out"
         ++ "**/bin"
@@ -44,27 +43,30 @@ BuildTask.create "UpdateProtos" [copyGenerated] {
 }
 
 BuildTask.create "Restore" [] {
-    Trace.trace "Restoring solution..."
-    DotNet.restore id solution
+    Trace.trace "Restoring..."
+    [ "src/Server/Server.fsproj"
+      "src/IntegrationTests/IntegrationTests.fsproj" ]
+    |> List.iter (DotNet.restore id)
 }
 
-BuildTask.create "Test" [] {
-    Trace.trace "Running unit tests..."
-    let result = DotNet.exec id "run" "--project src/Tests/Tests.fsproj"
+BuildTask.create "TestIntegrations" [] {
+    Trace.trace "Running integration tests..."
+    let result = DotNet.exec id "run" "--project src/IntegrationTests/IntegrationTests.fsproj"
     if not result.OK then failwithf "Error! %A" result.Errors
 }
 
-BuildTask.create "PublishTests" [] {
-    Trace.trace "Publishing Tests..."
-    DotNet.publish
-        (fun args -> { args with OutputPath = Some "src/Tests/out"})
-        "src/Tests/Tests.fsproj"
-}
-
 BuildTask.create "Publish" [] {
-    Trace.trace "Publishing GraphQL API..."
-    DotNet.publish
-        (fun args -> { args with OutputPath = Some "src/Server/out"})
+    Trace.trace "Publishing..."
+    // ref: https://docs.microsoft.com/en-us/dotnet/core/rid-catalog
+    let runtime =
+        if Environment.isLinux then "linux-x64"
+        elif Environment.isWindows then "win-x64"
+        elif Environment.isMacOS then "osx-x64"
+        else failwithf "environment not supported"
+    DotNet.publish (fun args ->
+        { args with
+            OutputPath = Some "src/Server/out"
+            Runtime = Some runtime })
         "src/Server/Server.fsproj"
 }
 

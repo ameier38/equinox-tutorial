@@ -6,14 +6,13 @@ storage: none
 nuget Expecto
 nuget Equinox
 nuget Equinox.EventStore
-nuget Equinox.MemoryStore
 nuget FsCodec
 nuget FsCodec.NewtonsoftJson
 nuget FSharp.UMX
+nuget FSharp.Control.AsyncSeq 2.0.21
 nuget Google.Api.CommonProtos
 nuget Google.Protobuf 3.11.2
 nuget Grpc.Core 2.28.1
-nuget Grpc.Core.Testing 2.28.1
 nuget Grpc.Core.Api 2.28.1
 nuget Grpc.HealthCheck 2.28.1
 nuget Serilog

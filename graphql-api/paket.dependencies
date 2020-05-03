@@ -1,4 +1,4 @@
-version 5.216.0
+version 5.241.2
 
 source https://www.nuget.org/api/v2
 storage: none
@@ -7,9 +7,9 @@ nuget Expecto
 nuget FSharp.Data.GraphQL.Server
 nuget FSharp.Data.GraphQL.Client
 nuget Google.Api.CommonProtos
-nuget Google.Protobuf 3.9.2
-nuget Grpc.Core 2.24.0
-nuget Grpc.Core.Api 2.24.0
+nuget Google.Protobuf 3.11.2
+nuget Grpc.Core 2.28.1
+nuget Grpc.Core.Api 2.28.1
 nuget Newtonsoft.Json
 nuget Serilog
 nuget Serilog.Sinks.Console

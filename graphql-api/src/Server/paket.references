@@ -1,6 +1,4 @@
 FSharp.Data.GraphQL.Server
-Google.Api.CommonProtos
-Google.Protobuf
 Grpc.Core
 Suave
 Serilog

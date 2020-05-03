@@ -1,21 +1,12 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyName>vehicle-api</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Infrastructure.fs" />
-    <Compile Include="Config.fs" />
-    <Compile Include="Domain.fs" />
-    <Compile Include="Aggregate.fs" />
-    <Compile Include="Store.fs" />
-    <Compile Include="Service.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Proto\Proto.csproj" />
     <ProjectReference Include="..\Shared\Shared.fsproj" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />

@@ -38,11 +38,13 @@ type ServerConfig =
 
 type Config =
     { AppName: string
+      Debug: bool
       Server: ServerConfig
       EventStore: EventStoreConfig 
       Seq: SeqConfig } with
     static member Load() =
         { AppName = "VehicleApi"
+          Debug = Some "true" |> Env.getEnv "DEBUG" |> bool.Parse
           Server = ServerConfig.Load()
           EventStore = EventStoreConfig.Load()
           Seq = SeqConfig.Load() }

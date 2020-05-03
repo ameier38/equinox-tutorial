@@ -4,45 +4,30 @@ Main client facing API which stitches together the different gRPC APIs.
 ## Development
 
 ### Setup
-Install the .NET SDK.
-```shell
-choco install dotnetcore-sdk
-```
-> Must be run as administrator
-
-Install FAKE.
-```shell
-dotnet tool install fake-cli -g
-```
-
-Install Paket.
-```shell
-dotnet tool install paket -g
-```
-
-Add tool path to `PATH`.
-
-_Linux/macOS_
-```shell
-export PATH = "$PATH:$HOME/.dotnet/tools"
-```
-_Windows Powershell_
-```powershell
-$env:PATH += ";C:/Users/<user>/.dotnet/tools"
-```
-
-Install [GraphQL Playground](https://github.com/prisma-labs/graphql-playground)
+1. Install the [.NET SDK](https://andrewmeier.dev/win-dev#dotnet).
+2. Install [FAKE](https://andrewmeier.dev/win-dev#fake).
+3. Install [Paket](https://andrewmeier.dev/win-dev#paket).
+4. Add tools path to `PATH`.
+    _Linux/macOS_
+    ```shell
+    export PATH = "$PATH:$HOME/.dotnet/tools"
+    ```
+    _Windows Powershell_
+    ```powershell
+    $env:PATH += ";C:/Users/<user>/.dotnet/tools"
+    ```
+5. Install [GraphQL Playground](https://github.com/prisma-labs/graphql-playground)
 > Used for interactively running queries.
 
-## Usage
-Start server.
+## Testing
+Start the server locally for integration tests.
 ```
-docker-compose up -d graphql-api
+docker-compose up -d --build graphql-api
 ```
 
-Run tests.
+Run integration tests.
 ```
-fake build -t Test
+fake build -t TestIntegrations
 ```
 
 ## Development
@@ -59,4 +44,5 @@ fake build -t UpdateProtos
 ## Resources
 - [GraphQL](https://graphql.org/)
 - [GraphQL CLI](https://github.com/graphql-cli/graphql-cli)
+- [F# GraphQL](https://github.com/fsprojects/FSharp.Data.GraphQL)
 - [Designing Graphql Mutations](https://blog.apollographql.com/designing-graphql-mutations-e09de826ed97)

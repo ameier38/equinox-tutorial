@@ -1,13 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Lease.Config.fs" />
-    <Compile Include="Lease.Types.fs" />
-    <Compile Include="Lease.Client.fs" />
-    <Compile Include="Lease.Fields.fs" />
+    <Compile Include="Infrastructure.fs" />
+    <Compile Include="Config.fs" />
+    <Compile Include="Domain.fs" />
+    <Compile Include="Aggregate.fs" />
+    <Compile Include="Store.fs" />
+    <Compile Include="Service.fs" />
+    <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Proto\Proto.csproj" />

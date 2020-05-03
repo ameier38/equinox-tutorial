@@ -38,26 +38,19 @@ RUN fake build
 
 # copy everything else and build
 COPY src src
-COPY VehicleApi.sln .
 RUN fake build -t Publish
 
 # download grpc-health-probe
 RUN curl -sL -o grpc-health-probe \
     'https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.3.2/grpc_health_probe-linux-amd64'
 
-FROM mcr.microsoft.com/dotnet/core/runtime-deps:3.1-alpine as runner
+FROM mcr.microsoft.com/dotnet/core/runtime:3.1 as runner
 
-# ref: https://github.com/sgerrand/alpine-pkg-glibc
-RUN apk add --no-cache --virtual .build-deps wget && \
-    wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
-    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.31-r0/glibc-2.31-r0.apk && \
-    apk add glibc-2.31-r0.apk && \
-    apk del .build-deps
+WORKDIR /app
 
-COPY --from=builder /app/src/Vehicle/out/vehicle-api /usr/local/bin/vehicle-api
-RUN chmod +x /usr/local/bin/vehicle-api
+COPY --from=builder /app/src/Server/out .
 
 COPY --from=builder /app/grpc-health-probe /usr/local/bin/grpc-health-probe
 RUN chmod +x /usr/local/bin/grpc-health-probe
 
-ENTRYPOINT [ "/usr/local/bin/vehicle-api" ]
+ENTRYPOINT [ "dotnet", "Server.dll" ]

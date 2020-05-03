@@ -7,8 +7,6 @@ open Fake.IO.Globbing.Operators
 open BlackFox.Fake
 open System
 
-let sln = __SOURCE_DIRECTORY__ </> "VehicleApi.sln"
-
 BuildTask.create "Clean" [] {
     let directories =
         !! "**/out"
@@ -45,45 +43,38 @@ BuildTask.create "UpdateProtos" [copyGenerated] {
 }
 
 BuildTask.create "Restore" [] {
-    DotNet.restore id sln
+    DotNet.restore id "src/Server/Server.fsproj"
 }
 
-let unitTests = BuildTask.create "UnitTests" [] {
+let testUnits = BuildTask.create "TestUnits" [] {
     Trace.trace "Running unit tests..."
     let result = DotNet.exec id "run" "--project src/UnitTests/UnitTests.fsproj"
     if not result.OK then failwith "Error!"
 }
 
-BuildTask.create "IntegrationTests" [] {
+BuildTask.create "TestIntegrations" [] {
     Trace.trace "Running integration tests..."
     let result = DotNet.exec id "run" "--project src/IntegrationTests/IntegrationTests.fsproj"
     if not result.OK then failwith "Error!"
 }
 
-BuildTask.create "Publish" [unitTests] {
+BuildTask.create "Publish" [testUnits] {
     Trace.trace "Publishing..."
     // ref: https://docs.microsoft.com/en-us/dotnet/core/rid-catalog
     let runtime =
-        if Environment.isLinux then "linux-musl-x64"
+        if Environment.isLinux then "linux-x64"
         elif Environment.isWindows then "win-x64"
+        elif Environment.isMacOS then "osx-x64"
         else failwithf "environment not supported"
-    // ref: https://www.hanselman.com/blog/MakingATinyNETCore30EntirelySelfcontainedSingleExecutable.aspx
-    let customParams =
-        [ "/p:PublishSingleFile=true"
-          "/p:PublishTrimmed=true"
-          sprintf "/p:RuntimeIdentifier=%s" runtime ]
-    let customParamsStr = String.Join(" ", customParams)
     DotNet.publish (fun args ->
         { args with
-            OutputPath = Some "src/Vehicle/out"
-            Common =
-                args.Common
-                |> DotNet.Options.withCustomParams (Some customParamsStr) })
-        "src/Vehicle/Vehicle.fsproj"
+            OutputPath = Some "src/Server/out"
+            Runtime = Some runtime })
+        "src/Server/Server.fsproj"
 }
 
 BuildTask.create "Serve" [] {
-    DotNet.exec id "run" "--project src/Vehicle/Vehicle.fsproj"
+    DotNet.exec id "run" "--project src/Server/Server.fsproj"
     |> ignore
 }
 

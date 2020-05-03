@@ -36,27 +36,20 @@ services:
       - "4000:4000"
     environment:
       SERVER_PORT: 4000
-      LEASE_API_HOST: lease-api
-      LEASE_API_PORT: 50051
+      VEHICLE_API_HOST: vehicle-api
+      VEHICLE_API_PORT: 50051
       SEQ_HOST: seq
       SEQ_PORT: 5341
-  test-graphql-api:
-    build:
-      context: ./graphql-api
-      target: tester
-    environment:
-      GRAPHQL_API_HOST: graphql-api
-      GRAPHQL_API_PORT: 4000
-    depends_on:
-      - graphql-api
+    depends_on: 
+      - vehicle-api
   web-app:
     build:
-      context: ./web-app
+      context: ./fable-web-app
     environment:
-      REACT_APP_GRAPHQL_HOST: localhost
-      REACT_APP_GRAPHQL_PORT: 4000
+      REACT_APP_GRAPHQL_API_HOST: localhost
+      REACT_APP_GRAPHQL_API_PORT: 4000
     volumes:
-      - ./web-app:/app
+      - ./fable-web-app:/app
       - /app/node_modules
     ports:
       - "3000:3000"

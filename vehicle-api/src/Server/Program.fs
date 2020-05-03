@@ -3,6 +3,7 @@ open Grpc.Health.V1
 open Grpc.HealthCheck
 open Vehicle
 open Serilog
+open Serilog.Events
 open System
 open System.Threading
 
@@ -10,13 +11,15 @@ open System.Threading
 let main _ =
     let getUtcNow () = DateTimeOffset.UtcNow
     let config = Config.Load()
-    let log =
+    let logger =
         LoggerConfiguration()
             .Enrich.WithProperty("Application", config.AppName)
+            .MinimumLevel.Is(if config.Debug then LogEventLevel.Debug else LogEventLevel.Information)
             .WriteTo.Console()
             .WriteTo.Seq(config.Seq.Url)
             .CreateLogger()
-    let store = Store(config, log)
+    Log.Logger <- logger
+    let store = Store(config, logger)
     let vehicleService = VehicleServiceImpl(store)
     let healthService = HealthServiceImpl()
     let server = Server()
@@ -25,9 +28,9 @@ let main _ =
     let serverPort = ServerPort(config.Server.Host, config.Server.Port, ServerCredentials.Insecure)
     let listenPort = server.Ports.Add(serverPort)
     server.Start()
-    log.Information("🚀 Server listening at :{Port}", listenPort)
-    log.Information("🐲 Connected to EventStore at {Url}", config.EventStore.DiscoveryUri)
-    log.Information("📜 Logs available at {Url}", config.Seq.Url)
+    Log.Information("🚀 Server listening at :{Port}", listenPort)
+    Log.Information("🔗 Connected to EventStore at {Url}", config.EventStore.DiscoveryUri)
+    Log.Information("📜 Logs sent to {Url}", config.Seq.Url)
     let exitEvent = new AutoResetEvent(false)
     let exitHandler = new ConsoleCancelEventHandler(fun _ _ -> exitEvent.Set() |> ignore)
     Console.CancelKeyPress.AddHandler(exitHandler)

@@ -4,6 +4,9 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Config.fs" />
+    <Compile Include="GraphqlClient.fs" />
+    <Compile Include="Landing.fs" />
     <Compile Include="App.fs" />
     <Compile Include="Main.fs" />
   </ItemGroup>
