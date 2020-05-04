@@ -4,11 +4,12 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Infrastructure.fs" />
     <Compile Include="Config.fs" />
-    <Compile Include="GraphqlClient.fs" />
+    <Compile Include="Graphql.fs" />
     <Compile Include="Landing.fs" />
     <Compile Include="App.fs" />
-    <Compile Include="Main.fs" />
+    <Compile Include="Program.fs" />
   </ItemGroup>
-  <Import Project="..\.paket\Paket.Restore.targets" />
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

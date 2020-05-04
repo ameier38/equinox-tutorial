@@ -1,6 +1,8 @@
 storage none
 source https://api.nuget.org/v3/index.json
 
+nuget canopy
+nuget Expecto
 nuget Fable.Core
 nuget Fable.Browser.Dom
 nuget Fable.Elmish
@@ -11,6 +13,7 @@ nuget Fable.SimpleJson
 nuget Feliz
 nuget Feliz.MaterialUI
 nuget Feliz.Router
+nuget FSharp.UMX
 
 // [ FAKE GROUP ]
 group Build

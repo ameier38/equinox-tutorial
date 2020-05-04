@@ -12,7 +12,7 @@ module.exports = (env, argv) => {
 
     return {
         mode: "none",
-        entry: "./src/App.fsproj",
+        entry: "./src/App/App.fsproj",
         output: {
             path: path.join(__dirname, "dist"),
             filename: "main.js",

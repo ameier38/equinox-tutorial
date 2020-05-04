@@ -1,8 +1,6 @@
 #load ".fake/build.fsx/intellisense.fsx"
-open Fake.Core
 open Fake.DotNet
 open Fake.IO
-open Fake.IO.FileSystemOperators
 open Fake.IO.Globbing.Operators
 open Fake.JavaScript
 open BlackFox.Fake
@@ -28,6 +26,11 @@ let serve = BuildTask.create "Serve" [] {
 
 let build = BuildTask.create "Build" [] {
     Npm.run "build" id
+}
+
+BuildTask.create "TestIntegrations" [] {
+    let result = DotNet.exec id "run" "src/IntegrationTests/IntegrationTests.fsproj"
+    if not result.OK then failwithf "Error! %A" result.Errors
 }
 
 let _default = BuildTask.createEmpty "Default" []

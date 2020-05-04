@@ -1,4 +1,4 @@
-module Main
+module Program
 
 open Elmish
 open Elmish.React
