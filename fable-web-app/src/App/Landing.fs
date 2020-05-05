@@ -45,69 +45,148 @@ let update (msg:Msg) (state:State): State * Cmd<Msg> =
                 Vehicles = Resolved result }
         newState, Cmd.none
 
-let renderVehicles (vehicles:VehicleDto list) (dispatch:Msg -> unit) =
-    Mui.grid [
-        grid.container true
-        grid.spacing._2
-        grid.children [
-            for vehicle in vehicles do
-                let makeModel = sprintf "%s %s" vehicle.make vehicle.model
-                yield Mui.grid [
-                    prop.key vehicle.vehicleId
-                    grid.item true
-                    grid.xs._12
-                    grid.md._4
-                    grid.children [
-                        Mui.card [
-                            card.children [
-                                Mui.cardContent [
-                                    Mui.typography [
-                                        typography.variant.h6
-                                        prop.text makeModel
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
+let useStyles = Styles.makeStyles(fun styles theme ->
+    let jumbotronImage = Image.load "./images/cosmos.jpg"
+    Log.info jumbotronImage
+    {|
+        jumbotron = styles.create [
+            style.paddingTop 100
+            style.paddingBottom 20
+            style.backgroundImageUrl jumbotronImage
         ]
-    ]
+        jumbotronText = styles.create [
+            style.color theme.palette.primary.contrastText
+        ]
+    |}
+)
 
-let renderSkeleton () =
-    Mui.grid [
-        grid.container true
-        grid.spacing._2
-        grid.children [
-            for i in 1..5 do
-                yield Mui.grid [
-                    prop.key i
-                    grid.item true
-                    grid.xs._12
-                    grid.md._4
-                    grid.children [
-                        Mui.card [
-                            card.children [
-                                Mui.cardContent [
-                                    Mui.skeleton [
-                                        skeleton.animation.wave
-                                        skeleton.width (length.perc 100)
+let rocketImage = Image.load "./images/rocket.svg"
+
+let renderJumbotron =
+    React.functionComponent(fun props ->
+        let c = useStyles()
+        let theme = Styles.useTheme()
+        let isGteMd = Hooks.useMediaQuery(theme.breakpoints.upMd)
+        Mui.paper [
+            prop.className c.jumbotron
+            paper.elevation 0
+            paper.children [
+                Mui.container [
+                    container.disableGutters (not isGteMd)
+                    container.maxWidth.md
+                    container.children [
+                        Mui.grid [
+                            grid.container true
+                            grid.justify.spaceBetween
+                            grid.spacing._2
+                            grid.children [
+                                Mui.grid [
+                                    grid.item true
+                                    grid.xs._12
+                                    grid.md._6
+                                    grid.children [
+                                        Mui.typography [
+                                            prop.className c.jumbotronText
+                                            typography.variant.h2
+                                            typography.children [
+                                                "Best spaceship deals in the universe"
+                                            ]
+                                        ]
                                     ]
                                 ]
+                                if isGteMd then
+                                    Mui.grid [
+                                        grid.item true
+                                        grid.md._3
+                                        grid.children [
+                                            Html.img [
+                                                prop.src rocketImage
+                                            ]
+                                        ]
+                                    ]
                             ]
                         ]
                     ]
                 ]
+            ]
         ]
-    ]
+    )
+
+type VehiclesProps =
+    { isLoading: bool
+      vehicles: VehicleDto list
+      dispatch: Msg -> unit }
+
+let renderVehicles =
+    React.functionComponent<VehiclesProps>(fun props ->
+        let theme = Styles.useTheme()
+        let isGteMd = Hooks.useMediaQuery(theme.breakpoints.upMd)
+        Mui.container [
+            container.disableGutters (not isGteMd)
+            container.maxWidth.md
+            container.children [
+                Mui.grid [
+                    grid.container true
+                    grid.spacing._2
+                    grid.children [
+                        if props.isLoading then
+                            for i in 1..5 do
+                                yield Mui.grid [
+                                    prop.key i
+                                    grid.item true
+                                    grid.xs._12
+                                    grid.md._4
+                                    grid.children [
+                                        Mui.card [
+                                            card.children [
+                                                Mui.cardContent [
+                                                    Mui.skeleton [
+                                                        skeleton.animation.wave
+                                                        skeleton.width (length.perc 100)
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                        else
+                            for vehicle in props.vehicles do
+                                let makeModel = sprintf "%s %s" vehicle.make vehicle.model
+                                yield Mui.grid [
+                                    prop.key vehicle.vehicleId
+                                    grid.item true
+                                    grid.xs._12
+                                    grid.md._4
+                                    grid.children [
+                                        Mui.card [
+                                            card.children [
+                                                Mui.cardContent [
+                                                    Mui.typography [
+                                                        typography.variant.h6
+                                                        prop.text makeModel
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                    ]
+                ]
+            ]
+        ]
+    )
 
 let render (state:State) (dispatch:Msg -> unit) =
-    match state.Vehicles with
-    | NotStarted
-    | InProgress ->
-        renderSkeleton()
-    | Resolved result ->
-        match result with
-        | Ok res ->
-            renderVehicles res.vehicles dispatch
-        | Error error ->
-            Error.renderError error
+    React.fragment [
+        renderJumbotron()
+        match state.Vehicles with
+        | NotStarted
+        | InProgress ->
+            renderVehicles { isLoading = true; vehicles = []; dispatch = dispatch }
+        | Resolved result ->
+            match result with
+            | Ok res ->
+                renderVehicles { isLoading = false; vehicles = res.vehicles; dispatch = dispatch }
+            | Error error ->
+                Error.renderError error
+    ]

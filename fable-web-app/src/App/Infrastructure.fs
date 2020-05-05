@@ -3,6 +3,7 @@ module Infrastructure
 
 open Elmish
 open Fable.Core
+open Fable.Core.JsInterop
 open Feliz
 open FSharp.UMX
 open System
@@ -46,10 +47,12 @@ module Cow =
                 ||     ||
 ", msg)
 
+[<RequireQualifiedAccess>]
 module Env =
     [<Emit("process.env[$0] ? process.env[$0] : ''")>]
     let getEnv (key:string): string = jsNative
 
+[<RequireQualifiedAccess>]
 module Log =
     let info (msg:obj) =
         Fable.Core.JS.console.info(msg)
@@ -68,6 +71,7 @@ module Log =
         ()
 #endif
 
+[<RequireQualifiedAccess>]
 module Cmd =
     let fromAsync (work:Async<'M>): Cmd<'M> =
         let asyncCmd (dispatch:'M -> unit): unit =
@@ -79,6 +83,7 @@ module Cmd =
             Async.StartImmediate asyncDispatch
         Cmd.ofSub asyncCmd
 
+[<RequireQualifiedAccess>]
 module Error =
     let renderError (error:string) =
         Html.div [
@@ -90,3 +95,7 @@ module Error =
                 Html.pre (Cow.says error)
             ]
         ]
+
+[<RequireQualifiedAccess>]
+module Image =
+    let inline load (relativePath:string): string = importDefault relativePath

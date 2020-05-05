@@ -42,10 +42,16 @@ module.exports = (env, argv) => {
                 }),
             ],
         module: {
-            rules: [{
-                test: /\.fs(x|proj)?$/,
-                use: "fable-loader"
-            }]
+            rules: [
+                { 
+                    test: /\.fs(x|proj)?$/,
+                    use: "fable-loader"
+                },
+                {
+                    test: /\.(png|jpe?g|gif|svg)$/i,
+                    use: "file-loader"
+                }
+            ]
         }
     }
 } 

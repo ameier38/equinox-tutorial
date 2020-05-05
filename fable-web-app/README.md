@@ -6,3 +6,5 @@
 2. Install [FAKE](https://andrewmeier.dev/win-dev#fake)
 3. Install [Paket](https://andrewmeier.dev/win-dev#paket)
 
+## Resources
+- [NASA Images](https://images.nasa.gov/)

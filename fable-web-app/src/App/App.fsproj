@@ -7,6 +7,7 @@
     <Compile Include="Infrastructure.fs" />
     <Compile Include="Config.fs" />
     <Compile Include="Graphql.fs" />
+    <Compile Include="Navigation.fs" />
     <Compile Include="Landing.fs" />
     <Compile Include="App.fs" />
     <Compile Include="Program.fs" />
