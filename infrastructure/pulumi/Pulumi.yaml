@@ -1,0 +1,3 @@
+name: equinox-tutorial
+runtime: nodejs
+description: Pulumi project for Equinox tutorial
