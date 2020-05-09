@@ -57,9 +57,9 @@ module Log =
     let info (msg:obj) =
         Fable.Core.JS.console.info(msg)
 
-    let debug (error:obj) =
+    let debug (msg:obj) =
 #if DEVELOPMENT
-        Fable.Core.JS.console.error(error)
+        Fable.Core.JS.console.info(msg)
 #else
         ()
 #endif
@@ -85,14 +85,15 @@ module Cmd =
 
 [<RequireQualifiedAccess>]
 module Error =
-    let renderError (error:string) =
+    let renderError () =
         Html.div [
             prop.style [
                 style.display.flex
                 style.justifyContent.center
+                style.overflowX.hidden
             ]
             prop.children [
-                Html.pre (Cow.says error)
+                Html.pre (Cow.says "Oops!")
             ]
         ]
 

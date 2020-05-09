@@ -6,6 +6,9 @@ open Feliz.Router
 open Feliz.MaterialUI
 open Graphql
 
+let jumbotronImage = Image.load "./images/cosmos.jpg"
+let rocketImage = Image.load "./images/rocket.svg"
+
 type State =
     { NextPageToken: PageToken
       Vehicles: Deferred<Result<ListVehiclesResponseDto,string>> }
@@ -46,8 +49,6 @@ let update (msg:Msg) (state:State): State * Cmd<Msg> =
         newState, Cmd.none
 
 let useStyles = Styles.makeStyles(fun styles theme ->
-    let jumbotronImage = Image.load "./images/cosmos.jpg"
-    Log.info jumbotronImage
     {|
         jumbotron = styles.create [
             style.paddingTop 100
@@ -60,10 +61,9 @@ let useStyles = Styles.makeStyles(fun styles theme ->
     |}
 )
 
-let rocketImage = Image.load "./images/rocket.svg"
 
-let renderJumbotron =
-    React.functionComponent(fun props ->
+let jumbotron =
+    React.functionComponent(fun _ ->
         let c = useStyles()
         let theme = Styles.useTheme()
         let isGteMd = Hooks.useMediaQuery(theme.breakpoints.upMd)
@@ -72,13 +72,11 @@ let renderJumbotron =
             paper.elevation 0
             paper.children [
                 Mui.container [
-                    container.disableGutters (not isGteMd)
                     container.maxWidth.md
                     container.children [
                         Mui.grid [
                             grid.container true
                             grid.justify.spaceBetween
-                            grid.spacing._2
                             grid.children [
                                 Mui.grid [
                                     grid.item true
@@ -117,7 +115,7 @@ type VehiclesProps =
       vehicles: VehicleDto list
       dispatch: Msg -> unit }
 
-let renderVehicles =
+let vehicles =
     React.functionComponent<VehiclesProps>(fun props ->
         let theme = Styles.useTheme()
         let isGteMd = Hooks.useMediaQuery(theme.breakpoints.upMd)
@@ -127,7 +125,6 @@ let renderVehicles =
             container.children [
                 Mui.grid [
                     grid.container true
-                    grid.spacing._2
                     grid.children [
                         if props.isLoading then
                             for i in 1..5 do
@@ -178,15 +175,16 @@ let renderVehicles =
 
 let render (state:State) (dispatch:Msg -> unit) =
     React.fragment [
-        renderJumbotron()
+        jumbotron()
         match state.Vehicles with
         | NotStarted
         | InProgress ->
-            renderVehicles { isLoading = true; vehicles = []; dispatch = dispatch }
+            vehicles { isLoading = true; vehicles = []; dispatch = dispatch }
         | Resolved result ->
             match result with
             | Ok res ->
-                renderVehicles { isLoading = false; vehicles = res.vehicles; dispatch = dispatch }
+                vehicles { isLoading = false; vehicles = res.vehicles; dispatch = dispatch }
             | Error error ->
-                Error.renderError error
+                Log.error error
+                Error.renderError()
     ]

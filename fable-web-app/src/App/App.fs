@@ -59,6 +59,12 @@ let renderPage (state:State) (dispatch:Msg -> unit) =
     | LandingUrl ->
         Landing.render state.LandingState (LandingMsg >> dispatch)
 
+let renderApp (state:State) (dispatch:Msg -> unit) =
+    Auth0.provider [
+        Navigation.render state.NavigationState (NavigationMsg >> dispatch)
+        renderPage state dispatch
+    ]
+
 type AppProps =
     { state: State
       dispatch: Msg -> unit }
@@ -72,7 +78,6 @@ let render (state:State) (dispatch:Msg -> unit) =
         )
         Router.application [ 
             Mui.cssBaseline []
-            Navigation.render { state = state.NavigationState; dispatch = (NavigationMsg >> dispatch) }
-            renderPage state dispatch
+            renderApp state dispatch
         ]
     ]

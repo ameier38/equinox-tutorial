@@ -19,6 +19,7 @@ module.exports = (env, argv) => {
         },
         devServer: {
             contentBase: "dist",
+            port: 3000,
             hot: true,
             inline: true,
             // required so that webpack will go to index.html on not found

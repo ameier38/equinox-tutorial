@@ -6,6 +6,7 @@
   <ItemGroup>
     <Compile Include="Infrastructure.fs" />
     <Compile Include="Config.fs" />
+    <Compile Include="Auth0.fs" />
     <Compile Include="Graphql.fs" />
     <Compile Include="Navigation.fs" />
     <Compile Include="Landing.fs" />
