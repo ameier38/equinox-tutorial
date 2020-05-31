@@ -41,6 +41,9 @@ type VehicleServiceImpl(store:Store) =
             sprintf "user %s does not have %s permission" user.UserId permission
             |> RpcException.raisePermissionDenied
 
+    override _.ListAvailableVehicles(req:Tutorial.Vehicle.V1.ListAvailableVehiclesRequest, context:ServerCallContext) =
+        
+
     override _.ListVehicles(req:Tutorial.Vehicle.V1.ListVehiclesRequest, context:ServerCallContext) =
         async {
             try

@@ -10,6 +10,10 @@ import "tutorial/user/v1/user.proto";
 
 // Service to handle interactions with Vehicles.
 service VehicleService {
+  // List available vehicles in inventory.
+  rpc ListAvailableVehicles(ListAvailableVehiclesRequest) returns (ListAvailableVehiclesResponse);
+  // Get an available vehicle.
+  rpc GetAvailableVehicle(GetAvailableVehicleRequest) returns (GetAvailableVehicleResponse);
   // List vehicles in inventory.
   rpc ListVehicles(ListVehiclesRequest) returns (ListVehiclesResponse);
   // Get a vehicle.
@@ -22,6 +26,26 @@ service VehicleService {
   rpc LeaseVehicle(LeaseVehicleRequest) returns (LeaseVehicleResponse);
   // Return a vehicle after a lease.
   rpc ReturnVehicle(ReturnVehicleRequest) returns (ReturnVehicleResponse);
+}
+
+message ListAvailableVehiclesRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+}
+
+message ListAvailableVehiclesResponse {
+  repeated Vehicle vehicles = 1;
+  string prev_page_token = 2;
+  string next_page_token = 3;
+  int64 total_count = 4;
+}
+
+message GetAvailableVehicleRequest {
+  string vehicle_id = 1;
+}
+
+message GetAvailableVehicleResponse {
+  VehicleState vehicle = 1;
 }
 
 message ListVehiclesRequest {

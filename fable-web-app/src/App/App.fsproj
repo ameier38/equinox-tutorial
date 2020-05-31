@@ -6,7 +6,8 @@
     <Compile Include="Infrastructure.fs" />
     <Compile Include="Config.fs" />
     <Compile Include="Auth0.fs" />
-    <Compile Include="Graphql.fs" />
+    <Compile Include="GraphQL.fs" />
+    <Compile Include="Types.fs" />
     <Compile Include="Common.fs" />
     <Compile Include="Landing.fs" />
     <Compile Include="Page.fs" />

@@ -34,7 +34,7 @@ type NavigationProps =
 let navigation =
     React.functionComponent<NavigationProps>(fun props ->
         let c = useStyles()
-        let auth0 = Auth0.useAuth0()
+        let auth0 = Hooks.useAuth0()
         Mui.appBar [
             appBar.elevation 0
             appBar.square true

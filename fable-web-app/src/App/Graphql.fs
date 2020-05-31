@@ -1,92 +1,81 @@
-module Graphql
+module GraphQL
 
-open Fable.SimpleHttp
-open Fable.SimpleJson
+open Auth0
+open Fable
+open Fable.Core
+open Fable.Core.JsInterop
+open Feliz
 
-type VehicleDto =
-    { vehicleId: string
-      make: string
-      model: string
-      year: int }
+// force use of input object
+// ref: https://blog.apollographql.com/designing-graphql-mutations-e09de826ed97
+type Variables<'I> = { input: 'I }
+        
+type UseQueryOptions<'I> =
+    { variables: Variables<'I> }
 
-type ListVehiclesInputDto =
-    { pageToken: string
-      pageSize: int }
+type UseQueryResponse<'D> =
+    { loading: bool
+      error: obj option
+      data: 'D }
 
-type ListVehiclesResponseDto =
-    { vehicles: VehicleDto list
-      prevPageToken: string
-      nextPageToken: string
-      totalCount: int }
+[<RequireQualifiedAccess>]
+module private GraphQLInterop =
+    type GraphQLClientOptions =
+        { url: string }
 
-let listVehiclesQuery = """
-query ListVehicles($input:ListVehiclesInput!) {
-    listVehicles(input: $input) {
-        vehicles {
-            vehicleId
-            make
-            model
-            year
-        }
-        prevPageToken
-        nextPageToken
-        totalCount
-    }
-}
-"""
+    type IGraphQLClient =
+        abstract member setHeader: string * string -> unit
 
-type Variables<'T> =
-    { input: 'T }
+    type IGraphQLClientStatic =
+        [<Emit("new $0($1)")>]
+        abstract Create: GraphQLClientOptions -> IGraphQLClient
 
-type Request<'T> =
-    { query: string
-      variables: Variables<'T> }
+    let ClientContext: React.IContext<IGraphQLClient>  = importMember "graphql-hooks"
 
-type ResponseData =
-    { listVehicles: ListVehiclesResponseDto option }
+    let GraphQLClient: IGraphQLClientStatic = importMember "graphql-hooks"
 
-type Response =
-    { data: ResponseData
-      errors: (string list) option }
+    type GraphQLProviderProps =
+        { client: IGraphQLClient
+          children: seq<ReactElement> }
 
-type GraphqlClient(config:Config.GraphqlClientConfig) =
-    let post (f:ResponseData -> 'T) (token:string) (data:string) =
-        async {
-            try
-                sprintf "graphql url: %s" config.Url |> Log.debug
-                let bearer = sprintf "Bearer %s" token
-                let! res =
-                    Http.request config.Url
-                    |> Http.method POST
-                    |> Http.header (Headers.authorization bearer)
-                    |> Http.content (BodyContent.Text data)
-                    |> Http.send
-                let parsedResponse = Json.parseAs<Response> res.responseText
-                return
-                    match res.statusCode with
-                    | 200 -> Ok (f parsedResponse.data)
-                    | other ->
-                        let error = sprintf "status code %i! %A" other parsedResponse.errors
-                        Log.error error
-                        Error error
-            with ex ->
-                Log.error ex
-                let error = sprintf "Error! %A" ex
-                return Error error
-        }
+    let provider =
+        React.functionComponent<GraphQLProviderProps>("GraphQLProvider", fun props ->
+            let auth0 = Hooks.useAuth0()
+            let initGqlClient () =
+                async {
+                    let! token = auth0.getToken()
+                    Log.debug ("got token", token)
+                    Log.debug "setting auth header"
+                    props.client.setHeader("Authorization", sprintf "Bearer %s" token)
+                    Log.debug "setting client"
+                }
+            React.useEffectOnce(initGqlClient >> Async.StartImmediate)
+            React.contextProvider(ClientContext, props.client, props.children)
+        )
 
-    member _.ListVehicles(input:ListVehiclesInputDto) =
-        async {
-            let requestData =
-                { query = listVehiclesQuery
-                  variables = { input = input } }
-                |> Json.stringify
-            let mapper (responseData:ResponseData) =
-                match responseData.listVehicles with
-                | Some listVehiclesResponse -> listVehiclesResponse
-                | None -> failwithf "listVehicles not found"
-            let! response = post mapper requestData
-            return response
-        }
+    let useQuery<'V,'D>(query:string, options:UseQueryOptions<'V>): UseQueryResponse<'D> = importMember "graphql-hooks"
 
-let graphqlClient = GraphqlClient(Config.graphqlClientConfig)
+type GraphQLProperty =
+    | Url of string
+    | Children of ReactElement list
+
+type GraphQL =
+    static member url = Url
+    static member children = Children
+    static member provider (props:GraphQLProperty list): ReactElement =
+        let emptyClient = GraphQLInterop.GraphQLClient.Create({ url = "http://localhost:4000"})
+        let defaultProps: GraphQLInterop.GraphQLProviderProps =
+            { client = emptyClient
+              children = List.empty }
+        let modifiedProps =
+            (defaultProps, props)
+            ||> List.fold (fun state prop ->
+                match prop with
+                | Url url -> { state with client = GraphQLInterop.GraphQLClient.Create({ url = url})}
+                | Children children -> { state with children = children }
+            )
+        GraphQLInterop.provider modifiedProps
+
+module Hooks =
+    let useQuery<'I,'D>(query:string, input:'I): UseQueryResponse<'D> =
+        GraphQLInterop.useQuery(query, { variables = { input = input }})

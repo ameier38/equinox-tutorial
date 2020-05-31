@@ -5,49 +5,49 @@ open Feliz
 open Feliz.Router
 open Feliz.MaterialUI
 open FSharp.UMX
-open Graphql
+open GraphQL
+open Types
 
 let jumbotronImage = Image.load "./images/cosmos.jpg"
 let rocketImage = Image.load "./images/rocket.svg"
 
-type State =
-    { NextPageToken: PageToken
-      Vehicles: Deferred<Result<ListVehiclesResponseDto,string>> }
+let listVehiclesQuery = """
+query ListVehicles($input:ListVehiclesInput!) {
+    listVehicles(input: $input) {
+        vehicles {
+            vehicleId
+            make
+            model
+            year
+        }
+        prevPageToken
+        nextPageToken
+        totalCount
+    }
+}
+"""
+
+type ListVehiclesInput =
+    { pageToken: string
+      pageSize: int }
+
+type ListVehiclesResponse =
+    { vehicles: Vehicle list
+      prevPageToken: string
+      nextPageToken: string
+      totalCount: int }
 
 type Msg =
-    | ListVehicles of AsyncOperation<PageToken,Result<ListVehiclesResponseDto,string>>
     | NavigateToVehicle of VehicleId
 
-let listVehicles (input:ListVehiclesInputDto): Cmd<Msg> =
-    async {
-        let! response = graphqlClient.ListVehicles(input)
-        return ListVehicles (Finished response)
-    } |> Cmd.fromAsync
-
-let init (): State * Cmd<Msg> =
+let init (): unit * Cmd<Msg> =
     let pageToken = UMX.tag<pageToken> ""
-    let state =
-        { NextPageToken = pageToken
-          Vehicles = NotStarted }
-    state, Cmd.ofMsg(ListVehicles (Started pageToken))
+    (), Cmd.none
 
-let update (msg:Msg) (state:State): State * Cmd<Msg> =
+let update (msg:Msg) (state:unit): unit * Cmd<Msg> =
     match msg with
     | NavigateToVehicle vehicleId ->
         state, Router.navigate (sprintf "vehicles/%s" (UMX.untag vehicleId))
-    | ListVehicles (Started pageToken) ->
-        let input =
-            { pageToken = UMX.untag pageToken
-              pageSize = 10 }
-        let newState =
-            { state with
-                  Vehicles = InProgress }
-        newState, listVehicles input
-    | ListVehicles (Finished result) ->
-        let newState =
-            { state with
-                Vehicles = Resolved result }
-        newState, Cmd.none
 
 let useStyles = Styles.makeStyles(fun styles theme ->
     {|
@@ -110,13 +110,14 @@ let jumbotron =
         ]
     )
 
-type VehiclesProps =
-    { isLoading: bool
-      vehicles: VehicleDto list
-      dispatch: Msg -> unit }
-
 let vehicles =
-    React.functionComponent<VehiclesProps>(fun props ->
+    React.functionComponent(fun _ ->
+        let (pageToken, setPageToken) = React.useState("")
+        let (pageSize, setPageSize) = React.useState(10)
+        let input = { pageToken = pageToken; pageSize = pageSize }
+        Log.debug "running query"
+        let res = Hooks.useQuery<ListVehiclesInput,ListVehiclesResponse>(listVehiclesQuery, input)
+        if res.error.IsSome then Log.debug res.error
         let theme = Styles.useTheme()
         let isGteMd = Hooks.useMediaQuery(theme.breakpoints.upMd)
         Mui.container [
@@ -126,7 +127,15 @@ let vehicles =
                 Mui.grid [
                     grid.container true
                     grid.children [
-                        if props.isLoading then
+                        if res.error.IsSome then
+                            yield Mui.grid [
+                                grid.item true
+                                grid.xs._12
+                                grid.children [
+                                    Error.renderError()
+                                ]
+                            ]
+                        elif res.loading then
                             for i in 1..5 do
                                 yield Mui.grid [
                                     prop.key i
@@ -147,7 +156,8 @@ let vehicles =
                                     ]
                                 ]
                         else
-                            for vehicle in props.vehicles do
+                            Log.debug ("vehicles", res.data)
+                            for vehicle in res.data.vehicles do
                                 let makeModel = sprintf "%s %s" vehicle.make vehicle.model
                                 yield Mui.grid [
                                     prop.key vehicle.vehicleId
@@ -173,18 +183,8 @@ let vehicles =
         ]
     )
 
-let render (state:State) (dispatch:Msg -> unit) =
+let render (state:unit) (dispatch:Msg -> unit) =
     React.fragment [
         jumbotron()
-        match state.Vehicles with
-        | NotStarted
-        | InProgress ->
-            vehicles { isLoading = true; vehicles = []; dispatch = dispatch }
-        | Resolved result ->
-            match result with
-            | Ok res ->
-                vehicles { isLoading = false; vehicles = res.vehicles; dispatch = dispatch }
-            | Error error ->
-                Log.error error
-                Error.renderError()
+        vehicles()
     ]

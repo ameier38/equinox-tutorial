@@ -4,7 +4,7 @@ let getPortComponent (port:string) =
     if port = "80" || port = "" then ""
     else sprintf ":%s" port
 
-type GraphqlClientConfig =
+type GraphQLConfig =
     { Url: string } with
     static member Load() =
         let scheme = Env.getEnv "FABLE_APP_GRAPHQL_API_SCHEME"
@@ -36,7 +36,7 @@ type AppConfig =
         let url = sprintf "%s://%s%s" scheme host portComponent
         { Url = url }
 
-let graphqlClientConfig = GraphqlClientConfig.Load()
+let graphqlConfig = GraphQLConfig.Load()
 
 let auth0Config = Auth0Config.Load()
 

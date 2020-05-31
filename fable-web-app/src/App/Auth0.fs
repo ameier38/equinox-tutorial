@@ -9,10 +9,18 @@ type UserProfile =
     { email: string
       name: string
       user_id: string
-      ``https://equinoxtutorial.com/roles``: string list }
+      ``https://cosmicdealership.com/roles``: string list }
+
+type Auth0ProviderValue =
+    { isLoading: bool
+      isAuthenticated: bool
+      userProfile: UserProfile option
+      getToken: unit -> Async<string>
+      login: unit -> unit
+      logout: unit -> unit }
 
 [<RequireQualifiedAccess>]
-module internal Auth0 =
+module private Auth0Interop =
     type Auth0ClientOptions =
         { domain: string
           client_id: string
@@ -26,14 +34,6 @@ module internal Auth0 =
         abstract member getUser: unit -> JS.Promise<UserProfile>
         abstract member getTokenSilently: unit -> JS.Promise<string>
         abstract member logout: unit -> unit
-
-    type Auth0ProviderValue =
-        { isLoading: bool
-          isAuthenticated: bool
-          userProfile: UserProfile option
-          getToken: unit -> Async<string>
-          login: unit -> unit
-          logout: unit -> unit }
 
     type Auth0ProviderProps =
         { children: seq<ReactElement>
@@ -56,15 +56,12 @@ module internal Auth0 =
 
     let Auth0Context = React.createContext("Auth0Context", defaultAuth0Context)
 
-    let useAuth0 () = React.useContext(Auth0Context)
-
-    let auth0Provider =
+    let provider =
         React.functionComponent<Auth0ProviderProps>("Auth0Provider", fun props ->
             let (isLoading, setIsLoading) = React.useState(true)
             let (isAuthenticated, setIsAuthenticated) = React.useState(false)
             let (userProfile, setUserProfile) = React.useState<UserProfile option>(None)
             let (auth0Client, setAuth0Client) = React.useState<IAuth0Client option>(None)
-            console.log(props)
 
             let initAuth0Client () =
                 async {
@@ -82,9 +79,6 @@ module internal Auth0 =
                     setIsAuthenticated(isAuthenticated)
                     if isAuthenticated then
                         let! userProfile = auth0Client.getUser() |> Async.AwaitPromise
-                        let! token = auth0Client.getTokenSilently() |> Async.AwaitPromise
-                        console.log("userProfile", userProfile)
-                        console.log("token", token)
                         setUserProfile(Some userProfile)
                     setIsLoading(false)
                 }
@@ -129,7 +123,7 @@ type Auth0 =
     static member audience = Audience
     static member children = Children
     static member provider (props:Auth0Property list) : ReactElement =
-        let defaultProps: Auth0.Auth0ProviderProps =
+        let defaultProps: Auth0Interop.Auth0ProviderProps =
             { children = Seq.empty
               domain = ""
               clientId = ""
@@ -144,5 +138,7 @@ type Auth0 =
                 | RedirectUri redirectUri -> { state with redirectUri = redirectUri }
                 | Audience audience -> { state with audience = audience }
                 | Children children -> { state with children = children })
-        Auth0.auth0Provider modifiedProps
+        Auth0Interop.provider modifiedProps
         
+module Hooks =
+    let useAuth0 () = React.useContext(Auth0Interop.Auth0Context)

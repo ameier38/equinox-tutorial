@@ -5,6 +5,7 @@ open Elmish
 open Feliz
 open Feliz.Router
 open Feliz.MaterialUI
+open GraphQL
 
 type Url =
     | LandingUrl
@@ -15,7 +16,7 @@ module Url =
 
 type State =
     { CurrentUrl: Url
-      LandingState: Landing.State }
+      LandingState: unit }
 
 type Msg =
     | UrlChanged of string list
@@ -49,18 +50,6 @@ let renderPage (state:State) (dispatch:Msg -> unit) =
     | LandingUrl ->
         Landing.render state.LandingState (LandingMsg >> dispatch)
 
-let renderApp (state:State) (dispatch:Msg -> unit) =
-    Auth0.provider [
-        Auth0.domain Config.auth0Config.Domain
-        Auth0.clientId Config.auth0Config.ClientId
-        Auth0.redirectUri Config.appConfig.Url
-        Auth0.audience Config.auth0Config.Audience
-        Auth0.children [
-            Common.navigation { navigateToHome = id<unit> }
-            renderPage state dispatch
-        ]
-    ]
-
 type AppProps =
     { state: State
       dispatch: Msg -> unit }
@@ -71,6 +60,20 @@ let render (state:State) (dispatch:Msg -> unit) =
         Router.onUrlChanged (UrlChanged >> dispatch)
         Router.application [ 
             Mui.cssBaseline []
-            renderApp state dispatch
+            Auth0.provider [
+                Auth0.domain Config.auth0Config.Domain
+                Auth0.clientId Config.auth0Config.ClientId
+                Auth0.redirectUri Config.appConfig.Url
+                Auth0.audience Config.auth0Config.Audience
+                Auth0.children [
+                    GraphQL.provider [
+                        GraphQL.url Config.graphqlConfig.Url
+                        GraphQL.children [
+                            Common.navigation { navigateToHome = id<unit> }
+                            renderPage state dispatch
+                        ]
+                    ]
+                ]
+            ]
         ]
     ]
