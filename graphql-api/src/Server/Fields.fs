@@ -77,8 +77,11 @@ let listVehicles
         typedef = ListVehiclesResponseType,
         args = [Define.Input("input", ListVehiclesInputType)],
         resolve = (fun ctx _ ->
+            let user =
+                ctx.Context.Metadata
+                |> User.fromMeta
             let input = ctx.Arg<ListVehiclesInput>("input")
-            vehicleClient.ListVehicles(input)
+            vehicleClient.ListVehicles(user, input)
         ))
 
 let GetVehicleInputType =
@@ -96,8 +99,11 @@ let getVehicle
         typedef = VehicleStateType,
         args = [Define.Input("input", GetVehicleInputType)],
         resolve = (fun ctx _ ->
+            let user =
+                ctx.Context.Metadata
+                |> User.fromMeta
             let input = ctx.Arg<GetVehicleInput>("input")
-            vehicleClient.GetVehicle(input)
+            vehicleClient.GetVehicle(user, input)
         ))
 
 let AddVehicleInputType =
@@ -117,6 +123,9 @@ let addVehicle
         typedef = String,
         args = [Define.Input("input", AddVehicleInputType)],
         resolve = (fun ctx _ ->
+            let user =
+                ctx.Context.Metadata
+                |> User.fromMeta
             let input = ctx.Arg<AddVehicleInput>("input")
-            vehicleClient.AddVehicle(input)
+            vehicleClient.AddVehicle(user, input)
         ))

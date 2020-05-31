@@ -9,17 +9,17 @@ gRPC API to manage vehicles.
 ## Testing
 Run the unit tests.
 ```
-fake build -t UnitTests
+fake build -t TestUnits
 ```
 
 Bring up server for integration testing.
 ```
-docker-compose up -d --build vehicle
+docker-compose up -d --build vehicle-api
 ```
 
 Run the integration tests.
 ```
-fake build -t IntegrationTests
+fake build -t TestIntegrations
 ```
 
 ## Development

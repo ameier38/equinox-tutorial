@@ -1,5 +1,6 @@
 module App
 
+open Auth0
 open Elmish
 open Feliz
 open Feliz.Router
@@ -14,25 +15,20 @@ module Url =
 
 type State =
     { CurrentUrl: Url
-      NavigationState: Navigation.State
       LandingState: Landing.State }
 
 type Msg =
     | UrlChanged of string list
-    | NavigationMsg of Navigation.Msg
     | LandingMsg of Landing.Msg
 
 let init () =
     let currentUrl = Router.currentUrl() |> Url.parse
-    let navigationState, navigationCmd = Navigation.init()
     let landingState, landingCmd = Landing.init()
-    let cmd =
-        [ navigationCmd |> Cmd.map NavigationMsg
-          landingCmd |> Cmd.map LandingMsg ]
-        |> Cmd.batch
+    let cmd = Cmd.batch [
+        landingCmd |> Cmd.map LandingMsg
+    ]
     let initialState =
         { CurrentUrl  = currentUrl
-          NavigationState = navigationState
           LandingState = landingState }
     initialState, cmd
 
@@ -41,12 +37,6 @@ let update (msg:Msg) (state:State): State * Cmd<Msg> =
     | UrlChanged url ->
         let currentUrl = Url.parse url
         { state with CurrentUrl = currentUrl }, Cmd.none
-    | NavigationMsg msg ->
-        let navigationState, navigationCmd = Navigation.update msg state.NavigationState
-        let newState =
-            { state with
-                NavigationState = navigationState }
-        newState, navigationCmd |> Cmd.map NavigationMsg
     | LandingMsg msg ->
         let landingState, landingCmd = Landing.update msg state.LandingState
         let newState =
@@ -61,8 +51,14 @@ let renderPage (state:State) (dispatch:Msg -> unit) =
 
 let renderApp (state:State) (dispatch:Msg -> unit) =
     Auth0.provider [
-        Navigation.render state.NavigationState (NavigationMsg >> dispatch)
-        renderPage state dispatch
+        Auth0.domain Config.auth0Config.Domain
+        Auth0.clientId Config.auth0Config.ClientId
+        Auth0.redirectUri Config.appConfig.Url
+        Auth0.audience Config.auth0Config.Audience
+        Auth0.children [
+            Common.navigation { navigateToHome = id<unit> }
+            renderPage state dispatch
+        ]
     ]
 
 type AppProps =
@@ -72,10 +68,7 @@ type AppProps =
 let render (state:State) (dispatch:Msg -> unit) =
     Router.router [
         Router.pathMode
-        Router.onUrlChanged (fun url ->
-            Fable.Core.JS.console.info(url)
-            dispatch (UrlChanged url)
-        )
+        Router.onUrlChanged (UrlChanged >> dispatch)
         Router.application [ 
             Mui.cssBaseline []
             renderApp state dispatch

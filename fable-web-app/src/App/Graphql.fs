@@ -50,14 +50,20 @@ type Response =
       errors: (string list) option }
 
 type GraphqlClient(config:Config.GraphqlClientConfig) =
-    let post (f:ResponseData -> 'T) (data:string) =
+    let post (f:ResponseData -> 'T) (token:string) (data:string) =
         async {
             try
                 sprintf "graphql url: %s" config.Url |> Log.debug
-                let! (statusCode, responseData) = Http.post config.Url data
-                let parsedResponse = Json.parseAs<Response> responseData
+                let bearer = sprintf "Bearer %s" token
+                let! res =
+                    Http.request config.Url
+                    |> Http.method POST
+                    |> Http.header (Headers.authorization bearer)
+                    |> Http.content (BodyContent.Text data)
+                    |> Http.send
+                let parsedResponse = Json.parseAs<Response> res.responseText
                 return
-                    match statusCode with
+                    match res.statusCode with
                     | 200 -> Ok (f parsedResponse.data)
                     | other ->
                         let error = sprintf "status code %i! %A" other parsedResponse.errors

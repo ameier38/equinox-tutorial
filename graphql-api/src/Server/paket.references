@@ -1,7 +1,9 @@
 FSharp.Data.GraphQL.Server
+FSharp.UMX
 Grpc.Core
+Newtonsoft.Json
 Suave
 Serilog
 Serilog.Sinks.Console
 Serilog.Sinks.Seq
-Newtonsoft.Json
+System.IdentityModel.Tokens.Jwt

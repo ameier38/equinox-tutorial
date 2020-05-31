@@ -26,69 +26,77 @@ namespace Tutorial.Lease.V1 {
           string.Concat(
             "CiV0dXRvcmlhbC9sZWFzZS92MS9sZWFzZV9zZXJ2aWNlLnByb3RvEhF0dXRv",
             "cmlhbC5sZWFzZS52MRoddHV0b3JpYWwvbGVhc2UvdjEvbGVhc2UucHJvdG8a",
-            "F2dvb2dsZS90eXBlL21vbmV5LnByb3RvInMKE1JlcXVlc3RMZWFzZVJlcXVl",
-            "c3QSEAoIbGVhc2VfaWQYASABKAkSEgoKdmVoaWNsZV9pZBgCIAEoCRIMCgR0",
-            "ZXJtGAMgASgFEigKDGRvd25fcGF5bWVudBgEIAEoCzISLmdvb2dsZS50eXBl",
-            "Lk1vbmV5Ij8KFFJlcXVlc3RMZWFzZVJlc3BvbnNlEicKBWxlYXNlGAEgASgL",
-            "MhgudHV0b3JpYWwubGVhc2UudjEuTGVhc2UiOgoRTGlzdExlYXNlc1JlcXVl",
-            "c3QSEQoJcGFnZV9zaXplGAEgASgFEhIKCnBhZ2VfdG9rZW4YAiABKAkihQEK",
-            "Ekxpc3RMZWFzZXNSZXNwb25zZRIoCgZsZWFzZXMYASADKAsyGC50dXRvcmlh",
-            "bC5sZWFzZS52MS5MZWFzZRIXCg9wcmV2X3BhZ2VfdG9rZW4YAiABKAkSFwoP",
-            "bmV4dF9wYWdlX3Rva2VuGAMgASgJEhMKC3RvdGFsX2NvdW50GAQgASgFIksK",
-            "D0dldExlYXNlUmVxdWVzdBIQCghsZWFzZV9pZBgBIAEoCRImCgVhc19vbhgC",
-            "IAEoCzIXLnR1dG9yaWFsLmxlYXNlLnYxLkFzT24iUgoQR2V0TGVhc2VSZXNw",
-            "b25zZRI+ChFsZWFzZV9vYnNlcnZhdGlvbhgBIAEoCzIjLnR1dG9yaWFsLmxl",
-            "YXNlLnYxLkxlYXNlT2JzZXJ2YXRpb24iPQoSQWNjZXB0TGVhc2VSZXF1ZXN0",
-            "EicKBWxlYXNlGAEgASgLMhgudHV0b3JpYWwubGVhc2UudjEuTGVhc2UiJgoT",
-            "QWNjZXB0TGVhc2VSZXNwb25zZRIPCgdtZXNzYWdlGAEgASgJIlIKFENyZWF0",
-            "ZVBheW1lbnRSZXF1ZXN0EjoKD2NyZWF0ZWRfcGF5bWVudBgBIAEoCzIhLnR1",
-            "dG9yaWFsLmxlYXNlLnYxLkNyZWF0ZWRQYXltZW50IigKFUNyZWF0ZVBheW1l",
-            "bnRSZXNwb25zZRIPCgdtZXNzYWdlGAEgASgJIlIKFFNldHRsZVBheW1lbnRS",
-            "ZXF1ZXN0EjoKD3NldHRsZWRfcGF5bWVudBgBIAEoCzIhLnR1dG9yaWFsLmxl",
-            "YXNlLnYxLlNldHRsZWRQYXltZW50IigKFVNldHRsZVBheW1lbnRSZXNwb25z",
-            "ZRIPCgdtZXNzYWdlGAEgASgJIlQKFFJldHVyblBheW1lbnRSZXF1ZXN0EjwK",
-            "EHJldHVybmVkX3BheW1lbnQYASABKAsyIi50dXRvcmlhbC5sZWFzZS52MS5S",
-            "ZXR1cm5lZFBheW1lbnQiKAoVUmV0dXJuUGF5bWVudFJlc3BvbnNlEg8KB21l",
-            "c3NhZ2UYASABKAkiVAoUUmV0dXJuVmVoaWNsZVJlcXVlc3QSPAoQcmV0dXJu",
-            "ZWRfdmVoaWNsZRgBIAEoCzIiLnR1dG9yaWFsLmxlYXNlLnYxLlJldHVybmVk",
-            "VmVoaWNsZSIoChVSZXR1cm5WZWhpY2xlUmVzcG9uc2USDwoHbWVzc2FnZRgB",
-            "IAEoCTKNBgoMTGVhc2VTZXJ2aWNlEl8KDFJlcXVlc3RMZWFzZRImLnR1dG9y",
-            "aWFsLmxlYXNlLnYxLlJlcXVlc3RMZWFzZVJlcXVlc3QaJy50dXRvcmlhbC5s",
-            "ZWFzZS52MS5SZXF1ZXN0TGVhc2VSZXNwb25zZRJZCgpMaXN0TGVhc2VzEiQu",
-            "dHV0b3JpYWwubGVhc2UudjEuTGlzdExlYXNlc1JlcXVlc3QaJS50dXRvcmlh",
-            "bC5sZWFzZS52MS5MaXN0TGVhc2VzUmVzcG9uc2USUwoIR2V0TGVhc2USIi50",
-            "dXRvcmlhbC5sZWFzZS52MS5HZXRMZWFzZVJlcXVlc3QaIy50dXRvcmlhbC5s",
-            "ZWFzZS52MS5HZXRMZWFzZVJlc3BvbnNlElwKC0FjY2VwdExlYXNlEiUudHV0",
-            "b3JpYWwubGVhc2UudjEuQWNjZXB0TGVhc2VSZXF1ZXN0GiYudHV0b3JpYWwu",
-            "bGVhc2UudjEuQWNjZXB0TGVhc2VSZXNwb25zZRJiCg1DcmVhdGVQYXltZW50",
-            "EicudHV0b3JpYWwubGVhc2UudjEuQ3JlYXRlUGF5bWVudFJlcXVlc3QaKC50",
-            "dXRvcmlhbC5sZWFzZS52MS5DcmVhdGVQYXltZW50UmVzcG9uc2USYgoNU2V0",
-            "dGxlUGF5bWVudBInLnR1dG9yaWFsLmxlYXNlLnYxLlNldHRsZVBheW1lbnRS",
-            "ZXF1ZXN0GigudHV0b3JpYWwubGVhc2UudjEuU2V0dGxlUGF5bWVudFJlc3Bv",
-            "bnNlEmIKDVJldHVyblBheW1lbnQSJy50dXRvcmlhbC5sZWFzZS52MS5SZXR1",
-            "cm5QYXltZW50UmVxdWVzdBooLnR1dG9yaWFsLmxlYXNlLnYxLlJldHVyblBh",
-            "eW1lbnRSZXNwb25zZRJiCg1SZXR1cm5WZWhpY2xlEicudHV0b3JpYWwubGVh",
-            "c2UudjEuUmV0dXJuVmVoaWNsZVJlcXVlc3QaKC50dXRvcmlhbC5sZWFzZS52",
-            "MS5SZXR1cm5WZWhpY2xlUmVzcG9uc2VCJ1oRdHV0b3JpYWwvbGVhc2UvdjGq",
-            "AhFUdXRvcmlhbC5MZWFzZS5WMWIGcHJvdG8z"));
+            "G3R1dG9yaWFsL3VzZXIvdjEvdXNlci5wcm90bxoXZ29vZ2xlL3R5cGUvbW9u",
+            "ZXkucHJvdG8imQEKE1JlcXVlc3RMZWFzZVJlcXVlc3QSJAoEdXNlchgBIAEo",
+            "CzIWLnR1dG9yaWFsLnVzZXIudjEuVXNlchIQCghsZWFzZV9pZBgCIAEoCRIS",
+            "Cgp2ZWhpY2xlX2lkGAMgASgJEgwKBHRlcm0YBCABKAUSKAoMZG93bl9wYXlt",
+            "ZW50GAUgASgLMhIuZ29vZ2xlLnR5cGUuTW9uZXkiPwoUUmVxdWVzdExlYXNl",
+            "UmVzcG9uc2USJwoFbGVhc2UYASABKAsyGC50dXRvcmlhbC5sZWFzZS52MS5M",
+            "ZWFzZSJgChFMaXN0TGVhc2VzUmVxdWVzdBIkCgR1c2VyGAEgASgLMhYudHV0",
+            "b3JpYWwudXNlci52MS5Vc2VyEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdl",
+            "X3Rva2VuGAMgASgJIoUBChJMaXN0TGVhc2VzUmVzcG9uc2USKAoGbGVhc2Vz",
+            "GAEgAygLMhgudHV0b3JpYWwubGVhc2UudjEuTGVhc2USFwoPcHJldl9wYWdl",
+            "X3Rva2VuGAIgASgJEhcKD25leHRfcGFnZV90b2tlbhgDIAEoCRITCgt0b3Rh",
+            "bF9jb3VudBgEIAEoBSJxCg9HZXRMZWFzZVJlcXVlc3QSJAoEdXNlchgBIAEo",
+            "CzIWLnR1dG9yaWFsLnVzZXIudjEuVXNlchIQCghsZWFzZV9pZBgCIAEoCRIm",
+            "CgVhc19vbhgDIAEoCzIXLnR1dG9yaWFsLmxlYXNlLnYxLkFzT24iUgoQR2V0",
+            "TGVhc2VSZXNwb25zZRI+ChFsZWFzZV9vYnNlcnZhdGlvbhgBIAEoCzIjLnR1",
+            "dG9yaWFsLmxlYXNlLnYxLkxlYXNlT2JzZXJ2YXRpb24iYwoSQWNjZXB0TGVh",
+            "c2VSZXF1ZXN0EiQKBHVzZXIYASABKAsyFi50dXRvcmlhbC51c2VyLnYxLlVz",
+            "ZXISJwoFbGVhc2UYAiABKAsyGC50dXRvcmlhbC5sZWFzZS52MS5MZWFzZSIm",
+            "ChNBY2NlcHRMZWFzZVJlc3BvbnNlEg8KB21lc3NhZ2UYASABKAkieAoUQ3Jl",
+            "YXRlUGF5bWVudFJlcXVlc3QSJAoEdXNlchgBIAEoCzIWLnR1dG9yaWFsLnVz",
+            "ZXIudjEuVXNlchI6Cg9jcmVhdGVkX3BheW1lbnQYAiABKAsyIS50dXRvcmlh",
+            "bC5sZWFzZS52MS5DcmVhdGVkUGF5bWVudCIoChVDcmVhdGVQYXltZW50UmVz",
+            "cG9uc2USDwoHbWVzc2FnZRgBIAEoCSJ4ChRTZXR0bGVQYXltZW50UmVxdWVz",
+            "dBIkCgR1c2VyGAEgASgLMhYudHV0b3JpYWwudXNlci52MS5Vc2VyEjoKD3Nl",
+            "dHRsZWRfcGF5bWVudBgCIAEoCzIhLnR1dG9yaWFsLmxlYXNlLnYxLlNldHRs",
+            "ZWRQYXltZW50IigKFVNldHRsZVBheW1lbnRSZXNwb25zZRIPCgdtZXNzYWdl",
+            "GAEgASgJInoKFFJldHVyblBheW1lbnRSZXF1ZXN0EiQKBHVzZXIYASABKAsy",
+            "Fi50dXRvcmlhbC51c2VyLnYxLlVzZXISPAoQcmV0dXJuZWRfcGF5bWVudBgC",
+            "IAEoCzIiLnR1dG9yaWFsLmxlYXNlLnYxLlJldHVybmVkUGF5bWVudCIoChVS",
+            "ZXR1cm5QYXltZW50UmVzcG9uc2USDwoHbWVzc2FnZRgBIAEoCSJ6ChRSZXR1",
+            "cm5WZWhpY2xlUmVxdWVzdBIkCgR1c2VyGAEgASgLMhYudHV0b3JpYWwudXNl",
+            "ci52MS5Vc2VyEjwKEHJldHVybmVkX3ZlaGljbGUYAiABKAsyIi50dXRvcmlh",
+            "bC5sZWFzZS52MS5SZXR1cm5lZFZlaGljbGUiKAoVUmV0dXJuVmVoaWNsZVJl",
+            "c3BvbnNlEg8KB21lc3NhZ2UYASABKAkyjQYKDExlYXNlU2VydmljZRJfCgxS",
+            "ZXF1ZXN0TGVhc2USJi50dXRvcmlhbC5sZWFzZS52MS5SZXF1ZXN0TGVhc2VS",
+            "ZXF1ZXN0GicudHV0b3JpYWwubGVhc2UudjEuUmVxdWVzdExlYXNlUmVzcG9u",
+            "c2USWQoKTGlzdExlYXNlcxIkLnR1dG9yaWFsLmxlYXNlLnYxLkxpc3RMZWFz",
+            "ZXNSZXF1ZXN0GiUudHV0b3JpYWwubGVhc2UudjEuTGlzdExlYXNlc1Jlc3Bv",
+            "bnNlElMKCEdldExlYXNlEiIudHV0b3JpYWwubGVhc2UudjEuR2V0TGVhc2VS",
+            "ZXF1ZXN0GiMudHV0b3JpYWwubGVhc2UudjEuR2V0TGVhc2VSZXNwb25zZRJc",
+            "CgtBY2NlcHRMZWFzZRIlLnR1dG9yaWFsLmxlYXNlLnYxLkFjY2VwdExlYXNl",
+            "UmVxdWVzdBomLnR1dG9yaWFsLmxlYXNlLnYxLkFjY2VwdExlYXNlUmVzcG9u",
+            "c2USYgoNQ3JlYXRlUGF5bWVudBInLnR1dG9yaWFsLmxlYXNlLnYxLkNyZWF0",
+            "ZVBheW1lbnRSZXF1ZXN0GigudHV0b3JpYWwubGVhc2UudjEuQ3JlYXRlUGF5",
+            "bWVudFJlc3BvbnNlEmIKDVNldHRsZVBheW1lbnQSJy50dXRvcmlhbC5sZWFz",
+            "ZS52MS5TZXR0bGVQYXltZW50UmVxdWVzdBooLnR1dG9yaWFsLmxlYXNlLnYx",
+            "LlNldHRsZVBheW1lbnRSZXNwb25zZRJiCg1SZXR1cm5QYXltZW50EicudHV0",
+            "b3JpYWwubGVhc2UudjEuUmV0dXJuUGF5bWVudFJlcXVlc3QaKC50dXRvcmlh",
+            "bC5sZWFzZS52MS5SZXR1cm5QYXltZW50UmVzcG9uc2USYgoNUmV0dXJuVmVo",
+            "aWNsZRInLnR1dG9yaWFsLmxlYXNlLnYxLlJldHVyblZlaGljbGVSZXF1ZXN0",
+            "GigudHV0b3JpYWwubGVhc2UudjEuUmV0dXJuVmVoaWNsZVJlc3BvbnNlQida",
+            "EXR1dG9yaWFsL2xlYXNlL3YxqgIRVHV0b3JpYWwuTGVhc2UuVjFiBnByb3Rv",
+            "Mw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Tutorial.Lease.V1.LeaseReflection.Descriptor, global::Google.Type.MoneyReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Tutorial.Lease.V1.LeaseReflection.Descriptor, global::Tutorial.User.V1.UserReflection.Descriptor, global::Google.Type.MoneyReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.RequestLeaseRequest), global::Tutorial.Lease.V1.RequestLeaseRequest.Parser, new[]{ "LeaseId", "VehicleId", "Term", "DownPayment" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.RequestLeaseRequest), global::Tutorial.Lease.V1.RequestLeaseRequest.Parser, new[]{ "User", "LeaseId", "VehicleId", "Term", "DownPayment" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.RequestLeaseResponse), global::Tutorial.Lease.V1.RequestLeaseResponse.Parser, new[]{ "Lease" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ListLeasesRequest), global::Tutorial.Lease.V1.ListLeasesRequest.Parser, new[]{ "PageSize", "PageToken" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ListLeasesRequest), global::Tutorial.Lease.V1.ListLeasesRequest.Parser, new[]{ "User", "PageSize", "PageToken" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ListLeasesResponse), global::Tutorial.Lease.V1.ListLeasesResponse.Parser, new[]{ "Leases", "PrevPageToken", "NextPageToken", "TotalCount" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.GetLeaseRequest), global::Tutorial.Lease.V1.GetLeaseRequest.Parser, new[]{ "LeaseId", "AsOn" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.GetLeaseRequest), global::Tutorial.Lease.V1.GetLeaseRequest.Parser, new[]{ "User", "LeaseId", "AsOn" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.GetLeaseResponse), global::Tutorial.Lease.V1.GetLeaseResponse.Parser, new[]{ "LeaseObservation" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.AcceptLeaseRequest), global::Tutorial.Lease.V1.AcceptLeaseRequest.Parser, new[]{ "Lease" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.AcceptLeaseRequest), global::Tutorial.Lease.V1.AcceptLeaseRequest.Parser, new[]{ "User", "Lease" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.AcceptLeaseResponse), global::Tutorial.Lease.V1.AcceptLeaseResponse.Parser, new[]{ "Message" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.CreatePaymentRequest), global::Tutorial.Lease.V1.CreatePaymentRequest.Parser, new[]{ "CreatedPayment" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.CreatePaymentRequest), global::Tutorial.Lease.V1.CreatePaymentRequest.Parser, new[]{ "User", "CreatedPayment" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.CreatePaymentResponse), global::Tutorial.Lease.V1.CreatePaymentResponse.Parser, new[]{ "Message" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.SettlePaymentRequest), global::Tutorial.Lease.V1.SettlePaymentRequest.Parser, new[]{ "SettledPayment" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.SettlePaymentRequest), global::Tutorial.Lease.V1.SettlePaymentRequest.Parser, new[]{ "User", "SettledPayment" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.SettlePaymentResponse), global::Tutorial.Lease.V1.SettlePaymentResponse.Parser, new[]{ "Message" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ReturnPaymentRequest), global::Tutorial.Lease.V1.ReturnPaymentRequest.Parser, new[]{ "ReturnedPayment" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ReturnPaymentRequest), global::Tutorial.Lease.V1.ReturnPaymentRequest.Parser, new[]{ "User", "ReturnedPayment" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ReturnPaymentResponse), global::Tutorial.Lease.V1.ReturnPaymentResponse.Parser, new[]{ "Message" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ReturnVehicleRequest), global::Tutorial.Lease.V1.ReturnVehicleRequest.Parser, new[]{ "ReturnedVehicle" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ReturnVehicleRequest), global::Tutorial.Lease.V1.ReturnVehicleRequest.Parser, new[]{ "User", "ReturnedVehicle" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ReturnVehicleResponse), global::Tutorial.Lease.V1.ReturnVehicleResponse.Parser, new[]{ "Message" }, null, null, null, null)
           }));
     }
@@ -121,6 +129,7 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public RequestLeaseRequest(RequestLeaseRequest other) : this() {
+      user_ = other.user_ != null ? other.user_.Clone() : null;
       leaseId_ = other.leaseId_;
       vehicleId_ = other.vehicleId_;
       term_ = other.term_;
@@ -133,8 +142,19 @@ namespace Tutorial.Lease.V1 {
       return new RequestLeaseRequest(this);
     }
 
+    /// <summary>Field number for the "user" field.</summary>
+    public const int UserFieldNumber = 1;
+    private global::Tutorial.User.V1.User user_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Tutorial.User.V1.User User {
+      get { return user_; }
+      set {
+        user_ = value;
+      }
+    }
+
     /// <summary>Field number for the "lease_id" field.</summary>
-    public const int LeaseIdFieldNumber = 1;
+    public const int LeaseIdFieldNumber = 2;
     private string leaseId_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string LeaseId {
@@ -145,7 +165,7 @@ namespace Tutorial.Lease.V1 {
     }
 
     /// <summary>Field number for the "vehicle_id" field.</summary>
-    public const int VehicleIdFieldNumber = 2;
+    public const int VehicleIdFieldNumber = 3;
     private string vehicleId_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string VehicleId {
@@ -156,7 +176,7 @@ namespace Tutorial.Lease.V1 {
     }
 
     /// <summary>Field number for the "term" field.</summary>
-    public const int TermFieldNumber = 3;
+    public const int TermFieldNumber = 4;
     private int term_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Term {
@@ -167,7 +187,7 @@ namespace Tutorial.Lease.V1 {
     }
 
     /// <summary>Field number for the "down_payment" field.</summary>
-    public const int DownPaymentFieldNumber = 4;
+    public const int DownPaymentFieldNumber = 5;
     private global::Google.Type.Money downPayment_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Type.Money DownPayment {
@@ -190,6 +210,7 @@ namespace Tutorial.Lease.V1 {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (!object.Equals(User, other.User)) return false;
       if (LeaseId != other.LeaseId) return false;
       if (VehicleId != other.VehicleId) return false;
       if (Term != other.Term) return false;
@@ -200,6 +221,7 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
+      if (user_ != null) hash ^= User.GetHashCode();
       if (LeaseId.Length != 0) hash ^= LeaseId.GetHashCode();
       if (VehicleId.Length != 0) hash ^= VehicleId.GetHashCode();
       if (Term != 0) hash ^= Term.GetHashCode();
@@ -217,20 +239,24 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (LeaseId.Length != 0) {
+      if (user_ != null) {
         output.WriteRawTag(10);
+        output.WriteMessage(User);
+      }
+      if (LeaseId.Length != 0) {
+        output.WriteRawTag(18);
         output.WriteString(LeaseId);
       }
       if (VehicleId.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(26);
         output.WriteString(VehicleId);
       }
       if (Term != 0) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(32);
         output.WriteInt32(Term);
       }
       if (downPayment_ != null) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(42);
         output.WriteMessage(DownPayment);
       }
       if (_unknownFields != null) {
@@ -241,6 +267,9 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
+      if (user_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(User);
+      }
       if (LeaseId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(LeaseId);
       }
@@ -263,6 +292,12 @@ namespace Tutorial.Lease.V1 {
     public void MergeFrom(RequestLeaseRequest other) {
       if (other == null) {
         return;
+      }
+      if (other.user_ != null) {
+        if (user_ == null) {
+          User = new global::Tutorial.User.V1.User();
+        }
+        User.MergeFrom(other.User);
       }
       if (other.LeaseId.Length != 0) {
         LeaseId = other.LeaseId;
@@ -291,18 +326,25 @@ namespace Tutorial.Lease.V1 {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            LeaseId = input.ReadString();
+            if (user_ == null) {
+              User = new global::Tutorial.User.V1.User();
+            }
+            input.ReadMessage(User);
             break;
           }
           case 18: {
+            LeaseId = input.ReadString();
+            break;
+          }
+          case 26: {
             VehicleId = input.ReadString();
             break;
           }
-          case 24: {
+          case 32: {
             Term = input.ReadInt32();
             break;
           }
-          case 34: {
+          case 42: {
             if (downPayment_ == null) {
               DownPayment = new global::Google.Type.Money();
             }
@@ -475,6 +517,7 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ListLeasesRequest(ListLeasesRequest other) : this() {
+      user_ = other.user_ != null ? other.user_.Clone() : null;
       pageSize_ = other.pageSize_;
       pageToken_ = other.pageToken_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -485,8 +528,19 @@ namespace Tutorial.Lease.V1 {
       return new ListLeasesRequest(this);
     }
 
+    /// <summary>Field number for the "user" field.</summary>
+    public const int UserFieldNumber = 1;
+    private global::Tutorial.User.V1.User user_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Tutorial.User.V1.User User {
+      get { return user_; }
+      set {
+        user_ = value;
+      }
+    }
+
     /// <summary>Field number for the "page_size" field.</summary>
-    public const int PageSizeFieldNumber = 1;
+    public const int PageSizeFieldNumber = 2;
     private int pageSize_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int PageSize {
@@ -497,7 +551,7 @@ namespace Tutorial.Lease.V1 {
     }
 
     /// <summary>Field number for the "page_token" field.</summary>
-    public const int PageTokenFieldNumber = 2;
+    public const int PageTokenFieldNumber = 3;
     private string pageToken_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string PageToken {
@@ -520,6 +574,7 @@ namespace Tutorial.Lease.V1 {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (!object.Equals(User, other.User)) return false;
       if (PageSize != other.PageSize) return false;
       if (PageToken != other.PageToken) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -528,6 +583,7 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
+      if (user_ != null) hash ^= User.GetHashCode();
       if (PageSize != 0) hash ^= PageSize.GetHashCode();
       if (PageToken.Length != 0) hash ^= PageToken.GetHashCode();
       if (_unknownFields != null) {
@@ -543,12 +599,16 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+      if (user_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(User);
+      }
       if (PageSize != 0) {
-        output.WriteRawTag(8);
+        output.WriteRawTag(16);
         output.WriteInt32(PageSize);
       }
       if (PageToken.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(26);
         output.WriteString(PageToken);
       }
       if (_unknownFields != null) {
@@ -559,6 +619,9 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
+      if (user_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(User);
+      }
       if (PageSize != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(PageSize);
       }
@@ -575,6 +638,12 @@ namespace Tutorial.Lease.V1 {
     public void MergeFrom(ListLeasesRequest other) {
       if (other == null) {
         return;
+      }
+      if (other.user_ != null) {
+        if (user_ == null) {
+          User = new global::Tutorial.User.V1.User();
+        }
+        User.MergeFrom(other.User);
       }
       if (other.PageSize != 0) {
         PageSize = other.PageSize;
@@ -593,11 +662,18 @@ namespace Tutorial.Lease.V1 {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 8: {
+          case 10: {
+            if (user_ == null) {
+              User = new global::Tutorial.User.V1.User();
+            }
+            input.ReadMessage(User);
+            break;
+          }
+          case 16: {
             PageSize = input.ReadInt32();
             break;
           }
-          case 18: {
+          case 26: {
             PageToken = input.ReadString();
             break;
           }
@@ -837,6 +913,7 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public GetLeaseRequest(GetLeaseRequest other) : this() {
+      user_ = other.user_ != null ? other.user_.Clone() : null;
       leaseId_ = other.leaseId_;
       asOn_ = other.asOn_ != null ? other.asOn_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -847,8 +924,19 @@ namespace Tutorial.Lease.V1 {
       return new GetLeaseRequest(this);
     }
 
+    /// <summary>Field number for the "user" field.</summary>
+    public const int UserFieldNumber = 1;
+    private global::Tutorial.User.V1.User user_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Tutorial.User.V1.User User {
+      get { return user_; }
+      set {
+        user_ = value;
+      }
+    }
+
     /// <summary>Field number for the "lease_id" field.</summary>
-    public const int LeaseIdFieldNumber = 1;
+    public const int LeaseIdFieldNumber = 2;
     private string leaseId_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string LeaseId {
@@ -859,7 +947,7 @@ namespace Tutorial.Lease.V1 {
     }
 
     /// <summary>Field number for the "as_on" field.</summary>
-    public const int AsOnFieldNumber = 2;
+    public const int AsOnFieldNumber = 3;
     private global::Tutorial.Lease.V1.AsOn asOn_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Tutorial.Lease.V1.AsOn AsOn {
@@ -882,6 +970,7 @@ namespace Tutorial.Lease.V1 {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (!object.Equals(User, other.User)) return false;
       if (LeaseId != other.LeaseId) return false;
       if (!object.Equals(AsOn, other.AsOn)) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -890,6 +979,7 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
+      if (user_ != null) hash ^= User.GetHashCode();
       if (LeaseId.Length != 0) hash ^= LeaseId.GetHashCode();
       if (asOn_ != null) hash ^= AsOn.GetHashCode();
       if (_unknownFields != null) {
@@ -905,12 +995,16 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (LeaseId.Length != 0) {
+      if (user_ != null) {
         output.WriteRawTag(10);
+        output.WriteMessage(User);
+      }
+      if (LeaseId.Length != 0) {
+        output.WriteRawTag(18);
         output.WriteString(LeaseId);
       }
       if (asOn_ != null) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(26);
         output.WriteMessage(AsOn);
       }
       if (_unknownFields != null) {
@@ -921,6 +1015,9 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
+      if (user_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(User);
+      }
       if (LeaseId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(LeaseId);
       }
@@ -937,6 +1034,12 @@ namespace Tutorial.Lease.V1 {
     public void MergeFrom(GetLeaseRequest other) {
       if (other == null) {
         return;
+      }
+      if (other.user_ != null) {
+        if (user_ == null) {
+          User = new global::Tutorial.User.V1.User();
+        }
+        User.MergeFrom(other.User);
       }
       if (other.LeaseId.Length != 0) {
         LeaseId = other.LeaseId;
@@ -959,10 +1062,17 @@ namespace Tutorial.Lease.V1 {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            LeaseId = input.ReadString();
+            if (user_ == null) {
+              User = new global::Tutorial.User.V1.User();
+            }
+            input.ReadMessage(User);
             break;
           }
           case 18: {
+            LeaseId = input.ReadString();
+            break;
+          }
+          case 26: {
             if (asOn_ == null) {
               AsOn = new global::Tutorial.Lease.V1.AsOn();
             }
@@ -1135,6 +1245,7 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public AcceptLeaseRequest(AcceptLeaseRequest other) : this() {
+      user_ = other.user_ != null ? other.user_.Clone() : null;
       lease_ = other.lease_ != null ? other.lease_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -1144,8 +1255,19 @@ namespace Tutorial.Lease.V1 {
       return new AcceptLeaseRequest(this);
     }
 
+    /// <summary>Field number for the "user" field.</summary>
+    public const int UserFieldNumber = 1;
+    private global::Tutorial.User.V1.User user_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Tutorial.User.V1.User User {
+      get { return user_; }
+      set {
+        user_ = value;
+      }
+    }
+
     /// <summary>Field number for the "lease" field.</summary>
-    public const int LeaseFieldNumber = 1;
+    public const int LeaseFieldNumber = 2;
     private global::Tutorial.Lease.V1.Lease lease_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Tutorial.Lease.V1.Lease Lease {
@@ -1168,6 +1290,7 @@ namespace Tutorial.Lease.V1 {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (!object.Equals(User, other.User)) return false;
       if (!object.Equals(Lease, other.Lease)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -1175,6 +1298,7 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
+      if (user_ != null) hash ^= User.GetHashCode();
       if (lease_ != null) hash ^= Lease.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -1189,8 +1313,12 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (lease_ != null) {
+      if (user_ != null) {
         output.WriteRawTag(10);
+        output.WriteMessage(User);
+      }
+      if (lease_ != null) {
+        output.WriteRawTag(18);
         output.WriteMessage(Lease);
       }
       if (_unknownFields != null) {
@@ -1201,6 +1329,9 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
+      if (user_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(User);
+      }
       if (lease_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Lease);
       }
@@ -1214,6 +1345,12 @@ namespace Tutorial.Lease.V1 {
     public void MergeFrom(AcceptLeaseRequest other) {
       if (other == null) {
         return;
+      }
+      if (other.user_ != null) {
+        if (user_ == null) {
+          User = new global::Tutorial.User.V1.User();
+        }
+        User.MergeFrom(other.User);
       }
       if (other.lease_ != null) {
         if (lease_ == null) {
@@ -1233,6 +1370,13 @@ namespace Tutorial.Lease.V1 {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
+            if (user_ == null) {
+              User = new global::Tutorial.User.V1.User();
+            }
+            input.ReadMessage(User);
+            break;
+          }
+          case 18: {
             if (lease_ == null) {
               Lease = new global::Tutorial.Lease.V1.Lease();
             }
@@ -1399,6 +1543,7 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public CreatePaymentRequest(CreatePaymentRequest other) : this() {
+      user_ = other.user_ != null ? other.user_.Clone() : null;
       createdPayment_ = other.createdPayment_ != null ? other.createdPayment_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -1408,8 +1553,19 @@ namespace Tutorial.Lease.V1 {
       return new CreatePaymentRequest(this);
     }
 
+    /// <summary>Field number for the "user" field.</summary>
+    public const int UserFieldNumber = 1;
+    private global::Tutorial.User.V1.User user_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Tutorial.User.V1.User User {
+      get { return user_; }
+      set {
+        user_ = value;
+      }
+    }
+
     /// <summary>Field number for the "created_payment" field.</summary>
-    public const int CreatedPaymentFieldNumber = 1;
+    public const int CreatedPaymentFieldNumber = 2;
     private global::Tutorial.Lease.V1.CreatedPayment createdPayment_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Tutorial.Lease.V1.CreatedPayment CreatedPayment {
@@ -1432,6 +1588,7 @@ namespace Tutorial.Lease.V1 {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (!object.Equals(User, other.User)) return false;
       if (!object.Equals(CreatedPayment, other.CreatedPayment)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -1439,6 +1596,7 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
+      if (user_ != null) hash ^= User.GetHashCode();
       if (createdPayment_ != null) hash ^= CreatedPayment.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -1453,8 +1611,12 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (createdPayment_ != null) {
+      if (user_ != null) {
         output.WriteRawTag(10);
+        output.WriteMessage(User);
+      }
+      if (createdPayment_ != null) {
+        output.WriteRawTag(18);
         output.WriteMessage(CreatedPayment);
       }
       if (_unknownFields != null) {
@@ -1465,6 +1627,9 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
+      if (user_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(User);
+      }
       if (createdPayment_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(CreatedPayment);
       }
@@ -1478,6 +1643,12 @@ namespace Tutorial.Lease.V1 {
     public void MergeFrom(CreatePaymentRequest other) {
       if (other == null) {
         return;
+      }
+      if (other.user_ != null) {
+        if (user_ == null) {
+          User = new global::Tutorial.User.V1.User();
+        }
+        User.MergeFrom(other.User);
       }
       if (other.createdPayment_ != null) {
         if (createdPayment_ == null) {
@@ -1497,6 +1668,13 @@ namespace Tutorial.Lease.V1 {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
+            if (user_ == null) {
+              User = new global::Tutorial.User.V1.User();
+            }
+            input.ReadMessage(User);
+            break;
+          }
+          case 18: {
             if (createdPayment_ == null) {
               CreatedPayment = new global::Tutorial.Lease.V1.CreatedPayment();
             }
@@ -1663,6 +1841,7 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public SettlePaymentRequest(SettlePaymentRequest other) : this() {
+      user_ = other.user_ != null ? other.user_.Clone() : null;
       settledPayment_ = other.settledPayment_ != null ? other.settledPayment_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -1672,8 +1851,19 @@ namespace Tutorial.Lease.V1 {
       return new SettlePaymentRequest(this);
     }
 
+    /// <summary>Field number for the "user" field.</summary>
+    public const int UserFieldNumber = 1;
+    private global::Tutorial.User.V1.User user_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Tutorial.User.V1.User User {
+      get { return user_; }
+      set {
+        user_ = value;
+      }
+    }
+
     /// <summary>Field number for the "settled_payment" field.</summary>
-    public const int SettledPaymentFieldNumber = 1;
+    public const int SettledPaymentFieldNumber = 2;
     private global::Tutorial.Lease.V1.SettledPayment settledPayment_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Tutorial.Lease.V1.SettledPayment SettledPayment {
@@ -1696,6 +1886,7 @@ namespace Tutorial.Lease.V1 {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (!object.Equals(User, other.User)) return false;
       if (!object.Equals(SettledPayment, other.SettledPayment)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -1703,6 +1894,7 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
+      if (user_ != null) hash ^= User.GetHashCode();
       if (settledPayment_ != null) hash ^= SettledPayment.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -1717,8 +1909,12 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (settledPayment_ != null) {
+      if (user_ != null) {
         output.WriteRawTag(10);
+        output.WriteMessage(User);
+      }
+      if (settledPayment_ != null) {
+        output.WriteRawTag(18);
         output.WriteMessage(SettledPayment);
       }
       if (_unknownFields != null) {
@@ -1729,6 +1925,9 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
+      if (user_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(User);
+      }
       if (settledPayment_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(SettledPayment);
       }
@@ -1742,6 +1941,12 @@ namespace Tutorial.Lease.V1 {
     public void MergeFrom(SettlePaymentRequest other) {
       if (other == null) {
         return;
+      }
+      if (other.user_ != null) {
+        if (user_ == null) {
+          User = new global::Tutorial.User.V1.User();
+        }
+        User.MergeFrom(other.User);
       }
       if (other.settledPayment_ != null) {
         if (settledPayment_ == null) {
@@ -1761,6 +1966,13 @@ namespace Tutorial.Lease.V1 {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
+            if (user_ == null) {
+              User = new global::Tutorial.User.V1.User();
+            }
+            input.ReadMessage(User);
+            break;
+          }
+          case 18: {
             if (settledPayment_ == null) {
               SettledPayment = new global::Tutorial.Lease.V1.SettledPayment();
             }
@@ -1927,6 +2139,7 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ReturnPaymentRequest(ReturnPaymentRequest other) : this() {
+      user_ = other.user_ != null ? other.user_.Clone() : null;
       returnedPayment_ = other.returnedPayment_ != null ? other.returnedPayment_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -1936,8 +2149,19 @@ namespace Tutorial.Lease.V1 {
       return new ReturnPaymentRequest(this);
     }
 
+    /// <summary>Field number for the "user" field.</summary>
+    public const int UserFieldNumber = 1;
+    private global::Tutorial.User.V1.User user_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Tutorial.User.V1.User User {
+      get { return user_; }
+      set {
+        user_ = value;
+      }
+    }
+
     /// <summary>Field number for the "returned_payment" field.</summary>
-    public const int ReturnedPaymentFieldNumber = 1;
+    public const int ReturnedPaymentFieldNumber = 2;
     private global::Tutorial.Lease.V1.ReturnedPayment returnedPayment_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Tutorial.Lease.V1.ReturnedPayment ReturnedPayment {
@@ -1960,6 +2184,7 @@ namespace Tutorial.Lease.V1 {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (!object.Equals(User, other.User)) return false;
       if (!object.Equals(ReturnedPayment, other.ReturnedPayment)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -1967,6 +2192,7 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
+      if (user_ != null) hash ^= User.GetHashCode();
       if (returnedPayment_ != null) hash ^= ReturnedPayment.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -1981,8 +2207,12 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (returnedPayment_ != null) {
+      if (user_ != null) {
         output.WriteRawTag(10);
+        output.WriteMessage(User);
+      }
+      if (returnedPayment_ != null) {
+        output.WriteRawTag(18);
         output.WriteMessage(ReturnedPayment);
       }
       if (_unknownFields != null) {
@@ -1993,6 +2223,9 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
+      if (user_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(User);
+      }
       if (returnedPayment_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(ReturnedPayment);
       }
@@ -2006,6 +2239,12 @@ namespace Tutorial.Lease.V1 {
     public void MergeFrom(ReturnPaymentRequest other) {
       if (other == null) {
         return;
+      }
+      if (other.user_ != null) {
+        if (user_ == null) {
+          User = new global::Tutorial.User.V1.User();
+        }
+        User.MergeFrom(other.User);
       }
       if (other.returnedPayment_ != null) {
         if (returnedPayment_ == null) {
@@ -2025,6 +2264,13 @@ namespace Tutorial.Lease.V1 {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
+            if (user_ == null) {
+              User = new global::Tutorial.User.V1.User();
+            }
+            input.ReadMessage(User);
+            break;
+          }
+          case 18: {
             if (returnedPayment_ == null) {
               ReturnedPayment = new global::Tutorial.Lease.V1.ReturnedPayment();
             }
@@ -2191,6 +2437,7 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ReturnVehicleRequest(ReturnVehicleRequest other) : this() {
+      user_ = other.user_ != null ? other.user_.Clone() : null;
       returnedVehicle_ = other.returnedVehicle_ != null ? other.returnedVehicle_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -2200,8 +2447,19 @@ namespace Tutorial.Lease.V1 {
       return new ReturnVehicleRequest(this);
     }
 
+    /// <summary>Field number for the "user" field.</summary>
+    public const int UserFieldNumber = 1;
+    private global::Tutorial.User.V1.User user_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Tutorial.User.V1.User User {
+      get { return user_; }
+      set {
+        user_ = value;
+      }
+    }
+
     /// <summary>Field number for the "returned_vehicle" field.</summary>
-    public const int ReturnedVehicleFieldNumber = 1;
+    public const int ReturnedVehicleFieldNumber = 2;
     private global::Tutorial.Lease.V1.ReturnedVehicle returnedVehicle_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Tutorial.Lease.V1.ReturnedVehicle ReturnedVehicle {
@@ -2224,6 +2482,7 @@ namespace Tutorial.Lease.V1 {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (!object.Equals(User, other.User)) return false;
       if (!object.Equals(ReturnedVehicle, other.ReturnedVehicle)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -2231,6 +2490,7 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
+      if (user_ != null) hash ^= User.GetHashCode();
       if (returnedVehicle_ != null) hash ^= ReturnedVehicle.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -2245,8 +2505,12 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (returnedVehicle_ != null) {
+      if (user_ != null) {
         output.WriteRawTag(10);
+        output.WriteMessage(User);
+      }
+      if (returnedVehicle_ != null) {
+        output.WriteRawTag(18);
         output.WriteMessage(ReturnedVehicle);
       }
       if (_unknownFields != null) {
@@ -2257,6 +2521,9 @@ namespace Tutorial.Lease.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
+      if (user_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(User);
+      }
       if (returnedVehicle_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(ReturnedVehicle);
       }
@@ -2270,6 +2537,12 @@ namespace Tutorial.Lease.V1 {
     public void MergeFrom(ReturnVehicleRequest other) {
       if (other == null) {
         return;
+      }
+      if (other.user_ != null) {
+        if (user_ == null) {
+          User = new global::Tutorial.User.V1.User();
+        }
+        User.MergeFrom(other.User);
       }
       if (other.returnedVehicle_ != null) {
         if (returnedVehicle_ == null) {
@@ -2289,6 +2562,13 @@ namespace Tutorial.Lease.V1 {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
+            if (user_ == null) {
+              User = new global::Tutorial.User.V1.User();
+            }
+            input.ReadMessage(User);
+            break;
+          }
+          case 18: {
             if (returnedVehicle_ == null) {
               ReturnedVehicle = new global::Tutorial.Lease.V1.ReturnedVehicle();
             }

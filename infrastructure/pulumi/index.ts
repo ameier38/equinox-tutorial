@@ -1,1 +1,2 @@
-import './buckets'
+import './bucket'
+import './auth0'

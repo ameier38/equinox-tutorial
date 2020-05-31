@@ -5,93 +5,144 @@ open Fable.Core
 open Fable.Core.JsInterop
 open Feliz
 
-type Auth0ClientOptions =
-    { domain: string
-      client_id: string
-      redirect_uri: string }
-
 type UserProfile =
     { email: string
       name: string
-      user_id: string }
+      user_id: string
+      ``https://equinoxtutorial.com/roles``: string list }
 
-type IAuth0Client =
-    abstract member loginWithRedirect: unit -> unit
-    abstract member handleRedirectCallback: unit -> JS.Promise<unit>
-    abstract member isAuthenticated: unit -> JS.Promise<bool>
-    abstract member getUser: unit -> JS.Promise<UserProfile>
-    abstract member logout: unit -> unit
+[<RequireQualifiedAccess>]
+module internal Auth0 =
+    type Auth0ClientOptions =
+        { domain: string
+          client_id: string
+          redirect_uri: string
+          audience: string }
 
-type Auth0ProviderValue =
-    { isLoading: bool
-      isAuthenticated: bool
-      userProfile: UserProfile option
-      login: unit -> unit
-      logout: unit -> unit }
+    type IAuth0Client =
+        abstract member loginWithRedirect: unit -> unit
+        abstract member handleRedirectCallback: unit -> JS.Promise<unit>
+        abstract member isAuthenticated: unit -> JS.Promise<bool>
+        abstract member getUser: unit -> JS.Promise<UserProfile>
+        abstract member getTokenSilently: unit -> JS.Promise<string>
+        abstract member logout: unit -> unit
 
-let createAuth0Client (opts:Auth0ClientOptions): JS.Promise<IAuth0Client> = importDefault "@auth0/auth0-spa-js"
+    type Auth0ProviderValue =
+        { isLoading: bool
+          isAuthenticated: bool
+          userProfile: UserProfile option
+          getToken: unit -> Async<string>
+          login: unit -> unit
+          logout: unit -> unit }
 
-let defaultOnRedirectCallback () = history.replaceState((), document.title, window.location.pathname)
+    type Auth0ProviderProps =
+        { children: seq<ReactElement>
+          domain: string
+          clientId: string
+          redirectUri: string
+          audience: string }
 
-let defaultAuth0Context =
-    { isLoading = true
-      isAuthenticated = false
-      userProfile = None
-      login = id<unit>
-      logout = id<unit> }
+    let createAuth0Client (opts:Auth0ClientOptions): JS.Promise<IAuth0Client> = importDefault "@auth0/auth0-spa-js"
 
-let Auth0Context = React.createContext("Auth0Context", defaultAuth0Context)
+    let defaultOnRedirectCallback () = history.replaceState((), document.title, window.location.pathname)
 
-let useAuth0 () = React.useContext(Auth0Context)
+    let defaultAuth0Context =
+        { isLoading = true
+          isAuthenticated = false
+          userProfile = None
+          getToken = fun () -> async{ return "" }
+          login = id<unit>
+          logout = id<unit> }
 
-let auth0Provider =
-    React.functionComponent("Auth0Provider", fun (props:{| children: seq<ReactElement> |}) ->
-        let (isLoading, setIsLoading) = React.useState(true)
-        let (isAuthenticated, setIsAuthenticated) = React.useState(false)
-        let (userProfile, setUserProfile) = React.useState<UserProfile option>(None)
-        let (auth0Client, setAuth0Client) = React.useState<IAuth0Client option>(None)
+    let Auth0Context = React.createContext("Auth0Context", defaultAuth0Context)
 
-        let initAuth0Client () =
-            async {
-                let clientOpts =
-                    { domain = Config.auth0Config.Domain
-                      client_id = Config.auth0Config.ClientId
-                      redirect_uri = Config.appConfig.Url }
-                let! auth0Client = createAuth0Client clientOpts |> Async.AwaitPromise
-                setAuth0Client (Some auth0Client)
-                if window.location.search.Contains("code=") then
-                    do! auth0Client.handleRedirectCallback() |> Async.AwaitPromise
-                    defaultOnRedirectCallback()
-                let! isAuthenticated = auth0Client.isAuthenticated() |> Async.AwaitPromise
-                setIsAuthenticated(isAuthenticated)
-                if isAuthenticated then
-                    let! userProfile = auth0Client.getUser() |> Async.AwaitPromise
-                    setUserProfile(Some userProfile)
-                setIsLoading(false)
-            }
+    let useAuth0 () = React.useContext(Auth0Context)
 
-        let handleRedirectCallback () =
-            async {
-                setIsLoading(true)
-                match auth0Client with
-                | Some client ->
-                    do! client.handleRedirectCallback() |> Async.AwaitPromise
-                    let! userProfile = client.getUser() |> Async.AwaitPromise
-                    setUserProfile(Some userProfile)
-                    setIsAuthenticated(true)
+    let auth0Provider =
+        React.functionComponent<Auth0ProviderProps>("Auth0Provider", fun props ->
+            let (isLoading, setIsLoading) = React.useState(true)
+            let (isAuthenticated, setIsAuthenticated) = React.useState(false)
+            let (userProfile, setUserProfile) = React.useState<UserProfile option>(None)
+            let (auth0Client, setAuth0Client) = React.useState<IAuth0Client option>(None)
+            console.log(props)
+
+            let initAuth0Client () =
+                async {
+                    let clientOpts =
+                        { domain = props.domain
+                          client_id = props.clientId
+                          redirect_uri = props.redirectUri
+                          audience = props.audience }
+                    let! auth0Client = createAuth0Client clientOpts |> Async.AwaitPromise
+                    setAuth0Client (Some auth0Client)
+                    if window.location.search.Contains("code=") then
+                        do! auth0Client.handleRedirectCallback() |> Async.AwaitPromise
+                        defaultOnRedirectCallback()
+                    let! isAuthenticated = auth0Client.isAuthenticated() |> Async.AwaitPromise
+                    setIsAuthenticated(isAuthenticated)
+                    if isAuthenticated then
+                        let! userProfile = auth0Client.getUser() |> Async.AwaitPromise
+                        let! token = auth0Client.getTokenSilently() |> Async.AwaitPromise
+                        console.log("userProfile", userProfile)
+                        console.log("token", token)
+                        setUserProfile(Some userProfile)
                     setIsLoading(false)
-                | None ->
-                    failwithf "auth0 client not initialized"
-            }
-        
-        React.useEffect(initAuth0Client >> Async.StartImmediate, [| |])
-        let providerValue =
-            { isLoading = isLoading
-              isAuthenticated = isAuthenticated
-              userProfile = userProfile
-              login = match auth0Client with Some client -> client.loginWithRedirect | _ -> id<unit>
-              logout = match auth0Client with Some client -> client.logout | _ -> id<unit> }
-        React.contextProvider(Auth0Context, providerValue, props.children)
-    )
+                }
+            
+            let getToken () =
+                match auth0Client with
+                | Some client -> client.getTokenSilently() |> Async.AwaitPromise
+                | None -> async { return "" }
 
-let provider (children:seq<ReactElement>) = auth0Provider {| children = children |}
+            let login () =
+                match auth0Client with
+                | Some client -> client.loginWithRedirect()
+                | None -> ()
+
+            let logout () =
+                match auth0Client with
+                | Some client -> client.logout()
+                | None -> ()
+
+            React.useEffect(initAuth0Client >> Async.StartImmediate, [| |])
+            let providerValue =
+                { isLoading = isLoading
+                  isAuthenticated = isAuthenticated
+                  userProfile = userProfile
+                  getToken = getToken
+                  login = login
+                  logout = logout }
+            React.contextProvider(Auth0Context, providerValue, props.children)
+        )
+
+type Auth0Property =
+    | Domain of string
+    | ClientId of string
+    | RedirectUri of string
+    | Audience of string
+    | Children of ReactElement list
+
+type Auth0 =
+    static member domain = Domain
+    static member clientId = ClientId
+    static member redirectUri = RedirectUri
+    static member audience = Audience
+    static member children = Children
+    static member provider (props:Auth0Property list) : ReactElement =
+        let defaultProps: Auth0.Auth0ProviderProps =
+            { children = Seq.empty
+              domain = ""
+              clientId = ""
+              redirectUri = ""
+              audience = "" }
+        let modifiedProps =
+            (defaultProps, props)
+            ||> List.fold (fun state prop ->
+                match prop with
+                | Domain domain -> { state with domain = domain }
+                | ClientId clientId -> { state with clientId = clientId }
+                | RedirectUri redirectUri -> { state with redirectUri = redirectUri }
+                | Audience audience -> { state with audience = audience }
+                | Children children -> { state with children = children })
+        Auth0.auth0Provider modifiedProps
+        

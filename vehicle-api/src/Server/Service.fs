@@ -27,7 +27,6 @@ module Dto =
             | Removed -> Tutorial.Vehicle.V1.VehicleStatus.Removed
             | Leased -> Tutorial.Vehicle.V1.VehicleStatus.Leased
             
-
     module VehicleState =
         let toProto (vehicleState:VehicleState) =
             Tutorial.Vehicle.V1.VehicleState(
@@ -37,9 +36,15 @@ module Dto =
 type VehicleServiceImpl(store:Store) =
     inherit Tutorial.Vehicle.V1.VehicleService.VehicleServiceBase()
 
+    let authorize (user:Tutorial.User.V1.User) (permission:string) =
+        if not (user.Permissions |> Seq.contains permission) then
+            sprintf "user %s does not have %s permission" user.UserId permission
+            |> RpcException.raisePermissionDenied
+
     override _.ListVehicles(req:Tutorial.Vehicle.V1.ListVehiclesRequest, context:ServerCallContext) =
         async {
             try
+                authorize req.User "list:vehicles"
                 // ref: https://eventstore.com/docs/projections/system-projections/index.html?tabs=tabid-5#by-event-type
                 let streamName = "$et-VehicleAdded"
                 let pageToken = PageToken.fromString req.PageToken
@@ -77,6 +82,7 @@ type VehicleServiceImpl(store:Store) =
     override _.GetVehicle(req:Tutorial.Vehicle.V1.GetVehicleRequest, context:ServerCallContext) =
         async {
             try
+                authorize req.User "get:vehicles"
                 let vehicleId = VehicleId.fromString req.VehicleId
                 let stream = store.ResolveVehicle(vehicleId)
                 let! vehicleState = stream.Query(id)
@@ -92,6 +98,7 @@ type VehicleServiceImpl(store:Store) =
     override _.AddVehicle(req:Tutorial.Vehicle.V1.AddVehicleRequest, context:ServerCallContext) =
         async {
             try
+                authorize req.User "add:vehicles"
                 let vehicleId = VehicleId.fromString req.Vehicle.VehicleId
                 let vehicle = Dto.Vehicle.fromProto req.Vehicle
                 let stream = store.ResolveVehicle(vehicleId)
@@ -107,6 +114,7 @@ type VehicleServiceImpl(store:Store) =
     override _.RemoveVehicle(req:Tutorial.Vehicle.V1.RemoveVehicleRequest, context:ServerCallContext) =
         async {
             try
+                authorize req.User "remove:vehicles"
                 let vehicleId = VehicleId.fromString req.VehicleId
                 let stream = store.ResolveVehicle(vehicleId)
                 let removeVehicle = RemoveVehicle
@@ -121,6 +129,7 @@ type VehicleServiceImpl(store:Store) =
     override _.LeaseVehicle(req:Tutorial.Vehicle.V1.LeaseVehicleRequest, context:ServerCallContext) =
         async {
             try
+                authorize req.User "lease:vehicles"
                 let vehicleId = VehicleId.fromString req.VehicleId
                 let stream = store.ResolveVehicle(vehicleId)
                 let leaseVehicle = LeaseVehicle
@@ -135,6 +144,7 @@ type VehicleServiceImpl(store:Store) =
     override _.ReturnVehicle(req:Tutorial.Vehicle.V1.ReturnVehicleRequest, context:ServerCallContext) =
         async {
             try
+                authorize req.User "return:vehicles"
                 let vehicleId = VehicleId.fromString req.VehicleId
                 let stream = store.ResolveVehicle(vehicleId)
                 let returnVehicle = ReturnVehicle

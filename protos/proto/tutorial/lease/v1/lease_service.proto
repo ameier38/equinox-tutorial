@@ -6,9 +6,10 @@ option csharp_namespace = "Tutorial.Lease.V1";
 option go_package = "tutorial/lease/v1";
 
 import "tutorial/lease/v1/lease.proto";
+import "tutorial/user/v1/user.proto";
 import "google/type/money.proto";
 
-// API to handle interactions with the Lease.
+// Service to handle interactions with the Lease.
 service LeaseService {
   // Request a lease for a vehicle.
   rpc RequestLease(RequestLeaseRequest) returns (RequestLeaseResponse);
@@ -29,10 +30,11 @@ service LeaseService {
 }
 
 message RequestLeaseRequest {
-  string lease_id = 1;
-  string vehicle_id = 2;
-  int32 term = 3;
-  google.type.Money down_payment = 4;
+  user.v1.User user = 1;
+  string lease_id = 2;
+  string vehicle_id = 3;
+  int32 term = 4;
+  google.type.Money down_payment = 5;
 }
 
 message RequestLeaseResponse {
@@ -40,8 +42,9 @@ message RequestLeaseResponse {
 }
 
 message ListLeasesRequest {
-  int32 page_size = 1;
-  string page_token = 2;
+  user.v1.User user = 1;
+  int32 page_size = 2;
+  string page_token = 3;
 }
 
 message ListLeasesResponse {
@@ -52,8 +55,9 @@ message ListLeasesResponse {
 }
 
 message GetLeaseRequest {
-  string lease_id = 1;
-  AsOn as_on = 2;
+  user.v1.User user = 1;
+  string lease_id = 2;
+  AsOn as_on = 3;
 }
 
 message GetLeaseResponse {
@@ -61,7 +65,8 @@ message GetLeaseResponse {
 }
 
 message AcceptLeaseRequest {
-  Lease lease = 1;
+  user.v1.User user = 1;
+  Lease lease = 2;
 }
 
 message AcceptLeaseResponse {
@@ -69,7 +74,8 @@ message AcceptLeaseResponse {
 }
 
 message CreatePaymentRequest {
-  CreatedPayment created_payment = 1;
+  user.v1.User user = 1;
+  CreatedPayment created_payment = 2;
 }
 
 message CreatePaymentResponse {
@@ -77,7 +83,8 @@ message CreatePaymentResponse {
 }
 
 message SettlePaymentRequest {
-  SettledPayment settled_payment = 1;
+  user.v1.User user = 1;
+  SettledPayment settled_payment = 2;
 }
 
 message SettlePaymentResponse {
@@ -85,7 +92,8 @@ message SettlePaymentResponse {
 }
 
 message ReturnPaymentRequest {
-  ReturnedPayment returned_payment = 1;
+  user.v1.User user = 1;
+  ReturnedPayment returned_payment = 2;
 }
 
 message ReturnPaymentResponse {
@@ -93,7 +101,8 @@ message ReturnPaymentResponse {
 }
 
 message ReturnVehicleRequest {
-  ReturnedVehicle returned_vehicle = 1;
+  user.v1.User user = 1;
+  ReturnedVehicle returned_vehicle = 2;
 }
 
 message ReturnVehicleResponse {

@@ -5,6 +5,9 @@ open Grpc.Core
 open System
 open System.Text
 
+type [<Measure>] userId
+type UserId = string<userId>
+
 type [<Measure>] vehicleId
 type VehicleId = Guid<vehicleId>
 
@@ -21,6 +24,8 @@ module RpcException =
         RpcException(Status(StatusCode.AlreadyExists, msg)) |> raise
     let raiseNotFound (msg:string) =
         RpcException(Status(StatusCode.NotFound, msg)) |> raise
+    let raisePermissionDenied (msg:string) =
+        RpcException(Status(StatusCode.PermissionDenied, msg)) |> raise
 
 module Guid =
     let inline toStringN (x: Guid<'t>) =
@@ -46,6 +51,10 @@ module VehicleId =
     let toString (vehicleId:VehicleId) = Guid.toStringN vehicleId
     let fromString (s:string) = Guid.parse<vehicleId> s
     let create () = Guid.NewGuid() |> UMX.tag<vehicleId>
+
+module UserId =
+    let toString (userId:UserId) = UMX.untag userId
+    let fromString (s:string) = UMX.tag<userId> s
 
 module PageToken =
     let prefix = "index-"

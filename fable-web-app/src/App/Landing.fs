@@ -4,6 +4,7 @@ open Elmish
 open Feliz
 open Feliz.Router
 open Feliz.MaterialUI
+open FSharp.UMX
 open Graphql
 
 let jumbotronImage = Image.load "./images/cosmos.jpg"
@@ -24,7 +25,7 @@ let listVehicles (input:ListVehiclesInputDto): Cmd<Msg> =
     } |> Cmd.fromAsync
 
 let init (): State * Cmd<Msg> =
-    let pageToken = PageToken.fromString ""
+    let pageToken = UMX.tag<pageToken> ""
     let state =
         { NextPageToken = pageToken
           Vehicles = NotStarted }
@@ -33,10 +34,10 @@ let init (): State * Cmd<Msg> =
 let update (msg:Msg) (state:State): State * Cmd<Msg> =
     match msg with
     | NavigateToVehicle vehicleId ->
-        state, Router.navigate (sprintf "vehicles/%s" (VehicleId.toString vehicleId))
+        state, Router.navigate (sprintf "vehicles/%s" (UMX.untag vehicleId))
     | ListVehicles (Started pageToken) ->
         let input =
-            { pageToken = PageToken.toString pageToken
+            { pageToken = UMX.untag pageToken
               pageSize = 10 }
         let newState =
             { state with
@@ -60,7 +61,6 @@ let useStyles = Styles.makeStyles(fun styles theme ->
         ]
     |}
 )
-
 
 let jumbotron =
     React.functionComponent(fun _ ->

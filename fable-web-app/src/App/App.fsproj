@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -8,8 +7,9 @@
     <Compile Include="Config.fs" />
     <Compile Include="Auth0.fs" />
     <Compile Include="Graphql.fs" />
-    <Compile Include="Navigation.fs" />
+    <Compile Include="Common.fs" />
     <Compile Include="Landing.fs" />
+    <Compile Include="Page.fs" />
     <Compile Include="App.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

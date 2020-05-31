@@ -10,21 +10,18 @@ open System
 
 type [<Measure>] pageToken
 type PageToken = string<pageToken>
-module PageToken =
-    let fromString (s:string) = UMX.tag<pageToken> s
-    let toString (pageToken:PageToken) = UMX.untag pageToken
 
 type [<Measure>] pageSize
 type PageSize = int<pageToken>
-module PageSize =
-    let fromInt (i:int) = UMX.tag<pageSize> i
-    let toInt (pageSize:PageSize) = UMX.untag pageSize
 
 type [<Measure>] vehicleId
 type VehicleId = string<vehicleId>
-module VehicleId =
-    let fromString (s:string) = UMX.tag<vehicleId> s
-    let toString (vehicleId:VehicleId) = UMX.untag vehicleId
+
+type [<Measure>] leaseId
+type LeaseId = string<leaseId>
+
+type [<Measure>] audience
+type Audience = string<audience>
 
 type AsyncOperation<'P,'T> =
     | Started of 'P

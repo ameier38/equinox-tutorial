@@ -1,2 +1,3 @@
 Expecto
 FSharp.Data.GraphQL.Client
+System.IdentityModel.Tokens.Jwt

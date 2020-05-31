@@ -6,7 +6,12 @@ open FSharp.Data.GraphQL
 open FSharp.Data.GraphQL.Types
 open FSharp.Data.GraphQL.Types.Patterns
 open FSharp.Reflection
+open FSharp.UMX
 open System
+open System.Text.RegularExpressions
+
+type [<Measure>] userId
+type UserId = string<userId>
 
 type GraphQLQuery =
     { ExecutionPlan : ExecutionPlan
@@ -85,3 +90,9 @@ type GraphQLQueryConverter<'a>(executor : Executor<'a>) =
                         | _, Nullable _ -> acc
                         | None, _ -> failwithf "Variable %s has no default value and is missing!" vdef.Name) Map.empty
             upcast { ExecutionPlan = plan; Variables = variables }
+
+module Regex =
+    let (|Match|_|) (pattern:string) (s:string) =
+        let m = Regex.Match(s, pattern)
+        if m.Success then Some(List.tail [for g in m.Groups -> g.Value])
+        else None

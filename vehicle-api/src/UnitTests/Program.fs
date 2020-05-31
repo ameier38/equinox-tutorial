@@ -1,7 +1,6 @@
 ﻿open Expecto
 open Expecto.Flip
 open Vehicle
-open System
 
 let testEvolve =
     test "test evolve" {

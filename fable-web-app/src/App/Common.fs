@@ -1,22 +1,13 @@
-module Navigation
+module Common
 
+open Auth0
 open Elmish
+open Fable.Core.JsInterop
 open Feliz
 open Feliz.MaterialUI
 
-type State =
-    { _empty: bool }
-
-type Msg =
-    | NavigateToHome
-    | NavigateToLogin
-
-let init(): State * Cmd<Msg> =
-    { _empty = true }, Cmd.none
-
-let update (msg:Msg) (state:State): State * Cmd<Msg> =
-    match msg with
-    | _ -> state, Cmd.none
+module Icon =
+    let dashboard:string = importDefault "@material-ui/icons/Dashboard"
 
 let useStyles = Styles.makeStyles(fun styles theme ->
     {|
@@ -38,8 +29,7 @@ let useStyles = Styles.makeStyles(fun styles theme ->
 )
 
 type NavigationProps =
-    { state: State
-      dispatch: Msg -> unit }
+    { navigateToHome: unit -> unit }
 
 let navigation =
     React.functionComponent<NavigationProps>(fun props ->
@@ -62,7 +52,7 @@ let navigation =
                                     prop.className c.navHomeButton
                                     prop.onClick (fun e -> 
                                         e.preventDefault()
-                                        props.dispatch NavigateToHome
+                                        props.navigateToHome()
                                     )
                                     button.variant.text
                                     button.children [ "Cosmic Dealership" ]
@@ -100,4 +90,22 @@ let navigation =
         ]
     )
 
-let render state dispatch = navigation { state = state; dispatch = dispatch }
+type SidebarProps =
+    { sidebarOpen: bool
+      navigateToDashboard: unit -> unit }
+
+let sidebar =
+    React.functionComponent<SidebarProps>(fun props ->
+        let (sidebarOpen, setSidebarOpen) = React.useState(false)
+        let theme = Styles.useTheme()
+        let isGteMd = Hooks.useMediaQuery(theme.breakpoints.upMd)
+        let drawerContent =
+            Mui.list [
+
+            ]
+        Mui.drawer [
+
+        ]
+        
+        
+    )

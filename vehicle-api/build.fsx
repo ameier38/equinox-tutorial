@@ -32,7 +32,7 @@ let copyGenerated = BuildTask.create "CopyGenerated" [cleanProto] {
         </> "protos" </> "gen" </> "csharp"
     let targetDir = __SOURCE_DIRECTORY__ </> "src" </> "Proto" </> "gen"
     targetDir |> Shell.cleanDir
-    !! (genDir </> "Vehicle*.cs")
+    !! (genDir </> "*.cs")
     |> Shell.copyFiles targetDir
 }
 

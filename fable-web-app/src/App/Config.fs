@@ -16,12 +16,15 @@ type GraphqlClientConfig =
 
 type Auth0Config =
     { Domain: string
-      ClientId: string } with
+      ClientId: string
+      Audience: string } with
     static member Load() =
         let domain = Env.getEnv "FABLE_APP_AUTH0_DOMAIN"
         let clientId = Env.getEnv "FABLE_APP_AUTH0_CLIENT_ID"
+        let audience = Env.getEnv "FABLE_APP_AUTH0_AUDIENCE"
         { Domain = domain
-          ClientId = clientId }
+          ClientId = clientId
+          Audience = audience }
 
 type AppConfig =
     { Url: string } with

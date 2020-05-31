@@ -9,7 +9,7 @@ using grpc = global::Grpc.Core;
 
 namespace Tutorial.Lease.V1 {
   /// <summary>
-  /// API to handle interactions with the Lease.
+  /// Service to handle interactions with the Lease.
   /// </summary>
   public static partial class LeaseService
   {
