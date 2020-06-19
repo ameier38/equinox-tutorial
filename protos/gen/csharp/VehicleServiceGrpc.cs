@@ -15,14 +15,6 @@ namespace Tutorial.Vehicle.V1 {
   {
     static readonly string __ServiceName = "tutorial.vehicle.v1.VehicleService";
 
-    static readonly grpc::Marshaller<global::Tutorial.Vehicle.V1.ListAvailableVehiclesRequest> __Marshaller_tutorial_vehicle_v1_ListAvailableVehiclesRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Vehicle.V1.ListAvailableVehiclesRequest.Parser.ParseFrom);
-    static readonly grpc::Marshaller<global::Tutorial.Vehicle.V1.ListAvailableVehiclesResponse> __Marshaller_tutorial_vehicle_v1_ListAvailableVehiclesResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Vehicle.V1.ListAvailableVehiclesResponse.Parser.ParseFrom);
-    static readonly grpc::Marshaller<global::Tutorial.Vehicle.V1.GetAvailableVehicleRequest> __Marshaller_tutorial_vehicle_v1_GetAvailableVehicleRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Vehicle.V1.GetAvailableVehicleRequest.Parser.ParseFrom);
-    static readonly grpc::Marshaller<global::Tutorial.Vehicle.V1.GetAvailableVehicleResponse> __Marshaller_tutorial_vehicle_v1_GetAvailableVehicleResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Vehicle.V1.GetAvailableVehicleResponse.Parser.ParseFrom);
-    static readonly grpc::Marshaller<global::Tutorial.Vehicle.V1.ListVehiclesRequest> __Marshaller_tutorial_vehicle_v1_ListVehiclesRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Vehicle.V1.ListVehiclesRequest.Parser.ParseFrom);
-    static readonly grpc::Marshaller<global::Tutorial.Vehicle.V1.ListVehiclesResponse> __Marshaller_tutorial_vehicle_v1_ListVehiclesResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Vehicle.V1.ListVehiclesResponse.Parser.ParseFrom);
-    static readonly grpc::Marshaller<global::Tutorial.Vehicle.V1.GetVehicleRequest> __Marshaller_tutorial_vehicle_v1_GetVehicleRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Vehicle.V1.GetVehicleRequest.Parser.ParseFrom);
-    static readonly grpc::Marshaller<global::Tutorial.Vehicle.V1.GetVehicleResponse> __Marshaller_tutorial_vehicle_v1_GetVehicleResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Vehicle.V1.GetVehicleResponse.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::Tutorial.Vehicle.V1.AddVehicleRequest> __Marshaller_tutorial_vehicle_v1_AddVehicleRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Vehicle.V1.AddVehicleRequest.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::Tutorial.Vehicle.V1.AddVehicleResponse> __Marshaller_tutorial_vehicle_v1_AddVehicleResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Vehicle.V1.AddVehicleResponse.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::Tutorial.Vehicle.V1.RemoveVehicleRequest> __Marshaller_tutorial_vehicle_v1_RemoveVehicleRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Vehicle.V1.RemoveVehicleRequest.Parser.ParseFrom);
@@ -31,34 +23,6 @@ namespace Tutorial.Vehicle.V1 {
     static readonly grpc::Marshaller<global::Tutorial.Vehicle.V1.LeaseVehicleResponse> __Marshaller_tutorial_vehicle_v1_LeaseVehicleResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Vehicle.V1.LeaseVehicleResponse.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::Tutorial.Vehicle.V1.ReturnVehicleRequest> __Marshaller_tutorial_vehicle_v1_ReturnVehicleRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Vehicle.V1.ReturnVehicleRequest.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::Tutorial.Vehicle.V1.ReturnVehicleResponse> __Marshaller_tutorial_vehicle_v1_ReturnVehicleResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Tutorial.Vehicle.V1.ReturnVehicleResponse.Parser.ParseFrom);
-
-    static readonly grpc::Method<global::Tutorial.Vehicle.V1.ListAvailableVehiclesRequest, global::Tutorial.Vehicle.V1.ListAvailableVehiclesResponse> __Method_ListAvailableVehicles = new grpc::Method<global::Tutorial.Vehicle.V1.ListAvailableVehiclesRequest, global::Tutorial.Vehicle.V1.ListAvailableVehiclesResponse>(
-        grpc::MethodType.Unary,
-        __ServiceName,
-        "ListAvailableVehicles",
-        __Marshaller_tutorial_vehicle_v1_ListAvailableVehiclesRequest,
-        __Marshaller_tutorial_vehicle_v1_ListAvailableVehiclesResponse);
-
-    static readonly grpc::Method<global::Tutorial.Vehicle.V1.GetAvailableVehicleRequest, global::Tutorial.Vehicle.V1.GetAvailableVehicleResponse> __Method_GetAvailableVehicle = new grpc::Method<global::Tutorial.Vehicle.V1.GetAvailableVehicleRequest, global::Tutorial.Vehicle.V1.GetAvailableVehicleResponse>(
-        grpc::MethodType.Unary,
-        __ServiceName,
-        "GetAvailableVehicle",
-        __Marshaller_tutorial_vehicle_v1_GetAvailableVehicleRequest,
-        __Marshaller_tutorial_vehicle_v1_GetAvailableVehicleResponse);
-
-    static readonly grpc::Method<global::Tutorial.Vehicle.V1.ListVehiclesRequest, global::Tutorial.Vehicle.V1.ListVehiclesResponse> __Method_ListVehicles = new grpc::Method<global::Tutorial.Vehicle.V1.ListVehiclesRequest, global::Tutorial.Vehicle.V1.ListVehiclesResponse>(
-        grpc::MethodType.Unary,
-        __ServiceName,
-        "ListVehicles",
-        __Marshaller_tutorial_vehicle_v1_ListVehiclesRequest,
-        __Marshaller_tutorial_vehicle_v1_ListVehiclesResponse);
-
-    static readonly grpc::Method<global::Tutorial.Vehicle.V1.GetVehicleRequest, global::Tutorial.Vehicle.V1.GetVehicleResponse> __Method_GetVehicle = new grpc::Method<global::Tutorial.Vehicle.V1.GetVehicleRequest, global::Tutorial.Vehicle.V1.GetVehicleResponse>(
-        grpc::MethodType.Unary,
-        __ServiceName,
-        "GetVehicle",
-        __Marshaller_tutorial_vehicle_v1_GetVehicleRequest,
-        __Marshaller_tutorial_vehicle_v1_GetVehicleResponse);
 
     static readonly grpc::Method<global::Tutorial.Vehicle.V1.AddVehicleRequest, global::Tutorial.Vehicle.V1.AddVehicleResponse> __Method_AddVehicle = new grpc::Method<global::Tutorial.Vehicle.V1.AddVehicleRequest, global::Tutorial.Vehicle.V1.AddVehicleResponse>(
         grpc::MethodType.Unary,
@@ -98,50 +62,6 @@ namespace Tutorial.Vehicle.V1 {
     [grpc::BindServiceMethod(typeof(VehicleService), "BindService")]
     public abstract partial class VehicleServiceBase
     {
-      /// <summary>
-      /// List available vehicles in inventory.
-      /// </summary>
-      /// <param name="request">The request received from the client.</param>
-      /// <param name="context">The context of the server-side call handler being invoked.</param>
-      /// <returns>The response to send back to the client (wrapped by a task).</returns>
-      public virtual global::System.Threading.Tasks.Task<global::Tutorial.Vehicle.V1.ListAvailableVehiclesResponse> ListAvailableVehicles(global::Tutorial.Vehicle.V1.ListAvailableVehiclesRequest request, grpc::ServerCallContext context)
-      {
-        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
-      }
-
-      /// <summary>
-      /// Get an available vehicle.
-      /// </summary>
-      /// <param name="request">The request received from the client.</param>
-      /// <param name="context">The context of the server-side call handler being invoked.</param>
-      /// <returns>The response to send back to the client (wrapped by a task).</returns>
-      public virtual global::System.Threading.Tasks.Task<global::Tutorial.Vehicle.V1.GetAvailableVehicleResponse> GetAvailableVehicle(global::Tutorial.Vehicle.V1.GetAvailableVehicleRequest request, grpc::ServerCallContext context)
-      {
-        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
-      }
-
-      /// <summary>
-      /// List vehicles in inventory.
-      /// </summary>
-      /// <param name="request">The request received from the client.</param>
-      /// <param name="context">The context of the server-side call handler being invoked.</param>
-      /// <returns>The response to send back to the client (wrapped by a task).</returns>
-      public virtual global::System.Threading.Tasks.Task<global::Tutorial.Vehicle.V1.ListVehiclesResponse> ListVehicles(global::Tutorial.Vehicle.V1.ListVehiclesRequest request, grpc::ServerCallContext context)
-      {
-        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
-      }
-
-      /// <summary>
-      /// Get a vehicle.
-      /// </summary>
-      /// <param name="request">The request received from the client.</param>
-      /// <param name="context">The context of the server-side call handler being invoked.</param>
-      /// <returns>The response to send back to the client (wrapped by a task).</returns>
-      public virtual global::System.Threading.Tasks.Task<global::Tutorial.Vehicle.V1.GetVehicleResponse> GetVehicle(global::Tutorial.Vehicle.V1.GetVehicleRequest request, grpc::ServerCallContext context)
-      {
-        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
-      }
-
       /// <summary>
       /// Add a vehicle to inventory.
       /// </summary>
@@ -211,182 +131,6 @@ namespace Tutorial.Vehicle.V1 {
       {
       }
 
-      /// <summary>
-      /// List available vehicles in inventory.
-      /// </summary>
-      /// <param name="request">The request to send to the server.</param>
-      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
-      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
-      /// <param name="cancellationToken">An optional token for canceling the call.</param>
-      /// <returns>The response received from the server.</returns>
-      public virtual global::Tutorial.Vehicle.V1.ListAvailableVehiclesResponse ListAvailableVehicles(global::Tutorial.Vehicle.V1.ListAvailableVehiclesRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-      {
-        return ListAvailableVehicles(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-      }
-      /// <summary>
-      /// List available vehicles in inventory.
-      /// </summary>
-      /// <param name="request">The request to send to the server.</param>
-      /// <param name="options">The options for the call.</param>
-      /// <returns>The response received from the server.</returns>
-      public virtual global::Tutorial.Vehicle.V1.ListAvailableVehiclesResponse ListAvailableVehicles(global::Tutorial.Vehicle.V1.ListAvailableVehiclesRequest request, grpc::CallOptions options)
-      {
-        return CallInvoker.BlockingUnaryCall(__Method_ListAvailableVehicles, null, options, request);
-      }
-      /// <summary>
-      /// List available vehicles in inventory.
-      /// </summary>
-      /// <param name="request">The request to send to the server.</param>
-      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
-      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
-      /// <param name="cancellationToken">An optional token for canceling the call.</param>
-      /// <returns>The call object.</returns>
-      public virtual grpc::AsyncUnaryCall<global::Tutorial.Vehicle.V1.ListAvailableVehiclesResponse> ListAvailableVehiclesAsync(global::Tutorial.Vehicle.V1.ListAvailableVehiclesRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-      {
-        return ListAvailableVehiclesAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-      }
-      /// <summary>
-      /// List available vehicles in inventory.
-      /// </summary>
-      /// <param name="request">The request to send to the server.</param>
-      /// <param name="options">The options for the call.</param>
-      /// <returns>The call object.</returns>
-      public virtual grpc::AsyncUnaryCall<global::Tutorial.Vehicle.V1.ListAvailableVehiclesResponse> ListAvailableVehiclesAsync(global::Tutorial.Vehicle.V1.ListAvailableVehiclesRequest request, grpc::CallOptions options)
-      {
-        return CallInvoker.AsyncUnaryCall(__Method_ListAvailableVehicles, null, options, request);
-      }
-      /// <summary>
-      /// Get an available vehicle.
-      /// </summary>
-      /// <param name="request">The request to send to the server.</param>
-      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
-      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
-      /// <param name="cancellationToken">An optional token for canceling the call.</param>
-      /// <returns>The response received from the server.</returns>
-      public virtual global::Tutorial.Vehicle.V1.GetAvailableVehicleResponse GetAvailableVehicle(global::Tutorial.Vehicle.V1.GetAvailableVehicleRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-      {
-        return GetAvailableVehicle(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-      }
-      /// <summary>
-      /// Get an available vehicle.
-      /// </summary>
-      /// <param name="request">The request to send to the server.</param>
-      /// <param name="options">The options for the call.</param>
-      /// <returns>The response received from the server.</returns>
-      public virtual global::Tutorial.Vehicle.V1.GetAvailableVehicleResponse GetAvailableVehicle(global::Tutorial.Vehicle.V1.GetAvailableVehicleRequest request, grpc::CallOptions options)
-      {
-        return CallInvoker.BlockingUnaryCall(__Method_GetAvailableVehicle, null, options, request);
-      }
-      /// <summary>
-      /// Get an available vehicle.
-      /// </summary>
-      /// <param name="request">The request to send to the server.</param>
-      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
-      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
-      /// <param name="cancellationToken">An optional token for canceling the call.</param>
-      /// <returns>The call object.</returns>
-      public virtual grpc::AsyncUnaryCall<global::Tutorial.Vehicle.V1.GetAvailableVehicleResponse> GetAvailableVehicleAsync(global::Tutorial.Vehicle.V1.GetAvailableVehicleRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-      {
-        return GetAvailableVehicleAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-      }
-      /// <summary>
-      /// Get an available vehicle.
-      /// </summary>
-      /// <param name="request">The request to send to the server.</param>
-      /// <param name="options">The options for the call.</param>
-      /// <returns>The call object.</returns>
-      public virtual grpc::AsyncUnaryCall<global::Tutorial.Vehicle.V1.GetAvailableVehicleResponse> GetAvailableVehicleAsync(global::Tutorial.Vehicle.V1.GetAvailableVehicleRequest request, grpc::CallOptions options)
-      {
-        return CallInvoker.AsyncUnaryCall(__Method_GetAvailableVehicle, null, options, request);
-      }
-      /// <summary>
-      /// List vehicles in inventory.
-      /// </summary>
-      /// <param name="request">The request to send to the server.</param>
-      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
-      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
-      /// <param name="cancellationToken">An optional token for canceling the call.</param>
-      /// <returns>The response received from the server.</returns>
-      public virtual global::Tutorial.Vehicle.V1.ListVehiclesResponse ListVehicles(global::Tutorial.Vehicle.V1.ListVehiclesRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-      {
-        return ListVehicles(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-      }
-      /// <summary>
-      /// List vehicles in inventory.
-      /// </summary>
-      /// <param name="request">The request to send to the server.</param>
-      /// <param name="options">The options for the call.</param>
-      /// <returns>The response received from the server.</returns>
-      public virtual global::Tutorial.Vehicle.V1.ListVehiclesResponse ListVehicles(global::Tutorial.Vehicle.V1.ListVehiclesRequest request, grpc::CallOptions options)
-      {
-        return CallInvoker.BlockingUnaryCall(__Method_ListVehicles, null, options, request);
-      }
-      /// <summary>
-      /// List vehicles in inventory.
-      /// </summary>
-      /// <param name="request">The request to send to the server.</param>
-      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
-      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
-      /// <param name="cancellationToken">An optional token for canceling the call.</param>
-      /// <returns>The call object.</returns>
-      public virtual grpc::AsyncUnaryCall<global::Tutorial.Vehicle.V1.ListVehiclesResponse> ListVehiclesAsync(global::Tutorial.Vehicle.V1.ListVehiclesRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-      {
-        return ListVehiclesAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-      }
-      /// <summary>
-      /// List vehicles in inventory.
-      /// </summary>
-      /// <param name="request">The request to send to the server.</param>
-      /// <param name="options">The options for the call.</param>
-      /// <returns>The call object.</returns>
-      public virtual grpc::AsyncUnaryCall<global::Tutorial.Vehicle.V1.ListVehiclesResponse> ListVehiclesAsync(global::Tutorial.Vehicle.V1.ListVehiclesRequest request, grpc::CallOptions options)
-      {
-        return CallInvoker.AsyncUnaryCall(__Method_ListVehicles, null, options, request);
-      }
-      /// <summary>
-      /// Get a vehicle.
-      /// </summary>
-      /// <param name="request">The request to send to the server.</param>
-      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
-      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
-      /// <param name="cancellationToken">An optional token for canceling the call.</param>
-      /// <returns>The response received from the server.</returns>
-      public virtual global::Tutorial.Vehicle.V1.GetVehicleResponse GetVehicle(global::Tutorial.Vehicle.V1.GetVehicleRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-      {
-        return GetVehicle(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-      }
-      /// <summary>
-      /// Get a vehicle.
-      /// </summary>
-      /// <param name="request">The request to send to the server.</param>
-      /// <param name="options">The options for the call.</param>
-      /// <returns>The response received from the server.</returns>
-      public virtual global::Tutorial.Vehicle.V1.GetVehicleResponse GetVehicle(global::Tutorial.Vehicle.V1.GetVehicleRequest request, grpc::CallOptions options)
-      {
-        return CallInvoker.BlockingUnaryCall(__Method_GetVehicle, null, options, request);
-      }
-      /// <summary>
-      /// Get a vehicle.
-      /// </summary>
-      /// <param name="request">The request to send to the server.</param>
-      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
-      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
-      /// <param name="cancellationToken">An optional token for canceling the call.</param>
-      /// <returns>The call object.</returns>
-      public virtual grpc::AsyncUnaryCall<global::Tutorial.Vehicle.V1.GetVehicleResponse> GetVehicleAsync(global::Tutorial.Vehicle.V1.GetVehicleRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-      {
-        return GetVehicleAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-      }
-      /// <summary>
-      /// Get a vehicle.
-      /// </summary>
-      /// <param name="request">The request to send to the server.</param>
-      /// <param name="options">The options for the call.</param>
-      /// <returns>The call object.</returns>
-      public virtual grpc::AsyncUnaryCall<global::Tutorial.Vehicle.V1.GetVehicleResponse> GetVehicleAsync(global::Tutorial.Vehicle.V1.GetVehicleRequest request, grpc::CallOptions options)
-      {
-        return CallInvoker.AsyncUnaryCall(__Method_GetVehicle, null, options, request);
-      }
       /// <summary>
       /// Add a vehicle to inventory.
       /// </summary>
@@ -575,10 +319,6 @@ namespace Tutorial.Vehicle.V1 {
     public static grpc::ServerServiceDefinition BindService(VehicleServiceBase serviceImpl)
     {
       return grpc::ServerServiceDefinition.CreateBuilder()
-          .AddMethod(__Method_ListAvailableVehicles, serviceImpl.ListAvailableVehicles)
-          .AddMethod(__Method_GetAvailableVehicle, serviceImpl.GetAvailableVehicle)
-          .AddMethod(__Method_ListVehicles, serviceImpl.ListVehicles)
-          .AddMethod(__Method_GetVehicle, serviceImpl.GetVehicle)
           .AddMethod(__Method_AddVehicle, serviceImpl.AddVehicle)
           .AddMethod(__Method_RemoveVehicle, serviceImpl.RemoveVehicle)
           .AddMethod(__Method_LeaseVehicle, serviceImpl.LeaseVehicle)
@@ -591,10 +331,6 @@ namespace Tutorial.Vehicle.V1 {
     /// <param name="serviceImpl">An object implementing the server-side handling logic.</param>
     public static void BindService(grpc::ServiceBinderBase serviceBinder, VehicleServiceBase serviceImpl)
     {
-      serviceBinder.AddMethod(__Method_ListAvailableVehicles, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Tutorial.Vehicle.V1.ListAvailableVehiclesRequest, global::Tutorial.Vehicle.V1.ListAvailableVehiclesResponse>(serviceImpl.ListAvailableVehicles));
-      serviceBinder.AddMethod(__Method_GetAvailableVehicle, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Tutorial.Vehicle.V1.GetAvailableVehicleRequest, global::Tutorial.Vehicle.V1.GetAvailableVehicleResponse>(serviceImpl.GetAvailableVehicle));
-      serviceBinder.AddMethod(__Method_ListVehicles, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Tutorial.Vehicle.V1.ListVehiclesRequest, global::Tutorial.Vehicle.V1.ListVehiclesResponse>(serviceImpl.ListVehicles));
-      serviceBinder.AddMethod(__Method_GetVehicle, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Tutorial.Vehicle.V1.GetVehicleRequest, global::Tutorial.Vehicle.V1.GetVehicleResponse>(serviceImpl.GetVehicle));
       serviceBinder.AddMethod(__Method_AddVehicle, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Tutorial.Vehicle.V1.AddVehicleRequest, global::Tutorial.Vehicle.V1.AddVehicleResponse>(serviceImpl.AddVehicle));
       serviceBinder.AddMethod(__Method_RemoveVehicle, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Tutorial.Vehicle.V1.RemoveVehicleRequest, global::Tutorial.Vehicle.V1.RemoveVehicleResponse>(serviceImpl.RemoveVehicle));
       serviceBinder.AddMethod(__Method_LeaseVehicle, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Tutorial.Vehicle.V1.LeaseVehicleRequest, global::Tutorial.Vehicle.V1.LeaseVehicleResponse>(serviceImpl.LeaseVehicle));

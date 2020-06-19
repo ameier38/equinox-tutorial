@@ -22,6 +22,13 @@ services:
       MINIO_SECRET_KEY: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
     ports: 
       - "9000:9000"
+  mongo:
+    image: mongo:4.2
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: changeit
+    ports: 
+      - "27017:27017"
   upload-api:
     build: ./upload-api
     ports: 
@@ -41,9 +48,10 @@ services:
     depends_on: 
       - seq
       - minio
-  vehicle-api:
+  vehicle-server:
     build:
       context: ./vehicle-api
+      dockerfile: deploy/server.Dockerfile
       target: runner
     ports:
       - "50051:50051"
@@ -54,6 +62,19 @@ services:
     depends_on:
       - seq
       - eventstore
+  vehicle-reactor:
+    build:
+      context: ./vehicle-api
+      dockerfile: deploy/reactor.Dockerfile
+      target: runner
+    environment: 
+      MONGO_HOST: mongo
+      EVENTSTORE_HOST: eventstore
+      SEQ_HOST: seq
+    depends_on: 
+      - seq
+      - eventstore
+      - mongo
   graphql-api:
     build:
       context: ./graphql-api
@@ -67,7 +88,7 @@ services:
       SEQ_HOST: seq
       SEQ_PORT: 5341
     depends_on: 
-      - vehicle-api
+      - vehicle-server
   web-app:
     build:
       context: ./fable-web-app

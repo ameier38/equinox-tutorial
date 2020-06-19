@@ -13,10 +13,6 @@ import "google/type/money.proto";
 service LeaseService {
   // Request a lease for a vehicle.
   rpc RequestLease(RequestLeaseRequest) returns (RequestLeaseResponse);
-  // List the leases that have been created.
-  rpc ListLeases(ListLeasesRequest) returns (ListLeasesResponse);
-  // Get a lease as of a point in time.
-  rpc GetLease(GetLeaseRequest) returns (GetLeaseResponse);
   // Accept a new lease.
   rpc AcceptLease(AcceptLeaseRequest) returns (AcceptLeaseResponse);
   // Create a payment.
@@ -39,29 +35,6 @@ message RequestLeaseRequest {
 
 message RequestLeaseResponse {
     Lease lease = 1;
-}
-
-message ListLeasesRequest {
-  user.v1.User user = 1;
-  int32 page_size = 2;
-  string page_token = 3;
-}
-
-message ListLeasesResponse {
-  repeated Lease leases = 1;
-  string prev_page_token = 2;
-  string next_page_token = 3;
-  int32 total_count = 4;
-}
-
-message GetLeaseRequest {
-  user.v1.User user = 1;
-  string lease_id = 2;
-  AsOn as_on = 3;
-}
-
-message GetLeaseResponse {
-  LeaseObservation lease_observation = 1;
 }
 
 message AcceptLeaseRequest {

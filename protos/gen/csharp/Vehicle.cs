@@ -26,34 +26,18 @@ namespace Tutorial.Vehicle.V1 {
           string.Concat(
             "CiF0dXRvcmlhbC92ZWhpY2xlL3YxL3ZlaGljbGUucHJvdG8SE3R1dG9yaWFs",
             "LnZlaGljbGUudjEiSAoHVmVoaWNsZRISCgp2ZWhpY2xlX2lkGAEgASgJEgwK",
-            "BG1ha2UYAiABKAkSDQoFbW9kZWwYAyABKAkSDAoEeWVhchgEIAEoBSJ5CgxW",
-            "ZWhpY2xlU3RhdGUSLQoHdmVoaWNsZRgBIAEoCzIcLnR1dG9yaWFsLnZlaGlj",
-            "bGUudjEuVmVoaWNsZRI6Cg52ZWhpY2xlX3N0YXR1cxgCIAEoDjIiLnR1dG9y",
-            "aWFsLnZlaGljbGUudjEuVmVoaWNsZVN0YXR1cyqEAQoNVmVoaWNsZVN0YXR1",
-            "cxIeChpWRUhJQ0xFX1NUQVRVU19VTlNQRUNJRklFRBAAEhwKGFZFSElDTEVf",
-            "U1RBVFVTX0FWQUlMQUJMRRABEhoKFlZFSElDTEVfU1RBVFVTX1JFTU9WRUQQ",
-            "AhIZChVWRUhJQ0xFX1NUQVRVU19MRUFTRUQQA0IrWhN0dXRvcmlhbC92ZWhp",
-            "Y2xlL3YxqgITVHV0b3JpYWwuVmVoaWNsZS5WMWIGcHJvdG8z"));
+            "BG1ha2UYAiABKAkSDQoFbW9kZWwYAyABKAkSDAoEeWVhchgEIAEoBUIrWhN0",
+            "dXRvcmlhbC92ZWhpY2xlL3YxqgITVHV0b3JpYWwuVmVoaWNsZS5WMWIGcHJv",
+            "dG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Tutorial.Vehicle.V1.VehicleStatus), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Vehicle.V1.Vehicle), global::Tutorial.Vehicle.V1.Vehicle.Parser, new[]{ "VehicleId", "Make", "Model", "Year" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Vehicle.V1.VehicleState), global::Tutorial.Vehicle.V1.VehicleState.Parser, new[]{ "Vehicle", "VehicleStatus" }, null, null, null, null)
+          new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Vehicle.V1.Vehicle), global::Tutorial.Vehicle.V1.Vehicle.Parser, new[]{ "VehicleId", "Make", "Model", "Year" }, null, null, null, null)
           }));
     }
     #endregion
 
   }
-  #region Enums
-  public enum VehicleStatus {
-    [pbr::OriginalName("VEHICLE_STATUS_UNSPECIFIED")] Unspecified = 0,
-    [pbr::OriginalName("VEHICLE_STATUS_AVAILABLE")] Available = 1,
-    [pbr::OriginalName("VEHICLE_STATUS_REMOVED")] Removed = 2,
-    [pbr::OriginalName("VEHICLE_STATUS_LEASED")] Leased = 3,
-  }
-
-  #endregion
-
   #region Messages
   public sealed partial class Vehicle : pb::IMessage<Vehicle> {
     private static readonly pb::MessageParser<Vehicle> _parser = new pb::MessageParser<Vehicle>(() => new Vehicle());
@@ -260,169 +244,6 @@ namespace Tutorial.Vehicle.V1 {
           }
           case 32: {
             Year = input.ReadInt32();
-            break;
-          }
-        }
-      }
-    }
-
-  }
-
-  public sealed partial class VehicleState : pb::IMessage<VehicleState> {
-    private static readonly pb::MessageParser<VehicleState> _parser = new pb::MessageParser<VehicleState>(() => new VehicleState());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<VehicleState> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Vehicle.V1.VehicleReflection.Descriptor.MessageTypes[1]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public VehicleState() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public VehicleState(VehicleState other) : this() {
-      vehicle_ = other.vehicle_ != null ? other.vehicle_.Clone() : null;
-      vehicleStatus_ = other.vehicleStatus_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public VehicleState Clone() {
-      return new VehicleState(this);
-    }
-
-    /// <summary>Field number for the "vehicle" field.</summary>
-    public const int VehicleFieldNumber = 1;
-    private global::Tutorial.Vehicle.V1.Vehicle vehicle_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Tutorial.Vehicle.V1.Vehicle Vehicle {
-      get { return vehicle_; }
-      set {
-        vehicle_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "vehicle_status" field.</summary>
-    public const int VehicleStatusFieldNumber = 2;
-    private global::Tutorial.Vehicle.V1.VehicleStatus vehicleStatus_ = global::Tutorial.Vehicle.V1.VehicleStatus.Unspecified;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Tutorial.Vehicle.V1.VehicleStatus VehicleStatus {
-      get { return vehicleStatus_; }
-      set {
-        vehicleStatus_ = value;
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override bool Equals(object other) {
-      return Equals(other as VehicleState);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(VehicleState other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (!object.Equals(Vehicle, other.Vehicle)) return false;
-      if (VehicleStatus != other.VehicleStatus) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (vehicle_ != null) hash ^= Vehicle.GetHashCode();
-      if (VehicleStatus != global::Tutorial.Vehicle.V1.VehicleStatus.Unspecified) hash ^= VehicleStatus.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void WriteTo(pb::CodedOutputStream output) {
-      if (vehicle_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(Vehicle);
-      }
-      if (VehicleStatus != global::Tutorial.Vehicle.V1.VehicleStatus.Unspecified) {
-        output.WriteRawTag(16);
-        output.WriteEnum((int) VehicleStatus);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int CalculateSize() {
-      int size = 0;
-      if (vehicle_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Vehicle);
-      }
-      if (VehicleStatus != global::Tutorial.Vehicle.V1.VehicleStatus.Unspecified) {
-        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) VehicleStatus);
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(VehicleState other) {
-      if (other == null) {
-        return;
-      }
-      if (other.vehicle_ != null) {
-        if (vehicle_ == null) {
-          Vehicle = new global::Tutorial.Vehicle.V1.Vehicle();
-        }
-        Vehicle.MergeFrom(other.Vehicle);
-      }
-      if (other.VehicleStatus != global::Tutorial.Vehicle.V1.VehicleStatus.Unspecified) {
-        VehicleStatus = other.VehicleStatus;
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(pb::CodedInputStream input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 10: {
-            if (vehicle_ == null) {
-              Vehicle = new global::Tutorial.Vehicle.V1.Vehicle();
-            }
-            input.ReadMessage(Vehicle);
-            break;
-          }
-          case 16: {
-            VehicleStatus = (global::Tutorial.Vehicle.V1.VehicleStatus) input.ReadEnum();
             break;
           }
         }

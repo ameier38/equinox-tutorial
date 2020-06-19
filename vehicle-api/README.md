@@ -1,5 +1,7 @@
 # Vehicle Service
-gRPC API to manage vehicles.
+The vehicle service consists of two parts.
+1. A gRPC API to handle vehicle commands.
+2. A subscription process to handle generating read models stored in MongoDB.
 
 ## Setup
 1. Install [.Net Core SDK](https://andrewmeier.dev/win-dev#dotnet)

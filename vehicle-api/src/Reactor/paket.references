@@ -1,0 +1,10 @@
+EventStore.Client
+FsCodec
+FsCodec.NewtonsoftJson
+Grpc.Core
+Grpc.HealthCheck
+MongoDB.Driver
+Serilog
+Serilog.Sinks.Console
+Serilog.Sinks.Seq
+TaskBuilder.fs

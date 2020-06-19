@@ -10,14 +10,6 @@ import "tutorial/user/v1/user.proto";
 
 // Service to handle interactions with Vehicles.
 service VehicleService {
-  // List available vehicles in inventory.
-  rpc ListAvailableVehicles(ListAvailableVehiclesRequest) returns (ListAvailableVehiclesResponse);
-  // Get an available vehicle.
-  rpc GetAvailableVehicle(GetAvailableVehicleRequest) returns (GetAvailableVehicleResponse);
-  // List vehicles in inventory.
-  rpc ListVehicles(ListVehiclesRequest) returns (ListVehiclesResponse);
-  // Get a vehicle.
-  rpc GetVehicle(GetVehicleRequest) returns (GetVehicleResponse);
   // Add a vehicle to inventory.
   rpc AddVehicle(AddVehicleRequest) returns (AddVehicleResponse);
   // Remove a vehicle from inventory.
@@ -26,48 +18,6 @@ service VehicleService {
   rpc LeaseVehicle(LeaseVehicleRequest) returns (LeaseVehicleResponse);
   // Return a vehicle after a lease.
   rpc ReturnVehicle(ReturnVehicleRequest) returns (ReturnVehicleResponse);
-}
-
-message ListAvailableVehiclesRequest {
-  int32 page_size = 1;
-  string page_token = 2;
-}
-
-message ListAvailableVehiclesResponse {
-  repeated Vehicle vehicles = 1;
-  string prev_page_token = 2;
-  string next_page_token = 3;
-  int64 total_count = 4;
-}
-
-message GetAvailableVehicleRequest {
-  string vehicle_id = 1;
-}
-
-message GetAvailableVehicleResponse {
-  VehicleState vehicle = 1;
-}
-
-message ListVehiclesRequest {
-  user.v1.User user = 1;
-  int32 page_size = 2;
-  string page_token = 3;
-}
-
-message ListVehiclesResponse {
-  repeated Vehicle vehicles = 1;
-  string prev_page_token = 2;
-  string next_page_token = 3;
-  int64 total_count = 4;
-}
-
-message GetVehicleRequest {
-  user.v1.User user = 1;
-  string vehicle_id = 2;
-}
-
-message GetVehicleResponse {
-  VehicleState vehicle = 1;
 }
 
 message AddVehicleRequest {

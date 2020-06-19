@@ -32,62 +32,44 @@ namespace Tutorial.Lease.V1 {
             "Cgp2ZWhpY2xlX2lkGAMgASgJEgwKBHRlcm0YBCABKAUSKAoMZG93bl9wYXlt",
             "ZW50GAUgASgLMhIuZ29vZ2xlLnR5cGUuTW9uZXkiPwoUUmVxdWVzdExlYXNl",
             "UmVzcG9uc2USJwoFbGVhc2UYASABKAsyGC50dXRvcmlhbC5sZWFzZS52MS5M",
-            "ZWFzZSJgChFMaXN0TGVhc2VzUmVxdWVzdBIkCgR1c2VyGAEgASgLMhYudHV0",
-            "b3JpYWwudXNlci52MS5Vc2VyEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdl",
-            "X3Rva2VuGAMgASgJIoUBChJMaXN0TGVhc2VzUmVzcG9uc2USKAoGbGVhc2Vz",
-            "GAEgAygLMhgudHV0b3JpYWwubGVhc2UudjEuTGVhc2USFwoPcHJldl9wYWdl",
-            "X3Rva2VuGAIgASgJEhcKD25leHRfcGFnZV90b2tlbhgDIAEoCRITCgt0b3Rh",
-            "bF9jb3VudBgEIAEoBSJxCg9HZXRMZWFzZVJlcXVlc3QSJAoEdXNlchgBIAEo",
-            "CzIWLnR1dG9yaWFsLnVzZXIudjEuVXNlchIQCghsZWFzZV9pZBgCIAEoCRIm",
-            "CgVhc19vbhgDIAEoCzIXLnR1dG9yaWFsLmxlYXNlLnYxLkFzT24iUgoQR2V0",
-            "TGVhc2VSZXNwb25zZRI+ChFsZWFzZV9vYnNlcnZhdGlvbhgBIAEoCzIjLnR1",
-            "dG9yaWFsLmxlYXNlLnYxLkxlYXNlT2JzZXJ2YXRpb24iYwoSQWNjZXB0TGVh",
-            "c2VSZXF1ZXN0EiQKBHVzZXIYASABKAsyFi50dXRvcmlhbC51c2VyLnYxLlVz",
-            "ZXISJwoFbGVhc2UYAiABKAsyGC50dXRvcmlhbC5sZWFzZS52MS5MZWFzZSIm",
-            "ChNBY2NlcHRMZWFzZVJlc3BvbnNlEg8KB21lc3NhZ2UYASABKAkieAoUQ3Jl",
-            "YXRlUGF5bWVudFJlcXVlc3QSJAoEdXNlchgBIAEoCzIWLnR1dG9yaWFsLnVz",
-            "ZXIudjEuVXNlchI6Cg9jcmVhdGVkX3BheW1lbnQYAiABKAsyIS50dXRvcmlh",
-            "bC5sZWFzZS52MS5DcmVhdGVkUGF5bWVudCIoChVDcmVhdGVQYXltZW50UmVz",
-            "cG9uc2USDwoHbWVzc2FnZRgBIAEoCSJ4ChRTZXR0bGVQYXltZW50UmVxdWVz",
-            "dBIkCgR1c2VyGAEgASgLMhYudHV0b3JpYWwudXNlci52MS5Vc2VyEjoKD3Nl",
-            "dHRsZWRfcGF5bWVudBgCIAEoCzIhLnR1dG9yaWFsLmxlYXNlLnYxLlNldHRs",
-            "ZWRQYXltZW50IigKFVNldHRsZVBheW1lbnRSZXNwb25zZRIPCgdtZXNzYWdl",
-            "GAEgASgJInoKFFJldHVyblBheW1lbnRSZXF1ZXN0EiQKBHVzZXIYASABKAsy",
-            "Fi50dXRvcmlhbC51c2VyLnYxLlVzZXISPAoQcmV0dXJuZWRfcGF5bWVudBgC",
-            "IAEoCzIiLnR1dG9yaWFsLmxlYXNlLnYxLlJldHVybmVkUGF5bWVudCIoChVS",
-            "ZXR1cm5QYXltZW50UmVzcG9uc2USDwoHbWVzc2FnZRgBIAEoCSJ6ChRSZXR1",
-            "cm5WZWhpY2xlUmVxdWVzdBIkCgR1c2VyGAEgASgLMhYudHV0b3JpYWwudXNl",
-            "ci52MS5Vc2VyEjwKEHJldHVybmVkX3ZlaGljbGUYAiABKAsyIi50dXRvcmlh",
-            "bC5sZWFzZS52MS5SZXR1cm5lZFZlaGljbGUiKAoVUmV0dXJuVmVoaWNsZVJl",
-            "c3BvbnNlEg8KB21lc3NhZ2UYASABKAkyjQYKDExlYXNlU2VydmljZRJfCgxS",
-            "ZXF1ZXN0TGVhc2USJi50dXRvcmlhbC5sZWFzZS52MS5SZXF1ZXN0TGVhc2VS",
-            "ZXF1ZXN0GicudHV0b3JpYWwubGVhc2UudjEuUmVxdWVzdExlYXNlUmVzcG9u",
-            "c2USWQoKTGlzdExlYXNlcxIkLnR1dG9yaWFsLmxlYXNlLnYxLkxpc3RMZWFz",
-            "ZXNSZXF1ZXN0GiUudHV0b3JpYWwubGVhc2UudjEuTGlzdExlYXNlc1Jlc3Bv",
-            "bnNlElMKCEdldExlYXNlEiIudHV0b3JpYWwubGVhc2UudjEuR2V0TGVhc2VS",
-            "ZXF1ZXN0GiMudHV0b3JpYWwubGVhc2UudjEuR2V0TGVhc2VSZXNwb25zZRJc",
-            "CgtBY2NlcHRMZWFzZRIlLnR1dG9yaWFsLmxlYXNlLnYxLkFjY2VwdExlYXNl",
-            "UmVxdWVzdBomLnR1dG9yaWFsLmxlYXNlLnYxLkFjY2VwdExlYXNlUmVzcG9u",
-            "c2USYgoNQ3JlYXRlUGF5bWVudBInLnR1dG9yaWFsLmxlYXNlLnYxLkNyZWF0",
-            "ZVBheW1lbnRSZXF1ZXN0GigudHV0b3JpYWwubGVhc2UudjEuQ3JlYXRlUGF5",
-            "bWVudFJlc3BvbnNlEmIKDVNldHRsZVBheW1lbnQSJy50dXRvcmlhbC5sZWFz",
-            "ZS52MS5TZXR0bGVQYXltZW50UmVxdWVzdBooLnR1dG9yaWFsLmxlYXNlLnYx",
-            "LlNldHRsZVBheW1lbnRSZXNwb25zZRJiCg1SZXR1cm5QYXltZW50EicudHV0",
-            "b3JpYWwubGVhc2UudjEuUmV0dXJuUGF5bWVudFJlcXVlc3QaKC50dXRvcmlh",
-            "bC5sZWFzZS52MS5SZXR1cm5QYXltZW50UmVzcG9uc2USYgoNUmV0dXJuVmVo",
-            "aWNsZRInLnR1dG9yaWFsLmxlYXNlLnYxLlJldHVyblZlaGljbGVSZXF1ZXN0",
-            "GigudHV0b3JpYWwubGVhc2UudjEuUmV0dXJuVmVoaWNsZVJlc3BvbnNlQida",
-            "EXR1dG9yaWFsL2xlYXNlL3YxqgIRVHV0b3JpYWwuTGVhc2UuVjFiBnByb3Rv",
-            "Mw=="));
+            "ZWFzZSJjChJBY2NlcHRMZWFzZVJlcXVlc3QSJAoEdXNlchgBIAEoCzIWLnR1",
+            "dG9yaWFsLnVzZXIudjEuVXNlchInCgVsZWFzZRgCIAEoCzIYLnR1dG9yaWFs",
+            "LmxlYXNlLnYxLkxlYXNlIiYKE0FjY2VwdExlYXNlUmVzcG9uc2USDwoHbWVz",
+            "c2FnZRgBIAEoCSJ4ChRDcmVhdGVQYXltZW50UmVxdWVzdBIkCgR1c2VyGAEg",
+            "ASgLMhYudHV0b3JpYWwudXNlci52MS5Vc2VyEjoKD2NyZWF0ZWRfcGF5bWVu",
+            "dBgCIAEoCzIhLnR1dG9yaWFsLmxlYXNlLnYxLkNyZWF0ZWRQYXltZW50IigK",
+            "FUNyZWF0ZVBheW1lbnRSZXNwb25zZRIPCgdtZXNzYWdlGAEgASgJIngKFFNl",
+            "dHRsZVBheW1lbnRSZXF1ZXN0EiQKBHVzZXIYASABKAsyFi50dXRvcmlhbC51",
+            "c2VyLnYxLlVzZXISOgoPc2V0dGxlZF9wYXltZW50GAIgASgLMiEudHV0b3Jp",
+            "YWwubGVhc2UudjEuU2V0dGxlZFBheW1lbnQiKAoVU2V0dGxlUGF5bWVudFJl",
+            "c3BvbnNlEg8KB21lc3NhZ2UYASABKAkiegoUUmV0dXJuUGF5bWVudFJlcXVl",
+            "c3QSJAoEdXNlchgBIAEoCzIWLnR1dG9yaWFsLnVzZXIudjEuVXNlchI8ChBy",
+            "ZXR1cm5lZF9wYXltZW50GAIgASgLMiIudHV0b3JpYWwubGVhc2UudjEuUmV0",
+            "dXJuZWRQYXltZW50IigKFVJldHVyblBheW1lbnRSZXNwb25zZRIPCgdtZXNz",
+            "YWdlGAEgASgJInoKFFJldHVyblZlaGljbGVSZXF1ZXN0EiQKBHVzZXIYASAB",
+            "KAsyFi50dXRvcmlhbC51c2VyLnYxLlVzZXISPAoQcmV0dXJuZWRfdmVoaWNs",
+            "ZRgCIAEoCzIiLnR1dG9yaWFsLmxlYXNlLnYxLlJldHVybmVkVmVoaWNsZSIo",
+            "ChVSZXR1cm5WZWhpY2xlUmVzcG9uc2USDwoHbWVzc2FnZRgBIAEoCTLdBAoM",
+            "TGVhc2VTZXJ2aWNlEl8KDFJlcXVlc3RMZWFzZRImLnR1dG9yaWFsLmxlYXNl",
+            "LnYxLlJlcXVlc3RMZWFzZVJlcXVlc3QaJy50dXRvcmlhbC5sZWFzZS52MS5S",
+            "ZXF1ZXN0TGVhc2VSZXNwb25zZRJcCgtBY2NlcHRMZWFzZRIlLnR1dG9yaWFs",
+            "LmxlYXNlLnYxLkFjY2VwdExlYXNlUmVxdWVzdBomLnR1dG9yaWFsLmxlYXNl",
+            "LnYxLkFjY2VwdExlYXNlUmVzcG9uc2USYgoNQ3JlYXRlUGF5bWVudBInLnR1",
+            "dG9yaWFsLmxlYXNlLnYxLkNyZWF0ZVBheW1lbnRSZXF1ZXN0GigudHV0b3Jp",
+            "YWwubGVhc2UudjEuQ3JlYXRlUGF5bWVudFJlc3BvbnNlEmIKDVNldHRsZVBh",
+            "eW1lbnQSJy50dXRvcmlhbC5sZWFzZS52MS5TZXR0bGVQYXltZW50UmVxdWVz",
+            "dBooLnR1dG9yaWFsLmxlYXNlLnYxLlNldHRsZVBheW1lbnRSZXNwb25zZRJi",
+            "Cg1SZXR1cm5QYXltZW50EicudHV0b3JpYWwubGVhc2UudjEuUmV0dXJuUGF5",
+            "bWVudFJlcXVlc3QaKC50dXRvcmlhbC5sZWFzZS52MS5SZXR1cm5QYXltZW50",
+            "UmVzcG9uc2USYgoNUmV0dXJuVmVoaWNsZRInLnR1dG9yaWFsLmxlYXNlLnYx",
+            "LlJldHVyblZlaGljbGVSZXF1ZXN0GigudHV0b3JpYWwubGVhc2UudjEuUmV0",
+            "dXJuVmVoaWNsZVJlc3BvbnNlQidaEXR1dG9yaWFsL2xlYXNlL3YxqgIRVHV0",
+            "b3JpYWwuTGVhc2UuVjFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Tutorial.Lease.V1.LeaseReflection.Descriptor, global::Tutorial.User.V1.UserReflection.Descriptor, global::Google.Type.MoneyReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.RequestLeaseRequest), global::Tutorial.Lease.V1.RequestLeaseRequest.Parser, new[]{ "User", "LeaseId", "VehicleId", "Term", "DownPayment" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.RequestLeaseResponse), global::Tutorial.Lease.V1.RequestLeaseResponse.Parser, new[]{ "Lease" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ListLeasesRequest), global::Tutorial.Lease.V1.ListLeasesRequest.Parser, new[]{ "User", "PageSize", "PageToken" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.ListLeasesResponse), global::Tutorial.Lease.V1.ListLeasesResponse.Parser, new[]{ "Leases", "PrevPageToken", "NextPageToken", "TotalCount" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.GetLeaseRequest), global::Tutorial.Lease.V1.GetLeaseRequest.Parser, new[]{ "User", "LeaseId", "AsOn" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.GetLeaseResponse), global::Tutorial.Lease.V1.GetLeaseResponse.Parser, new[]{ "LeaseObservation" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.AcceptLeaseRequest), global::Tutorial.Lease.V1.AcceptLeaseRequest.Parser, new[]{ "User", "Lease" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.AcceptLeaseResponse), global::Tutorial.Lease.V1.AcceptLeaseResponse.Parser, new[]{ "Message" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Lease.V1.CreatePaymentRequest), global::Tutorial.Lease.V1.CreatePaymentRequest.Parser, new[]{ "User", "CreatedPayment" }, null, null, null, null),
@@ -492,734 +474,6 @@ namespace Tutorial.Lease.V1 {
 
   }
 
-  public sealed partial class ListLeasesRequest : pb::IMessage<ListLeasesRequest> {
-    private static readonly pb::MessageParser<ListLeasesRequest> _parser = new pb::MessageParser<ListLeasesRequest>(() => new ListLeasesRequest());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<ListLeasesRequest> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Lease.V1.LeaseServiceReflection.Descriptor.MessageTypes[2]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ListLeasesRequest() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ListLeasesRequest(ListLeasesRequest other) : this() {
-      user_ = other.user_ != null ? other.user_.Clone() : null;
-      pageSize_ = other.pageSize_;
-      pageToken_ = other.pageToken_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ListLeasesRequest Clone() {
-      return new ListLeasesRequest(this);
-    }
-
-    /// <summary>Field number for the "user" field.</summary>
-    public const int UserFieldNumber = 1;
-    private global::Tutorial.User.V1.User user_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Tutorial.User.V1.User User {
-      get { return user_; }
-      set {
-        user_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "page_size" field.</summary>
-    public const int PageSizeFieldNumber = 2;
-    private int pageSize_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int PageSize {
-      get { return pageSize_; }
-      set {
-        pageSize_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "page_token" field.</summary>
-    public const int PageTokenFieldNumber = 3;
-    private string pageToken_ = "";
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string PageToken {
-      get { return pageToken_; }
-      set {
-        pageToken_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override bool Equals(object other) {
-      return Equals(other as ListLeasesRequest);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(ListLeasesRequest other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (!object.Equals(User, other.User)) return false;
-      if (PageSize != other.PageSize) return false;
-      if (PageToken != other.PageToken) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (user_ != null) hash ^= User.GetHashCode();
-      if (PageSize != 0) hash ^= PageSize.GetHashCode();
-      if (PageToken.Length != 0) hash ^= PageToken.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void WriteTo(pb::CodedOutputStream output) {
-      if (user_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(User);
-      }
-      if (PageSize != 0) {
-        output.WriteRawTag(16);
-        output.WriteInt32(PageSize);
-      }
-      if (PageToken.Length != 0) {
-        output.WriteRawTag(26);
-        output.WriteString(PageToken);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int CalculateSize() {
-      int size = 0;
-      if (user_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(User);
-      }
-      if (PageSize != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(PageSize);
-      }
-      if (PageToken.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(PageToken);
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(ListLeasesRequest other) {
-      if (other == null) {
-        return;
-      }
-      if (other.user_ != null) {
-        if (user_ == null) {
-          User = new global::Tutorial.User.V1.User();
-        }
-        User.MergeFrom(other.User);
-      }
-      if (other.PageSize != 0) {
-        PageSize = other.PageSize;
-      }
-      if (other.PageToken.Length != 0) {
-        PageToken = other.PageToken;
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(pb::CodedInputStream input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 10: {
-            if (user_ == null) {
-              User = new global::Tutorial.User.V1.User();
-            }
-            input.ReadMessage(User);
-            break;
-          }
-          case 16: {
-            PageSize = input.ReadInt32();
-            break;
-          }
-          case 26: {
-            PageToken = input.ReadString();
-            break;
-          }
-        }
-      }
-    }
-
-  }
-
-  public sealed partial class ListLeasesResponse : pb::IMessage<ListLeasesResponse> {
-    private static readonly pb::MessageParser<ListLeasesResponse> _parser = new pb::MessageParser<ListLeasesResponse>(() => new ListLeasesResponse());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<ListLeasesResponse> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Lease.V1.LeaseServiceReflection.Descriptor.MessageTypes[3]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ListLeasesResponse() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ListLeasesResponse(ListLeasesResponse other) : this() {
-      leases_ = other.leases_.Clone();
-      prevPageToken_ = other.prevPageToken_;
-      nextPageToken_ = other.nextPageToken_;
-      totalCount_ = other.totalCount_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ListLeasesResponse Clone() {
-      return new ListLeasesResponse(this);
-    }
-
-    /// <summary>Field number for the "leases" field.</summary>
-    public const int LeasesFieldNumber = 1;
-    private static readonly pb::FieldCodec<global::Tutorial.Lease.V1.Lease> _repeated_leases_codec
-        = pb::FieldCodec.ForMessage(10, global::Tutorial.Lease.V1.Lease.Parser);
-    private readonly pbc::RepeatedField<global::Tutorial.Lease.V1.Lease> leases_ = new pbc::RepeatedField<global::Tutorial.Lease.V1.Lease>();
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::Tutorial.Lease.V1.Lease> Leases {
-      get { return leases_; }
-    }
-
-    /// <summary>Field number for the "prev_page_token" field.</summary>
-    public const int PrevPageTokenFieldNumber = 2;
-    private string prevPageToken_ = "";
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string PrevPageToken {
-      get { return prevPageToken_; }
-      set {
-        prevPageToken_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    /// <summary>Field number for the "next_page_token" field.</summary>
-    public const int NextPageTokenFieldNumber = 3;
-    private string nextPageToken_ = "";
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string NextPageToken {
-      get { return nextPageToken_; }
-      set {
-        nextPageToken_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    /// <summary>Field number for the "total_count" field.</summary>
-    public const int TotalCountFieldNumber = 4;
-    private int totalCount_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int TotalCount {
-      get { return totalCount_; }
-      set {
-        totalCount_ = value;
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override bool Equals(object other) {
-      return Equals(other as ListLeasesResponse);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(ListLeasesResponse other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if(!leases_.Equals(other.leases_)) return false;
-      if (PrevPageToken != other.PrevPageToken) return false;
-      if (NextPageToken != other.NextPageToken) return false;
-      if (TotalCount != other.TotalCount) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override int GetHashCode() {
-      int hash = 1;
-      hash ^= leases_.GetHashCode();
-      if (PrevPageToken.Length != 0) hash ^= PrevPageToken.GetHashCode();
-      if (NextPageToken.Length != 0) hash ^= NextPageToken.GetHashCode();
-      if (TotalCount != 0) hash ^= TotalCount.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void WriteTo(pb::CodedOutputStream output) {
-      leases_.WriteTo(output, _repeated_leases_codec);
-      if (PrevPageToken.Length != 0) {
-        output.WriteRawTag(18);
-        output.WriteString(PrevPageToken);
-      }
-      if (NextPageToken.Length != 0) {
-        output.WriteRawTag(26);
-        output.WriteString(NextPageToken);
-      }
-      if (TotalCount != 0) {
-        output.WriteRawTag(32);
-        output.WriteInt32(TotalCount);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int CalculateSize() {
-      int size = 0;
-      size += leases_.CalculateSize(_repeated_leases_codec);
-      if (PrevPageToken.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(PrevPageToken);
-      }
-      if (NextPageToken.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(NextPageToken);
-      }
-      if (TotalCount != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(TotalCount);
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(ListLeasesResponse other) {
-      if (other == null) {
-        return;
-      }
-      leases_.Add(other.leases_);
-      if (other.PrevPageToken.Length != 0) {
-        PrevPageToken = other.PrevPageToken;
-      }
-      if (other.NextPageToken.Length != 0) {
-        NextPageToken = other.NextPageToken;
-      }
-      if (other.TotalCount != 0) {
-        TotalCount = other.TotalCount;
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(pb::CodedInputStream input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 10: {
-            leases_.AddEntriesFrom(input, _repeated_leases_codec);
-            break;
-          }
-          case 18: {
-            PrevPageToken = input.ReadString();
-            break;
-          }
-          case 26: {
-            NextPageToken = input.ReadString();
-            break;
-          }
-          case 32: {
-            TotalCount = input.ReadInt32();
-            break;
-          }
-        }
-      }
-    }
-
-  }
-
-  public sealed partial class GetLeaseRequest : pb::IMessage<GetLeaseRequest> {
-    private static readonly pb::MessageParser<GetLeaseRequest> _parser = new pb::MessageParser<GetLeaseRequest>(() => new GetLeaseRequest());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<GetLeaseRequest> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Lease.V1.LeaseServiceReflection.Descriptor.MessageTypes[4]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GetLeaseRequest() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GetLeaseRequest(GetLeaseRequest other) : this() {
-      user_ = other.user_ != null ? other.user_.Clone() : null;
-      leaseId_ = other.leaseId_;
-      asOn_ = other.asOn_ != null ? other.asOn_.Clone() : null;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GetLeaseRequest Clone() {
-      return new GetLeaseRequest(this);
-    }
-
-    /// <summary>Field number for the "user" field.</summary>
-    public const int UserFieldNumber = 1;
-    private global::Tutorial.User.V1.User user_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Tutorial.User.V1.User User {
-      get { return user_; }
-      set {
-        user_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "lease_id" field.</summary>
-    public const int LeaseIdFieldNumber = 2;
-    private string leaseId_ = "";
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string LeaseId {
-      get { return leaseId_; }
-      set {
-        leaseId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    /// <summary>Field number for the "as_on" field.</summary>
-    public const int AsOnFieldNumber = 3;
-    private global::Tutorial.Lease.V1.AsOn asOn_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Tutorial.Lease.V1.AsOn AsOn {
-      get { return asOn_; }
-      set {
-        asOn_ = value;
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override bool Equals(object other) {
-      return Equals(other as GetLeaseRequest);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(GetLeaseRequest other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (!object.Equals(User, other.User)) return false;
-      if (LeaseId != other.LeaseId) return false;
-      if (!object.Equals(AsOn, other.AsOn)) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (user_ != null) hash ^= User.GetHashCode();
-      if (LeaseId.Length != 0) hash ^= LeaseId.GetHashCode();
-      if (asOn_ != null) hash ^= AsOn.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void WriteTo(pb::CodedOutputStream output) {
-      if (user_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(User);
-      }
-      if (LeaseId.Length != 0) {
-        output.WriteRawTag(18);
-        output.WriteString(LeaseId);
-      }
-      if (asOn_ != null) {
-        output.WriteRawTag(26);
-        output.WriteMessage(AsOn);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int CalculateSize() {
-      int size = 0;
-      if (user_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(User);
-      }
-      if (LeaseId.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(LeaseId);
-      }
-      if (asOn_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(AsOn);
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(GetLeaseRequest other) {
-      if (other == null) {
-        return;
-      }
-      if (other.user_ != null) {
-        if (user_ == null) {
-          User = new global::Tutorial.User.V1.User();
-        }
-        User.MergeFrom(other.User);
-      }
-      if (other.LeaseId.Length != 0) {
-        LeaseId = other.LeaseId;
-      }
-      if (other.asOn_ != null) {
-        if (asOn_ == null) {
-          AsOn = new global::Tutorial.Lease.V1.AsOn();
-        }
-        AsOn.MergeFrom(other.AsOn);
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(pb::CodedInputStream input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 10: {
-            if (user_ == null) {
-              User = new global::Tutorial.User.V1.User();
-            }
-            input.ReadMessage(User);
-            break;
-          }
-          case 18: {
-            LeaseId = input.ReadString();
-            break;
-          }
-          case 26: {
-            if (asOn_ == null) {
-              AsOn = new global::Tutorial.Lease.V1.AsOn();
-            }
-            input.ReadMessage(AsOn);
-            break;
-          }
-        }
-      }
-    }
-
-  }
-
-  public sealed partial class GetLeaseResponse : pb::IMessage<GetLeaseResponse> {
-    private static readonly pb::MessageParser<GetLeaseResponse> _parser = new pb::MessageParser<GetLeaseResponse>(() => new GetLeaseResponse());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<GetLeaseResponse> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Lease.V1.LeaseServiceReflection.Descriptor.MessageTypes[5]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GetLeaseResponse() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GetLeaseResponse(GetLeaseResponse other) : this() {
-      leaseObservation_ = other.leaseObservation_ != null ? other.leaseObservation_.Clone() : null;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GetLeaseResponse Clone() {
-      return new GetLeaseResponse(this);
-    }
-
-    /// <summary>Field number for the "lease_observation" field.</summary>
-    public const int LeaseObservationFieldNumber = 1;
-    private global::Tutorial.Lease.V1.LeaseObservation leaseObservation_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Tutorial.Lease.V1.LeaseObservation LeaseObservation {
-      get { return leaseObservation_; }
-      set {
-        leaseObservation_ = value;
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override bool Equals(object other) {
-      return Equals(other as GetLeaseResponse);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(GetLeaseResponse other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (!object.Equals(LeaseObservation, other.LeaseObservation)) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (leaseObservation_ != null) hash ^= LeaseObservation.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void WriteTo(pb::CodedOutputStream output) {
-      if (leaseObservation_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(LeaseObservation);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int CalculateSize() {
-      int size = 0;
-      if (leaseObservation_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(LeaseObservation);
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(GetLeaseResponse other) {
-      if (other == null) {
-        return;
-      }
-      if (other.leaseObservation_ != null) {
-        if (leaseObservation_ == null) {
-          LeaseObservation = new global::Tutorial.Lease.V1.LeaseObservation();
-        }
-        LeaseObservation.MergeFrom(other.LeaseObservation);
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(pb::CodedInputStream input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 10: {
-            if (leaseObservation_ == null) {
-              LeaseObservation = new global::Tutorial.Lease.V1.LeaseObservation();
-            }
-            input.ReadMessage(LeaseObservation);
-            break;
-          }
-        }
-      }
-    }
-
-  }
-
   public sealed partial class AcceptLeaseRequest : pb::IMessage<AcceptLeaseRequest> {
     private static readonly pb::MessageParser<AcceptLeaseRequest> _parser = new pb::MessageParser<AcceptLeaseRequest>(() => new AcceptLeaseRequest());
     private pb::UnknownFieldSet _unknownFields;
@@ -1228,7 +482,7 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Lease.V1.LeaseServiceReflection.Descriptor.MessageTypes[6]; }
+      get { return global::Tutorial.Lease.V1.LeaseServiceReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1397,7 +651,7 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Lease.V1.LeaseServiceReflection.Descriptor.MessageTypes[7]; }
+      get { return global::Tutorial.Lease.V1.LeaseServiceReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1526,7 +780,7 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Lease.V1.LeaseServiceReflection.Descriptor.MessageTypes[8]; }
+      get { return global::Tutorial.Lease.V1.LeaseServiceReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1695,7 +949,7 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Lease.V1.LeaseServiceReflection.Descriptor.MessageTypes[9]; }
+      get { return global::Tutorial.Lease.V1.LeaseServiceReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1824,7 +1078,7 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Lease.V1.LeaseServiceReflection.Descriptor.MessageTypes[10]; }
+      get { return global::Tutorial.Lease.V1.LeaseServiceReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1993,7 +1247,7 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Lease.V1.LeaseServiceReflection.Descriptor.MessageTypes[11]; }
+      get { return global::Tutorial.Lease.V1.LeaseServiceReflection.Descriptor.MessageTypes[7]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2122,7 +1376,7 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Lease.V1.LeaseServiceReflection.Descriptor.MessageTypes[12]; }
+      get { return global::Tutorial.Lease.V1.LeaseServiceReflection.Descriptor.MessageTypes[8]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2291,7 +1545,7 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Lease.V1.LeaseServiceReflection.Descriptor.MessageTypes[13]; }
+      get { return global::Tutorial.Lease.V1.LeaseServiceReflection.Descriptor.MessageTypes[9]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2420,7 +1674,7 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Lease.V1.LeaseServiceReflection.Descriptor.MessageTypes[14]; }
+      get { return global::Tutorial.Lease.V1.LeaseServiceReflection.Descriptor.MessageTypes[10]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2589,7 +1843,7 @@ namespace Tutorial.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tutorial.Lease.V1.LeaseServiceReflection.Descriptor.MessageTypes[15]; }
+      get { return global::Tutorial.Lease.V1.LeaseServiceReflection.Descriptor.MessageTypes[11]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

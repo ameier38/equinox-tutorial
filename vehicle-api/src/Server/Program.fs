@@ -1,7 +1,7 @@
 ﻿open Grpc.Core
 open Grpc.Health.V1
 open Grpc.HealthCheck
-open Vehicle
+open Server
 open Serilog
 open Serilog.Events
 open System

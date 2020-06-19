@@ -1,4 +1,6 @@
-module Vehicle.Aggregate
+module Server.Aggregate
+
+open Shared
 
 let initial =
     { Vehicle = None
@@ -10,13 +12,13 @@ let evolve : VehicleState -> VehicleEvent -> VehicleState =
         | VehicleAdded vehicle ->
             { Vehicle = Some vehicle
               VehicleStatus = Available }
-        | VehicleRemoved ->
+        | VehicleRemoved _ ->
             { state with
                 VehicleStatus = Removed }
-        | VehicleLeased ->
+        | VehicleLeased _ ->
             { state with
                 VehicleStatus = Leased }
-        | VehicleReturned ->
+        | VehicleReturned _ ->
             { state with
                 VehicleStatus = Available }
 
@@ -36,7 +38,7 @@ let interpret
         | RemoveVehicle ->
             match state.VehicleStatus with
             | Available ->
-                [VehicleRemoved]
+                [VehicleRemoved {| VehicleId = vehicleId |}]
             | Removed ->
                 sprintf "cannot remove vehicle; Vehicle-%s already removed" vehicleIdStr
                 |> RpcException.raiseInternal
@@ -49,7 +51,7 @@ let interpret
         | LeaseVehicle ->
             match state.VehicleStatus with
             | Available ->
-                [VehicleLeased]
+                [VehicleLeased {| VehicleId = vehicleId |}]
             | Removed ->
                 sprintf "cannot lease vehicle; Vehicle-%s removed" vehicleIdStr
                 |> RpcException.raiseInternal
@@ -62,7 +64,7 @@ let interpret
         | ReturnVehicle ->
             match state.VehicleStatus with
             | Leased ->
-                [VehicleReturned]
+                [VehicleReturned {| VehicleId = vehicleId |}]
             | Available ->
                 sprintf "cannot return vehicle; Vehicle-%s already returned" vehicleIdStr
                 |> RpcException.raiseInternal

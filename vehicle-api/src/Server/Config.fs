@@ -1,4 +1,4 @@
-namespace Vehicle
+namespace Server
 
 open Shared
 open System
@@ -9,14 +9,17 @@ type EventStoreConfig =
       Host: string
       HttpPort: int
       DiscoveryUri: Uri } with
-    static member Load() =
-        let scheme = Some "tcp" |> Env.getEnv "EVENTSTORE_SCHEME"
-        let httpPort = Some "2113" |> Env.getEnv "EVENTSTORE_HTTP_PORT" |> int
-        let tcpPort = Some "1113" |> Env.getEnv "EVENTSTORE_TCP_PORT" |> int
-        let host = Some "localhost" |> Env.getEnv "EVENTSTORE_HOST"
+    static member Load(secretsDir:string) =
+        let getSecret = Env.getSecret secretsDir "eventstore"
+        let scheme = Env.getEnv "EVENTSTORE_SCHEME" "tcp" 
+        let httpPort = Env.getEnv "EVENTSTORE_HTTP_PORT" "2113" |> int
+        let tcpPort = Env.getEnv "EVENTSTORE_TCP_PORT" "1113" |> int
+        let host = Env.getEnv "EVENTSTORE_HOST" "localhost"
         let discoveryPort = if scheme = "discover" then httpPort else tcpPort
-        { User = Some "admin" |> Env.getEnv "EVENTSTORE_USER"
-          Password = Some "changeit" |> Env.getEnv "EVENTSTORE_PASSWORD"
+        let user = getSecret "user" "EVENTSTORE_USER" "admin"
+        let password = getSecret "password" "EVENTSTORE_PASSWORD" "changeit"
+        { User = user
+          Password = password
           Host = host
           HttpPort = httpPort
           DiscoveryUri = sprintf "%s://%s:%d" scheme host discoveryPort |> Uri }
@@ -24,17 +27,17 @@ type EventStoreConfig =
 type SeqConfig =
     { Url: string } with
     static member Load() =
-        let scheme = Some "http" |> Env.getEnv "SEQ_SCHEME"
-        let host = Some "localhost" |> Env.getEnv "SEQ_HOST"
-        let port = Some "5341" |> Env.getEnv "SEQ_PORT"
+        let scheme = Env.getEnv "SEQ_SCHEME" "http"
+        let host = Env.getEnv "SEQ_HOST" "localhost"
+        let port = Env.getEnv "SEQ_PORT" "5341"
         { Url = sprintf "%s://%s:%s" scheme host port }
 
 type ServerConfig =
     { Host: string
       Port: int } with
     static member Load() =
-        { Host = Some "0.0.0.0" |> Env.getEnv "SERVER_HOST"
-          Port = Some "50051" |> Env.getEnv "SERVER_PORT" |> int }
+        { Host = Env.getEnv "SERVER_HOST" "0.0.0.0"
+          Port = Env.getEnv "SERVER_PORT" "50051" |> int }
 
 type Config =
     { AppName: string
@@ -43,8 +46,9 @@ type Config =
       EventStore: EventStoreConfig 
       Seq: SeqConfig } with
     static member Load() =
-        { AppName = "VehicleApi"
-          Debug = Some "true" |> Env.getEnv "DEBUG" |> bool.Parse
+        let secretsDir = Env.getEnv "SECRETS_DIR" "/var/secrets"
+        { AppName = "Vehicle Server"
+          Debug = Env.getEnv "DEBUG" "false" |> bool.Parse
           Server = ServerConfig.Load()
-          EventStore = EventStoreConfig.Load()
+          EventStore = EventStoreConfig.Load(secretsDir)
           Seq = SeqConfig.Load() }

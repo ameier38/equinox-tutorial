@@ -1,15 +1,40 @@
 ﻿open Expecto
 open Expecto.Flip
 open Grpc.Core
+open MongoDB.Driver
 open Shared
 open System
 
-let vehicleApiHost = Some "localhost" |> Env.getEnv "VEHICLE_API_HOST"
-let vehicleApiPort = Some "50051" |> Env.getEnv "VEHICLE_API_PORT" |> int
+let vehicleApiHost = Env.getEnv "VEHICLE_API_HOST" "localhost"
+let vehicleApiPort = Env.getEnv "VEHICLE_API_PORT" "50051" |> int
 let channelTarget = sprintf "%s:%d" vehicleApiHost vehicleApiPort
 
 let vehicleChannel = Channel(channelTarget, ChannelCredentials.Insecure)
 let vehicleService = Tutorial.Vehicle.V1.VehicleService.VehicleServiceClient(vehicleChannel)
+
+let mongoHost = Env.getEnv "MONGO_HOST" "localhost"
+let mongoPort = Env.getEnv "MONGO_PORT" "27017" |> int
+let mongoUser = Env.getEnv "MONGO_USER" "admin"
+let mongoPassword = Env.getEnv "MONGO_PASSWORD" "changeit"
+let mongoUrl = sprintf "mongodb://%s:%s@%s:%d" mongoUser mongoPassword mongoHost mongoPort
+
+type VehicleDto =
+    { vehicleId: string
+      status: string }
+
+type Store() =
+    let vehicleCollectionName = "vehicles"
+    let mongo = MongoClient(mongoUrl)
+    let db = mongo.GetDatabase("dealership")
+    let vehicleCollection = db.GetCollection<VehicleDto>(vehicleCollectionName)
+
+    member _.GetVehicle(vehicleId:string) =
+        vehicleCollection
+            .Find(fun doc -> doc.vehicleId = vehicleId)
+            .Project(fun doc -> { vehicleId = doc.vehicleId; status = doc.status })
+            .First()
+
+let store = Store()
 
 let createUser (permissions:string list) =
     let user = Tutorial.User.V1.User(UserId="test")
@@ -25,17 +50,6 @@ let assertPermissionDenied (permission:string) (ex:exn) =
             "should equal permission denied"
             (Status(StatusCode.PermissionDenied, msg))
     | other -> failwithf "wrong exception %A" other
-
-let listVehicles (user:Tutorial.User.V1.User) =
-    let req = Tutorial.Vehicle.V1.ListVehiclesRequest(User=user, PageToken="", PageSize=100)
-    let res = vehicleService.ListVehicles(req)
-    res.Vehicles
-    |> Seq.toList
-
-let getVehicle (user:Tutorial.User.V1.User) (vehicleId:string) =
-    let req = Tutorial.Vehicle.V1.GetVehicleRequest(User=user, VehicleId=vehicleId)
-    let res = vehicleService.GetVehicle(req)
-    res.Vehicle
 
 let addVehicle (user:Tutorial.User.V1.User) (vehicle:Tutorial.Vehicle.V1.Vehicle) =
     let req = Tutorial.Vehicle.V1.AddVehicleRequest(User=user, Vehicle=vehicle)
@@ -54,23 +68,23 @@ let returnVehicle (user:Tutorial.User.V1.User) (vehicleId:string) =
     vehicleService.ReturnVehicle(req)
 
 let testAddVehicle =
-    test "add vehicle" {
+    ftest "add vehicle" {
         let user = createUser ["add:vehicles"; "get:vehicles"]
-        let vehicleId = Guid.NewGuid().ToString("N")
-        let vehicle =
-            Tutorial.Vehicle.V1.Vehicle(
-                VehicleId=vehicleId,
-                Make="Falcon",
-                Model="9",
-                Year=2016)
-        addVehicle user vehicle |> ignore
-        let vehicleState = getVehicle user vehicleId
-        let expectedVehicleState =
-            Tutorial.Vehicle.V1.VehicleState(
-                Vehicle=vehicle,
-                VehicleStatus=Tutorial.Vehicle.V1.VehicleStatus.Available)
-        vehicleState
-        |> Expect.equal "should return vehicle in available state" expectedVehicleState
+        for i in 1..20 do
+            let vehicleId = Guid.NewGuid().ToString("N")
+            let vehicle =
+                Tutorial.Vehicle.V1.Vehicle(
+                    VehicleId=vehicleId,
+                    Make="Falcon",
+                    Model=sprintf "%i" i,
+                    Year=2016)
+            addVehicle user vehicle |> ignore
+        // let vehicleState = store.GetVehicle(vehicleId)
+        // let expectedVehicleState =
+        //     { vehicleId = vehicleId
+        //       status = "Available" }
+        // vehicleState
+        // |> Expect.equal "should return vehicle in available state" expectedVehicleState
     }
 
 let testAddVehicleDenied =
@@ -100,11 +114,10 @@ let testRemoveVehicle =
                 Year=2016)
         addVehicle user vehicle |> ignore
         removeVehicle user vehicleId |> ignore
-        let vehicleState = getVehicle user vehicleId
+        let vehicleState = store.GetVehicle(vehicleId)
         let expectedVehicleState =
-            Tutorial.Vehicle.V1.VehicleState(
-                Vehicle=vehicle,
-                VehicleStatus=Tutorial.Vehicle.V1.VehicleStatus.Removed)
+            { vehicleId = vehicleId
+              status = "Removed" }
         vehicleState
         |> Expect.equal "should return vehicle in removed state" expectedVehicleState
     }
@@ -125,48 +138,6 @@ let testRemoveVehicleDenied =
         Expect.throwsC cont f
     }
 
-let testListVehicles =
-    testAsync "list vehicles" {
-        let user = createUser ["add:vehicles"; "list:vehicles"]
-        let expectedVehicles =
-            [ for i in 1..5 do 
-                let vehicleId = Guid.NewGuid().ToString("N")
-                yield
-                    Tutorial.Vehicle.V1.Vehicle(
-                        VehicleId=vehicleId,
-                        Make="Falcon",
-                        Model=(sprintf "%i" i),
-                        Year=2014 + i)
-            ]
-        for vehicle in expectedVehicles do
-            addVehicle user vehicle |> ignore
-        do! Async.Sleep 2000
-        let actualVehicles = listVehicles user
-        actualVehicles
-        |> Expect.sequenceContainsOrder "should contain added vehicles" expectedVehicles
-    }
-
-let testListVehiclesDenied =
-    testAsync "list vehicles denied" {
-        let user = createUser ["add:vehicles"]
-        let expectedVehicles =
-            [ for i in 1..5 do 
-                let vehicleId = Guid.NewGuid().ToString("N")
-                yield
-                    Tutorial.Vehicle.V1.Vehicle(
-                        VehicleId=vehicleId,
-                        Make="Falcon",
-                        Model=(sprintf "%i" i),
-                        Year=2014 + i)
-            ]
-        for vehicle in expectedVehicles do
-            addVehicle user vehicle |> ignore
-        do! Async.Sleep 2000
-        let f () = listVehicles user |> ignore
-        let cont = assertPermissionDenied "list:vehicles"
-        Expect.throwsC cont f
-    }
-
 [<Tests>]
 let testVehicleService =
     testList "VehicleService" [
@@ -174,8 +145,6 @@ let testVehicleService =
         testAddVehicleDenied
         testRemoveVehicle
         testRemoveVehicleDenied
-        testListVehicles
-        testListVehiclesDenied
     ]
 
 [<EntryPoint>]

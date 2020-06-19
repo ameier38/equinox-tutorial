@@ -5,7 +5,8 @@ open Fake.IO
 open Fake.IO.FileSystemOperators
 open Fake.IO.Globbing.Operators
 open BlackFox.Fake
-open System
+
+let sln = __SOURCE_DIRECTORY__ </> "VehicleService.sln"
 
 BuildTask.create "Clean" [] {
     let directories =
@@ -43,7 +44,7 @@ BuildTask.create "UpdateProtos" [copyGenerated] {
 }
 
 BuildTask.create "Restore" [] {
-    DotNet.restore id "src/Server/Server.fsproj"
+    DotNet.restore id sln
 }
 
 let testUnits = BuildTask.create "TestUnits" [] {
@@ -58,8 +59,8 @@ BuildTask.create "TestIntegrations" [] {
     if not result.OK then failwith "Error!"
 }
 
-BuildTask.create "Publish" [testUnits] {
-    Trace.trace "Publishing..."
+BuildTask.create "PublishServer" [testUnits] {
+    Trace.trace "Publishing Server..."
     // ref: https://docs.microsoft.com/en-us/dotnet/core/rid-catalog
     let runtime =
         if Environment.isLinux then "linux-x64"
@@ -73,8 +74,28 @@ BuildTask.create "Publish" [testUnits] {
         "src/Server/Server.fsproj"
 }
 
+BuildTask.create "PublishReactor" [testUnits] {
+    Trace.trace "Publishing Reactor..."
+    // ref: https://docs.microsoft.com/en-us/dotnet/core/rid-catalog
+    let runtime =
+        if Environment.isLinux then "linux-musl-x64"
+        elif Environment.isWindows then "win-x64"
+        elif Environment.isMacOS then "osx-x64"
+        else failwithf "environment not supported"
+    DotNet.publish (fun args ->
+        { args with
+            OutputPath = Some "src/Reactor/out"
+            Runtime = Some runtime })
+        "src/Reactor/Reactor.fsproj"
+}
+
 BuildTask.create "Serve" [] {
     DotNet.exec id "run" "--project src/Server/Server.fsproj"
+    |> ignore
+}
+
+BuildTask.create "React" [] {
+    DotNet.exec id "run" "--project src/Reactor/Reactor.fsproj"
     |> ignore
 }
 

@@ -1,6 +1,7 @@
 ﻿open Expecto
 open Expecto.Flip
-open Vehicle
+open Server
+open Shared
 
 let testEvolve =
     test "test evolve" {
@@ -23,7 +24,7 @@ let testEvolve =
         // GIVEN previous state
         let prevState = newState
         // WHEN vehicle is removed
-        let vehicleRemoved = VehicleRemoved
+        let vehicleRemoved = VehicleRemoved {| VehicleId = vehicle.VehicleId |}
         let newState = Aggregate.evolve prevState vehicleRemoved
         // THEN state should be Removed
         let expectedState =

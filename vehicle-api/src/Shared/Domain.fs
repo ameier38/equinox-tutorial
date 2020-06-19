@@ -1,4 +1,4 @@
-namespace Vehicle
+namespace Shared
 
 type Vehicle =
     { VehicleId: VehicleId
@@ -8,9 +8,9 @@ type Vehicle =
 
 type VehicleEvent =
     | VehicleAdded of Vehicle
-    | VehicleRemoved
-    | VehicleLeased
-    | VehicleReturned
+    | VehicleRemoved of {| VehicleId: VehicleId |}
+    | VehicleLeased of {| VehicleId: VehicleId |}
+    | VehicleReturned of {| VehicleId: VehicleId |}
     interface TypeShape.UnionContract.IUnionContract
 
 type VehicleCommand =
