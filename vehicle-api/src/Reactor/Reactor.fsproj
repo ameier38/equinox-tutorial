@@ -7,9 +7,9 @@
   <ItemGroup>
     <Compile Include="Infrastructure.fs" />
     <Compile Include="Config.fs" />
-    <Compile Include="Dto.fs" />
-    <Compile Include="Store.fs" />
     <Compile Include="Subscription.fs" />
+    <Compile Include="Store.fs" />
+    <Compile Include="ReadModel.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>

@@ -4,6 +4,7 @@ open Grpc.Core
 open MongoDB.Driver
 open Shared
 open System
+open System.Threading
 
 let vehicleApiHost = Env.getEnv "VEHICLE_API_HOST" "localhost"
 let vehicleApiPort = Env.getEnv "VEHICLE_API_PORT" "50051" |> int
@@ -35,6 +36,8 @@ type Store() =
             .First()
 
 let store = Store()
+
+let createVehicleId () = Guid.NewGuid().ToString("N")
 
 let createUser (permissions:string list) =
     let user = Tutorial.User.V1.User(UserId="test")
@@ -68,29 +71,33 @@ let returnVehicle (user:Tutorial.User.V1.User) (vehicleId:string) =
     vehicleService.ReturnVehicle(req)
 
 let testAddVehicle =
-    ftest "add vehicle" {
+    test "add vehicle" {
         let user = createUser ["add:vehicles"; "get:vehicles"]
-        for i in 1..20 do
-            let vehicleId = Guid.NewGuid().ToString("N")
-            let vehicle =
-                Tutorial.Vehicle.V1.Vehicle(
-                    VehicleId=vehicleId,
-                    Make="Falcon",
-                    Model=sprintf "%i" i,
-                    Year=2016)
-            addVehicle user vehicle |> ignore
-        // let vehicleState = store.GetVehicle(vehicleId)
-        // let expectedVehicleState =
-        //     { vehicleId = vehicleId
-        //       status = "Available" }
-        // vehicleState
-        // |> Expect.equal "should return vehicle in available state" expectedVehicleState
+        let vehicles =
+            [ for i in 1..10 do
+                let vehicleId = createVehicleId()
+                let vehicle =
+                    Tutorial.Vehicle.V1.Vehicle(
+                        VehicleId=vehicleId,
+                        Make="Falcon",
+                        Model=sprintf "%i" i,
+                        Year=2016)
+                addVehicle user vehicle |> ignore
+                yield vehicleId ]
+        Thread.Sleep 2000
+        for vehicleId in vehicles do
+            let vehicleState = store.GetVehicle(vehicleId)
+            let expectedVehicleState =
+                { vehicleId = vehicleId
+                  status = "Available" }
+            vehicleState
+            |> Expect.equal "should return vehicle in available state" expectedVehicleState
     }
 
 let testAddVehicleDenied =
     test "add vehicle denied" {
         let user = createUser []
-        let vehicleId = Guid.NewGuid().ToString("N")
+        let vehicleId = createVehicleId()
         let vehicle =
             Tutorial.Vehicle.V1.Vehicle(
                 VehicleId=vehicleId,
@@ -104,7 +111,7 @@ let testAddVehicleDenied =
 
 let testRemoveVehicle =
     test "remove vehicle" {
-        let user = createUser ["add:vehicles"; "get:vehicles"; "remove:vehicles"]
+        let user = createUser ["add:vehicles"; "remove:vehicles"]
         let vehicleId = Guid.NewGuid().ToString("N")
         let vehicle =
             Tutorial.Vehicle.V1.Vehicle(
@@ -114,6 +121,7 @@ let testRemoveVehicle =
                 Year=2016)
         addVehicle user vehicle |> ignore
         removeVehicle user vehicleId |> ignore
+        Thread.Sleep 2000
         let vehicleState = store.GetVehicle(vehicleId)
         let expectedVehicleState =
             { vehicleId = vehicleId

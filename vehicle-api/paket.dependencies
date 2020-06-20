@@ -20,7 +20,6 @@ nuget MongoDB.Driver
 nuget Serilog
 nuget Serilog.Sinks.Console
 nuget Serilog.Sinks.Seq
-nuget TaskBuilder.fs
 
 // [ FAKE GROUP ]
 group Build

@@ -12,16 +12,24 @@ type SeqConfig =
 
 type MongoConfig =
     { Url: string
+      Host: string
+      Port: int
+      User: string
+      Password: string
       Database: string } with
     static member Load(secretsDir:string) =
         let getMongoSecret = Env.getSecret secretsDir "mongo"
         let host = getMongoSecret "host" "MONGO_HOST" "localhost"
-        let port = getMongoSecret "port" "MONGO_PORT" "27017"
+        let port = getMongoSecret "port" "MONGO_PORT" "27017" |> int
         let user = getMongoSecret "user" "MONGO_USER" "admin"
         let password = getMongoSecret "password" "MONGO_PASSWORD" "changeit"
-        let url = sprintf "mongodb://%s:%s@%s:%s?retryWrites=false" user password host port
+        let url = sprintf "mongodb://%s:%i" host port
         let database = getMongoSecret "database" "MONGO_DATABASE" "dealership"
         { Url = url
+          Host = host
+          Port = port
+          User = user
+          Password = password
           Database = database }
 
 type EventStoreConfig =
@@ -49,7 +57,7 @@ type Config =
     static member Load() =
         let secretsDir = Env.getEnv "SECRETS_DIR" "/var/secrets"
         { AppName = "Vehicle Reactor"
-          Debug = (Env.getEnv "DEBUG" "false").ToLower() = "true"
+          Debug = (Env.getEnv "DEBUG" "true").ToLower() = "true"
           SeqConfig = SeqConfig.Load()
           MongoConfig = MongoConfig.Load(secretsDir)
           EventStoreConfig = EventStoreConfig.Load(secretsDir) }

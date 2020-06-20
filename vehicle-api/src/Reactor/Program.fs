@@ -1,8 +1,9 @@
 ﻿
-open System
+open Reactor
 open Serilog
 open Serilog.Events
-open Reactor
+open System
+open System.Threading
 
 [<EntryPoint>]
 let main _ =
@@ -16,10 +17,14 @@ let main _ =
             .WriteTo.Seq(config.SeqConfig.Url)
             .CreateLogger()
     Log.Logger <- logger
-    let store = Store(config.MongoConfig)
-    let subscription = Subscription(config.EventStoreConfig, store)
+    let vehicleReadModel = ReadModel.VehicleReadModel(config)
     Log.Information("📜 Logs sent to {Url}", config.SeqConfig.Url)
-    Log.Information("📨 Starting subscription")
-    subscription.Start()
+    Log.Information("🚀 Starting vehicle read model")
+    use cancellation = new CancellationTokenSource()
+    Console.CancelKeyPress |> Event.add (fun _ ->
+        Log.Information("shutting down...")
+        cancellation.Cancel())
+    vehicleReadModel.StartAsync(cancellation.Token)
     |> Async.RunSynchronously
+    Log.CloseAndFlush()
     0 // return an integer exit code

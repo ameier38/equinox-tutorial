@@ -1,87 +1,134 @@
 namespace Reactor
 
 open EventStore.ClientAPI
-open Shared
+open FSharp.Control
+open FSharp.UMX
 open Serilog
 open System
-open System.Text
+open System.Threading
 open System.Threading.Tasks
 
-type Subscription(eventstoreConfig:EventStoreConfig, store:Store) =
-    let codec = FsCodec.NewtonsoftJson.Codec.Create<VehicleEvent>()
-    let decode (streamEvent:StreamEvent) =
-        let checkpoint = streamEvent.Event.Index
-        let vehicleEventOpt = codec.TryDecode streamEvent.Event
-        checkpoint, vehicleEventOpt
-    let tryDecodeEvent = UnionEncoderAdapters.encodedEventOfResolvedEvent >> decode
+type EventHandler = FsCodec.ITimelineEvent<byte[]> -> Async<unit>
 
+[<RequireQualifiedAccess>]
+type SubscriptionStatus =
+    | Subscribed
+    | Unsubscribed
+
+type SubscriptionState =
+    { Checkpoint: Checkpoint
+      CancellationToken: CancellationToken
+      SubscriptionStatus: SubscriptionStatus }
+
+type SubscriptionMessage =
+    | Subscribe
+    | Subscribed of EventStoreStreamCatchUpSubscription
+    | Dropped of SubscriptionDropReason * Exception
+    | EventAppeared of Checkpoint
+    | GetState of AsyncReplyChannel<SubscriptionState>
+
+type SubscriptionMailbox = MailboxProcessor<SubscriptionMessage>
+
+type Subscription(name:string, stream:Stream, eventHandler:EventHandler, eventstoreConfig:EventStoreConfig) =
+    let log = Log.ForContext("SubscriptionId", name)
     let eventstore = EventStoreConnection.Create(Uri(eventstoreConfig.Url))
     do eventstore.ConnectAsync().Wait()
+    do log.Information("🐲 Connected to EventStore at {Url}", eventstoreConfig.Url)
 
-    let onVehicleEvent (checkpoint:int64, vehicleEventOpt:VehicleEvent option) =
-        async {
-            match vehicleEventOpt with
-            | Some vehicleEvent ->
-                match vehicleEvent with
-                | VehicleAdded vehicle ->
-                    let vehicleId = VehicleId.toString vehicle.VehicleId
-                    let vehicleDto =
-                        { vehicleId = vehicleId
-                          make = vehicle.Make
-                          model = vehicle.Model
-                          year = vehicle.Year
-                          status = VehicleStatus.toString Available }
-                    do! store.AddVehicle(checkpoint, vehicleDto)
-                | VehicleRemoved payload ->
-                    let vehicleId = VehicleId.toString payload.VehicleId
-                    let newStatus = VehicleStatus.toString Removed
-                    do! store.SetVehicleStatus(checkpoint, vehicleId, newStatus)
-                | VehicleLeased payload ->
-                    let vehicleId = VehicleId.toString payload.VehicleId
-                    let newStatus = VehicleStatus.toString Leased
-                    do! store.SetVehicleStatus(checkpoint, vehicleId, newStatus)
-                | VehicleReturned payload ->
-                    let vehicleId = VehicleId.toString payload.VehicleId
-                    let newStatus = VehicleStatus.toString Available
-                    do! store.SetVehicleStatus(checkpoint, vehicleId, newStatus)
-            | None ->
-                Log.Information("not a vehicle event; skipping")
-        } |> Async.StartAsTask
+    let settings =
+        CatchUpSubscriptionSettings(
+            maxLiveQueueSize = 10,
+            readBatchSize = 10,
+            verboseLogging = false,
+            resolveLinkTos = true,
+            subscriptionName = "vehicles")
+    let credentials =
+        SystemData.UserCredentials(
+            username = eventstoreConfig.User,
+            password = eventstoreConfig.Password)
 
-    member _.Start() =
+    let subscribe (state:SubscriptionState) (mailbox:SubscriptionMailbox): Async<unit> =
         async {
-            let stream = "$ce-Vehicle"
-            let settings =
-                CatchUpSubscriptionSettings(
-                    maxLiveQueueSize = 10,
-                    readBatchSize = 10,
-                    verboseLogging = false,
-                    resolveLinkTos = true,
-                    subscriptionName = "vehicles")
-            let credentials =
-                SystemData.UserCredentials(
-                    username = eventstoreConfig.User,
-                    password = eventstoreConfig.Password)
-            let! checkpoint = store.GetVehicleCheckpoint()
-            let nullableCheckpoint = new Nullable<int64>(checkpoint)
             let eventAppeared =
-                Func<EventStoreCatchUpSubscription,ResolvedEvent,Task>(fun _ re -> 
-                    Log.Information("received event {@ResolvedEvent}", re)
-                    tryDecodeEvent re |> onVehicleEvent :> Task)
+                Func<EventStoreCatchUpSubscription,ResolvedEvent,Task>(fun _ resolvedEvent -> 
+                    let work =
+                        async {
+                            let encodedEvent = UnionEncoderAdapters.encodedEventOfResolvedEvent resolvedEvent
+                            let checkpoint = UMX.tag<checkpoint> encodedEvent.Index
+                            do! eventHandler encodedEvent
+                            mailbox.Post(EventAppeared checkpoint)
+                        }
+                    Async.StartAsTask(work, cancellationToken = state.CancellationToken) :> Task)
             let subscriptionDropped =
-                Action<EventStoreCatchUpSubscription,SubscriptionDropReason,exn>(fun _ r e ->
-                    Log.Information(e, "subscription dropped {Reason}", r))
-            Log.Information("subscribing to {Stream} from checkpoint {Checkpoint}", stream, checkpoint)
+                Action<EventStoreCatchUpSubscription,SubscriptionDropReason,exn>(fun _ reason error ->
+                    mailbox.Post(Dropped (reason, error)))
+            log.Information("subscribing to {Stream} from checkpoint {Checkpoint}", stream, state.Checkpoint)
             // ref: https://eventstore.com/docs/projections/system-projections/index.html?tabs=tabid-5#by-category
             let subscription =
                 eventstore.SubscribeToStreamFrom(
-                    stream = "$ce-Vehicle",
-                    lastCheckpoint = nullableCheckpoint,
+                    stream = %stream,
+                    lastCheckpoint = new Nullable<int64>(%state.Checkpoint),
                     settings = settings,
                     eventAppeared = eventAppeared,
                     subscriptionDropped = subscriptionDropped,
                     userCredentials = credentials)
-            Console.ReadKey() |> ignore
-            Log.Information("subscription ended {@Subscription}", subscription)
+            mailbox.Post(Subscribed subscription)
         }
-    
+
+    let evolve 
+        (mailbox:SubscriptionMailbox)
+        : SubscriptionState -> SubscriptionMessage -> SubscriptionState =
+        fun state msg ->
+            match msg with
+            | Subscribe ->
+                match state.SubscriptionStatus with
+                | SubscriptionStatus.Unsubscribed ->
+                    Async.Start(subscribe state mailbox, state.CancellationToken)
+                    state
+                | _ -> state
+            | Subscribed _ ->
+                { state with SubscriptionStatus = SubscriptionStatus.Subscribed }
+            | Dropped (reason, error) ->
+                match reason with
+                | SubscriptionDropReason.ServerError
+                | SubscriptionDropReason.EventHandlerException
+                | SubscriptionDropReason.ProcessingQueueOverflow
+                | SubscriptionDropReason.ConnectionClosed ->
+                    log.Information(error, "subscription dropped: {Reason}; reconnecting...", reason)
+                    mailbox.Post(Subscribe)
+                | _ ->
+                    log.Error(error, "subscription dropped {Reason}", reason)
+                    raise error
+                { state with SubscriptionStatus = SubscriptionStatus.Unsubscribed }
+            | EventAppeared checkpoint ->
+                { state with Checkpoint = checkpoint }
+            | GetState channel ->
+                channel.Reply(state)
+                state
+
+    let start (initialState:SubscriptionState) =
+        let mailbox = SubscriptionMailbox.Start(fun inbox ->
+            AsyncSeq.initInfiniteAsync(fun _ -> inbox.Receive())
+            |> AsyncSeq.fold (evolve inbox) initialState
+            |> Async.Ignore)
+        mailbox.Post(Subscribe)
+        mailbox
+
+    let rec loop (mailbox:SubscriptionMailbox) =
+        async {
+            let! state = mailbox.PostAndAsyncReply(GetState)
+            log.Debug("stream {Stream} is at checkpoint {Checkpoint}", stream, state.Checkpoint)
+            do! Async.Sleep 5000
+            return! loop mailbox
+        }
+
+    member _.SubscribeAsync(checkpoint:Checkpoint, token:CancellationToken) =
+        async {
+            let initialState =
+                { Checkpoint = checkpoint
+                  CancellationToken = token
+                  SubscriptionStatus = SubscriptionStatus.Unsubscribed }
+            let mailbox = start initialState
+            do! loop mailbox
+        }
+        

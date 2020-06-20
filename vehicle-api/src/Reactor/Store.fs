@@ -3,16 +3,23 @@ namespace Reactor
 open MongoDB.Driver
 open Serilog
 
-type Store(mongoConfig:MongoConfig) =
-    let vehicleCollectionName = "vehicles"
-    let checkpointCollectionName = "checkpoints"
-    let mongo = MongoClient(mongoConfig.Url)
-    let db = mongo.GetDatabase("dealership")
-    let vehicleCollection = db.GetCollection<VehicleDto>(vehicleCollectionName)
-    let checkpointCollection = db.GetCollection<CheckpointDto>(checkpointCollectionName)
+type CheckpointDto =
+    { model: string
+      checkpoint: int64 }
 
-    let getCheckpoint model =
+type Store(mongoConfig:MongoConfig) =
+    let checkpointCollectionName = "checkpoints"
+    let address = MongoServerAddress(mongoConfig.Host, mongoConfig.Port)
+    let credential = MongoCredential.CreateCredential("admin", mongoConfig.User, mongoConfig.Password)
+    let settings = MongoClientSettings(Credential = credential, Server = address)
+    let mongo = MongoClient(settings)
+    let db = mongo.GetDatabase("dealership")
+    let checkpointCollection = db.GetCollection<CheckpointDto>(checkpointCollectionName)
+    do Log.Information("🍃 Connected to MongoDB at {Url}", mongoConfig.Url)
+
+    member _.GetCheckpoint(model:string): Async<int64> =
         async {
+            Log.Debug("getting checkpoint for {Model}", model)
             let! checkpoint =
                 checkpointCollection
                     .Find(fun doc -> doc.model = model)
@@ -24,9 +31,9 @@ type Store(mongoConfig:MongoConfig) =
                 else checkpoint
         }
 
-    let updateCheckpoint (model:string) (checkpoint:int64) =
+    member _.UpdateCheckpoint(model:string, checkpoint:int64) =
         async {
-            Log.Information("updating {Model} checkpoint to {Checkpoint}", model, checkpoint)
+            Log.Debug("updating {Model} checkpoint to {Checkpoint}", model, checkpoint)
             let filterCheckpoint = Builders<CheckpointDto>.Filter.Where(fun cp -> cp.model = model)
             let updateCheckpoint = Builders<CheckpointDto>.Update.Set((fun cp -> cp.checkpoint), checkpoint)
             let updateOptions = UpdateOptions(IsUpsert = true)
@@ -35,25 +42,4 @@ type Store(mongoConfig:MongoConfig) =
                 |> Async.Ignore
         }
 
-    member _.GetVehicleCheckpoint(): Async<int64> = getCheckpoint vehicleCollectionName
-
-    member _.AddVehicle(checkpoint:int64, vehicle:VehicleDto): Async<unit> =
-        async {
-            // use replace with upsert to make idempotent
-            let filterVehicle = Builders<VehicleDto>.Filter.Where(fun v -> v.vehicleId = vehicle.vehicleId)
-            let replaceOptions = ReplaceOptions(IsUpsert = true)
-            do! vehicleCollection.ReplaceOneAsync(filterVehicle, vehicle, replaceOptions)
-                |> Async.AwaitTask
-                |> Async.Ignore
-            do! updateCheckpoint vehicleCollectionName checkpoint
-        }
-
-    member _.SetVehicleStatus(checkpoint:int64, vehicleId:string, status:string): Async<unit> =
-        async {
-            let filterVehicle = Builders<VehicleDto>.Filter.Where(fun v -> v.vehicleId = vehicleId)
-            let updateStatus = Builders<VehicleDto>.Update.Set((fun v -> v.status), status)
-            do! vehicleCollection.UpdateOneAsync(filterVehicle, updateStatus)
-                |> Async.AwaitTask
-                |> Async.Ignore
-            do! updateCheckpoint vehicleCollectionName checkpoint
-        }
+    member _.GetCollection<'T>(name:string) = db.GetCollection<'T>(name)
