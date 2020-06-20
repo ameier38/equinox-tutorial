@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Infrastructure.fs" />
+    <Compile Include="Config.fs" />
+    <Compile Include="Auth0/useAuth0.fs" />
+    <Compile Include="GraphQL/useGQL.fs" />
+    <Compile Include="Components/Navigation.fs" />
+    <Compile Include="Landing/Types.fs" />
+    <Compile Include="Landing/State.fs" />
+    <Compile Include="Landing/View.fs" />
+    <Compile Include="App.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Snowflaqe\Snowflaqe.fsproj" />
+  </ItemGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
+</Project>

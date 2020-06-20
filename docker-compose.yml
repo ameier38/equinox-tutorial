@@ -1,13 +1,5 @@
 version: '3.4'
 services:
-  eventstore:
-    image: eventstore/eventstore:release-5.0.8
-    ports:
-      - "2113:2113"
-      - "1113:1113"
-    environment:
-      EVENTSTORE_START_STANDARD_PROJECTIONS: "True"
-      EVENTSTORE_RUN_PROJECTIONS: All
   seq:
     image: datalust/seq:5.1
     environment:
@@ -22,6 +14,14 @@ services:
       MINIO_SECRET_KEY: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
     ports: 
       - "9000:9000"
+  eventstore:
+    image: eventstore/eventstore:release-5.0.8
+    ports:
+      - "2113:2113"
+      - "1113:1113"
+    environment:
+      EVENTSTORE_START_STANDARD_PROJECTIONS: "True"
+      EVENTSTORE_RUN_PROJECTIONS: All
   mongo:
     image: mongo:4.2
     environment:
@@ -30,7 +30,7 @@ services:
     ports: 
       - "27017:27017"
   upload-api:
-    build: ./upload-api
+    build: ./client/upload-api
     ports: 
       - "8082:8080"
     environment: 
@@ -38,19 +38,17 @@ services:
       SERVER_PORT: 8080
       SEQ_SCHEME: http
       SEQ_HOST: seq
-      SEQ_PORT: 5341
       S3_SCHEME: http
       S3_HOST: minio
-      S3_PORT: 9000
       S3_ACCESS_KEY: AKIAIOSFODNN7EXAMPLE
       S3_SECRET_KEY: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
       S3_UPLOAD_BUCKET: upload
     depends_on: 
       - seq
       - minio
-  vehicle-server:
+  vehicle-api:
     build:
-      context: ./vehicle-api
+      context: ./vehicle/vehicle-service
       dockerfile: deploy/server.Dockerfile
       target: runner
     ports:
@@ -64,12 +62,12 @@ services:
       - eventstore
   vehicle-reactor:
     build:
-      context: ./vehicle-api
+      context: ./vehicle/vehicle-service
       dockerfile: deploy/reactor.Dockerfile
       target: runner
     environment: 
-      MONGO_HOST: mongo
       EVENTSTORE_HOST: eventstore
+      MONGO_HOST: mongo
       SEQ_HOST: seq
     depends_on: 
       - seq
@@ -77,7 +75,7 @@ services:
       - mongo
   graphql-api:
     build:
-      context: ./graphql-api
+      context: ./client/graphql-api
       target: runner
     ports:
       - "4000:4000"
@@ -85,13 +83,14 @@ services:
       SERVER_PORT: 4000
       VEHICLE_API_HOST: vehicle-api
       VEHICLE_API_PORT: 50051
+      MONGO_HOST: mongo
       SEQ_HOST: seq
-      SEQ_PORT: 5341
     depends_on: 
-      - vehicle-server
+      - vehicle-api
+      - vehicle-reactor
   web-app:
     build:
-      context: ./fable-web-app
+      context: ./client/web-app
     environment:
       REACT_APP_GRAPHQL_API_HOST: localhost
       REACT_APP_GRAPHQL_API_PORT: 4000

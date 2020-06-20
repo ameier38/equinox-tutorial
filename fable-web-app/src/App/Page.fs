@@ -1,4 +1,0 @@
-module Admin
-
-// type State =
-//     { }

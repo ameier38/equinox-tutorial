@@ -1,0 +1,111 @@
+module Components.Navigation
+
+open Auth0
+open Elmish
+open Fable.Core.JsInterop
+open Feliz
+open Feliz.MaterialUI
+
+module Icon =
+    let dashboard:string = importDefault "@material-ui/icons/Dashboard"
+
+let useStyles = Styles.makeStyles(fun styles theme ->
+    {|
+        navContainer = styles.create [
+            style.display.flex
+            style.justifyContent.spaceBetween
+        ]
+        navHomeButton = styles.create [
+            style.color theme.palette.primary.contrastText
+            style.fontFamily theme.typography.h6.fontFamily
+            style.fontSize 16
+            style.fontWeight 500
+            style.textTransform.none
+        ]
+        loginButton = styles.create [
+            style.color theme.palette.primary.contrastText
+        ]
+    |}
+)
+
+type NavigationProps =
+    { navigateToHome: unit -> unit }
+
+let navigation =
+    React.functionComponent<NavigationProps>(fun props ->
+        let c = useStyles()
+        let auth0 = Hooks.useAuth0()
+        Mui.appBar [
+            appBar.elevation 0
+            appBar.square true
+            appBar.position.fixed'
+            appBar.color.transparent
+            appBar.children [
+                Mui.toolbar [
+                    toolbar.disableGutters true
+                    toolbar.children [
+                        Mui.container [
+                            prop.className c.navContainer
+                            container.maxWidth.md
+                            container.children [
+                                Mui.button [
+                                    prop.className c.navHomeButton
+                                    prop.onClick (fun e -> 
+                                        e.preventDefault()
+                                        props.navigateToHome()
+                                    )
+                                    button.variant.text
+                                    button.children [ "Cosmic Dealership" ]
+                                ]
+                                if not auth0.isLoading then
+                                    Html.div [
+                                        Mui.button [
+                                            prop.className c.loginButton
+                                            prop.onClick (fun e ->
+                                                e.preventDefault()
+                                                if auth0.isAuthenticated then auth0.logout()
+                                                else auth0.login()
+                                            )
+                                            button.children [
+                                                if auth0.isAuthenticated then "Logout"
+                                                else "Login"
+                                            ]
+                                        ]
+                                        if not auth0.isAuthenticated then
+                                            Mui.button [
+                                                prop.onClick (fun e ->
+                                                    e.preventDefault()
+                                                    auth0.login()
+                                                )
+                                                button.variant.contained
+                                                button.color.primary
+                                                button.children ["Signup"]
+                                            ]
+                                    ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    )
+
+type SidebarProps =
+    { sidebarOpen: bool
+      navigateToDashboard: unit -> unit }
+
+let sidebar =
+    React.functionComponent<SidebarProps>(fun props ->
+        let (sidebarOpen, setSidebarOpen) = React.useState(false)
+        let theme = Styles.useTheme()
+        let isGteMd = Hooks.useMediaQuery(theme.breakpoints.upMd)
+        let drawerContent =
+            Mui.list [
+
+            ]
+        Mui.drawer [
+
+        ]
+        
+        
+    )

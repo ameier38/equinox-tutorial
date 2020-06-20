@@ -1,0 +1,6 @@
+{
+    "schema": "http://localhost:4000/introspection",
+    "queries": "./src/App/Queries",
+    "project": "Snowflaqe",
+    "output": "./src/Snowflaqe"
+}
