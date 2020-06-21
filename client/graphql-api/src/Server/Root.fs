@@ -4,6 +4,8 @@ open FSharp.Data.GraphQL.Types
 
 type Root = { _empty: bool option }
 
+type PublicRoot = { _empty: bool option }
+
 let Query
     (vehicleClient:VehicleClient) =
     Define.Object<Root>(
@@ -11,6 +13,15 @@ let Query
         fields = [ 
             Fields.listVehicles vehicleClient
             Fields.getVehicle vehicleClient
+        ]
+    )
+
+let PublicQuery
+    (vehicleClient:VehicleClient) =
+    Define.Object<Root>(
+        name = "PublicQuery",
+        fields = [ 
+            Fields.listAvailableVehicles vehicleClient
         ]
     )
 

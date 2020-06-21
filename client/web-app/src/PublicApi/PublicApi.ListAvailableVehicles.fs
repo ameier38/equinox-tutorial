@@ -1,14 +1,15 @@
 [<RequireQualifiedAccess>]
-module rec Snowflaqe.ListVehicles
+module rec PublicApi.ListAvailableVehicles
 
 type InputVariables = { input: ListVehiclesInput }
 
 type VehicleState =
     { vehicleId: string
       make: string
-      model: string }
+      model: string
+      status: string }
 
-/// List all the vehicles
+/// List available vehicles
 type ListVehiclesResponse =
     { vehicles: list<VehicleState>
       nextPageToken: string
@@ -16,5 +17,5 @@ type ListVehiclesResponse =
       totalCount: int }
 
 type Query =
-    { /// List all the vehicles
-      listVehicles: ListVehiclesResponse }
+    { /// List available vehicles
+      listAvailableVehicles: ListVehiclesResponse }

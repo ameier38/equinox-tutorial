@@ -3,6 +3,7 @@ namespace Shared
 open System
 open System.IO
 open System.Text
+open System.Text.RegularExpressions
 open Google.Protobuf.WellKnownTypes
 open Google.Type
 
@@ -18,9 +19,16 @@ module DateTime =
     let toProtoTimestamp (dt:DateTime) = dt |> toUtc |> Timestamp.FromDateTime
     let toProtoDate (dt:DateTime) = dt |> toUtc |> Date.FromDateTime
 
+    module Operators =
+        let (!@) (dt:DateTime) = dt |> toProtoDate
+        let (!@@) (dt:DateTime) = dt |> toProtoTimestamp
+
 module Money =
     let fromDecimal (value:decimal) =
         Money(DecimalValue = value, CurrencyCode = "USD")
+
+    module Operators =
+        let (!!) (value:float) = value |> decimal |> fromDecimal
 
 module Env = 
     let getEnv (key:string) (defaultValue:string) =
@@ -34,7 +42,8 @@ module Env =
         else
             getEnv defaultEnv defaultValue
 
-module Operators =
-    let (!!) (value:float) = value |> decimal |> Money.fromDecimal
-    let (!@) (dt:DateTime) = dt |> DateTime.toProtoDate
-    let (!@@) (dt:DateTime) = dt |> DateTime.toProtoTimestamp
+module Regex =
+    let (|Match|_|) (pattern:string) (s:string) =
+        let m = Regex.Match(s, pattern)
+        if m.Success then Some(List.tail [for g in m.Groups -> g.Value])
+        else None

@@ -20,13 +20,22 @@ let clean = BuildTask.create "Clean" [] {
     |> Shell.cleanDirs 
 }
 
-let cleanSnowflaqe = BuildTask.create "CleanSnowflaqe" [] {
-    Shell.cleanDir "src/Snowflaqe"
+let cleanPublicApi = BuildTask.create "CleanPublicApi" [] {
+    Shell.cleanDir "src/PublicApi"
 }
 
-let generateSnowflaqe = BuildTask.create "GenerateSnowflaqe" [cleanSnowflaqe] {
-    // reads from `snowflaqe.json` and generates GraphQL client project
-    snowflaqe ["--generate"]
+let generatePublicApi = BuildTask.create "GeneratePublicApi" [cleanPublicApi] {
+    // reads from `publicApi.json` and generates the public api client projet
+    snowflaqe ["--config"; "publicApi.json"; "--generate"]
+}
+
+let cleanPrivateApi = BuildTask.create "CleanPrivateApi" [] {
+    Shell.cleanDir "src/PrivateApi"
+}
+
+let generatePrivateApi = BuildTask.create "GeneratePrivateApi" [cleanPrivateApi] {
+    // reads from `privateApi.json` and generates the private api client projet
+    snowflaqe ["--config"; "privateApi.json"; "--generate"]
 }
 
 BuildTask.create "Restore" [clean.IfNeeded] {
@@ -38,11 +47,11 @@ let install = BuildTask.create "Install" [] {
     Npm.install id
 }
 
-let serve = BuildTask.create "Serve" [] {
+BuildTask.create "Serve" [] {
     Npm.run "start" id
 }
 
-let build = BuildTask.create "Build" [generateSnowflaqe] {
+BuildTask.create "Build" [clean; generatePublicApi; generatePrivateApi] {
     Npm.run "build" id
 }
 

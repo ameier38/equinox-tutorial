@@ -1,13 +1,11 @@
-module Landing.View
+module Landing
 
 open Elmish
 open Feliz
-open Feliz.Router
 open Feliz.MaterialUI
 open Feliz.UseDeferred
-open FSharp.UMX
-open Snowflaqe
-open Types
+open GraphQL
+open PublicApi
 
 let jumbotronImage = Image.load "./images/cosmos.jpg"
 let rocketImage = Image.load "./images/rocket.svg"
@@ -21,6 +19,9 @@ let useStyles = Styles.makeStyles(fun styles theme ->
         ]
         jumbotronText = styles.create [
             style.color theme.palette.primary.contrastText
+        ]
+        item = styles.create [
+            style.padding 10
         ]
     |}
 )
@@ -75,14 +76,12 @@ let jumbotron =
 
 let vehicles =
     React.functionComponent(fun _ ->
+        let c = useStyles()
         let (pageToken, setPageToken) = React.useState("")
         let (pageSize, setPageSize) = React.useState(10)
+        let { publicApi = gql } = React.useGQL()
         let input = { pageToken = Some pageToken; pageSize = Some pageSize }
-        let listVehicles =
-            async {
-                List
-            }
-        let data = React.useDeferred()
+        let data = React.useDeferred(gql.ListAvailableVehicles { input = input }, [||])
         let theme = Styles.useTheme()
         let isGteMd = Hooks.useMediaQuery(theme.breakpoints.upMd)
         Mui.container [
@@ -92,7 +91,9 @@ let vehicles =
                 Mui.grid [
                     grid.container true
                     grid.children [
-                        if res.error.IsSome then
+                        match data with
+                        | Deferred.Failed error ->
+                            Log.error error
                             yield Mui.grid [
                                 grid.item true
                                 grid.xs._12
@@ -100,7 +101,17 @@ let vehicles =
                                     Error.renderError()
                                 ]
                             ]
-                        elif res.loading then
+                        | Deferred.Resolved (Error errors) ->
+                            Log.error errors
+                            yield Mui.grid [
+                                grid.item true
+                                grid.xs._12
+                                grid.children [
+                                    Error.renderError()
+                                ]
+                            ]
+                        | Deferred.HasNotStartedYet
+                        | Deferred.InProgress ->
                             for i in 1..5 do
                                 yield Mui.grid [
                                     prop.key i
@@ -109,6 +120,7 @@ let vehicles =
                                     grid.md._4
                                     grid.children [
                                         Mui.card [
+                                            prop.className c.item
                                             card.children [
                                                 Mui.cardContent [
                                                     Mui.skeleton [
@@ -120,11 +132,12 @@ let vehicles =
                                         ]
                                     ]
                                 ]
-                        else
-                            Log.debug ("vehicles", res.data)
-                            for vehicle in res.data.vehicles do
+                        | Deferred.Resolved (Ok { listAvailableVehicles = res }) ->
+                            Log.debug ("vehicles", res.vehicles)
+                            for vehicle in res.vehicles do
                                 let makeModel = sprintf "%s %s" vehicle.make vehicle.model
                                 yield Mui.grid [
+                                    prop.className c.item
                                     prop.key vehicle.vehicleId
                                     grid.item true
                                     grid.xs._12
@@ -137,6 +150,10 @@ let vehicles =
                                                         typography.variant.h6
                                                         prop.text makeModel
                                                     ]
+                                                    Mui.typography [
+                                                        typography.variant.body2
+                                                        prop.text (sprintf "This vehicle is %s" vehicle.status)
+                                                    ]
                                                 ]
                                             ]
                                         ]
@@ -148,7 +165,7 @@ let vehicles =
         ]
     )
 
-let render (state:unit) (dispatch:Msg -> unit) =
+let render () =
     React.fragment [
         jumbotron()
         vehicles()

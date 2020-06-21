@@ -7,15 +7,14 @@
     <Compile Include="Config.fs" />
     <Compile Include="Auth0/useAuth0.fs" />
     <Compile Include="GraphQL/useGQL.fs" />
-    <Compile Include="Components/Navigation.fs" />
-    <Compile Include="Landing/Types.fs" />
-    <Compile Include="Landing/State.fs" />
-    <Compile Include="Landing/View.fs" />
+    <Compile Include="Navigation.fs" />
+    <Compile Include="Landing.fs" />
     <Compile Include="App.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Snowflaqe\Snowflaqe.fsproj" />
+    <ProjectReference Include="..\PublicApi\PublicApi.fsproj" />
+    <ProjectReference Include="..\PrivateApi\PrivateApi.fsproj" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

@@ -1,0 +1,6 @@
+{
+    "schema": "http://localhost:4000/schema",
+    "queries": "./src/App/PrivateQueries",
+    "project": "PrivateApi",
+    "output": "./src/PrivateApi"
+}

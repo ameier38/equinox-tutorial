@@ -1,4 +1,4 @@
-namespace rec Snowflaqe
+namespace rec PrivateApi
 
 type GetVehicleInput =
     { /// Unique identifier for the vehicle

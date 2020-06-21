@@ -1,4 +1,4 @@
-module Components.Navigation
+module Navigation
 
 open Auth0
 open Elmish
@@ -31,10 +31,10 @@ let useStyles = Styles.makeStyles(fun styles theme ->
 type NavigationProps =
     { navigateToHome: unit -> unit }
 
-let navigation =
+let render =
     React.functionComponent<NavigationProps>(fun props ->
         let c = useStyles()
-        let auth0 = Hooks.useAuth0()
+        let auth0 = React.useAuth0()
         Mui.appBar [
             appBar.elevation 0
             appBar.square true
@@ -88,24 +88,4 @@ let navigation =
                 ]
             ]
         ]
-    )
-
-type SidebarProps =
-    { sidebarOpen: bool
-      navigateToDashboard: unit -> unit }
-
-let sidebar =
-    React.functionComponent<SidebarProps>(fun props ->
-        let (sidebarOpen, setSidebarOpen) = React.useState(false)
-        let theme = Styles.useTheme()
-        let isGteMd = Hooks.useMediaQuery(theme.breakpoints.upMd)
-        let drawerContent =
-            Mui.list [
-
-            ]
-        Mui.drawer [
-
-        ]
-        
-        
     )

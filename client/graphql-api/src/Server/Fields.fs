@@ -32,7 +32,7 @@ let VehicleType =
         ])
 
 let VehicleStateType =
-    Define.Object<VehicleStateDto>(
+    Define.Object<VehicleState>(
         name = "VehicleState",
         description = "State of a vehicle",
         fields = [
@@ -41,10 +41,11 @@ let VehicleStateType =
             Define.AutoField("make", String)
             Define.AutoField("model", String)
             Define.AutoField("year", Int)
+            Define.AutoField("status", String)
         ])
 
 let ListVehiclesResponseType =
-    Define.Object<ListVehiclesResponseDto>(
+    Define.Object<ListVehiclesResponse>(
         name = "ListVehiclesResponse",
         fields = [
             Define.AutoField("vehicles", ListOf VehicleStateType)
@@ -65,15 +66,27 @@ let listVehicles
     (vehicleClient:VehicleClient) =
     Define.Field(
         name = "listVehicles",
-        description = "List all the vehicles",
+        description = "List all vehicles",
         typedef = ListVehiclesResponseType,
         args = [Define.Input("input", ListVehiclesInputType)],
         resolve = (fun ctx _ ->
             let user =
                 ctx.Context.Metadata
-                |> User.fromMeta
+                |> User.fromMetadata
             let input = ctx.Arg<ListVehiclesInput>("input")
             vehicleClient.ListVehicles(user, input)
+        ))
+
+let listAvailableVehicles
+    (vehicleClient:VehicleClient) =
+    Define.Field(
+        name = "listAvailableVehicles",
+        description = "List available vehicles",
+        typedef = ListVehiclesResponseType,
+        args = [Define.Input("input", ListVehiclesInputType)],
+        resolve = (fun ctx _ ->
+            let input = ctx.Arg<ListVehiclesInput>("input")
+            vehicleClient.ListAvailableVehicles(input)
         ))
 
 let GetVehicleInputType =
@@ -93,7 +106,7 @@ let getVehicle
         resolve = (fun ctx _ ->
             let user =
                 ctx.Context.Metadata
-                |> User.fromMeta
+                |> User.fromMetadata
             let input = ctx.Arg<GetVehicleInput>("input")
             vehicleClient.GetVehicle(user, input)
         ))
@@ -117,7 +130,7 @@ let addVehicle
         resolve = (fun ctx _ ->
             let user =
                 ctx.Context.Metadata
-                |> User.fromMeta
+                |> User.fromMetadata
             let input = ctx.Arg<AddVehicleInput>("input")
             vehicleClient.AddVehicle(user, input)
         ))

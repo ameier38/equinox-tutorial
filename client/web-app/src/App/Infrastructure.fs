@@ -23,15 +23,6 @@ type LeaseId = string<leaseId>
 type [<Measure>] audience
 type Audience = string<audience>
 
-type AsyncOperation<'P,'T> =
-    | Started of 'P
-    | Finished of 'T
-
-type Deferred<'T> =
-    | NotStarted
-    | InProgress
-    | Resolved of 'T
-
 module Cow =
     let says (msg:string) = String.Format(@"
  --------------------------
@@ -46,8 +37,8 @@ module Cow =
 
 [<RequireQualifiedAccess>]
 module Env =
-    [<Emit("process.env[$0] ? process.env[$0] : ''")>]
-    let getEnv (key:string): string = jsNative
+    [<Emit("process.env[$0] ? process.env[$0] : $1")>]
+    let getEnv (key:string) (defaultValue:string): string = jsNative
 
 [<RequireQualifiedAccess>]
 module Log =
@@ -55,18 +46,18 @@ module Log =
         Fable.Core.JS.console.info(msg)
 
     let debug (msg:obj) =
-#if DEVELOPMENT
+        #if DEVELOPMENT
         Fable.Core.JS.console.info(msg)
-#else
+        #else
         ()
-#endif
+        #endif
 
     let error (error:obj) =
-#if DEVELOPMENT
+        #if DEVELOPMENT
         Fable.Core.JS.console.error(error)
-#else
+        #else
         ()
-#endif
+        #endif
 
 [<RequireQualifiedAccess>]
 module Cmd =

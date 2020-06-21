@@ -1,9 +1,10 @@
-query ListVehicles($input:ListVehiclesInput!) {
-  listVehicles(input: $input) {
+query ListAvailableVehicles($input:ListVehiclesInput!) {
+  listAvailableVehicles(input: $input) {
     vehicles {
       vehicleId
       make
       model
+      status
     }
     nextPageToken
     prevPageToken

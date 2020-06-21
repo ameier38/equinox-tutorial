@@ -1,0 +1,6 @@
+{
+    "schema": "http://localhost:4000/public/schema",
+    "queries": "./src/App/PublicQueries",
+    "project": "PublicApi",
+    "output": "./src/PublicApi"
+}

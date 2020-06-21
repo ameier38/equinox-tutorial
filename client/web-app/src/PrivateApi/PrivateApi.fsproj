@@ -4,9 +4,9 @@
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="Snowflaqe.Types.fs" />
-        <Compile Include="Snowflaqe.ListVehicles.fs" />
-        <Compile Include="Snowflaqe.GraphqlClient.fs" />
+        <Compile Include="PrivateApi.Types.fs" />
+        <Compile Include="PrivateApi.AddVehicle.fs" />
+        <Compile Include="PrivateApi.GraphqlClient.fs" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="*.fsproj; *.fs; *.js" PackagePath="fable\" />

@@ -1,4 +1,4 @@
-namespace Snowflaqe
+namespace PrivateApi
 
 open Fable.SimpleHttp
 open Fable.SimpleJson
@@ -7,23 +7,14 @@ type GraphqlInput<'T> = { query: string; variables: Option<'T> }
 type GraphqlSuccessResponse<'T> = { data: 'T }
 type GraphqlErrorResponse = { errors: ErrorType list }
 
-type SnowflaqeGraphqlClient(url: string, headers: Header list) =
-    new(url: string) = SnowflaqeGraphqlClient(url, [ ])
+type PrivateApiGraphqlClient(url: string, headers: Header list) =
+    new(url: string) = PrivateApiGraphqlClient(url, [ ])
 
-    member _.ListVehicles(input: ListVehicles.InputVariables) =
+    member _.AddVehicle(input: AddVehicle.InputVariables) =
         async {
             let query = """
-                query ListVehicles($input:ListVehiclesInput!) {
-                  listVehicles(input: $input) {
-                    vehicles {
-                      vehicleId
-                      make
-                      model
-                    }
-                    nextPageToken
-                    prevPageToken
-                    totalCount
-                  }
+                mutation AddVehicle($input:AddVehicleInput!) {
+                  addVehicle(input: $input)
                 }
                 
             """
@@ -36,7 +27,7 @@ type SnowflaqeGraphqlClient(url: string, headers: Header list) =
 
             match response.statusCode with
             | 200 ->
-                let response = Json.parseNativeAs<GraphqlSuccessResponse<ListVehicles.Query>> response.responseText
+                let response = Json.parseNativeAs<GraphqlSuccessResponse<AddVehicle.Query>> response.responseText
                 return Ok response.data
 
             | errorStatus ->

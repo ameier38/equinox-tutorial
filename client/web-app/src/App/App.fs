@@ -5,7 +5,7 @@ open Elmish
 open Feliz
 open Feliz.Router
 open Feliz.MaterialUI
-open Snowflaqe
+open GraphQL
 
 type Url =
     | LandingUrl
@@ -15,40 +15,27 @@ module Url =
         | _ -> LandingUrl
 
 type State =
-    { CurrentUrl: Url
-      LandingState: unit }
+    { CurrentUrl: Url }
 
 type Msg =
     | UrlChanged of string list
-    | LandingMsg of Landing.Msg
 
 let init () =
     let currentUrl = Router.currentUrl() |> Url.parse
-    let landingState, landingCmd = Landing.init()
-    let cmd = Cmd.batch [
-        landingCmd |> Cmd.map LandingMsg
-    ]
     let initialState =
-        { CurrentUrl  = currentUrl
-          LandingState = landingState }
-    initialState, cmd
+        { CurrentUrl  = currentUrl }
+    initialState, Cmd.none
 
 let update (msg:Msg) (state:State): State * Cmd<Msg> =
     match msg with
     | UrlChanged url ->
         let currentUrl = Url.parse url
         { state with CurrentUrl = currentUrl }, Cmd.none
-    | LandingMsg msg ->
-        let landingState, landingCmd = Landing.update msg state.LandingState
-        let newState =
-            { state with
-                LandingState = landingState }
-        newState, landingCmd |> Cmd.map LandingMsg
 
 let renderPage (state:State) (dispatch:Msg -> unit) =
     match state.CurrentUrl with
     | LandingUrl ->
-        Landing.render state.LandingState (LandingMsg >> dispatch)
+        Landing.render ()
 
 type AppProps =
     { state: State
@@ -67,9 +54,10 @@ let render (state:State) (dispatch:Msg -> unit) =
                 Auth0.audience Config.auth0Config.Audience
                 Auth0.children [
                     GraphQL.provider [
-                        GraphQL.url Config.graphqlConfig.Url
+                        GraphQL.publicUrl Config.graphqlConfig.PublicUrl
+                        GraphQL.privateUrl Config.graphqlConfig.PrivateUrl
                         GraphQL.children [
-                            Common.navigation { navigateToHome = id<unit> }
+                            Navigation.render { navigateToHome = id<unit> }
                             renderPage state dispatch
                         ]
                     ]

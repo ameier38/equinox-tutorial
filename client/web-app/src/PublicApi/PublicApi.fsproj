@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="PublicApi.Types.fs" />
+        <Compile Include="PublicApi.ListAvailableVehicles.fs" />
+        <Compile Include="PublicApi.GraphqlClient.fs" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="*.fsproj; *.fs; *.js" PackagePath="fable\" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Update="FSharp.Core" Version="4.7.0"/>
+        <PackageReference Include="Fable.SimpleHttp" Version="3.0.0" />
+        <PackageReference Include="Fable.SimpleJson" Version="3.9.0" />
+    </ItemGroup>
+</Project>
