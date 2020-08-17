@@ -5,10 +5,13 @@
   <ItemGroup>
     <Compile Include="Infrastructure.fs" />
     <Compile Include="Config.fs" />
-    <Compile Include="Auth0/useAuth0.fs" />
-    <Compile Include="GraphQL/useGQL.fs" />
+    <Compile Include="Hooks/Auth0.fs" />
+    <Compile Include="Hooks/GraphQL.fs" />
     <Compile Include="Navigation.fs" />
-    <Compile Include="Landing.fs" />
+    <Compile Include="PublicApp/Landing.fs" />
+    <Compile Include="PublicApp/About.fs" />
+    <Compile Include="PublicApp/Vehicle.fs" />
+    <Compile Include="PrivateApp/Sidebar.fs" />
     <Compile Include="App.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package cosmicdealership.user.v1;
+
+option csharp_namespace = "CosmicDealership.User.V1";
+option go_package = "cosmicdealership/user/v1";
+
+message User {
+    string user_id = 1;
+    repeated string permissions = 2;
+}

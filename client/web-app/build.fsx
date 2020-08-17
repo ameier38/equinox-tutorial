@@ -38,6 +38,8 @@ let generatePrivateApi = BuildTask.create "GeneratePrivateApi" [cleanPrivateApi]
     snowflaqe ["--config"; "privateApi.json"; "--generate"]
 }
 
+let generate = BuildTask.createEmpty "Generate" [generatePublicApi; generatePrivateApi]
+
 BuildTask.create "Restore" [clean.IfNeeded] {
     !! "src/**/*.*proj"
     |> Seq.iter (DotNet.restore id)
@@ -51,7 +53,7 @@ BuildTask.create "Serve" [] {
     Npm.run "start" id
 }
 
-BuildTask.create "Build" [clean; generatePublicApi; generatePrivateApi] {
+BuildTask.create "Build" [clean; generate] {
     Npm.run "build" id
 }
 

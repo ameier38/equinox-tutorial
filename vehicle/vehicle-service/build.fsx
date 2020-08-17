@@ -28,12 +28,15 @@ let cleanProto = BuildTask.create "CleanProto" [] {
 
 let copyGenerated = BuildTask.create "CopyGenerated" [cleanProto] {
     let genDir =
-        __SOURCE_DIRECTORY__ // vehicle-api
+        __SOURCE_DIRECTORY__ // vehicle-service
+        |> Path.getDirectory // vehicle
         |> Path.getDirectory // equinox-tutorial
-        </> "protos" </> "gen" </> "csharp"
+        </> "infrastructure" </> "protos" </> "gen" </> "csharp"
+    if not (DirectoryInfo.exists (DirectoryInfo.ofPath genDir)) then failwithf "%s does not exist" genDir
     let targetDir = __SOURCE_DIRECTORY__ </> "src" </> "Proto" </> "gen"
     targetDir |> Shell.cleanDir
     !! (genDir </> "*.cs")
+    |> Seq.map (fun f -> Trace.logf "copying file: %s" f; f)
     |> Shell.copyFiles targetDir
 }
 

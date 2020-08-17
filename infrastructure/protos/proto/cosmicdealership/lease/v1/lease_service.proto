@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package cosmicdealership.lease.v1;
+
+option csharp_namespace = "CosmicDealership.Lease.V1";
+option go_package = "cosmicdealership/lease/v1";
+
+import "cosmicdealership/lease/v1/lease.proto";
+import "cosmicdealership/user/v1/user.proto";
+import "google/type/money.proto";
+
+// Service to handle interactions with the Lease.
+service LeaseService {
+  // Request a lease for a vehicle.
+  rpc RequestLease(RequestLeaseRequest) returns (RequestLeaseResponse);
+  // Accept a new lease.
+  rpc AcceptLease(AcceptLeaseRequest) returns (AcceptLeaseResponse);
+  // Create a payment.
+  rpc CreatePayment(CreatePaymentRequest) returns (CreatePaymentResponse);
+  // Settle a payment.
+  rpc SettlePayment(SettlePaymentRequest) returns (SettlePaymentResponse);
+  // Return a payment.
+  rpc ReturnPayment(ReturnPaymentRequest) returns (ReturnPaymentResponse);
+  // Return a vehicle.
+  rpc ReturnVehicle(ReturnVehicleRequest) returns (ReturnVehicleResponse);
+}
+
+message RequestLeaseRequest {
+  user.v1.User user = 1;
+  string lease_id = 2;
+  string vehicle_id = 3;
+  int32 term = 4;
+  google.type.Money down_payment = 5;
+}
+
+message RequestLeaseResponse {
+    Lease lease = 1;
+}
+
+message AcceptLeaseRequest {
+  user.v1.User user = 1;
+  Lease lease = 2;
+}
+
+message AcceptLeaseResponse {
+  string message = 1;
+}
+
+message CreatePaymentRequest {
+  user.v1.User user = 1;
+  CreatedPayment created_payment = 2;
+}
+
+message CreatePaymentResponse {
+  string message = 1;
+}
+
+message SettlePaymentRequest {
+  user.v1.User user = 1;
+  SettledPayment settled_payment = 2;
+}
+
+message SettlePaymentResponse {
+  string message = 1;
+}
+
+message ReturnPaymentRequest {
+  user.v1.User user = 1;
+  ReturnedPayment returned_payment = 2;
+}
+
+message ReturnPaymentResponse {
+  string message = 1;
+}
+
+message ReturnVehicleRequest {
+  user.v1.User user = 1;
+  ReturnedVehicle returned_vehicle = 2;
+}
+
+message ReturnVehicleResponse {
+  string message = 1;
+}

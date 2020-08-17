@@ -88,3 +88,10 @@ module Error =
 [<RequireQualifiedAccess>]
 module Image =
     let inline load (relativePath:string): string = importDefault relativePath
+
+[<RequireQualifiedAccess>]
+module Icon =
+    let dashboard:ReactElement = importDefault "@material-ui/icons/Dashboard"
+    let money:ReactElement = importDefault "@material-ui/icons/LocalAtm"
+    let rocket:ReactElement = importDefault "@material-ui/icons/Flight"
+    let person:ReactElement = importDefault "@material-ui/icons/Person"

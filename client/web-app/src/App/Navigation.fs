@@ -38,7 +38,7 @@ let render =
         Mui.appBar [
             appBar.elevation 0
             appBar.square true
-            appBar.position.fixed'
+            appBar.position.absolute
             appBar.color.transparent
             appBar.children [
                 Mui.toolbar [

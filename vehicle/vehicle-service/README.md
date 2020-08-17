@@ -16,7 +16,7 @@ fake build -t TestUnits
 
 Bring up server and reactor for integration testing.
 ```
-docker-compose up -d --build vehicle-server vehicle-reactor
+docker-compose up -d --build vehicle-api vehicle-reactor
 ```
 
 Run the integration tests.

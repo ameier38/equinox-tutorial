@@ -1,6 +1,8 @@
 module Server.Root
 
 open FSharp.Data.GraphQL.Types
+open Server.Vehicle.Client
+open Server.Vehicle.Fields
 
 type Root = { _empty: bool option }
 
@@ -11,8 +13,8 @@ let Query
     Define.Object<Root>(
         name = "Query",
         fields = [ 
-            Fields.listVehicles vehicleClient
-            Fields.getVehicle vehicleClient
+            listVehicles vehicleClient
+            getVehicle vehicleClient
         ]
     )
 
@@ -21,7 +23,7 @@ let PublicQuery
     Define.Object<Root>(
         name = "PublicQuery",
         fields = [ 
-            Fields.listAvailableVehicles vehicleClient
+            listAvailableVehicles vehicleClient
         ]
     )
 
@@ -30,6 +32,6 @@ let Mutation
     Define.Object<Root>(
         name = "Mutation",
         fields = [
-            Fields.addVehicle vehicleClient
+            addVehicle vehicleClient
         ]
     )

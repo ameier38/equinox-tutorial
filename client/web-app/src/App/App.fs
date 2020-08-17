@@ -9,6 +9,7 @@ open GraphQL
 
 type Url =
     | LandingUrl
+
 module Url =
     let parse (url:string list) =
         match url with

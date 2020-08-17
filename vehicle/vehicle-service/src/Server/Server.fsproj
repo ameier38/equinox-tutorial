@@ -9,6 +9,7 @@
     <Compile Include="Config.fs" />
     <Compile Include="Aggregate.fs" />
     <Compile Include="Store.fs" />
+    <Compile Include="Dto.fs" />
     <Compile Include="Service.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

@@ -23,7 +23,7 @@ let main _ =
     let vehicleService = VehicleServiceImpl(store)
     let healthService = HealthServiceImpl()
     let server = Server()
-    server.Services.Add(Tutorial.Vehicle.V1.VehicleService.BindService(vehicleService))
+    server.Services.Add(CosmicDealership.Vehicle.V1.VehicleService.BindService(vehicleService))
     server.Services.Add(Health.BindService(healthService))
     let serverPort = ServerPort(config.Server.Host, config.Server.Port, ServerCredentials.Insecure)
     let listenPort = server.Ports.Add(serverPort)

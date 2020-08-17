@@ -4,31 +4,15 @@ open Grpc.Core
 open Serilog
 open Shared
 
-module Dto =
-
-    module Vehicle =
-        let fromProto (proto:Tutorial.Vehicle.V1.Vehicle) =
-            let vehicleId = VehicleId.fromString proto.VehicleId
-            { VehicleId = vehicleId
-              Make = proto.Make
-              Model = proto.Model
-              Year = proto.Year }
-        let toProto (vehicle:Vehicle) =
-            Tutorial.Vehicle.V1.Vehicle(
-                VehicleId=(VehicleId.toString vehicle.VehicleId),
-                Make=vehicle.Make,
-                Model=vehicle.Model,
-                Year=vehicle.Year)
-
 type VehicleServiceImpl(store:Store) =
-    inherit Tutorial.Vehicle.V1.VehicleService.VehicleServiceBase()
+    inherit CosmicDealership.Vehicle.V1.VehicleService.VehicleServiceBase()
 
-    let authorize (user:Tutorial.User.V1.User) (permission:string) =
+    let authorize (user:CosmicDealership.User.V1.User) (permission:string) =
         if not (user.Permissions |> Seq.contains permission) then
             sprintf "user %s does not have %s permission" user.UserId permission
             |> RpcException.raisePermissionDenied
 
-    override _.AddVehicle(req:Tutorial.Vehicle.V1.AddVehicleRequest, context:ServerCallContext) =
+    override _.AddVehicle(req:CosmicDealership.Vehicle.V1.AddVehicleRequest, context:ServerCallContext) =
         async {
             try
                 authorize req.User "add:vehicles"
@@ -38,13 +22,29 @@ type VehicleServiceImpl(store:Store) =
                 let addVehicle = AddVehicle vehicle
                 do! stream.Transact(Aggregate.interpret vehicleId addVehicle)
                 let msg = sprintf "successfully added Vehicle-%s" req.Vehicle.VehicleId
-                return Tutorial.Vehicle.V1.AddVehicleResponse(Message=msg)
+                return CosmicDealership.Vehicle.V1.AddVehicleResponse(Message=msg)
             with ex ->
                 Log.Error("Error! {@Exception}", ex)
                 return raise ex
         } |> Async.StartAsTask
 
-    override _.RemoveVehicle(req:Tutorial.Vehicle.V1.RemoveVehicleRequest, context:ServerCallContext) =
+    override _.UpdateVehicle(req:CosmicDealership.Vehicle.V1.UpdateVehicleRequest, context:ServerCallContext) =
+        async {
+            try
+                authorize req.User "update:vehicles"
+                let vehicleId = VehicleId.fromString req.VehicleId
+                let updates = Dto.VehicleUpdates.fromProto req.Updates
+                let stream = store.ResolveVehicle(vehicleId)
+                let updateVehicle = UpdateVehicle updates
+                do! stream.Transact(Aggregate.interpret vehicleId updateVehicle)
+                let msg = sprintf "successfully updated Vehicle-%s" req.VehicleId
+                return CosmicDealership.Vehicle.V1.UpdateVehicleResponse(Message=msg)
+            with ex ->
+                Log.Error("Error! {@Exception}", ex)
+                return raise ex
+        } |> Async.StartAsTask
+
+    override _.RemoveVehicle(req:CosmicDealership.Vehicle.V1.RemoveVehicleRequest, context:ServerCallContext) =
         async {
             try
                 authorize req.User "remove:vehicles"
@@ -53,13 +53,13 @@ type VehicleServiceImpl(store:Store) =
                 let removeVehicle = RemoveVehicle
                 do! stream.Transact(Aggregate.interpret vehicleId removeVehicle)
                 let msg = sprintf "successfully removed Vehicle-%s" req.VehicleId
-                return Tutorial.Vehicle.V1.RemoveVehicleResponse(Message=msg)
+                return CosmicDealership.Vehicle.V1.RemoveVehicleResponse(Message=msg)
             with ex ->
                 Log.Error("Error! {@Exception}", ex)
                 return raise ex
         } |> Async.StartAsTask
 
-    override _.LeaseVehicle(req:Tutorial.Vehicle.V1.LeaseVehicleRequest, context:ServerCallContext) =
+    override _.LeaseVehicle(req:CosmicDealership.Vehicle.V1.LeaseVehicleRequest, context:ServerCallContext) =
         async {
             try
                 authorize req.User "lease:vehicles"
@@ -68,13 +68,13 @@ type VehicleServiceImpl(store:Store) =
                 let leaseVehicle = LeaseVehicle
                 do! stream.Transact(Aggregate.interpret vehicleId leaseVehicle)
                 let msg = sprintf "successfully leased Vehicle-%s" req.VehicleId
-                return Tutorial.Vehicle.V1.LeaseVehicleResponse(Message=msg)
+                return CosmicDealership.Vehicle.V1.LeaseVehicleResponse(Message=msg)
             with ex ->
                 Log.Error("Error! {@Exception}", ex)
                 return raise ex
         } |> Async.StartAsTask
 
-    override _.ReturnVehicle(req:Tutorial.Vehicle.V1.ReturnVehicleRequest, context:ServerCallContext) =
+    override _.ReturnVehicle(req:CosmicDealership.Vehicle.V1.ReturnVehicleRequest, context:ServerCallContext) =
         async {
             try
                 authorize req.User "return:vehicles"
@@ -83,7 +83,7 @@ type VehicleServiceImpl(store:Store) =
                 let returnVehicle = ReturnVehicle
                 do! stream.Transact(Aggregate.interpret vehicleId returnVehicle)
                 let msg = sprintf "successfully returned Vehicle-%s" req.VehicleId
-                return Tutorial.Vehicle.V1.ReturnVehicleResponse(Message=msg)
+                return CosmicDealership.Vehicle.V1.ReturnVehicleResponse(Message=msg)
             with ex ->
                 Log.Error("Error! {@Exception}", ex)
                 return raise ex

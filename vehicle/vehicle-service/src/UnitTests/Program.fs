@@ -16,20 +16,26 @@ let testEvolve =
         let vehicleAdded = VehicleAdded vehicle
         let newState = Aggregate.evolve prevState vehicleAdded
         // THEN status should be Available
-        let expectedState =
-            { Vehicle = Some vehicle
-              VehicleStatus = Available }
+        let expectedState = Available vehicle
         newState
         |> Expect.equal "status should be Available" expectedState
+        // GIVEN previous state
+        let prevState = newState
+        // WHEN vehicle is updated
+        let updatedVehicle = { vehicle with Model = "10" }
+        let vehicleUpdated = VehicleUpdated updatedVehicle
+        let newState = Aggregate.evolve prevState vehicleUpdated
+        // THEN vehicle should be updated
+        let expectedState = Available updatedVehicle
+        newState
+        |> Expect.equal "vehicle should be updated" expectedState
         // GIVEN previous state
         let prevState = newState
         // WHEN vehicle is removed
         let vehicleRemoved = VehicleRemoved {| VehicleId = vehicle.VehicleId |}
         let newState = Aggregate.evolve prevState vehicleRemoved
         // THEN state should be Removed
-        let expectedState =
-            { prevState with
-                VehicleStatus = Removed }
+        let expectedState = Removed
         newState
         |> Expect.equal "status should be Removed" expectedState
     }

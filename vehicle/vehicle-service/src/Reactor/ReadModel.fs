@@ -15,12 +15,9 @@ type VehicleReadModelDto =
       status: string }
 
 module VehicleStatus =
-    let toString =
-        function
-        | Unknown -> "Unknown"
-        | Available -> "Available"
-        | Removed -> "Removed"
-        | Leased -> "Leased"
+    let available = "Available"
+    let leased = "Leased"
+    let removed = "Removed"
 
 type VehicleReadModel(config:Config) =
     let name = "vehicles"
@@ -29,20 +26,42 @@ type VehicleReadModel(config:Config) =
     let codec = FsCodec.NewtonsoftJson.Codec.Create<VehicleEvent>()
     let vehicleCollection = store.GetCollection(name)
 
-    let addVehicle (vehicle:VehicleReadModelDto) =
+    let addVehicle (vehicle:Vehicle) =
         async {
-            Log.Debug("adding vehicle {Vehicle}", vehicle)
+            Log.Debug("updating vehicle {Vehicle}", vehicle)
             // use replace with upsert to make idempotent
-            let filterVehicle = Builders<VehicleReadModelDto>.Filter.Where(fun v -> v.vehicleId = vehicle.vehicleId)
+            let vehicleId = VehicleId.toString vehicle.VehicleId
+            let vehicleDto =
+                { vehicleId = vehicleId
+                  make = vehicle.Make
+                  model = vehicle.Model
+                  year = vehicle.Year
+                  status = VehicleStatus.available }
+            let filterVehicle = Builders<VehicleReadModelDto>.Filter.Where(fun v -> v.vehicleId = vehicleId)
             let replaceOptions = ReplaceOptions(IsUpsert = true)
-            do! vehicleCollection.ReplaceOneAsync(filterVehicle, vehicle, replaceOptions)
+            do! vehicleCollection.ReplaceOneAsync(filterVehicle, vehicleDto, replaceOptions)
                 |> Async.AwaitTask
                 |> Async.Ignore
         }
 
-    let setVehicleStatus (vehicleId:string) (status:string) =
+    let updateVehicle (vehicle:Vehicle) =
+        async {
+            let vehicleId = VehicleId.toString vehicle.VehicleId
+            let filterVehicle = Builders<VehicleReadModelDto>.Filter.Where(fun v -> v.vehicleId = vehicleId)
+            let updateVehicle =
+                Builders<VehicleReadModelDto>.Update
+                    .Set((fun v -> v.make), vehicle.Make)
+                    .Set((fun v -> v.model), vehicle.Model)
+                    .Set((fun v -> v.year), vehicle.Year)
+            do! vehicleCollection.UpdateOneAsync(filterVehicle, updateVehicle)
+                |> Async.AwaitTask
+                |> Async.Ignore
+        }
+
+    let setVehicleStatus (vehicleId:VehicleId) (status:string) =
         async {
             Log.Debug("updating Vehicle-{VehicleId} status to {VehicleStatus}", status)
+            let vehicleId = VehicleId.toString vehicleId
             let filterVehicle = Builders<VehicleReadModelDto>.Filter.Where(fun v -> v.vehicleId = vehicleId)
             let updateStatus = Builders<VehicleReadModelDto>.Update.Set((fun v -> v.status), status)
             do! vehicleCollection.UpdateOneAsync(filterVehicle, updateStatus)
@@ -58,26 +77,18 @@ type VehicleReadModel(config:Config) =
                 | Some vehicleEvent ->
                     match vehicleEvent with
                     | VehicleAdded vehicle ->
-                        let vehicleId = VehicleId.toString vehicle.VehicleId
-                        let vehicleDto =
-                            { vehicleId = vehicleId
-                              make = vehicle.Make
-                              model = vehicle.Model
-                              year = vehicle.Year
-                              status = VehicleStatus.toString Available }
-                        do! addVehicle vehicleDto
+                        do! addVehicle vehicle
+                    | VehicleUpdated vehicle ->
+                        do! updateVehicle vehicle
                     | VehicleRemoved payload ->
-                        let vehicleId = VehicleId.toString payload.VehicleId
-                        let newStatus = VehicleStatus.toString Removed
-                        do! setVehicleStatus vehicleId newStatus
+                        let newStatus = VehicleStatus.removed
+                        do! setVehicleStatus payload.VehicleId newStatus
                     | VehicleLeased payload ->
-                        let vehicleId = VehicleId.toString payload.VehicleId
-                        let newStatus = VehicleStatus.toString Leased
-                        do! setVehicleStatus vehicleId newStatus
+                        let newStatus = VehicleStatus.leased
+                        do! setVehicleStatus payload.VehicleId newStatus
                     | VehicleReturned payload ->
-                        let vehicleId = VehicleId.toString payload.VehicleId
-                        let newStatus = VehicleStatus.toString Available
-                        do! setVehicleStatus vehicleId newStatus
+                        let newStatus = VehicleStatus.available
+                        do! setVehicleStatus payload.VehicleId newStatus
                 | None -> ()
                 do! store.UpdateCheckpoint(name, event.Index)
             }

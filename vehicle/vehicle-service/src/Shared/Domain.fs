@@ -6,8 +6,14 @@ type Vehicle =
       Model: string
       Year: int }
 
+type VehicleUpdates =
+    { Make: string option
+      Model: string option
+      Year: int option }
+
 type VehicleEvent =
     | VehicleAdded of Vehicle
+    | VehicleUpdated of Vehicle
     | VehicleRemoved of {| VehicleId: VehicleId |}
     | VehicleLeased of {| VehicleId: VehicleId |}
     | VehicleReturned of {| VehicleId: VehicleId |}
@@ -15,16 +21,13 @@ type VehicleEvent =
 
 type VehicleCommand =
     | AddVehicle of Vehicle
+    | UpdateVehicle of VehicleUpdates
     | RemoveVehicle
     | LeaseVehicle
     | ReturnVehicle
 
-type VehicleStatus =
-    | Unknown
-    | Available
-    | Removed
-    | Leased
-
 type VehicleState =
-    { Vehicle: Vehicle option
-      VehicleStatus: VehicleStatus }
+    | Unknown
+    | Available of Vehicle
+    | Leased of Vehicle
+    | Removed

@@ -4,9 +4,39 @@ open FSharp.Data.GraphQL
 open FSharp.Data.GraphQL.Types
 open FSharp.Data.GraphQL.Types.Patterns
 open FSharp.Reflection
+open FSharp.UMX
 open Newtonsoft.Json
 open Newtonsoft.Json.Linq
+open Newtonsoft.Json.Serialization
+open Shared
 open System
+open System.IdentityModel.Tokens
+open System.Text
+
+type [<Measure>] userId
+type UserId = string<userId>
+
+type User =
+    { UserId: UserId
+      Permissions: string list }
+
+module User =
+    let toProto (user:User) =
+        let userProto = CosmicDealership.User.V1.User(UserId = %user.UserId)
+        userProto.Permissions.AddRange(user.Permissions)
+        userProto
+    let fromObj (o:obj) =
+        match o with
+        | :? User as user -> user
+        | other -> failwithf "could not unbox User from %A" other
+    let fromMetadata (m:Metadata) =
+        match m.TryFind "user" with
+        | Some o -> fromObj o
+        | None -> failwithf "could not find 'user' key in metadata %A" m
+
+type GraphQLQuery =
+    { ExecutionPlan : ExecutionPlan
+      Variables : Map<string, obj> }
 
 module JsonConverter =
     [<Sealed>]
@@ -82,3 +112,43 @@ module JsonConverter =
                             | _, Nullable _ -> acc
                             | None, _ -> failwithf "Variable %s has no default value and is missing!" vdef.Name) Map.empty
                 upcast { ExecutionPlan = plan; Variables = variables }
+
+type TokenParser() =
+    let tokenHandler = Jwt.JwtSecurityTokenHandler()
+
+    member _.ParseToken(bearer:string) =
+        match bearer with
+        | Regex.Match "^Bearer (.+)$" [token] ->
+            let parsedToken = tokenHandler.ReadJwtToken(token)
+            let permissions =
+                parsedToken.Claims
+                |> Seq.choose (fun claim ->
+                    if claim.Type = "permissions" then Some claim.Value
+                    else None)
+                |> Seq.toList
+            let userId = UMX.tag<userId> parsedToken.Subject
+            { UserId = userId; Permissions = permissions }
+        | _ -> failwithf "could not parse token"
+
+type GraphQLParser<'T>(executor:Executor<'T>) =
+    let jsonOptions = JsonSerializerSettings(ContractResolver = CamelCasePropertyNamesContractResolver())
+    do jsonOptions.Converters.Add(JsonConverter.GraphQLQueryConverter(executor))
+    do jsonOptions.Converters.Add(JsonConverter.OptionConverter())
+
+    member _.Executor = executor
+
+    // ref: https://graphql.org/learn/serving-over-http/#post-request
+    member _.ParseRequest(user:User, rawBody:byte[]) =
+        let strBody = Encoding.UTF8.GetString(rawBody)
+        let query = JsonConvert.DeserializeObject<GraphQLQuery>(strBody, jsonOptions)
+        let meta = ["user", box user] |> Metadata.FromList
+        { query with ExecutionPlan = { query.ExecutionPlan with Metadata = meta } }
+
+    // ref: https://graphql.org/learn/serving-over-http/#response
+    member _.ParseResponse(res:Execution.GQLResponse) =
+        match res.Content with
+        | Execution.Direct (data, errors) ->
+            match errors with
+            | [] -> JsonConvert.SerializeObject(data)
+            | errors -> failwithf "%A" errors
+        | _ -> failwithf "only direct queries are supported"

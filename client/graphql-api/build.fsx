@@ -8,6 +8,14 @@ open Fake.IO.Globbing.Operators
 open BlackFox.Fake
 open System
 
+let run (command:string) (args:string list) =
+    CreateProcess.fromRawCommand command args
+    |> CreateProcess.ensureExitCode
+    |> Proc.run
+    |> ignore
+
+let snowflaqe = run "snowflaqe"
+
 BuildTask.create "Clean" [] {
     let directories = 
         !! "**/out"
@@ -29,10 +37,13 @@ let cleanProto = BuildTask.create "CleanProto" [] {
 let copyGenerated = BuildTask.create "CopyGenerated" [cleanProto] {
     let genDir =
         __SOURCE_DIRECTORY__ // graphql-api
+        |> Path.getDirectory // client
         |> Path.getDirectory // equinox-tutorial
-        </> "protos" </> "gen" </> "csharp"
+        </> "infrastructure" </> "protos" </> "gen" </> "csharp"
+    if not (DirectoryInfo.exists (DirectoryInfo.ofPath genDir)) then failwithf "%s does not exist" genDir
     let targetDir = __SOURCE_DIRECTORY__ </> "src" </> "Proto" </> "gen"
     !!(genDir </> "*.cs")
+    |> Seq.map (fun f -> Trace.logf "copying file: %s" f; f)
     |> Shell.copyFiles targetDir
 }
 
@@ -49,7 +60,12 @@ BuildTask.create "Restore" [] {
     |> List.iter (DotNet.restore id)
 }
 
-BuildTask.create "TestIntegrations" [] {
+let generateClient = BuildTask.create "GenerateClient" [] {
+    Trace.trace "Generating client..."
+    snowflaqe ["--generate"]
+}
+
+BuildTask.create "TestIntegrations" [generateClient] {
     Trace.trace "Running integration tests..."
     let result = DotNet.exec id "run" "--project src/IntegrationTests/IntegrationTests.fsproj"
     if not result.OK then failwithf "Error! %A" result.Errors

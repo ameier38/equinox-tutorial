@@ -46,6 +46,7 @@ fake build -t UpdateProtos
 - [GraphQL](https://graphql.org/)
 - [GraphQL CLI](https://github.com/graphql-cli/graphql-cli)
 - [F# GraphQL](https://github.com/fsprojects/FSharp.Data.GraphQL)
+- [Snowflaqe](https://github.com/Zaid-Ajaj/Snowflaqe)
 - [Designing Graphql Mutations](https://blog.apollographql.com/designing-graphql-mutations-e09de826ed97)
 - [System.IdentityModel.Tokens.Jwt](https://docs.microsoft.com/en-us/dotnet/api/system.identitymodel.tokens.jwt?view=azure-dotnet)
 - [MongoDB Pagination](https://www.codementor.io/@arpitbhayani/fast-and-efficient-pagination-in-mongodb-9095flbqr)

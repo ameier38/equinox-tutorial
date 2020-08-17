@@ -2,6 +2,7 @@
 open Server
 open Serilog
 open Serilog.Events
+open Server.Vehicle.Client
 open Suave
 open Suave.Filters
 open Suave.Operators

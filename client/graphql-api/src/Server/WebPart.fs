@@ -16,12 +16,12 @@ let setResponseHeaders: WebPart =
     >=> Writers.setMimeType "application/json"
 
 let authorize
-    (parser:TokenParser): WebPart =
+    (tokenParser:TokenParser): WebPart =
     context (fun ctx ->
         try
             match ctx.request.header "authorization" with
             | Choice1Of2 bearer ->
-                let user = parser.ParseToken(bearer)
+                let user = tokenParser.ParseToken(bearer)
                 Writers.setUserData "user" user
             | Choice2Of2 msg ->
                 sprintf "could not find authorization header: %s" msg
@@ -32,12 +32,12 @@ let authorize
     )
 
 let introspection
-    (parser:GraphQLParser<Root.Root>): WebPart =
+    (graphqlParser:GraphQLParser<Root.Root>): WebPart =
     fun httpCtx ->
         async {
-            let! gqlResp = parser.Executor.AsyncExecute(Introspection.IntrospectionQuery)
+            let! gqlResp = graphqlParser.Executor.AsyncExecute(Introspection.IntrospectionQuery)
             let sendResp = 
-                parser.ParseResponse(gqlResp)
+                graphqlParser.ParseResponse(gqlResp)
                 |> Successful.OK
             return! sendResp httpCtx
         }

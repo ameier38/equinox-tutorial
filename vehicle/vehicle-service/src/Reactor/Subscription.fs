@@ -41,7 +41,7 @@ type Subscription(name:string, stream:Stream, eventHandler:EventHandler, eventst
             readBatchSize = 10,
             verboseLogging = false,
             resolveLinkTos = true,
-            subscriptionName = "vehicles")
+            subscriptionName = name)
     let credentials =
         SystemData.UserCredentials(
             username = eventstoreConfig.User,
