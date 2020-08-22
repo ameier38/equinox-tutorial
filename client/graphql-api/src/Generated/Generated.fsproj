@@ -7,6 +7,9 @@
         <Compile Include="Generated.StringEnum.fs" />
         <Compile Include="Generated.Types.fs" />
         <Compile Include="Generated.AddVehicle.fs" />
+        <Compile Include="Generated.GetVehicle.fs" />
+        <Compile Include="Generated.RemoveVehicle.fs" />
+        <Compile Include="Generated.UpdateVehicle.fs" />
         <Compile Include="Generated.GraphqlClient.fs" />
     </ItemGroup>
     <ItemGroup>

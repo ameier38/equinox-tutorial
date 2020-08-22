@@ -31,41 +31,41 @@ namespace CosmicDealership.Vehicle.V1 {
             "dBIsCgR1c2VyGAEgASgLMh4uY29zbWljZGVhbGVyc2hpcC51c2VyLnYxLlVz",
             "ZXISNQoHdmVoaWNsZRgCIAEoCzIkLmNvc21pY2RlYWxlcnNoaXAudmVoaWNs",
             "ZS52MS5WZWhpY2xlIiUKEkFkZFZlaGljbGVSZXNwb25zZRIPCgdtZXNzYWdl",
-            "GAEgASgJIpYBChRVcGRhdGVWZWhpY2xlUmVxdWVzdBIsCgR1c2VyGAEgASgL",
+            "GAEgASgJIp4BChRVcGRhdGVWZWhpY2xlUmVxdWVzdBIsCgR1c2VyGAEgASgL",
             "Mh4uY29zbWljZGVhbGVyc2hpcC51c2VyLnYxLlVzZXISEgoKdmVoaWNsZV9p",
-            "ZBgCIAEoCRI8Cgd1cGRhdGVzGAMgASgLMisuY29zbWljZGVhbGVyc2hpcC52",
-            "ZWhpY2xlLnYxLlZlaGljbGVVcGRhdGVzIigKFVVwZGF0ZVZlaGljbGVSZXNw",
-            "b25zZRIPCgdtZXNzYWdlGAEgASgJIlgKFFJlbW92ZVZlaGljbGVSZXF1ZXN0",
+            "ZBgCIAEoCRJECg92ZWhpY2xlX3VwZGF0ZXMYAyABKAsyKy5jb3NtaWNkZWFs",
+            "ZXJzaGlwLnZlaGljbGUudjEuVmVoaWNsZVVwZGF0ZXMiKAoVVXBkYXRlVmVo",
+            "aWNsZVJlc3BvbnNlEg8KB21lc3NhZ2UYASABKAkiWAoUUmVtb3ZlVmVoaWNs",
+            "ZVJlcXVlc3QSLAoEdXNlchgBIAEoCzIeLmNvc21pY2RlYWxlcnNoaXAudXNl",
+            "ci52MS5Vc2VyEhIKCnZlaGljbGVfaWQYAiABKAkiKAoVUmVtb3ZlVmVoaWNs",
+            "ZVJlc3BvbnNlEg8KB21lc3NhZ2UYASABKAkiVwoTTGVhc2VWZWhpY2xlUmVx",
+            "dWVzdBIsCgR1c2VyGAEgASgLMh4uY29zbWljZGVhbGVyc2hpcC51c2VyLnYx",
+            "LlVzZXISEgoKdmVoaWNsZV9pZBgCIAEoCSInChRMZWFzZVZlaGljbGVSZXNw",
+            "b25zZRIPCgdtZXNzYWdlGAEgASgJIlgKFFJldHVyblZlaGljbGVSZXF1ZXN0",
             "EiwKBHVzZXIYASABKAsyHi5jb3NtaWNkZWFsZXJzaGlwLnVzZXIudjEuVXNl",
-            "chISCgp2ZWhpY2xlX2lkGAIgASgJIigKFVJlbW92ZVZlaGljbGVSZXNwb25z",
-            "ZRIPCgdtZXNzYWdlGAEgASgJIlcKE0xlYXNlVmVoaWNsZVJlcXVlc3QSLAoE",
-            "dXNlchgBIAEoCzIeLmNvc21pY2RlYWxlcnNoaXAudXNlci52MS5Vc2VyEhIK",
-            "CnZlaGljbGVfaWQYAiABKAkiJwoUTGVhc2VWZWhpY2xlUmVzcG9uc2USDwoH",
-            "bWVzc2FnZRgBIAEoCSJYChRSZXR1cm5WZWhpY2xlUmVxdWVzdBIsCgR1c2Vy",
-            "GAEgASgLMh4uY29zbWljZGVhbGVyc2hpcC51c2VyLnYxLlVzZXISEgoKdmVo",
-            "aWNsZV9pZBgCIAEoCSIoChVSZXR1cm5WZWhpY2xlUmVzcG9uc2USDwoHbWVz",
-            "c2FnZRgBIAEoCTLcBAoOVmVoaWNsZVNlcnZpY2USbQoKQWRkVmVoaWNsZRIu",
-            "LmNvc21pY2RlYWxlcnNoaXAudmVoaWNsZS52MS5BZGRWZWhpY2xlUmVxdWVz",
-            "dBovLmNvc21pY2RlYWxlcnNoaXAudmVoaWNsZS52MS5BZGRWZWhpY2xlUmVz",
-            "cG9uc2USdgoNVXBkYXRlVmVoaWNsZRIxLmNvc21pY2RlYWxlcnNoaXAudmVo",
-            "aWNsZS52MS5VcGRhdGVWZWhpY2xlUmVxdWVzdBoyLmNvc21pY2RlYWxlcnNo",
-            "aXAudmVoaWNsZS52MS5VcGRhdGVWZWhpY2xlUmVzcG9uc2USdgoNUmVtb3Zl",
-            "VmVoaWNsZRIxLmNvc21pY2RlYWxlcnNoaXAudmVoaWNsZS52MS5SZW1vdmVW",
-            "ZWhpY2xlUmVxdWVzdBoyLmNvc21pY2RlYWxlcnNoaXAudmVoaWNsZS52MS5S",
-            "ZW1vdmVWZWhpY2xlUmVzcG9uc2UScwoMTGVhc2VWZWhpY2xlEjAuY29zbWlj",
-            "ZGVhbGVyc2hpcC52ZWhpY2xlLnYxLkxlYXNlVmVoaWNsZVJlcXVlc3QaMS5j",
-            "b3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEuTGVhc2VWZWhpY2xlUmVzcG9u",
-            "c2USdgoNUmV0dXJuVmVoaWNsZRIxLmNvc21pY2RlYWxlcnNoaXAudmVoaWNs",
-            "ZS52MS5SZXR1cm5WZWhpY2xlUmVxdWVzdBoyLmNvc21pY2RlYWxlcnNoaXAu",
-            "dmVoaWNsZS52MS5SZXR1cm5WZWhpY2xlUmVzcG9uc2VCO1obY29zbWljZGVh",
-            "bGVyc2hpcC92ZWhpY2xlL3YxqgIbQ29zbWljRGVhbGVyc2hpcC5WZWhpY2xl",
-            "LlYxYgZwcm90bzM="));
+            "chISCgp2ZWhpY2xlX2lkGAIgASgJIigKFVJldHVyblZlaGljbGVSZXNwb25z",
+            "ZRIPCgdtZXNzYWdlGAEgASgJMtwECg5WZWhpY2xlU2VydmljZRJtCgpBZGRW",
+            "ZWhpY2xlEi4uY29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxLkFkZFZlaGlj",
+            "bGVSZXF1ZXN0Gi8uY29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxLkFkZFZl",
+            "aGljbGVSZXNwb25zZRJ2Cg1VcGRhdGVWZWhpY2xlEjEuY29zbWljZGVhbGVy",
+            "c2hpcC52ZWhpY2xlLnYxLlVwZGF0ZVZlaGljbGVSZXF1ZXN0GjIuY29zbWlj",
+            "ZGVhbGVyc2hpcC52ZWhpY2xlLnYxLlVwZGF0ZVZlaGljbGVSZXNwb25zZRJ2",
+            "Cg1SZW1vdmVWZWhpY2xlEjEuY29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYx",
+            "LlJlbW92ZVZlaGljbGVSZXF1ZXN0GjIuY29zbWljZGVhbGVyc2hpcC52ZWhp",
+            "Y2xlLnYxLlJlbW92ZVZlaGljbGVSZXNwb25zZRJzCgxMZWFzZVZlaGljbGUS",
+            "MC5jb3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEuTGVhc2VWZWhpY2xlUmVx",
+            "dWVzdBoxLmNvc21pY2RlYWxlcnNoaXAudmVoaWNsZS52MS5MZWFzZVZlaGlj",
+            "bGVSZXNwb25zZRJ2Cg1SZXR1cm5WZWhpY2xlEjEuY29zbWljZGVhbGVyc2hp",
+            "cC52ZWhpY2xlLnYxLlJldHVyblZlaGljbGVSZXF1ZXN0GjIuY29zbWljZGVh",
+            "bGVyc2hpcC52ZWhpY2xlLnYxLlJldHVyblZlaGljbGVSZXNwb25zZUI7Whtj",
+            "b3NtaWNkZWFsZXJzaGlwL3ZlaGljbGUvdjGqAhtDb3NtaWNEZWFsZXJzaGlw",
+            "LlZlaGljbGUuVjFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::CosmicDealership.Vehicle.V1.VehicleReflection.Descriptor, global::CosmicDealership.User.V1.UserReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.AddVehicleRequest), global::CosmicDealership.Vehicle.V1.AddVehicleRequest.Parser, new[]{ "User", "Vehicle" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.AddVehicleResponse), global::CosmicDealership.Vehicle.V1.AddVehicleResponse.Parser, new[]{ "Message" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.UpdateVehicleRequest), global::CosmicDealership.Vehicle.V1.UpdateVehicleRequest.Parser, new[]{ "User", "VehicleId", "Updates" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.UpdateVehicleRequest), global::CosmicDealership.Vehicle.V1.UpdateVehicleRequest.Parser, new[]{ "User", "VehicleId", "VehicleUpdates" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.UpdateVehicleResponse), global::CosmicDealership.Vehicle.V1.UpdateVehicleResponse.Parser, new[]{ "Message" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.RemoveVehicleRequest), global::CosmicDealership.Vehicle.V1.RemoveVehicleRequest.Parser, new[]{ "User", "VehicleId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.RemoveVehicleResponse), global::CosmicDealership.Vehicle.V1.RemoveVehicleResponse.Parser, new[]{ "Message" }, null, null, null, null),
@@ -404,7 +404,7 @@ namespace CosmicDealership.Vehicle.V1 {
     public UpdateVehicleRequest(UpdateVehicleRequest other) : this() {
       user_ = other.user_ != null ? other.user_.Clone() : null;
       vehicleId_ = other.vehicleId_;
-      updates_ = other.updates_ != null ? other.updates_.Clone() : null;
+      vehicleUpdates_ = other.vehicleUpdates_ != null ? other.vehicleUpdates_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -435,14 +435,14 @@ namespace CosmicDealership.Vehicle.V1 {
       }
     }
 
-    /// <summary>Field number for the "updates" field.</summary>
-    public const int UpdatesFieldNumber = 3;
-    private global::CosmicDealership.Vehicle.V1.VehicleUpdates updates_;
+    /// <summary>Field number for the "vehicle_updates" field.</summary>
+    public const int VehicleUpdatesFieldNumber = 3;
+    private global::CosmicDealership.Vehicle.V1.VehicleUpdates vehicleUpdates_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::CosmicDealership.Vehicle.V1.VehicleUpdates Updates {
-      get { return updates_; }
+    public global::CosmicDealership.Vehicle.V1.VehicleUpdates VehicleUpdates {
+      get { return vehicleUpdates_; }
       set {
-        updates_ = value;
+        vehicleUpdates_ = value;
       }
     }
 
@@ -461,7 +461,7 @@ namespace CosmicDealership.Vehicle.V1 {
       }
       if (!object.Equals(User, other.User)) return false;
       if (VehicleId != other.VehicleId) return false;
-      if (!object.Equals(Updates, other.Updates)) return false;
+      if (!object.Equals(VehicleUpdates, other.VehicleUpdates)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -470,7 +470,7 @@ namespace CosmicDealership.Vehicle.V1 {
       int hash = 1;
       if (user_ != null) hash ^= User.GetHashCode();
       if (VehicleId.Length != 0) hash ^= VehicleId.GetHashCode();
-      if (updates_ != null) hash ^= Updates.GetHashCode();
+      if (vehicleUpdates_ != null) hash ^= VehicleUpdates.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -492,9 +492,9 @@ namespace CosmicDealership.Vehicle.V1 {
         output.WriteRawTag(18);
         output.WriteString(VehicleId);
       }
-      if (updates_ != null) {
+      if (vehicleUpdates_ != null) {
         output.WriteRawTag(26);
-        output.WriteMessage(Updates);
+        output.WriteMessage(VehicleUpdates);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -510,8 +510,8 @@ namespace CosmicDealership.Vehicle.V1 {
       if (VehicleId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleId);
       }
-      if (updates_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Updates);
+      if (vehicleUpdates_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(VehicleUpdates);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -533,11 +533,11 @@ namespace CosmicDealership.Vehicle.V1 {
       if (other.VehicleId.Length != 0) {
         VehicleId = other.VehicleId;
       }
-      if (other.updates_ != null) {
-        if (updates_ == null) {
-          Updates = new global::CosmicDealership.Vehicle.V1.VehicleUpdates();
+      if (other.vehicleUpdates_ != null) {
+        if (vehicleUpdates_ == null) {
+          VehicleUpdates = new global::CosmicDealership.Vehicle.V1.VehicleUpdates();
         }
-        Updates.MergeFrom(other.Updates);
+        VehicleUpdates.MergeFrom(other.VehicleUpdates);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -562,10 +562,10 @@ namespace CosmicDealership.Vehicle.V1 {
             break;
           }
           case 26: {
-            if (updates_ == null) {
-              Updates = new global::CosmicDealership.Vehicle.V1.VehicleUpdates();
+            if (vehicleUpdates_ == null) {
+              VehicleUpdates = new global::CosmicDealership.Vehicle.V1.VehicleUpdates();
             }
-            input.ReadMessage(Updates);
+            input.ReadMessage(VehicleUpdates);
             break;
           }
         }

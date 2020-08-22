@@ -10,8 +10,10 @@ type VehicleId = string<vehicleId>
 type [<Measure>] stream
 type Stream = string<stream>
 
-type [<Measure>] checkpoint
-type Checkpoint = int64<checkpoint>
+[<RequireQualifiedAccess>]
+type Checkpoint =
+    | StreamStart
+    | StreamPosition of int64
 
 module UnionEncoderAdapters =
     let encodedEventOfResolvedEvent (resolvedEvent:ResolvedEvent): FsCodec.ITimelineEvent<byte[]> =

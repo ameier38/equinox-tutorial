@@ -16,12 +16,11 @@ let run (command:string) (args:string list) =
 
 let snowflaqe = run "snowflaqe"
 
-BuildTask.create "Clean" [] {
+let clean = BuildTask.create "Clean" [] {
     let directories = 
         !! "**/out"
         ++ "**/bin"
         ++ "**/obj"
-        ++ "**/gen"
     Shell.cleanDirs directories
 }
 
@@ -53,19 +52,19 @@ BuildTask.create "UpdateProtos" [copyGenerated] {
         "src/Proto/Proto.csproj"
 }
 
-BuildTask.create "Restore" [] {
+BuildTask.create "Restore" [clean] {
     Trace.trace "Restoring..."
     [ "src/Server/Server.fsproj"
       "src/IntegrationTests/IntegrationTests.fsproj" ]
     |> List.iter (DotNet.restore id)
 }
 
-let generateClient = BuildTask.create "GenerateClient" [] {
+let generateTestClient = BuildTask.create "GenerateTestClient" [] {
     Trace.trace "Generating client..."
     snowflaqe ["--generate"]
 }
 
-BuildTask.create "TestIntegrations" [generateClient] {
+BuildTask.create "TestIntegrations" [generateTestClient] {
     Trace.trace "Running integration tests..."
     let result = DotNet.exec id "run" "--project src/IntegrationTests/IntegrationTests.fsproj"
     if not result.OK then failwithf "Error! %A" result.Errors

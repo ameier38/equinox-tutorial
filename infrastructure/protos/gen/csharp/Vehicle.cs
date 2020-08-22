@@ -25,18 +25,19 @@ namespace CosmicDealership.Vehicle.V1 {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Ciljb3NtaWNkZWFsZXJzaGlwL3ZlaGljbGUvdjEvdmVoaWNsZS5wcm90bxIb",
-            "Y29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxIkgKB1ZlaGljbGUSEgoKdmVo",
-            "aWNsZV9pZBgBIAEoCRIMCgRtYWtlGAIgASgJEg0KBW1vZGVsGAMgASgJEgwK",
-            "BHllYXIYBCABKAUibAoOVmVoaWNsZVVwZGF0ZXMSFAoKbWFrZV92YWx1ZRgB",
-            "IAEoCUgAEhUKC21vZGVsX3ZhbHVlGAIgASgJSAESFAoKeWVhcl92YWx1ZRgD",
-            "IAEoBUgCQgYKBG1ha2VCBwoFbW9kZWxCBgoEeWVhckI7Whtjb3NtaWNkZWFs",
-            "ZXJzaGlwL3ZlaGljbGUvdjGqAhtDb3NtaWNEZWFsZXJzaGlwLlZlaGljbGUu",
-            "VjFiBnByb3RvMw=="));
+            "Y29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxGh5nb29nbGUvcHJvdG9idWYv",
+            "d3JhcHBlcnMucHJvdG8iSAoHVmVoaWNsZRISCgp2ZWhpY2xlX2lkGAEgASgJ",
+            "EgwKBG1ha2UYAiABKAkSDQoFbW9kZWwYAyABKAkSDAoEeWVhchgEIAEoBSKU",
+            "AQoOVmVoaWNsZVVwZGF0ZXMSKgoEbWFrZRgBIAEoCzIcLmdvb2dsZS5wcm90",
+            "b2J1Zi5TdHJpbmdWYWx1ZRIrCgVtb2RlbBgCIAEoCzIcLmdvb2dsZS5wcm90",
+            "b2J1Zi5TdHJpbmdWYWx1ZRIpCgR5ZWFyGAMgASgLMhsuZ29vZ2xlLnByb3Rv",
+            "YnVmLkludDMyVmFsdWVCO1obY29zbWljZGVhbGVyc2hpcC92ZWhpY2xlL3Yx",
+            "qgIbQ29zbWljRGVhbGVyc2hpcC5WZWhpY2xlLlYxYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { },
+          new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.Vehicle), global::CosmicDealership.Vehicle.V1.Vehicle.Parser, new[]{ "VehicleId", "Make", "Model", "Year" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.VehicleUpdates), global::CosmicDealership.Vehicle.V1.VehicleUpdates.Parser, new[]{ "MakeValue", "ModelValue", "YearValue" }, new[]{ "Make", "Model", "Year" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.VehicleUpdates), global::CosmicDealership.Vehicle.V1.VehicleUpdates.Parser, new[]{ "Make", "Model", "Year" }, null, null, null, null)
           }));
     }
     #endregion
@@ -281,24 +282,9 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public VehicleUpdates(VehicleUpdates other) : this() {
-      switch (other.MakeCase) {
-        case MakeOneofCase.MakeValue:
-          MakeValue = other.MakeValue;
-          break;
-      }
-
-      switch (other.ModelCase) {
-        case ModelOneofCase.ModelValue:
-          ModelValue = other.ModelValue;
-          break;
-      }
-
-      switch (other.YearCase) {
-        case YearOneofCase.YearValue:
-          YearValue = other.YearValue;
-          break;
-      }
-
+      Make = other.Make;
+      Model = other.Model;
+      Year = other.Year;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -307,92 +293,44 @@ namespace CosmicDealership.Vehicle.V1 {
       return new VehicleUpdates(this);
     }
 
-    /// <summary>Field number for the "make_value" field.</summary>
-    public const int MakeValueFieldNumber = 1;
+    /// <summary>Field number for the "make" field.</summary>
+    public const int MakeFieldNumber = 1;
+    private static readonly pb::FieldCodec<string> _single_make_codec = pb::FieldCodec.ForClassWrapper<string>(10);
+    private string make_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string MakeValue {
-      get { return makeCase_ == MakeOneofCase.MakeValue ? (string) make_ : ""; }
+    public string Make {
+      get { return make_; }
       set {
-        make_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-        makeCase_ = MakeOneofCase.MakeValue;
+        make_ = value;
       }
     }
 
-    /// <summary>Field number for the "model_value" field.</summary>
-    public const int ModelValueFieldNumber = 2;
+
+    /// <summary>Field number for the "model" field.</summary>
+    public const int ModelFieldNumber = 2;
+    private static readonly pb::FieldCodec<string> _single_model_codec = pb::FieldCodec.ForClassWrapper<string>(18);
+    private string model_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string ModelValue {
-      get { return modelCase_ == ModelOneofCase.ModelValue ? (string) model_ : ""; }
+    public string Model {
+      get { return model_; }
       set {
-        model_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-        modelCase_ = ModelOneofCase.ModelValue;
+        model_ = value;
       }
     }
 
-    /// <summary>Field number for the "year_value" field.</summary>
-    public const int YearValueFieldNumber = 3;
+
+    /// <summary>Field number for the "year" field.</summary>
+    public const int YearFieldNumber = 3;
+    private static readonly pb::FieldCodec<int?> _single_year_codec = pb::FieldCodec.ForStructWrapper<int>(26);
+    private int? year_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int YearValue {
-      get { return yearCase_ == YearOneofCase.YearValue ? (int) year_ : 0; }
+    public int? Year {
+      get { return year_; }
       set {
         year_ = value;
-        yearCase_ = YearOneofCase.YearValue;
       }
     }
 
-    private object make_;
-    /// <summary>Enum of possible cases for the "make" oneof.</summary>
-    public enum MakeOneofCase {
-      None = 0,
-      MakeValue = 1,
-    }
-    private MakeOneofCase makeCase_ = MakeOneofCase.None;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public MakeOneofCase MakeCase {
-      get { return makeCase_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearMake() {
-      makeCase_ = MakeOneofCase.None;
-      make_ = null;
-    }
-
-    private object model_;
-    /// <summary>Enum of possible cases for the "model" oneof.</summary>
-    public enum ModelOneofCase {
-      None = 0,
-      ModelValue = 2,
-    }
-    private ModelOneofCase modelCase_ = ModelOneofCase.None;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ModelOneofCase ModelCase {
-      get { return modelCase_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearModel() {
-      modelCase_ = ModelOneofCase.None;
-      model_ = null;
-    }
-
-    private object year_;
-    /// <summary>Enum of possible cases for the "year" oneof.</summary>
-    public enum YearOneofCase {
-      None = 0,
-      YearValue = 3,
-    }
-    private YearOneofCase yearCase_ = YearOneofCase.None;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public YearOneofCase YearCase {
-      get { return yearCase_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearYear() {
-      yearCase_ = YearOneofCase.None;
-      year_ = null;
-    }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
@@ -407,24 +345,18 @@ namespace CosmicDealership.Vehicle.V1 {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (MakeValue != other.MakeValue) return false;
-      if (ModelValue != other.ModelValue) return false;
-      if (YearValue != other.YearValue) return false;
-      if (MakeCase != other.MakeCase) return false;
-      if (ModelCase != other.ModelCase) return false;
-      if (YearCase != other.YearCase) return false;
+      if (Make != other.Make) return false;
+      if (Model != other.Model) return false;
+      if (Year != other.Year) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (makeCase_ == MakeOneofCase.MakeValue) hash ^= MakeValue.GetHashCode();
-      if (modelCase_ == ModelOneofCase.ModelValue) hash ^= ModelValue.GetHashCode();
-      if (yearCase_ == YearOneofCase.YearValue) hash ^= YearValue.GetHashCode();
-      hash ^= (int) makeCase_;
-      hash ^= (int) modelCase_;
-      hash ^= (int) yearCase_;
+      if (make_ != null) hash ^= Make.GetHashCode();
+      if (model_ != null) hash ^= Model.GetHashCode();
+      if (year_ != null) hash ^= Year.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -438,17 +370,14 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (makeCase_ == MakeOneofCase.MakeValue) {
-        output.WriteRawTag(10);
-        output.WriteString(MakeValue);
+      if (make_ != null) {
+        _single_make_codec.WriteTagAndValue(output, Make);
       }
-      if (modelCase_ == ModelOneofCase.ModelValue) {
-        output.WriteRawTag(18);
-        output.WriteString(ModelValue);
+      if (model_ != null) {
+        _single_model_codec.WriteTagAndValue(output, Model);
       }
-      if (yearCase_ == YearOneofCase.YearValue) {
-        output.WriteRawTag(24);
-        output.WriteInt32(YearValue);
+      if (year_ != null) {
+        _single_year_codec.WriteTagAndValue(output, Year);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -458,14 +387,14 @@ namespace CosmicDealership.Vehicle.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (makeCase_ == MakeOneofCase.MakeValue) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(MakeValue);
+      if (make_ != null) {
+        size += _single_make_codec.CalculateSizeWithTag(Make);
       }
-      if (modelCase_ == ModelOneofCase.ModelValue) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(ModelValue);
+      if (model_ != null) {
+        size += _single_model_codec.CalculateSizeWithTag(Model);
       }
-      if (yearCase_ == YearOneofCase.YearValue) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(YearValue);
+      if (year_ != null) {
+        size += _single_year_codec.CalculateSizeWithTag(Year);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -478,24 +407,21 @@ namespace CosmicDealership.Vehicle.V1 {
       if (other == null) {
         return;
       }
-      switch (other.MakeCase) {
-        case MakeOneofCase.MakeValue:
-          MakeValue = other.MakeValue;
-          break;
+      if (other.make_ != null) {
+        if (make_ == null || other.Make != "") {
+          Make = other.Make;
+        }
       }
-
-      switch (other.ModelCase) {
-        case ModelOneofCase.ModelValue:
-          ModelValue = other.ModelValue;
-          break;
+      if (other.model_ != null) {
+        if (model_ == null || other.Model != "") {
+          Model = other.Model;
+        }
       }
-
-      switch (other.YearCase) {
-        case YearOneofCase.YearValue:
-          YearValue = other.YearValue;
-          break;
+      if (other.year_ != null) {
+        if (year_ == null || other.Year != 0) {
+          Year = other.Year;
+        }
       }
-
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -508,15 +434,24 @@ namespace CosmicDealership.Vehicle.V1 {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            MakeValue = input.ReadString();
+            string value = _single_make_codec.Read(input);
+            if (make_ == null || value != "") {
+              Make = value;
+            }
             break;
           }
           case 18: {
-            ModelValue = input.ReadString();
+            string value = _single_model_codec.Read(input);
+            if (model_ == null || value != "") {
+              Model = value;
+            }
             break;
           }
-          case 24: {
-            YearValue = input.ReadInt32();
+          case 26: {
+            int? value = _single_year_codec.Read(input);
+            if (year_ == null || value != 0) {
+              Year = value;
+            }
             break;
           }
         }

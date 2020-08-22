@@ -33,7 +33,7 @@ type VehicleServiceImpl(store:Store) =
             try
                 authorize req.User "update:vehicles"
                 let vehicleId = VehicleId.fromString req.VehicleId
-                let updates = Dto.VehicleUpdates.fromProto req.Updates
+                let updates = Dto.VehicleUpdates.fromProto req.VehicleUpdates
                 let stream = store.ResolveVehicle(vehicleId)
                 let updateVehicle = UpdateVehicle updates
                 do! stream.Transact(Aggregate.interpret vehicleId updateVehicle)

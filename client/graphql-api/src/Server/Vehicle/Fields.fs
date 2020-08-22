@@ -84,29 +84,50 @@ let listAvailableVehicles
 let GetVehicleInputType =
     Define.InputObject<GetVehicleInput>(
         name = "GetVehicleInput",
+        fields = [vehicleIdInputField])
+
+let VehicleNotFoundType =
+    Define.Object<VehicleNotFound>(
+        name = "VehicleNotFound",
         fields = [
-            vehicleIdInputField
+            Define.AutoField("message", String)
         ])
+
+let GetVehicleResponseType =
+    Define.Union(
+        name = "GetVehicleResponse",
+        options = [VehicleStateType; VehicleNotFoundType],
+        resolveValue = (fun res ->
+            match res with
+            | Found vehicleState -> box vehicleState
+            | NotFound msg -> box msg),
+        resolveType = (fun res ->
+            match res with
+            | Found _ -> upcast VehicleStateType
+            | NotFound _ -> upcast VehicleNotFoundType))
 
 let getVehicle
     (vehicleClient:VehicleClient) =
     Define.Field(
         name = "getVehicle",
         description = "Get the state of a vehicle",
-        typedef = VehicleStateType,
+        typedef = GetVehicleResponseType,
         args = [Define.Input("input", GetVehicleInputType)],
         resolve = (fun ctx _ ->
             let user =
                 ctx.Context.Metadata
                 |> User.fromMetadata
             let input = ctx.Arg<GetVehicleInput>("input")
-            vehicleClient.GetVehicle(user, input)
+            match vehicleClient.GetVehicle(user, input) with
+            | Some vehicleState -> Found vehicleState
+            | None -> NotFound { message = sprintf "Could not find Vehicle-%s" input.vehicleId }
         ))
 
 let AddVehicleInputType =
     Define.InputObject<AddVehicleInput>(
         name = "AddVehicleInput",
         fields = [
+            vehicleIdInputField
             Define.Input("make", String)
             Define.Input("model", String)
             Define.Input("year", Int)
@@ -125,4 +146,49 @@ let addVehicle
                 |> User.fromMetadata
             let input = ctx.Arg<AddVehicleInput>("input")
             vehicleClient.AddVehicle(user, input)
+        ))
+
+let UpdateVehicleInputType = 
+    Define.InputObject<UpdateVehicleInput>(
+        name = "UpdateVehicleInput",
+        fields = [
+            vehicleIdInputField
+            Define.Input("make", Nullable String)
+            Define.Input("model", Nullable String)
+            Define.Input("year", Nullable Int)
+        ])
+
+let updateVehicle
+    (vehicleClient:VehicleClient) =
+    Define.Field(
+        name = "updateVehicle",
+        description = "Update a vehicle",
+        typedef = String,
+        args = [Define.Input("input", UpdateVehicleInputType)],
+        resolve = (fun ctx _ ->
+            let user = 
+                ctx.Context.Metadata
+                |> User.fromMetadata
+            let input = ctx.Arg<UpdateVehicleInput>("input")
+            vehicleClient.UpdateVehicle(user, input)
+        ))
+
+let RemoveVehicleInputType =
+    Define.InputObject<RemoveVehicleInput>(
+        name = "RemoveVehicleInput",
+        fields = [vehicleIdInputField])
+
+let removeVehicle
+    (vehicleClient:VehicleClient) =
+    Define.Field(
+        name = "removeVehicle",
+        description = "Remove a vehicle",
+        typedef = String,
+        args = [Define.Input("input", RemoveVehicleInputType)],
+        resolve = (fun ctx _ ->
+            let user = 
+                ctx.Context.Metadata
+                |> User.fromMetadata
+            let input = ctx.Arg<RemoveVehicleInput>("input")
+            vehicleClient.RemoveVehicle(user, input)
         ))

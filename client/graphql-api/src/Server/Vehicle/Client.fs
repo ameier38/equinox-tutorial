@@ -71,13 +71,16 @@ type VehicleClient(vehicleApiConfig:VehicleApiConfig, mongoConfig:MongoConfig) =
     member _.GetVehicle(user:User, input:GetVehicleInput) =
         authorize user "get:vehicles"
         let vehicleIdFilter = Builders<VehicleState>.Filter.Where(fun doc -> doc.vehicleId = input.vehicleId)
-        vehiclesCollection.Find(vehicleIdFilter).First()
+        Log.Debug("Getting vehicle {@VehicleId}", input.vehicleId)
+        let vehicle = vehiclesCollection.Find(vehicleIdFilter).FirstOrDefault()
+        if isNull (box vehicle) then None else Some vehicle
 
     member _.AddVehicle(user:User, input:AddVehicleInput) =
+        let vehicleId = Guid.Parse(input.vehicleId).ToString("N")
         let userProto = User.toProto user
         let vehicle =
             CosmicDealership.Vehicle.V1.Vehicle(
-                VehicleId = (Guid.NewGuid().ToString("N")),
+                VehicleId = vehicleId,
                 Make = input.make,
                 Model = input.model,
                 Year = input.year)
@@ -87,5 +90,33 @@ type VehicleClient(vehicleApiConfig:VehicleApiConfig, mongoConfig:MongoConfig) =
                 Vehicle = vehicle)
         Log.Debug("Adding vehicle {@Request}", req)
         let res = vehicleService.AddVehicle(req)
-        Log.Debug("Successfully added vehicle")
+        Log.Debug("Successfully added vehicle {@Response}", res)
+        res.Message
+
+    member _.UpdateVehicle(user:User, input:UpdateVehicleInput) =
+        let userProto = User.toProto user
+        let vehicleUpdates = 
+            CosmicDealership.Vehicle.V1.VehicleUpdates(
+                Make = (input.make |> Option.defaultValue null),
+                Model = (input.model |> Option.defaultValue null),
+                Year = (match input.year with Some year -> new Nullable<int>(year) | None -> new Nullable<int>()))
+        let req =
+            CosmicDealership.Vehicle.V1.UpdateVehicleRequest(
+                User = userProto,
+                VehicleId = input.vehicleId,
+                VehicleUpdates = vehicleUpdates)
+        Log.Debug("Updating vehicle {@Request}", req)
+        let res = vehicleService.UpdateVehicle(req)
+        Log.Debug("Successfully updated vehicle {@Response}", res)
+        res.Message
+    
+    member _.RemoveVehicle(user:User, input:RemoveVehicleInput) =
+        let userProto = User.toProto user
+        let req =
+            CosmicDealership.Vehicle.V1.RemoveVehicleRequest(
+                User = userProto,
+                VehicleId = input.vehicleId)
+        Log.Debug("Removing vehicle {@Request}", req)
+        let res = vehicleService.RemoveVehicle(req)
+        Log.Debug("Successfully removed vehicle {@Response}", res)
         res.Message

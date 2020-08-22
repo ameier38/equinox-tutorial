@@ -1,10 +1,12 @@
 namespace Reactor
 
 open MongoDB.Driver
+open MongoDB.Bson
 open Serilog
 
 type CheckpointDto =
-    { model: string
+    { _id: ObjectId
+      model: string
       checkpoint: int64 }
 
 type Store(mongoConfig:MongoConfig) =
@@ -17,18 +19,17 @@ type Store(mongoConfig:MongoConfig) =
     let checkpointCollection = db.GetCollection<CheckpointDto>(checkpointCollectionName)
     do Log.Information("🍃 Connected to MongoDB at {Url}", mongoConfig.Url)
 
-    member _.GetCheckpoint(model:string): Async<int64> =
+    member _.GetCheckpoint(model:string): Async<int64 option> =
         async {
             Log.Debug("getting checkpoint for {Model}", model)
             let! checkpoint =
                 checkpointCollection
                     .Find(fun doc -> doc.model = model)
-                    .Project(fun doc -> doc.checkpoint)
                     .FirstOrDefaultAsync()
                 |> Async.AwaitTask
             return
-                if isNull (checkpoint :> obj) then 0L
-                else checkpoint
+                if isNull (box checkpoint) then None
+                else Some checkpoint.checkpoint
         }
 
     member _.UpdateCheckpoint(model:string, checkpoint:int64) =

@@ -11,9 +11,22 @@ type ListVehiclesInput =
       pageSize: Option<int> }
 
 type AddVehicleInput =
-    { make: string
+    { /// Unique identifier for the vehicle
+      vehicleId: string
+      make: string
       model: string
       year: int }
+
+type RemoveVehicleInput =
+    { /// Unique identifier for the vehicle
+      vehicleId: string }
+
+type UpdateVehicleInput =
+    { /// Unique identifier for the vehicle
+      vehicleId: string
+      make: Option<string>
+      model: Option<string>
+      year: Option<int> }
 
 /// The error returned by the GraphQL backend
 type ErrorType = { message: string }

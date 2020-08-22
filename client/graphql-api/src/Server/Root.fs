@@ -15,8 +15,7 @@ let Query
         fields = [ 
             listVehicles vehicleClient
             getVehicle vehicleClient
-        ]
-    )
+        ])
 
 let PublicQuery
     (vehicleClient:VehicleClient) =
@@ -24,8 +23,7 @@ let PublicQuery
         name = "PublicQuery",
         fields = [ 
             listAvailableVehicles vehicleClient
-        ]
-    )
+        ])
 
 let Mutation
     (vehicleClient:VehicleClient) =
@@ -33,5 +31,6 @@ let Mutation
         name = "Mutation",
         fields = [
             addVehicle vehicleClient
-        ]
-    )
+            updateVehicle vehicleClient
+            removeVehicle vehicleClient
+        ])

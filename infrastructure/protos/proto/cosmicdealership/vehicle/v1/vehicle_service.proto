@@ -34,7 +34,7 @@ message AddVehicleResponse {
 message UpdateVehicleRequest {
     user.v1.User user = 1;
     string vehicle_id = 2;
-    VehicleUpdates updates = 3;
+    VehicleUpdates vehicle_updates = 3;
 }
 
 message UpdateVehicleResponse {

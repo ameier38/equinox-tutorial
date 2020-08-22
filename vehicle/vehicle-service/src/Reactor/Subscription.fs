@@ -54,7 +54,7 @@ type Subscription(name:string, stream:Stream, eventHandler:EventHandler, eventst
                     let work =
                         async {
                             let encodedEvent = UnionEncoderAdapters.encodedEventOfResolvedEvent resolvedEvent
-                            let checkpoint = UMX.tag<checkpoint> encodedEvent.Index
+                            let checkpoint = Checkpoint.StreamPosition encodedEvent.Index
                             do! eventHandler encodedEvent
                             mailbox.Post(EventAppeared checkpoint)
                         }
@@ -65,9 +65,13 @@ type Subscription(name:string, stream:Stream, eventHandler:EventHandler, eventst
             log.Information("subscribing to {Stream} from checkpoint {Checkpoint}", stream, state.Checkpoint)
             // ref: https://eventstore.com/docs/projections/system-projections/index.html?tabs=tabid-5#by-category
             let subscription =
+                let lastCheckpoint =
+                    match state.Checkpoint with
+                    | Checkpoint.StreamStart -> StreamCheckpoint.StreamStart
+                    | Checkpoint.StreamPosition pos -> new Nullable<int64>(pos)
                 eventstore.SubscribeToStreamFrom(
                     stream = %stream,
-                    lastCheckpoint = new Nullable<int64>(%state.Checkpoint),
+                    lastCheckpoint = lastCheckpoint,
                     settings = settings,
                     eventAppeared = eventAppeared,
                     subscriptionDropped = subscriptionDropped,

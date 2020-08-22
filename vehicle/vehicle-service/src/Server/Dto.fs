@@ -20,18 +20,9 @@ module Vehicle =
 
 module VehicleUpdates =
     let fromProto (proto:V1.VehicleUpdates) =
-        let make =
-            match proto.MakeCase with
-            | V1.VehicleUpdates.MakeOneofCase.MakeValue -> Some proto.MakeValue
-            | _ -> None
-        let model =
-            match proto.ModelCase with
-            | V1.VehicleUpdates.ModelOneofCase.ModelValue -> Some proto.ModelValue
-            | _ -> None
-        let year =
-            match proto.YearCase with
-            | V1.VehicleUpdates.YearOneofCase.YearValue -> Some proto.YearValue
-            | _ -> None
+        let make = if isNull proto.Make then None else Some proto.Make
+        let model = if isNull proto.Model then None else Some proto.Model
+        let year = if proto.Year.HasValue then Some proto.Year.Value else None
         { Make = make
           Model = model
           Year = year }

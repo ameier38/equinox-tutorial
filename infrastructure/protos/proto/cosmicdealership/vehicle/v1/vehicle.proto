@@ -5,6 +5,8 @@ package cosmicdealership.vehicle.v1;
 option csharp_namespace = "CosmicDealership.Vehicle.V1";
 option go_package = "cosmicdealership/vehicle/v1";
 
+import "google/protobuf/wrappers.proto";
+
 message Vehicle {
     string vehicle_id = 1;
     string make = 2;
@@ -13,13 +15,7 @@ message Vehicle {
 }
 
 message VehicleUpdates {
-    oneof make {
-        string make_value = 1;
-    }
-    oneof model {
-        string model_value = 2;
-    }
-    oneof year {
-        int32 year_value = 3;
-    }
+    google.protobuf.StringValue make = 1;
+    google.protobuf.StringValue model = 2;
+    google.protobuf.Int32Value year = 3;
 }

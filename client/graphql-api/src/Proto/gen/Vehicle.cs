@@ -25,14 +25,19 @@ namespace CosmicDealership.Vehicle.V1 {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Ciljb3NtaWNkZWFsZXJzaGlwL3ZlaGljbGUvdjEvdmVoaWNsZS5wcm90bxIb",
-            "Y29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxIkgKB1ZlaGljbGUSEgoKdmVo",
-            "aWNsZV9pZBgBIAEoCRIMCgRtYWtlGAIgASgJEg0KBW1vZGVsGAMgASgJEgwK",
-            "BHllYXIYBCABKAVCO1obY29zbWljZGVhbGVyc2hpcC92ZWhpY2xlL3YxqgIb",
-            "Q29zbWljRGVhbGVyc2hpcC5WZWhpY2xlLlYxYgZwcm90bzM="));
+            "Y29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxGh5nb29nbGUvcHJvdG9idWYv",
+            "d3JhcHBlcnMucHJvdG8iSAoHVmVoaWNsZRISCgp2ZWhpY2xlX2lkGAEgASgJ",
+            "EgwKBG1ha2UYAiABKAkSDQoFbW9kZWwYAyABKAkSDAoEeWVhchgEIAEoBSKU",
+            "AQoOVmVoaWNsZVVwZGF0ZXMSKgoEbWFrZRgBIAEoCzIcLmdvb2dsZS5wcm90",
+            "b2J1Zi5TdHJpbmdWYWx1ZRIrCgVtb2RlbBgCIAEoCzIcLmdvb2dsZS5wcm90",
+            "b2J1Zi5TdHJpbmdWYWx1ZRIpCgR5ZWFyGAMgASgLMhsuZ29vZ2xlLnByb3Rv",
+            "YnVmLkludDMyVmFsdWVCO1obY29zbWljZGVhbGVyc2hpcC92ZWhpY2xlL3Yx",
+            "qgIbQ29zbWljRGVhbGVyc2hpcC5WZWhpY2xlLlYxYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { },
+          new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.Vehicle), global::CosmicDealership.Vehicle.V1.Vehicle.Parser, new[]{ "VehicleId", "Make", "Model", "Year" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.Vehicle), global::CosmicDealership.Vehicle.V1.Vehicle.Parser, new[]{ "VehicleId", "Make", "Model", "Year" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.VehicleUpdates), global::CosmicDealership.Vehicle.V1.VehicleUpdates.Parser, new[]{ "Make", "Model", "Year" }, null, null, null, null)
           }));
     }
     #endregion
@@ -244,6 +249,209 @@ namespace CosmicDealership.Vehicle.V1 {
           }
           case 32: {
             Year = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class VehicleUpdates : pb::IMessage<VehicleUpdates> {
+    private static readonly pb::MessageParser<VehicleUpdates> _parser = new pb::MessageParser<VehicleUpdates>(() => new VehicleUpdates());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<VehicleUpdates> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::CosmicDealership.Vehicle.V1.VehicleReflection.Descriptor.MessageTypes[1]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public VehicleUpdates() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public VehicleUpdates(VehicleUpdates other) : this() {
+      Make = other.Make;
+      Model = other.Model;
+      Year = other.Year;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public VehicleUpdates Clone() {
+      return new VehicleUpdates(this);
+    }
+
+    /// <summary>Field number for the "make" field.</summary>
+    public const int MakeFieldNumber = 1;
+    private static readonly pb::FieldCodec<string> _single_make_codec = pb::FieldCodec.ForClassWrapper<string>(10);
+    private string make_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Make {
+      get { return make_; }
+      set {
+        make_ = value;
+      }
+    }
+
+
+    /// <summary>Field number for the "model" field.</summary>
+    public const int ModelFieldNumber = 2;
+    private static readonly pb::FieldCodec<string> _single_model_codec = pb::FieldCodec.ForClassWrapper<string>(18);
+    private string model_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Model {
+      get { return model_; }
+      set {
+        model_ = value;
+      }
+    }
+
+
+    /// <summary>Field number for the "year" field.</summary>
+    public const int YearFieldNumber = 3;
+    private static readonly pb::FieldCodec<int?> _single_year_codec = pb::FieldCodec.ForStructWrapper<int>(26);
+    private int? year_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int? Year {
+      get { return year_; }
+      set {
+        year_ = value;
+      }
+    }
+
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as VehicleUpdates);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(VehicleUpdates other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Make != other.Make) return false;
+      if (Model != other.Model) return false;
+      if (Year != other.Year) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (make_ != null) hash ^= Make.GetHashCode();
+      if (model_ != null) hash ^= Model.GetHashCode();
+      if (year_ != null) hash ^= Year.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (make_ != null) {
+        _single_make_codec.WriteTagAndValue(output, Make);
+      }
+      if (model_ != null) {
+        _single_model_codec.WriteTagAndValue(output, Model);
+      }
+      if (year_ != null) {
+        _single_year_codec.WriteTagAndValue(output, Year);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (make_ != null) {
+        size += _single_make_codec.CalculateSizeWithTag(Make);
+      }
+      if (model_ != null) {
+        size += _single_model_codec.CalculateSizeWithTag(Model);
+      }
+      if (year_ != null) {
+        size += _single_year_codec.CalculateSizeWithTag(Year);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(VehicleUpdates other) {
+      if (other == null) {
+        return;
+      }
+      if (other.make_ != null) {
+        if (make_ == null || other.Make != "") {
+          Make = other.Make;
+        }
+      }
+      if (other.model_ != null) {
+        if (model_ == null || other.Model != "") {
+          Model = other.Model;
+        }
+      }
+      if (other.year_ != null) {
+        if (year_ == null || other.Year != 0) {
+          Year = other.Year;
+        }
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            string value = _single_make_codec.Read(input);
+            if (make_ == null || value != "") {
+              Make = value;
+            }
+            break;
+          }
+          case 18: {
+            string value = _single_model_codec.Read(input);
+            if (model_ == null || value != "") {
+              Model = value;
+            }
+            break;
+          }
+          case 26: {
+            int? value = _single_year_codec.Read(input);
+            if (year_ == null || value != 0) {
+              Year = value;
+            }
             break;
           }
         }

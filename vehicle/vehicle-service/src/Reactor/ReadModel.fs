@@ -28,7 +28,7 @@ type VehicleReadModel(config:Config) =
 
     let addVehicle (vehicle:Vehicle) =
         async {
-            Log.Debug("updating vehicle {Vehicle}", vehicle)
+            Log.Debug("adding vehicle {@Vehicle}", vehicle)
             // use replace with upsert to make idempotent
             let vehicleId = VehicleId.toString vehicle.VehicleId
             let vehicleDto =
@@ -46,6 +46,7 @@ type VehicleReadModel(config:Config) =
 
     let updateVehicle (vehicle:Vehicle) =
         async {
+            Log.Debug("updating vehicle {@Vehicle}", vehicle)
             let vehicleId = VehicleId.toString vehicle.VehicleId
             let filterVehicle = Builders<VehicleReadModelDto>.Filter.Where(fun v -> v.vehicleId = vehicleId)
             let updateVehicle =
@@ -60,7 +61,7 @@ type VehicleReadModel(config:Config) =
 
     let setVehicleStatus (vehicleId:VehicleId) (status:string) =
         async {
-            Log.Debug("updating Vehicle-{VehicleId} status to {VehicleStatus}", status)
+            Log.Debug("setting Vehicle-{VehicleId} status to {VehicleStatus}", status)
             let vehicleId = VehicleId.toString vehicleId
             let filterVehicle = Builders<VehicleReadModelDto>.Filter.Where(fun v -> v.vehicleId = vehicleId)
             let updateStatus = Builders<VehicleReadModelDto>.Update.Set((fun v -> v.status), status)
@@ -99,6 +100,10 @@ type VehicleReadModel(config:Config) =
         async {
             // ref: https://eventstore.com/docs/projections/system-projections/index.html?tabs=tabid-5#by-category
             let! rawCheckpoint = store.GetCheckpoint(name)
-            let checkpoint = UMX.tag<checkpoint> rawCheckpoint
+            Log.Debug("raw checkpoint: {RawCheckpoint}", rawCheckpoint)
+            let checkpoint = 
+                match rawCheckpoint with
+                | Some checkpoint -> Checkpoint.StreamPosition checkpoint
+                | None -> Checkpoint.StreamStart
             do! subscription.SubscribeAsync(checkpoint, cancellationToken)
         }

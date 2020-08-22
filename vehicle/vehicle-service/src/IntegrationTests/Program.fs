@@ -70,7 +70,7 @@ let addVehicle (user:CosmicDealership.User.V1.User) (vehicle:CosmicDealership.Ve
     vehicleService.AddVehicle(req)
 
 let updateVehicle (user:CosmicDealership.User.V1.User) (updates:CosmicDealership.Vehicle.V1.VehicleUpdates) =
-    let req = CosmicDealership.Vehicle.V1.UpdateVehicleRequest(User = user, Updates = updates)
+    let req = CosmicDealership.Vehicle.V1.UpdateVehicleRequest(User = user, VehicleUpdates = updates)
     vehicleService.UpdateVehicle(req)
 
 let removeVehicle (user:CosmicDealership.User.V1.User) (vehicleId:string) =
@@ -141,8 +141,8 @@ let testUpdateVehicle =
         addVehicle user vehicle |> ignore
         let updates =
             CosmicDealership.Vehicle.V1.VehicleUpdates(
-                MakeValue="Hawk",
-                ModelValue="10")
+                Make="Hawk",
+                Model="10")
         updateVehicle user updates |> ignore
         Thread.Sleep 2000
         let vehicleState = store.GetVehicle(vehicle.VehicleId)
