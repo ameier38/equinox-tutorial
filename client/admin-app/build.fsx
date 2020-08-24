@@ -45,7 +45,7 @@ BuildTask.create "Restore" [clean.IfNeeded] {
     |> Seq.iter (DotNet.restore id)
 }
 
-let install = BuildTask.create "Install" [] {
+BuildTask.create "Install" [] {
     Npm.install id
 }
 

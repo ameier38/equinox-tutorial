@@ -3,12 +3,13 @@ module PublicApp.Landing
 open Elmish
 open Feliz
 open Feliz.MaterialUI
+open Feliz.Router
 open Feliz.UseDeferred
 open GraphQL
 open PublicApi
 
-let jumbotronImage = Image.load "./images/cosmos.jpg"
-let rocketImage = Image.load "./images/rocket.svg"
+let jumbotronImage = Image.load "../images/cosmos.jpg"
+let rocketImage = Image.load "../images/rocket.svg"
 
 let useStyles = Styles.makeStyles(fun styles theme ->
     {|
@@ -22,6 +23,9 @@ let useStyles = Styles.makeStyles(fun styles theme ->
         ]
         item = styles.create [
             style.padding 10
+        ]
+        clickable = styles.create [
+            style.cursor.pointer
         ]
     |}
 )
@@ -144,6 +148,11 @@ let vehicles =
                                     grid.md._4
                                     grid.children [
                                         Mui.card [
+                                            prop.className c.clickable
+                                            prop.onClick (fun evt ->
+                                                evt.preventDefault()
+                                                Router.navigatePath("vehicles", vehicle.vehicleId)
+                                            )
                                             card.children [
                                                 Mui.cardContent [
                                                     Mui.typography [

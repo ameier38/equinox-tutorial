@@ -75,6 +75,16 @@ type VehicleClient(vehicleApiConfig:VehicleApiConfig, mongoConfig:MongoConfig) =
         let vehicle = vehiclesCollection.Find(vehicleIdFilter).FirstOrDefault()
         if isNull (box vehicle) then None else Some vehicle
 
+    member _.GetAvailableVehicle(input:GetVehicleInput) =
+        let vehicleIdFilter =
+            Builders<VehicleState>.Filter
+                .Where(fun doc ->
+                    doc.vehicleId = input.vehicleId
+                    && doc.status = "Available")
+        Log.Debug("Getting vehicle {@VehicleId}", input.vehicleId)
+        let vehicle = vehiclesCollection.Find(vehicleIdFilter).FirstOrDefault()
+        if isNull (box vehicle) then None else Some vehicle
+
     member _.AddVehicle(user:User, input:AddVehicleInput) =
         let vehicleId = Guid.Parse(input.vehicleId).ToString("N")
         let userProto = User.toProto user

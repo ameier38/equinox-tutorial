@@ -5,24 +5,24 @@ open Elmish
 open Feliz
 open Feliz.Router
 open Feliz.MaterialUI
+open FSharp.UMX
 open GraphQL
 
-type Url =
-    | LandingUrl
-
 module Url =
-    let parse (url:string list) =
-        match url with
-        | _ -> LandingUrl
+    let (|Landing|Vehicle|) (segments: string list) =
+        match segments with
+        | ["vehicles"; vehicleId ] ->
+            Vehicle (vehicleId |> UMX.tag<vehicleId>)
+        | _ -> Landing
 
 type State =
-    { CurrentUrl: Url }
+    { CurrentUrl: string list }
 
 type Msg =
     | UrlChanged of string list
 
 let init () =
-    let currentUrl = Router.currentUrl() |> Url.parse
+    let currentUrl = Router.currentUrl()
     let initialState =
         { CurrentUrl  = currentUrl }
     initialState, Cmd.none
@@ -30,23 +30,29 @@ let init () =
 let update (msg:Msg) (state:State): State * Cmd<Msg> =
     match msg with
     | UrlChanged url ->
-        let currentUrl = Url.parse url
-        { state with CurrentUrl = currentUrl }, Cmd.none
+        { state with CurrentUrl = url }, Cmd.none
 
 let renderPage (state:State) (dispatch:Msg -> unit) =
     match state.CurrentUrl with
-    | LandingUrl ->
-        Landing.render ()
+    | Url.Landing ->
+        PublicApp.Landing.render ()
+    | Url.Vehicle vehicleId ->
+        PublicApp.Vehicle.render { vehicleId = vehicleId }
+
+let theme = Styles.createMuiTheme([
+    theme.palette.primary Colors.blueGrey
+    theme.palette.secondary Colors.grey
+])
 
 type AppProps =
     { state: State
       dispatch: Msg -> unit }
 
 let render (state:State) (dispatch:Msg -> unit) =
-    Router.router [
-        Router.pathMode
-        Router.onUrlChanged (UrlChanged >> dispatch)
-        Router.application [ 
+    React.router [
+        router.pathMode
+        router.onUrlChanged (UrlChanged >> dispatch)
+        router.children [
             Mui.cssBaseline []
             Auth0.provider [
                 Auth0.domain Config.auth0Config.Domain
@@ -58,8 +64,13 @@ let render (state:State) (dispatch:Msg -> unit) =
                         GraphQL.publicUrl Config.graphqlConfig.PublicUrl
                         GraphQL.privateUrl Config.graphqlConfig.PrivateUrl
                         GraphQL.children [
-                            Navigation.render { navigateToHome = id<unit> }
-                            renderPage state dispatch
+                            Mui.themeProvider [
+                                themeProvider.theme theme
+                                themeProvider.children [
+                                    Navigation.render { currentUrl = state.CurrentUrl }
+                                    renderPage state dispatch
+                                ]
+                            ]
                         ]
                     ]
                 ]

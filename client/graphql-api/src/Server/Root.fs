@@ -23,6 +23,7 @@ let PublicQuery
         name = "PublicQuery",
         fields = [ 
             listAvailableVehicles vehicleClient
+            getAvailableVehicle vehicleClient
         ])
 
 let Mutation

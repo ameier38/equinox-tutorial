@@ -1,0 +1,17 @@
+query GetAvailableVehicle($input:GetVehicleInput!) {
+    getAvailableVehicle(input:$input) {
+        __typename
+        ... on VehicleNotFound {
+            __typename
+            message
+        }
+        ... on VehicleState {
+            __typename
+            vehicleId
+            make
+            model
+            year
+            status
+        }
+    }
+}

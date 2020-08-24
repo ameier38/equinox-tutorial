@@ -123,6 +123,21 @@ let getVehicle
             | None -> NotFound { message = sprintf "Could not find Vehicle-%s" input.vehicleId }
         ))
 
+let getAvailableVehicle
+    (vehicleClient:VehicleClient) =
+    Define.Field(
+        name = "getAvailableVehicle",
+        description = "Get the state of an available vehicle",
+        typedef = GetVehicleResponseType,
+        args = [Define.Input("input", GetVehicleInputType)],
+        resolve = (fun ctx _ ->
+            let input = ctx.Arg<GetVehicleInput>("input")
+            match vehicleClient.GetAvailableVehicle(input) with
+            | Some vehicleState -> Found vehicleState
+            | None -> NotFound { message = sprintf "Could not find available Vehicle-%s" input.vehicleId }
+        )
+    )
+
 let AddVehicleInputType =
     Define.InputObject<AddVehicleInput>(
         name = "AddVehicleInput",

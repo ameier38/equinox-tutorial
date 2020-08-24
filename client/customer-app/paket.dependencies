@@ -1,0 +1,28 @@
+storage none
+source https://api.nuget.org/v3/index.json
+
+nuget canopy
+nuget Expecto
+nuget Fable.Core
+nuget Fable.Browser.Dom
+nuget Fable.Elmish
+nuget Fable.Elmish.HMR
+nuget Fable.Elmish.React
+nuget Fable.SimpleHttp
+nuget Fable.SimpleJson
+nuget Feliz
+nuget Feliz.MaterialUI
+nuget Feliz.Router
+nuget Feliz.UseDeferred
+nuget Feliz.UseElmish
+nuget FSharp.UMX
+
+// [ FAKE GROUP ]
+group Build
+    storage none
+    source https://api.nuget.org/v3/index.json
+    nuget Fake.DotNet.Cli
+    nuget Fake.JavaScript.Npm
+    nuget Fake.IO.FileSystem
+    nuget Fake.Core.Target
+    nuget BlackFox.Fake.BuildTask

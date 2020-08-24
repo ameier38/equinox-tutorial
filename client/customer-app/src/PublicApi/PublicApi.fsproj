@@ -5,6 +5,7 @@
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="PublicApi.Types.fs" />
+        <Compile Include="PublicApi.GetAvailableVehicle.fs" />
         <Compile Include="PublicApi.ListAvailableVehicles.fs" />
         <Compile Include="PublicApi.GraphqlClient.fs" />
     </ItemGroup>

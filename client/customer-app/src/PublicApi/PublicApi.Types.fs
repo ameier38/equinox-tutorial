@@ -1,4 +1,4 @@
-namespace rec PrivateApi
+namespace rec PublicApi
 
 type GetVehicleInput =
     { /// Unique identifier for the vehicle
@@ -9,11 +9,6 @@ type ListVehiclesInput =
       pageToken: Option<string>
       /// Maximum number of items in a page
       pageSize: Option<int> }
-
-type AddVehicleInput =
-    { make: string
-      model: string
-      year: int }
 
 /// The error returned by the GraphQL backend
 type ErrorType = { message: string }
