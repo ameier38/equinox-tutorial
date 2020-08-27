@@ -1,8 +1,14 @@
 module Server.Aggregate
 
 open Shared
+open System
 
 let initial = Unknown
+
+module Vehicle =
+    let addImageUrl (imageUrl:Uri) (vehicle:Vehicle) =
+        { vehicle with
+            ImageUrls = imageUrl :: vehicle.ImageUrls }
 
 let evolve : VehicleState -> VehicleEvent -> VehicleState =
     fun state event ->
@@ -10,6 +16,11 @@ let evolve : VehicleState -> VehicleEvent -> VehicleState =
         | VehicleAdded vehicle ->
             Available vehicle
         | VehicleUpdated vehicle ->
+            match state with
+            | Available _ -> Available vehicle
+            | Leased _ -> Leased vehicle
+            | other -> other
+        | VehicleImageAdded vehicle ->
             match state with
             | Available _ -> Available vehicle
             | Leased _ -> Leased vehicle
@@ -42,17 +53,32 @@ let interpret
             match state with
             | Available vehicle
             | Leased vehicle ->
-                let newVehicle = 
-                    { vehicle with
-                        Make = updates.Make |> Option.defaultValue vehicle.Make
-                        Model = updates.Model |> Option.defaultValue vehicle.Model
-                        Year = updates.Year |> Option.defaultValue vehicle.Year }
-                [VehicleUpdated newVehicle]
+                { vehicle with
+                    Make = updates.Make |> Option.defaultValue vehicle.Make
+                    Model = updates.Model |> Option.defaultValue vehicle.Model
+                    Year = updates.Year |> Option.defaultValue vehicle.Year
+                    AvatarUrl = updates.AvatarUrl |> Option.defaultValue vehicle.AvatarUrl }
+                |> VehicleUpdated
+                |> List.singleton
             | Removed ->
                 sprintf "cannot update vehicle; Vehicle-%s already removed" vehicleIdStr
                 |> RpcException.raiseInternal
             | Unknown ->
                 sprintf "cannot update vehicle; Vehicle-%s does not exist" vehicleIdStr
+                |> RpcException.raiseNotFound
+        | AddVehicleImage imageUrl ->
+            match state with
+            | Available vehicle
+            | Leased vehicle ->
+                vehicle
+                |> Vehicle.addImageUrl imageUrl
+                |> VehicleImageAdded
+                |> List.singleton
+            | Removed ->
+                sprintf "cannot add vehicle image; Vehicle-%s already removed" vehicleIdStr
+                |> RpcException.raiseInternal
+            | Unknown ->
+                sprintf "cannot add vehicle image; Vehicle-%s does not exist" vehicleIdStr
                 |> RpcException.raiseNotFound
         | RemoveVehicle ->
             match state with

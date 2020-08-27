@@ -3,6 +3,7 @@ namespace Server
 open Grpc.Core
 open Serilog
 open Shared
+open System
 
 type VehicleServiceImpl(store:Store) =
     inherit CosmicDealership.Vehicle.V1.VehicleService.VehicleServiceBase()
@@ -41,6 +42,22 @@ type VehicleServiceImpl(store:Store) =
                 return CosmicDealership.Vehicle.V1.UpdateVehicleResponse(Message=msg)
             with ex ->
                 Log.Error("Error! {@Exception}", ex)
+                return raise ex
+        } |> Async.StartAsTask
+
+    override _.AddVehicleImage(req:CosmicDealership.Vehicle.V1.AddVehicleImageRequest, context:ServerCallContext) =
+        async {
+            try
+                authorize req.User "update:vehicles"
+                let vehicleId = VehicleId.fromString req.VehicleId
+                let stream = store.ResolveVehicle(vehicleId)
+                let imageUrl = Uri(req.ImageUrl)
+                let addVehicleImage = AddVehicleImage imageUrl
+                do! stream.Transact(Aggregate.interpret vehicleId addVehicleImage)
+                let msg = sprintf "successfully added image to Vehicle-%s" req.VehicleId
+                return CosmicDealership.Vehicle.V1.AddVehicleImageResponse(Message=msg)
+            with ex ->
+                Log.Error(ex, "Error adding image to Vehicle-{VehicleId}", req.VehicleId)
                 return raise ex
         } |> Async.StartAsTask
 

@@ -14,6 +14,8 @@ service VehicleService {
   rpc AddVehicle(AddVehicleRequest) returns (AddVehicleResponse);
   // Update an existing vehicle.
   rpc UpdateVehicle(UpdateVehicleRequest) returns (UpdateVehicleResponse);
+  // Add a vehicle image.
+  rpc AddVehicleImage(AddVehicleImageRequest) returns (AddVehicleImageResponse);
   // Remove a vehicle from inventory.
   rpc RemoveVehicle(RemoveVehicleRequest) returns (RemoveVehicleResponse);
   // Lease a vehicle.
@@ -32,13 +34,23 @@ message AddVehicleResponse {
 }
 
 message UpdateVehicleRequest {
-    user.v1.User user = 1;
-    string vehicle_id = 2;
-    VehicleUpdates vehicle_updates = 3;
+  user.v1.User user = 1;
+  string vehicle_id = 2;
+  VehicleUpdates vehicle_updates = 3;
 }
 
 message UpdateVehicleResponse {
-    string message = 1;
+  string message = 1;
+}
+
+message AddVehicleImageRequest {
+  user.v1.User user = 1;
+  string vehicle_id = 2;
+  string image_url = 3;
+}
+
+message AddVehicleImageResponse {
+  string message = 1;
 }
 
 message RemoveVehicleRequest {

@@ -1,0 +1,7 @@
+{
+    "schema": "http://localhost:4000/schema",
+    "queries": "./queries/private",
+    "project": "PrivateApi",
+    "output": "./src/PrivateApi",
+    "target": "fable"
+}

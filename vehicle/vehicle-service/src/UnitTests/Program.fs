@@ -2,6 +2,7 @@
 open Expecto.Flip
 open Server
 open Shared
+open System
 
 let testEvolve =
     test "test evolve" {
@@ -12,6 +13,8 @@ let testEvolve =
             { VehicleId = VehicleId.create()
               Make = "Falcon"
               Model = "9"
+              AvatarUrl = Uri("http://localhost:8000/avatar.png")
+              ImageUrls = []
               Year = 2016 }
         let vehicleAdded = VehicleAdded vehicle
         let newState = Aggregate.evolve prevState vehicleAdded

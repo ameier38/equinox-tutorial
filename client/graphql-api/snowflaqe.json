@@ -1,6 +1,6 @@
 {
     "schema": "http://localhost:4000/schema",
-    "queries": "./src/IntegrationTests/Queries",
+    "queries": "./queries",
     "project": "Generated",
     "output": "./src/Generated",
     "target": "fsharp"

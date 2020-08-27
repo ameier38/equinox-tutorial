@@ -26,18 +26,20 @@ namespace CosmicDealership.Vehicle.V1 {
           string.Concat(
             "Ciljb3NtaWNkZWFsZXJzaGlwL3ZlaGljbGUvdjEvdmVoaWNsZS5wcm90bxIb",
             "Y29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxGh5nb29nbGUvcHJvdG9idWYv",
-            "d3JhcHBlcnMucHJvdG8iSAoHVmVoaWNsZRISCgp2ZWhpY2xlX2lkGAEgASgJ",
-            "EgwKBG1ha2UYAiABKAkSDQoFbW9kZWwYAyABKAkSDAoEeWVhchgEIAEoBSKU",
-            "AQoOVmVoaWNsZVVwZGF0ZXMSKgoEbWFrZRgBIAEoCzIcLmdvb2dsZS5wcm90",
-            "b2J1Zi5TdHJpbmdWYWx1ZRIrCgVtb2RlbBgCIAEoCzIcLmdvb2dsZS5wcm90",
-            "b2J1Zi5TdHJpbmdWYWx1ZRIpCgR5ZWFyGAMgASgLMhsuZ29vZ2xlLnByb3Rv",
-            "YnVmLkludDMyVmFsdWVCO1obY29zbWljZGVhbGVyc2hpcC92ZWhpY2xlL3Yx",
+            "d3JhcHBlcnMucHJvdG8icAoHVmVoaWNsZRISCgp2ZWhpY2xlX2lkGAEgASgJ",
+            "EgwKBG1ha2UYAiABKAkSDQoFbW9kZWwYAyABKAkSDAoEeWVhchgEIAEoBRIS",
+            "CgphdmF0YXJfdXJsGAUgASgJEhIKCmltYWdlX3VybHMYBiADKAkixgEKDlZl",
+            "aGljbGVVcGRhdGVzEioKBG1ha2UYASABKAsyHC5nb29nbGUucHJvdG9idWYu",
+            "U3RyaW5nVmFsdWUSKwoFbW9kZWwYAiABKAsyHC5nb29nbGUucHJvdG9idWYu",
+            "U3RyaW5nVmFsdWUSKQoEeWVhchgDIAEoCzIbLmdvb2dsZS5wcm90b2J1Zi5J",
+            "bnQzMlZhbHVlEjAKCmF2YXRhcl91cmwYBCABKAsyHC5nb29nbGUucHJvdG9i",
+            "dWYuU3RyaW5nVmFsdWVCO1obY29zbWljZGVhbGVyc2hpcC92ZWhpY2xlL3Yx",
             "qgIbQ29zbWljRGVhbGVyc2hpcC5WZWhpY2xlLlYxYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.Vehicle), global::CosmicDealership.Vehicle.V1.Vehicle.Parser, new[]{ "VehicleId", "Make", "Model", "Year" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.VehicleUpdates), global::CosmicDealership.Vehicle.V1.VehicleUpdates.Parser, new[]{ "Make", "Model", "Year" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.Vehicle), global::CosmicDealership.Vehicle.V1.Vehicle.Parser, new[]{ "VehicleId", "Make", "Model", "Year", "AvatarUrl", "ImageUrls" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.VehicleUpdates), global::CosmicDealership.Vehicle.V1.VehicleUpdates.Parser, new[]{ "Make", "Model", "Year", "AvatarUrl" }, null, null, null, null)
           }));
     }
     #endregion
@@ -73,6 +75,8 @@ namespace CosmicDealership.Vehicle.V1 {
       make_ = other.make_;
       model_ = other.model_;
       year_ = other.year_;
+      avatarUrl_ = other.avatarUrl_;
+      imageUrls_ = other.imageUrls_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -125,6 +129,27 @@ namespace CosmicDealership.Vehicle.V1 {
       }
     }
 
+    /// <summary>Field number for the "avatar_url" field.</summary>
+    public const int AvatarUrlFieldNumber = 5;
+    private string avatarUrl_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string AvatarUrl {
+      get { return avatarUrl_; }
+      set {
+        avatarUrl_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "image_urls" field.</summary>
+    public const int ImageUrlsFieldNumber = 6;
+    private static readonly pb::FieldCodec<string> _repeated_imageUrls_codec
+        = pb::FieldCodec.ForString(50);
+    private readonly pbc::RepeatedField<string> imageUrls_ = new pbc::RepeatedField<string>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<string> ImageUrls {
+      get { return imageUrls_; }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Vehicle);
@@ -142,6 +167,8 @@ namespace CosmicDealership.Vehicle.V1 {
       if (Make != other.Make) return false;
       if (Model != other.Model) return false;
       if (Year != other.Year) return false;
+      if (AvatarUrl != other.AvatarUrl) return false;
+      if(!imageUrls_.Equals(other.imageUrls_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -152,6 +179,8 @@ namespace CosmicDealership.Vehicle.V1 {
       if (Make.Length != 0) hash ^= Make.GetHashCode();
       if (Model.Length != 0) hash ^= Model.GetHashCode();
       if (Year != 0) hash ^= Year.GetHashCode();
+      if (AvatarUrl.Length != 0) hash ^= AvatarUrl.GetHashCode();
+      hash ^= imageUrls_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -181,6 +210,11 @@ namespace CosmicDealership.Vehicle.V1 {
         output.WriteRawTag(32);
         output.WriteInt32(Year);
       }
+      if (AvatarUrl.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteString(AvatarUrl);
+      }
+      imageUrls_.WriteTo(output, _repeated_imageUrls_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -201,6 +235,10 @@ namespace CosmicDealership.Vehicle.V1 {
       if (Year != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Year);
       }
+      if (AvatarUrl.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(AvatarUrl);
+      }
+      size += imageUrls_.CalculateSize(_repeated_imageUrls_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -224,6 +262,10 @@ namespace CosmicDealership.Vehicle.V1 {
       if (other.Year != 0) {
         Year = other.Year;
       }
+      if (other.AvatarUrl.Length != 0) {
+        AvatarUrl = other.AvatarUrl;
+      }
+      imageUrls_.Add(other.imageUrls_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -249,6 +291,14 @@ namespace CosmicDealership.Vehicle.V1 {
           }
           case 32: {
             Year = input.ReadInt32();
+            break;
+          }
+          case 42: {
+            AvatarUrl = input.ReadString();
+            break;
+          }
+          case 50: {
+            imageUrls_.AddEntriesFrom(input, _repeated_imageUrls_codec);
             break;
           }
         }
@@ -285,6 +335,7 @@ namespace CosmicDealership.Vehicle.V1 {
       Make = other.Make;
       Model = other.Model;
       Year = other.Year;
+      AvatarUrl = other.AvatarUrl;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -332,6 +383,19 @@ namespace CosmicDealership.Vehicle.V1 {
     }
 
 
+    /// <summary>Field number for the "avatar_url" field.</summary>
+    public const int AvatarUrlFieldNumber = 4;
+    private static readonly pb::FieldCodec<string> _single_avatarUrl_codec = pb::FieldCodec.ForClassWrapper<string>(34);
+    private string avatarUrl_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string AvatarUrl {
+      get { return avatarUrl_; }
+      set {
+        avatarUrl_ = value;
+      }
+    }
+
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as VehicleUpdates);
@@ -348,6 +412,7 @@ namespace CosmicDealership.Vehicle.V1 {
       if (Make != other.Make) return false;
       if (Model != other.Model) return false;
       if (Year != other.Year) return false;
+      if (AvatarUrl != other.AvatarUrl) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -357,6 +422,7 @@ namespace CosmicDealership.Vehicle.V1 {
       if (make_ != null) hash ^= Make.GetHashCode();
       if (model_ != null) hash ^= Model.GetHashCode();
       if (year_ != null) hash ^= Year.GetHashCode();
+      if (avatarUrl_ != null) hash ^= AvatarUrl.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -379,6 +445,9 @@ namespace CosmicDealership.Vehicle.V1 {
       if (year_ != null) {
         _single_year_codec.WriteTagAndValue(output, Year);
       }
+      if (avatarUrl_ != null) {
+        _single_avatarUrl_codec.WriteTagAndValue(output, AvatarUrl);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -395,6 +464,9 @@ namespace CosmicDealership.Vehicle.V1 {
       }
       if (year_ != null) {
         size += _single_year_codec.CalculateSizeWithTag(Year);
+      }
+      if (avatarUrl_ != null) {
+        size += _single_avatarUrl_codec.CalculateSizeWithTag(AvatarUrl);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -420,6 +492,11 @@ namespace CosmicDealership.Vehicle.V1 {
       if (other.year_ != null) {
         if (year_ == null || other.Year != 0) {
           Year = other.Year;
+        }
+      }
+      if (other.avatarUrl_ != null) {
+        if (avatarUrl_ == null || other.AvatarUrl != "") {
+          AvatarUrl = other.AvatarUrl;
         }
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -451,6 +528,13 @@ namespace CosmicDealership.Vehicle.V1 {
             int? value = _single_year_codec.Read(input);
             if (year_ == null || value != 0) {
               Year = value;
+            }
+            break;
+          }
+          case 34: {
+            string value = _single_avatarUrl_codec.Read(input);
+            if (avatarUrl_ == null || value != "") {
+              AvatarUrl = value;
             }
             break;
           }

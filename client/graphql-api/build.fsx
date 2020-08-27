@@ -6,7 +6,6 @@ open Fake.DotNet
 open Fake.IO.FileSystemOperators
 open Fake.IO.Globbing.Operators
 open BlackFox.Fake
-open System
 
 let run (command:string) (args:string list) =
     CreateProcess.fromRawCommand command args
@@ -16,7 +15,7 @@ let run (command:string) (args:string list) =
 
 let snowflaqe = run "snowflaqe"
 
-let clean = BuildTask.create "Clean" [] {
+BuildTask.create "Clean" [] {
     let directories = 
         !! "**/out"
         ++ "**/bin"
@@ -52,15 +51,15 @@ BuildTask.create "UpdateProtos" [copyGenerated] {
         "src/Proto/Proto.csproj"
 }
 
-BuildTask.create "Restore" [clean] {
+BuildTask.create "Restore" [] {
     Trace.trace "Restoring..."
     [ "src/Server/Server.fsproj"
       "src/IntegrationTests/IntegrationTests.fsproj" ]
     |> List.iter (DotNet.restore id)
 }
 
-let generateTestClient = BuildTask.create "GenerateTestClient" [] {
-    Trace.trace "Generating client..."
+let generateTestClient = BuildTask.create "Generate" [] {
+    Trace.trace "Generating test client..."
     snowflaqe ["--generate"]
 }
 

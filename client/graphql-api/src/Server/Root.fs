@@ -2,7 +2,7 @@ module Server.Root
 
 open FSharp.Data.GraphQL.Types
 open Server.Vehicle.Client
-open Server.Vehicle.Fields
+open Server.Vehicle.Schema
 
 type Root = { _empty: bool option }
 

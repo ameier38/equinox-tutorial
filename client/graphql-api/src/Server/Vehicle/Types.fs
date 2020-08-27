@@ -1,13 +1,8 @@
 module Server.Vehicle.Types
 
+open FSharp.Data.GraphQL.Types
 open MongoDB.Bson
-
-type ListVehiclesInput =
-    { pageToken: string option
-      pageSize: int option }
-
-type GetVehicleInput =
-    { vehicleId: string }
+open Server.Common.Types
 
 type AddVehicleInput =
     { vehicleId: string
@@ -15,16 +10,34 @@ type AddVehicleInput =
       model: string
       year: int }
 
+[<RequireQualifiedAccess>]
+type AddVehicleResponse =
+    | Success of Message
+    | AlreadyExists of Message
+    | PermissionDenied of Message
+
 type UpdateVehicleInput =
     { vehicleId: string
       make: string option
       model: string option
       year: int option }
 
+[<RequireQualifiedAccess>]
+type UpdateVehicleResponse =
+    | Success of Message
+    | NotFound of Message
+    | PermissionDenied of Message
+
 type RemoveVehicleInput =
     { vehicleId: string }
 
-type VehicleState =
+[<RequireQualifiedAccess>]
+type RemoveVehicleResponse =
+    | Success of Message
+    | NotFound of Message
+    | PermissionDenied of Message
+
+type Vehicle =
     { _id: ObjectId
       vehicleId: string
       make: string
@@ -32,15 +45,31 @@ type VehicleState =
       year: int
       status: string }
 
-type VehicleNotFound =
-    { message: string }
+type GetVehicleInput =
+    { vehicleId: string }
 
+[<RequireQualifiedAccess>]
 type GetVehicleResponse =
-    | Found of VehicleState
-    | NotFound of VehicleNotFound
+    | Data of Vehicle
+    | NotFound of Message
+    | PermissionDenied of Message
 
-type ListVehiclesResponse =
-    { vehicles: VehicleState list
+[<RequireQualifiedAccess>]
+type GetAvailableVehicleResponse =
+    | Data of Vehicle
+    | NotFound of Message
+
+type Vehicles =
+    { vehicles: Vehicle list
       totalCount: int64
       prevPageToken: string
       nextPageToken: string }
+
+type ListVehiclesInput =
+    { pageToken: string option
+      pageSize: int option }
+
+[<RequireQualifiedAccess>]
+type ListVehiclesResponse =
+    | Data of Vehicles
+    | PermissionDenied of Message

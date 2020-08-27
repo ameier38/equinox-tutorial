@@ -35,31 +35,37 @@ namespace CosmicDealership.Vehicle.V1 {
             "Mh4uY29zbWljZGVhbGVyc2hpcC51c2VyLnYxLlVzZXISEgoKdmVoaWNsZV9p",
             "ZBgCIAEoCRJECg92ZWhpY2xlX3VwZGF0ZXMYAyABKAsyKy5jb3NtaWNkZWFs",
             "ZXJzaGlwLnZlaGljbGUudjEuVmVoaWNsZVVwZGF0ZXMiKAoVVXBkYXRlVmVo",
-            "aWNsZVJlc3BvbnNlEg8KB21lc3NhZ2UYASABKAkiWAoUUmVtb3ZlVmVoaWNs",
-            "ZVJlcXVlc3QSLAoEdXNlchgBIAEoCzIeLmNvc21pY2RlYWxlcnNoaXAudXNl",
-            "ci52MS5Vc2VyEhIKCnZlaGljbGVfaWQYAiABKAkiKAoVUmVtb3ZlVmVoaWNs",
-            "ZVJlc3BvbnNlEg8KB21lc3NhZ2UYASABKAkiVwoTTGVhc2VWZWhpY2xlUmVx",
-            "dWVzdBIsCgR1c2VyGAEgASgLMh4uY29zbWljZGVhbGVyc2hpcC51c2VyLnYx",
-            "LlVzZXISEgoKdmVoaWNsZV9pZBgCIAEoCSInChRMZWFzZVZlaGljbGVSZXNw",
-            "b25zZRIPCgdtZXNzYWdlGAEgASgJIlgKFFJldHVyblZlaGljbGVSZXF1ZXN0",
-            "EiwKBHVzZXIYASABKAsyHi5jb3NtaWNkZWFsZXJzaGlwLnVzZXIudjEuVXNl",
-            "chISCgp2ZWhpY2xlX2lkGAIgASgJIigKFVJldHVyblZlaGljbGVSZXNwb25z",
-            "ZRIPCgdtZXNzYWdlGAEgASgJMtwECg5WZWhpY2xlU2VydmljZRJtCgpBZGRW",
-            "ZWhpY2xlEi4uY29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxLkFkZFZlaGlj",
-            "bGVSZXF1ZXN0Gi8uY29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxLkFkZFZl",
-            "aGljbGVSZXNwb25zZRJ2Cg1VcGRhdGVWZWhpY2xlEjEuY29zbWljZGVhbGVy",
-            "c2hpcC52ZWhpY2xlLnYxLlVwZGF0ZVZlaGljbGVSZXF1ZXN0GjIuY29zbWlj",
-            "ZGVhbGVyc2hpcC52ZWhpY2xlLnYxLlVwZGF0ZVZlaGljbGVSZXNwb25zZRJ2",
-            "Cg1SZW1vdmVWZWhpY2xlEjEuY29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYx",
-            "LlJlbW92ZVZlaGljbGVSZXF1ZXN0GjIuY29zbWljZGVhbGVyc2hpcC52ZWhp",
-            "Y2xlLnYxLlJlbW92ZVZlaGljbGVSZXNwb25zZRJzCgxMZWFzZVZlaGljbGUS",
-            "MC5jb3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEuTGVhc2VWZWhpY2xlUmVx",
-            "dWVzdBoxLmNvc21pY2RlYWxlcnNoaXAudmVoaWNsZS52MS5MZWFzZVZlaGlj",
-            "bGVSZXNwb25zZRJ2Cg1SZXR1cm5WZWhpY2xlEjEuY29zbWljZGVhbGVyc2hp",
-            "cC52ZWhpY2xlLnYxLlJldHVyblZlaGljbGVSZXF1ZXN0GjIuY29zbWljZGVh",
-            "bGVyc2hpcC52ZWhpY2xlLnYxLlJldHVyblZlaGljbGVSZXNwb25zZUI7Whtj",
-            "b3NtaWNkZWFsZXJzaGlwL3ZlaGljbGUvdjGqAhtDb3NtaWNEZWFsZXJzaGlw",
-            "LlZlaGljbGUuVjFiBnByb3RvMw=="));
+            "aWNsZVJlc3BvbnNlEg8KB21lc3NhZ2UYASABKAkibQoWQWRkVmVoaWNsZUlt",
+            "YWdlUmVxdWVzdBIsCgR1c2VyGAEgASgLMh4uY29zbWljZGVhbGVyc2hpcC51",
+            "c2VyLnYxLlVzZXISEgoKdmVoaWNsZV9pZBgCIAEoCRIRCglpbWFnZV91cmwY",
+            "AyABKAkiKgoXQWRkVmVoaWNsZUltYWdlUmVzcG9uc2USDwoHbWVzc2FnZRgB",
+            "IAEoCSJYChRSZW1vdmVWZWhpY2xlUmVxdWVzdBIsCgR1c2VyGAEgASgLMh4u",
+            "Y29zbWljZGVhbGVyc2hpcC51c2VyLnYxLlVzZXISEgoKdmVoaWNsZV9pZBgC",
+            "IAEoCSIoChVSZW1vdmVWZWhpY2xlUmVzcG9uc2USDwoHbWVzc2FnZRgBIAEo",
+            "CSJXChNMZWFzZVZlaGljbGVSZXF1ZXN0EiwKBHVzZXIYASABKAsyHi5jb3Nt",
+            "aWNkZWFsZXJzaGlwLnVzZXIudjEuVXNlchISCgp2ZWhpY2xlX2lkGAIgASgJ",
+            "IicKFExlYXNlVmVoaWNsZVJlc3BvbnNlEg8KB21lc3NhZ2UYASABKAkiWAoU",
+            "UmV0dXJuVmVoaWNsZVJlcXVlc3QSLAoEdXNlchgBIAEoCzIeLmNvc21pY2Rl",
+            "YWxlcnNoaXAudXNlci52MS5Vc2VyEhIKCnZlaGljbGVfaWQYAiABKAkiKAoV",
+            "UmV0dXJuVmVoaWNsZVJlc3BvbnNlEg8KB21lc3NhZ2UYASABKAky2gUKDlZl",
+            "aGljbGVTZXJ2aWNlEm0KCkFkZFZlaGljbGUSLi5jb3NtaWNkZWFsZXJzaGlw",
+            "LnZlaGljbGUudjEuQWRkVmVoaWNsZVJlcXVlc3QaLy5jb3NtaWNkZWFsZXJz",
+            "aGlwLnZlaGljbGUudjEuQWRkVmVoaWNsZVJlc3BvbnNlEnYKDVVwZGF0ZVZl",
+            "aGljbGUSMS5jb3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEuVXBkYXRlVmVo",
+            "aWNsZVJlcXVlc3QaMi5jb3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEuVXBk",
+            "YXRlVmVoaWNsZVJlc3BvbnNlEnwKD0FkZFZlaGljbGVJbWFnZRIzLmNvc21p",
+            "Y2RlYWxlcnNoaXAudmVoaWNsZS52MS5BZGRWZWhpY2xlSW1hZ2VSZXF1ZXN0",
+            "GjQuY29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxLkFkZFZlaGljbGVJbWFn",
+            "ZVJlc3BvbnNlEnYKDVJlbW92ZVZlaGljbGUSMS5jb3NtaWNkZWFsZXJzaGlw",
+            "LnZlaGljbGUudjEuUmVtb3ZlVmVoaWNsZVJlcXVlc3QaMi5jb3NtaWNkZWFs",
+            "ZXJzaGlwLnZlaGljbGUudjEuUmVtb3ZlVmVoaWNsZVJlc3BvbnNlEnMKDExl",
+            "YXNlVmVoaWNsZRIwLmNvc21pY2RlYWxlcnNoaXAudmVoaWNsZS52MS5MZWFz",
+            "ZVZlaGljbGVSZXF1ZXN0GjEuY29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYx",
+            "LkxlYXNlVmVoaWNsZVJlc3BvbnNlEnYKDVJldHVyblZlaGljbGUSMS5jb3Nt",
+            "aWNkZWFsZXJzaGlwLnZlaGljbGUudjEuUmV0dXJuVmVoaWNsZVJlcXVlc3Qa",
+            "Mi5jb3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEuUmV0dXJuVmVoaWNsZVJl",
+            "c3BvbnNlQjtaG2Nvc21pY2RlYWxlcnNoaXAvdmVoaWNsZS92MaoCG0Nvc21p",
+            "Y0RlYWxlcnNoaXAuVmVoaWNsZS5WMWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::CosmicDealership.Vehicle.V1.VehicleReflection.Descriptor, global::CosmicDealership.User.V1.UserReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -67,6 +73,8 @@ namespace CosmicDealership.Vehicle.V1 {
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.AddVehicleResponse), global::CosmicDealership.Vehicle.V1.AddVehicleResponse.Parser, new[]{ "Message" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.UpdateVehicleRequest), global::CosmicDealership.Vehicle.V1.UpdateVehicleRequest.Parser, new[]{ "User", "VehicleId", "VehicleUpdates" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.UpdateVehicleResponse), global::CosmicDealership.Vehicle.V1.UpdateVehicleResponse.Parser, new[]{ "Message" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.AddVehicleImageRequest), global::CosmicDealership.Vehicle.V1.AddVehicleImageRequest.Parser, new[]{ "User", "VehicleId", "ImageUrl" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.AddVehicleImageResponse), global::CosmicDealership.Vehicle.V1.AddVehicleImageResponse.Parser, new[]{ "Message" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.RemoveVehicleRequest), global::CosmicDealership.Vehicle.V1.RemoveVehicleRequest.Parser, new[]{ "User", "VehicleId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.RemoveVehicleResponse), global::CosmicDealership.Vehicle.V1.RemoveVehicleResponse.Parser, new[]{ "Message" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.LeaseVehicleRequest), global::CosmicDealership.Vehicle.V1.LeaseVehicleRequest.Parser, new[]{ "User", "VehicleId" }, null, null, null, null),
@@ -703,6 +711,326 @@ namespace CosmicDealership.Vehicle.V1 {
 
   }
 
+  public sealed partial class AddVehicleImageRequest : pb::IMessage<AddVehicleImageRequest> {
+    private static readonly pb::MessageParser<AddVehicleImageRequest> _parser = new pb::MessageParser<AddVehicleImageRequest>(() => new AddVehicleImageRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<AddVehicleImageRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[4]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AddVehicleImageRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AddVehicleImageRequest(AddVehicleImageRequest other) : this() {
+      user_ = other.user_ != null ? other.user_.Clone() : null;
+      vehicleId_ = other.vehicleId_;
+      imageUrl_ = other.imageUrl_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AddVehicleImageRequest Clone() {
+      return new AddVehicleImageRequest(this);
+    }
+
+    /// <summary>Field number for the "user" field.</summary>
+    public const int UserFieldNumber = 1;
+    private global::CosmicDealership.User.V1.User user_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::CosmicDealership.User.V1.User User {
+      get { return user_; }
+      set {
+        user_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "vehicle_id" field.</summary>
+    public const int VehicleIdFieldNumber = 2;
+    private string vehicleId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string VehicleId {
+      get { return vehicleId_; }
+      set {
+        vehicleId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "image_url" field.</summary>
+    public const int ImageUrlFieldNumber = 3;
+    private string imageUrl_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string ImageUrl {
+      get { return imageUrl_; }
+      set {
+        imageUrl_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as AddVehicleImageRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(AddVehicleImageRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(User, other.User)) return false;
+      if (VehicleId != other.VehicleId) return false;
+      if (ImageUrl != other.ImageUrl) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (user_ != null) hash ^= User.GetHashCode();
+      if (VehicleId.Length != 0) hash ^= VehicleId.GetHashCode();
+      if (ImageUrl.Length != 0) hash ^= ImageUrl.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (user_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(User);
+      }
+      if (VehicleId.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(VehicleId);
+      }
+      if (ImageUrl.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(ImageUrl);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (user_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(User);
+      }
+      if (VehicleId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleId);
+      }
+      if (ImageUrl.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ImageUrl);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(AddVehicleImageRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.user_ != null) {
+        if (user_ == null) {
+          User = new global::CosmicDealership.User.V1.User();
+        }
+        User.MergeFrom(other.User);
+      }
+      if (other.VehicleId.Length != 0) {
+        VehicleId = other.VehicleId;
+      }
+      if (other.ImageUrl.Length != 0) {
+        ImageUrl = other.ImageUrl;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (user_ == null) {
+              User = new global::CosmicDealership.User.V1.User();
+            }
+            input.ReadMessage(User);
+            break;
+          }
+          case 18: {
+            VehicleId = input.ReadString();
+            break;
+          }
+          case 26: {
+            ImageUrl = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class AddVehicleImageResponse : pb::IMessage<AddVehicleImageResponse> {
+    private static readonly pb::MessageParser<AddVehicleImageResponse> _parser = new pb::MessageParser<AddVehicleImageResponse>(() => new AddVehicleImageResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<AddVehicleImageResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[5]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AddVehicleImageResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AddVehicleImageResponse(AddVehicleImageResponse other) : this() {
+      message_ = other.message_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AddVehicleImageResponse Clone() {
+      return new AddVehicleImageResponse(this);
+    }
+
+    /// <summary>Field number for the "message" field.</summary>
+    public const int MessageFieldNumber = 1;
+    private string message_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Message {
+      get { return message_; }
+      set {
+        message_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as AddVehicleImageResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(AddVehicleImageResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Message != other.Message) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Message.Length != 0) hash ^= Message.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Message.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Message);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Message.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(AddVehicleImageResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Message.Length != 0) {
+        Message = other.Message;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Message = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
   public sealed partial class RemoveVehicleRequest : pb::IMessage<RemoveVehicleRequest> {
     private static readonly pb::MessageParser<RemoveVehicleRequest> _parser = new pb::MessageParser<RemoveVehicleRequest>(() => new RemoveVehicleRequest());
     private pb::UnknownFieldSet _unknownFields;
@@ -711,7 +1039,7 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[4]; }
+      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -874,7 +1202,7 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[5]; }
+      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[7]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1003,7 +1331,7 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[6]; }
+      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[8]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1166,7 +1494,7 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[7]; }
+      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[9]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1295,7 +1623,7 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[8]; }
+      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[10]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1458,7 +1786,7 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[9]; }
+      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[11]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

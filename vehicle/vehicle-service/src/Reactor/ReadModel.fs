@@ -12,6 +12,8 @@ type VehicleReadModelDto =
       make: string
       model: string
       year: int
+      avatarUrl: string
+      imageUrls: string array
       status: string }
 
 module VehicleStatus =
@@ -31,11 +33,17 @@ type VehicleReadModel(config:Config) =
             Log.Debug("adding vehicle {@Vehicle}", vehicle)
             // use replace with upsert to make idempotent
             let vehicleId = VehicleId.toString vehicle.VehicleId
+            let imageUrls =
+                vehicle.ImageUrls
+                |> List.map (fun url -> url.AbsoluteUri)
+                |> List.toArray
             let vehicleDto =
                 { vehicleId = vehicleId
                   make = vehicle.Make
                   model = vehicle.Model
                   year = vehicle.Year
+                  avatarUrl = vehicle.AvatarUrl.AbsoluteUri
+                  imageUrls = imageUrls
                   status = VehicleStatus.available }
             let filterVehicle = Builders<VehicleReadModelDto>.Filter.Where(fun v -> v.vehicleId = vehicleId)
             let replaceOptions = ReplaceOptions(IsUpsert = true)
@@ -48,12 +56,18 @@ type VehicleReadModel(config:Config) =
         async {
             Log.Debug("updating vehicle {@Vehicle}", vehicle)
             let vehicleId = VehicleId.toString vehicle.VehicleId
+            let imageUrls =
+                vehicle.ImageUrls
+                |> List.map (fun url -> url.AbsoluteUri)
+                |> List.toArray
             let filterVehicle = Builders<VehicleReadModelDto>.Filter.Where(fun v -> v.vehicleId = vehicleId)
             let updateVehicle =
                 Builders<VehicleReadModelDto>.Update
                     .Set((fun v -> v.make), vehicle.Make)
                     .Set((fun v -> v.model), vehicle.Model)
                     .Set((fun v -> v.year), vehicle.Year)
+                    .Set((fun v -> v.avatarUrl), vehicle.AvatarUrl.AbsoluteUri)
+                    .Set((fun v -> v.imageUrls), imageUrls)
             do! vehicleCollection.UpdateOneAsync(filterVehicle, updateVehicle)
                 |> Async.AwaitTask
                 |> Async.Ignore
@@ -80,6 +94,8 @@ type VehicleReadModel(config:Config) =
                     | VehicleAdded vehicle ->
                         do! addVehicle vehicle
                     | VehicleUpdated vehicle ->
+                        do! updateVehicle vehicle
+                    | VehicleImageAdded vehicle ->
                         do! updateVehicle vehicle
                     | VehicleRemoved payload ->
                         let newStatus = VehicleStatus.removed

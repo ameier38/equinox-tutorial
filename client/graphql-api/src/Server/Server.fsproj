@@ -8,10 +8,11 @@
     <Compile Include="Config.fs" />
     <Compile Include="Infrastructure.fs" />
     <Compile Include="Store.fs" />
-    <Compile Include="Fields.fs" />
+    <Compile Include="Common/Types.fs" />
+    <Compile Include="Common/Schema.fs" />
     <Compile Include="Vehicle/Types.fs" />
     <Compile Include="Vehicle/Client.fs" />
-    <Compile Include="Vehicle/Fields.fs" />
+    <Compile Include="Vehicle/Schema.fs" />
     <Compile Include="Root.fs" />
     <Compile Include="WebPart.fs" />
     <Compile Include="Program.fs" />

@@ -24,6 +24,8 @@ type VehicleDto =
       make: string
       model: string
       year: int
+      avatarUrl: string
+      imageUrls: string array
       status: string }
 
 type Store() =
@@ -41,6 +43,8 @@ type Store() =
                       make = doc.make
                       model = doc.model
                       year = doc.year
+                      avatarUrl = doc.avatarUrl
+                      imageUrls = doc.imageUrls
                       status = doc.status })
                 .First()
         with ex ->
@@ -73,6 +77,10 @@ let updateVehicle (user:CosmicDealership.User.V1.User) (updates:CosmicDealership
     let req = CosmicDealership.Vehicle.V1.UpdateVehicleRequest(User = user, VehicleUpdates = updates)
     vehicleService.UpdateVehicle(req)
 
+let addVehicleImage (user:CosmicDealership.User.V1.User) (imageUrl:string) =
+    let req = CosmicDealership.Vehicle.V1.AddVehicleImageRequest(User = user, ImageUrl = imageUrl)
+    vehicleService.AddVehicleImage(req)
+
 let removeVehicle (user:CosmicDealership.User.V1.User) (vehicleId:string) =
     let req = CosmicDealership.Vehicle.V1.RemoveVehicleRequest(User=user, VehicleId=vehicleId)
     vehicleService.RemoveVehicle(req)
@@ -96,7 +104,9 @@ let testAddVehicle =
                         VehicleId=vehicleId,
                         Make="Falcon",
                         Model=sprintf "%i" i,
-                        Year=2016)
+                        Year=2016,
+                        AvatarUrl="http://localhost:8000/avatar.png")
+                vehicle.ImageUrls.AddRange(["http://localhost:8000/image.png"])
                 yield vehicle ]
         for vehicle in vehicles do
             addVehicle user vehicle |> ignore
@@ -108,6 +118,8 @@ let testAddVehicle =
                   make = "Falcon" 
                   model = sprintf "%i" i
                   year = 2016
+                  avatarUrl = "http://localhost:8000/avatar.png"
+                  imageUrls = [|"http://localhost:8000/image.png"|]
                   status = "Available" }
             vehicleState
             |> Expect.equal "should return vehicle in available state" expectedVehicleState
@@ -137,6 +149,7 @@ let testUpdateVehicle =
                 VehicleId=vehicleId,
                 Make="Falcon",
                 Model="9",
+                AvatarUrl="http://localhost:8000/avatar.png",
                 Year=2016)
         addVehicle user vehicle |> ignore
         let updates =
@@ -151,6 +164,8 @@ let testUpdateVehicle =
               make = "Hawk"
               model = "10"
               year = 2016
+              avatarUrl = "http://localhost:8000/avatar.png"
+              imageUrls = [||]
               status = "Available" }
         vehicleState
         |> Expect.equal "should return vehicle in available state" expectedVehicleState
@@ -165,6 +180,7 @@ let testRemoveVehicle =
                 VehicleId=vehicleId,
                 Make="Falcon",
                 Model="9",
+                AvatarUrl="http://localhost:8000/avatar.png",
                 Year=2016)
         addVehicle user vehicle |> ignore
         removeVehicle user vehicleId |> ignore
@@ -175,6 +191,8 @@ let testRemoveVehicle =
               make = "Falcon"
               model = "9"
               year = 2016
+              avatarUrl = "http://localhost:8000/avatar.png"
+              imageUrls = [||]
               status = "Removed" }
         vehicleState
         |> Expect.equal "should return vehicle in removed state" expectedVehicleState
@@ -189,6 +207,7 @@ let testRemoveVehicleDenied =
                 VehicleId=vehicleId,
                 Make="Falcon",
                 Model="9",
+                AvatarUrl="http://localhost:8000/avatar.png",
                 Year=2016)
         addVehicle user vehicle |> ignore
         let f () = removeVehicle user vehicleId |> ignore

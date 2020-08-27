@@ -12,10 +12,13 @@ message Vehicle {
     string make = 2;
     string model = 3;
     int32 year = 4;
+    string avatar_url = 5;
+    repeated string image_urls = 6;
 }
 
 message VehicleUpdates {
     google.protobuf.StringValue make = 1;
     google.protobuf.StringValue model = 2;
     google.protobuf.Int32Value year = 3;
+    google.protobuf.StringValue avatar_url = 4;
 }
