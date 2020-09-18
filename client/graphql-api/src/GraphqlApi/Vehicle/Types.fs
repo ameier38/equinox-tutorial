@@ -7,7 +7,8 @@ type AddVehicleInput =
     { vehicleId: string
       make: string
       model: string
-      year: int }
+      year: int
+      avatarUrl:  }
 
 [<RequireQualifiedAccess>]
 type AddVehicleResponse =
