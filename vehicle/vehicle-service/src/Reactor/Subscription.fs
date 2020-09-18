@@ -68,7 +68,7 @@ type Subscription(name:string, stream:Stream, eventHandler:EventHandler, eventst
                 let lastCheckpoint =
                     match state.Checkpoint with
                     | Checkpoint.StreamStart -> StreamCheckpoint.StreamStart
-                    | Checkpoint.StreamPosition pos -> new Nullable<int64>(pos)
+                    | Checkpoint.StreamPosition pos -> Nullable(pos)
                 eventstore.SubscribeToStreamFrom(
                     stream = %stream,
                     lastCheckpoint = lastCheckpoint,
@@ -97,6 +97,7 @@ type Subscription(name:string, stream:Stream, eventHandler:EventHandler, eventst
                 | SubscriptionDropReason.ServerError
                 | SubscriptionDropReason.EventHandlerException
                 | SubscriptionDropReason.ProcessingQueueOverflow
+                | SubscriptionDropReason.CatchUpError
                 | SubscriptionDropReason.ConnectionClosed ->
                     log.Information(error, "subscription dropped: {Reason}; reconnecting...", reason)
                     mailbox.Post(Subscribe)

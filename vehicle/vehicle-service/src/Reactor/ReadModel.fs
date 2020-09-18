@@ -2,9 +2,11 @@ module Reactor.ReadModel
 
 open FSharp.Control
 open FSharp.UMX
+open FSharp.ValidationBlocks
 open MongoDB.Driver
 open Shared
 open Serilog
+open System
 open System.Threading
 
 type VehicleReadModelDto =
@@ -12,8 +14,8 @@ type VehicleReadModelDto =
       make: string
       model: string
       year: int
-      avatarUrl: string
-      imageUrls: string array
+      avatarUri: string
+      imageUris: string array
       status: string }
 
 module VehicleStatus =
@@ -28,22 +30,18 @@ type VehicleReadModel(config:Config) =
     let codec = FsCodec.NewtonsoftJson.Codec.Create<VehicleEvent>()
     let vehicleCollection = store.GetCollection(name)
 
-    let addVehicle (vehicle:Vehicle) =
+    let addVehicle (vehicleId:VehicleId, vehicle:Vehicle) =
         async {
             Log.Debug("adding vehicle {@Vehicle}", vehicle)
             // use replace with upsert to make idempotent
-            let vehicleId = VehicleId.toString vehicle.VehicleId
-            let imageUrls =
-                vehicle.ImageUrls
-                |> List.map (fun url -> url.AbsoluteUri)
-                |> List.toArray
+            let vehicleId = VehicleId.toStringN vehicleId
             let vehicleDto =
                 { vehicleId = vehicleId
-                  make = vehicle.Make
-                  model = vehicle.Model
-                  year = vehicle.Year
-                  avatarUrl = vehicle.AvatarUrl.AbsoluteUri
-                  imageUrls = imageUrls
+                  make = Block.value vehicle.Make
+                  model = Block.value vehicle.Model
+                  year = Block.value vehicle.Year
+                  avatarUri = ""
+                  imageUris = [||]
                   status = VehicleStatus.available }
             let filterVehicle = Builders<VehicleReadModelDto>.Filter.Where(fun v -> v.vehicleId = vehicleId)
             let replaceOptions = ReplaceOptions(IsUpsert = true)
@@ -52,22 +50,75 @@ type VehicleReadModel(config:Config) =
                 |> Async.Ignore
         }
 
-    let updateVehicle (vehicle:Vehicle) =
+    let updateVehicle (vehicleId:VehicleId, vehicle:Vehicle) =
         async {
             Log.Debug("updating vehicle {@Vehicle}", vehicle)
-            let vehicleId = VehicleId.toString vehicle.VehicleId
-            let imageUrls =
-                vehicle.ImageUrls
-                |> List.map (fun url -> url.AbsoluteUri)
-                |> List.toArray
+            let vehicleId = VehicleId.toStringN vehicleId
             let filterVehicle = Builders<VehicleReadModelDto>.Filter.Where(fun v -> v.vehicleId = vehicleId)
             let updateVehicle =
                 Builders<VehicleReadModelDto>.Update
-                    .Set((fun v -> v.make), vehicle.Make)
-                    .Set((fun v -> v.model), vehicle.Model)
-                    .Set((fun v -> v.year), vehicle.Year)
-                    .Set((fun v -> v.avatarUrl), vehicle.AvatarUrl.AbsoluteUri)
-                    .Set((fun v -> v.imageUrls), imageUrls)
+                    .Set((fun v -> v.make), (Block.value vehicle.Make))
+                    .Set((fun v -> v.model), (Block.value vehicle.Model))
+                    .Set((fun v -> v.year), (Block.value vehicle.Year))
+            do! vehicleCollection.UpdateOneAsync(filterVehicle, updateVehicle)
+                |> Async.AwaitTask
+                |> Async.Ignore
+        }
+
+    let addImage (vehicleId:VehicleId, imageUri:Uri) =
+        async {
+            Log.Debug("adding image to Vehicle-{VehicleId}", vehicleId)
+            let vehicleId = VehicleId.toStringN vehicleId
+            let imageUri = imageUri.AbsoluteUri
+            let filterVehicle = Builders<VehicleReadModelDto>.Filter.Where(fun v -> v.vehicleId = vehicleId)
+            // TODO: use `nameof` in .NET 5
+            let imageUrisField = FieldDefinition<VehicleReadModelDto>.op_Implicit("imageUris")
+            let updateVehicle =
+                Builders<VehicleReadModelDto>.Update
+                    .AddToSet(imageUrisField, imageUri)
+            do! vehicleCollection.UpdateOneAsync(filterVehicle, updateVehicle)
+                |> Async.AwaitTask
+                |> Async.Ignore
+        }
+    
+    let removeImage (vehicleId:VehicleId, imageUri:Uri) =
+        async {
+            Log.Debug("adding image to Vehicle-{VehicleId}", vehicleId)
+            let vehicleId = VehicleId.toStringN vehicleId
+            let imageUri = imageUri.AbsoluteUri
+            let filterVehicle = Builders<VehicleReadModelDto>.Filter.Where(fun v -> v.vehicleId = vehicleId)
+            // TODO: use `nameof` in .NET 5
+            let imageUrisField = FieldDefinition<VehicleReadModelDto>.op_Implicit("imageUris")
+            let updateVehicle =
+                Builders<VehicleReadModelDto>.Update
+                    .Pull(imageUrisField, imageUri)
+            do! vehicleCollection.UpdateOneAsync(filterVehicle, updateVehicle)
+                |> Async.AwaitTask
+                |> Async.Ignore
+        }
+
+    let updateAvatar (vehicleId:VehicleId, avatarUri:Uri) =
+        async {
+            Log.Debug("updating avatar of Vehicle-{VehicleId}", vehicleId)
+            let vehicleId = VehicleId.toStringN vehicleId
+            let avatarUri = avatarUri.AbsoluteUri
+            let filterVehicle = Builders<VehicleReadModelDto>.Filter.Where(fun v -> v.vehicleId = vehicleId)
+            let updateVehicle =
+                Builders<VehicleReadModelDto>.Update
+                    .Set((fun v -> v.avatarUri), avatarUri)
+            do! vehicleCollection.UpdateOneAsync(filterVehicle, updateVehicle)
+                |> Async.AwaitTask
+                |> Async.Ignore
+        }
+
+    let removeAvatar (vehicleId:VehicleId) =
+        async {
+            Log.Debug("updating avatar of Vehicle-{VehicleId}", vehicleId)
+            let vehicleId = VehicleId.toStringN vehicleId
+            let filterVehicle = Builders<VehicleReadModelDto>.Filter.Where(fun v -> v.vehicleId = vehicleId)
+            let updateVehicle =
+                Builders<VehicleReadModelDto>.Update
+                    .Set((fun v -> v.avatarUri), "")
             do! vehicleCollection.UpdateOneAsync(filterVehicle, updateVehicle)
                 |> Async.AwaitTask
                 |> Async.Ignore
@@ -76,7 +127,7 @@ type VehicleReadModel(config:Config) =
     let setVehicleStatus (vehicleId:VehicleId) (status:string) =
         async {
             Log.Debug("setting Vehicle-{VehicleId} status to {VehicleStatus}", status)
-            let vehicleId = VehicleId.toString vehicleId
+            let vehicleId = VehicleId.toStringN vehicleId
             let filterVehicle = Builders<VehicleReadModelDto>.Filter.Where(fun v -> v.vehicleId = vehicleId)
             let updateStatus = Builders<VehicleReadModelDto>.Update.Set((fun v -> v.status), status)
             do! vehicleCollection.UpdateOneAsync(filterVehicle, updateStatus)
@@ -84,19 +135,25 @@ type VehicleReadModel(config:Config) =
                 |> Async.Ignore
         }
 
-    let handleEvent: EventHandler =
+    let handleEvent =
         fun event ->
             async {
                 let decodedEvent = codec.TryDecode event
                 match decodedEvent with
                 | Some vehicleEvent ->
                     match vehicleEvent with
-                    | VehicleAdded vehicle ->
-                        do! addVehicle vehicle
-                    | VehicleUpdated vehicle ->
-                        do! updateVehicle vehicle
-                    | VehicleImageAdded vehicle ->
-                        do! updateVehicle vehicle
+                    | VehicleAdded payload ->
+                        do! addVehicle (payload.VehicleId, payload.Vehicle)
+                    | VehicleUpdated payload ->
+                        do! updateVehicle (payload.VehicleId, payload.Vehicle)
+                    | ImageAdded payload ->
+                        do! addImage (payload.VehicleId, payload.ImageUri) 
+                    | ImageRemoved payload ->
+                        do! removeImage (payload.VehicleId, payload.ImageUri)
+                    | AvatarUpdated payload ->
+                        do! updateAvatar (payload.VehicleId, payload.AvatarUri)
+                    | AvatarRemoved payload ->
+                        do! removeAvatar payload.VehicleId
                     | VehicleRemoved payload ->
                         let newStatus = VehicleStatus.removed
                         do! setVehicleStatus payload.VehicleId newStatus

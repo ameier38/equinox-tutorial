@@ -1,0 +1,13 @@
+query ListAvailableVehicles($input:ListVehiclesInput!) {
+    listAvailableVehicles(input:$input) {
+        totalCount
+        prevPageToken
+        nextPageToken
+        vehicles {
+            vehicleId
+            make
+            model
+            year
+        }
+    }
+}

@@ -25,21 +25,14 @@ namespace CosmicDealership.Vehicle.V1 {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Ciljb3NtaWNkZWFsZXJzaGlwL3ZlaGljbGUvdjEvdmVoaWNsZS5wcm90bxIb",
-            "Y29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxGh5nb29nbGUvcHJvdG9idWYv",
-            "d3JhcHBlcnMucHJvdG8icAoHVmVoaWNsZRISCgp2ZWhpY2xlX2lkGAEgASgJ",
-            "EgwKBG1ha2UYAiABKAkSDQoFbW9kZWwYAyABKAkSDAoEeWVhchgEIAEoBRIS",
-            "CgphdmF0YXJfdXJsGAUgASgJEhIKCmltYWdlX3VybHMYBiADKAkixgEKDlZl",
-            "aGljbGVVcGRhdGVzEioKBG1ha2UYASABKAsyHC5nb29nbGUucHJvdG9idWYu",
-            "U3RyaW5nVmFsdWUSKwoFbW9kZWwYAiABKAsyHC5nb29nbGUucHJvdG9idWYu",
-            "U3RyaW5nVmFsdWUSKQoEeWVhchgDIAEoCzIbLmdvb2dsZS5wcm90b2J1Zi5J",
-            "bnQzMlZhbHVlEjAKCmF2YXRhcl91cmwYBCABKAsyHC5nb29nbGUucHJvdG9i",
-            "dWYuU3RyaW5nVmFsdWVCO1obY29zbWljZGVhbGVyc2hpcC92ZWhpY2xlL3Yx",
-            "qgIbQ29zbWljRGVhbGVyc2hpcC5WZWhpY2xlLlYxYgZwcm90bzM="));
+            "Y29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxIjQKB1ZlaGljbGUSDAoEbWFr",
+            "ZRgCIAEoCRINCgVtb2RlbBgDIAEoCRIMCgR5ZWFyGAQgASgFQjtaG2Nvc21p",
+            "Y2RlYWxlcnNoaXAvdmVoaWNsZS92MaoCG0Nvc21pY0RlYWxlcnNoaXAuVmVo",
+            "aWNsZS5WMWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
+          new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.Vehicle), global::CosmicDealership.Vehicle.V1.Vehicle.Parser, new[]{ "VehicleId", "Make", "Model", "Year", "AvatarUrl", "ImageUrls" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.VehicleUpdates), global::CosmicDealership.Vehicle.V1.VehicleUpdates.Parser, new[]{ "Make", "Model", "Year", "AvatarUrl" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.Vehicle), global::CosmicDealership.Vehicle.V1.Vehicle.Parser, new[]{ "Make", "Model", "Year" }, null, null, null, null)
           }));
     }
     #endregion
@@ -71,29 +64,15 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Vehicle(Vehicle other) : this() {
-      vehicleId_ = other.vehicleId_;
       make_ = other.make_;
       model_ = other.model_;
       year_ = other.year_;
-      avatarUrl_ = other.avatarUrl_;
-      imageUrls_ = other.imageUrls_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Vehicle Clone() {
       return new Vehicle(this);
-    }
-
-    /// <summary>Field number for the "vehicle_id" field.</summary>
-    public const int VehicleIdFieldNumber = 1;
-    private string vehicleId_ = "";
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string VehicleId {
-      get { return vehicleId_; }
-      set {
-        vehicleId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
     }
 
     /// <summary>Field number for the "make" field.</summary>
@@ -129,27 +108,6 @@ namespace CosmicDealership.Vehicle.V1 {
       }
     }
 
-    /// <summary>Field number for the "avatar_url" field.</summary>
-    public const int AvatarUrlFieldNumber = 5;
-    private string avatarUrl_ = "";
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string AvatarUrl {
-      get { return avatarUrl_; }
-      set {
-        avatarUrl_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    /// <summary>Field number for the "image_urls" field.</summary>
-    public const int ImageUrlsFieldNumber = 6;
-    private static readonly pb::FieldCodec<string> _repeated_imageUrls_codec
-        = pb::FieldCodec.ForString(50);
-    private readonly pbc::RepeatedField<string> imageUrls_ = new pbc::RepeatedField<string>();
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<string> ImageUrls {
-      get { return imageUrls_; }
-    }
-
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Vehicle);
@@ -163,24 +121,18 @@ namespace CosmicDealership.Vehicle.V1 {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (VehicleId != other.VehicleId) return false;
       if (Make != other.Make) return false;
       if (Model != other.Model) return false;
       if (Year != other.Year) return false;
-      if (AvatarUrl != other.AvatarUrl) return false;
-      if(!imageUrls_.Equals(other.imageUrls_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (VehicleId.Length != 0) hash ^= VehicleId.GetHashCode();
       if (Make.Length != 0) hash ^= Make.GetHashCode();
       if (Model.Length != 0) hash ^= Model.GetHashCode();
       if (Year != 0) hash ^= Year.GetHashCode();
-      if (AvatarUrl.Length != 0) hash ^= AvatarUrl.GetHashCode();
-      hash ^= imageUrls_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -194,10 +146,6 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (VehicleId.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(VehicleId);
-      }
       if (Make.Length != 0) {
         output.WriteRawTag(18);
         output.WriteString(Make);
@@ -210,11 +158,6 @@ namespace CosmicDealership.Vehicle.V1 {
         output.WriteRawTag(32);
         output.WriteInt32(Year);
       }
-      if (AvatarUrl.Length != 0) {
-        output.WriteRawTag(42);
-        output.WriteString(AvatarUrl);
-      }
-      imageUrls_.WriteTo(output, _repeated_imageUrls_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -223,9 +166,6 @@ namespace CosmicDealership.Vehicle.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (VehicleId.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleId);
-      }
       if (Make.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Make);
       }
@@ -235,10 +175,6 @@ namespace CosmicDealership.Vehicle.V1 {
       if (Year != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Year);
       }
-      if (AvatarUrl.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(AvatarUrl);
-      }
-      size += imageUrls_.CalculateSize(_repeated_imageUrls_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -250,9 +186,6 @@ namespace CosmicDealership.Vehicle.V1 {
       if (other == null) {
         return;
       }
-      if (other.VehicleId.Length != 0) {
-        VehicleId = other.VehicleId;
-      }
       if (other.Make.Length != 0) {
         Make = other.Make;
       }
@@ -262,10 +195,6 @@ namespace CosmicDealership.Vehicle.V1 {
       if (other.Year != 0) {
         Year = other.Year;
       }
-      if (other.AvatarUrl.Length != 0) {
-        AvatarUrl = other.AvatarUrl;
-      }
-      imageUrls_.Add(other.imageUrls_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -277,10 +206,6 @@ namespace CosmicDealership.Vehicle.V1 {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 10: {
-            VehicleId = input.ReadString();
-            break;
-          }
           case 18: {
             Make = input.ReadString();
             break;
@@ -291,251 +216,6 @@ namespace CosmicDealership.Vehicle.V1 {
           }
           case 32: {
             Year = input.ReadInt32();
-            break;
-          }
-          case 42: {
-            AvatarUrl = input.ReadString();
-            break;
-          }
-          case 50: {
-            imageUrls_.AddEntriesFrom(input, _repeated_imageUrls_codec);
-            break;
-          }
-        }
-      }
-    }
-
-  }
-
-  public sealed partial class VehicleUpdates : pb::IMessage<VehicleUpdates> {
-    private static readonly pb::MessageParser<VehicleUpdates> _parser = new pb::MessageParser<VehicleUpdates>(() => new VehicleUpdates());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<VehicleUpdates> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::CosmicDealership.Vehicle.V1.VehicleReflection.Descriptor.MessageTypes[1]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public VehicleUpdates() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public VehicleUpdates(VehicleUpdates other) : this() {
-      Make = other.Make;
-      Model = other.Model;
-      Year = other.Year;
-      AvatarUrl = other.AvatarUrl;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public VehicleUpdates Clone() {
-      return new VehicleUpdates(this);
-    }
-
-    /// <summary>Field number for the "make" field.</summary>
-    public const int MakeFieldNumber = 1;
-    private static readonly pb::FieldCodec<string> _single_make_codec = pb::FieldCodec.ForClassWrapper<string>(10);
-    private string make_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Make {
-      get { return make_; }
-      set {
-        make_ = value;
-      }
-    }
-
-
-    /// <summary>Field number for the "model" field.</summary>
-    public const int ModelFieldNumber = 2;
-    private static readonly pb::FieldCodec<string> _single_model_codec = pb::FieldCodec.ForClassWrapper<string>(18);
-    private string model_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Model {
-      get { return model_; }
-      set {
-        model_ = value;
-      }
-    }
-
-
-    /// <summary>Field number for the "year" field.</summary>
-    public const int YearFieldNumber = 3;
-    private static readonly pb::FieldCodec<int?> _single_year_codec = pb::FieldCodec.ForStructWrapper<int>(26);
-    private int? year_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int? Year {
-      get { return year_; }
-      set {
-        year_ = value;
-      }
-    }
-
-
-    /// <summary>Field number for the "avatar_url" field.</summary>
-    public const int AvatarUrlFieldNumber = 4;
-    private static readonly pb::FieldCodec<string> _single_avatarUrl_codec = pb::FieldCodec.ForClassWrapper<string>(34);
-    private string avatarUrl_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string AvatarUrl {
-      get { return avatarUrl_; }
-      set {
-        avatarUrl_ = value;
-      }
-    }
-
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override bool Equals(object other) {
-      return Equals(other as VehicleUpdates);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(VehicleUpdates other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (Make != other.Make) return false;
-      if (Model != other.Model) return false;
-      if (Year != other.Year) return false;
-      if (AvatarUrl != other.AvatarUrl) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (make_ != null) hash ^= Make.GetHashCode();
-      if (model_ != null) hash ^= Model.GetHashCode();
-      if (year_ != null) hash ^= Year.GetHashCode();
-      if (avatarUrl_ != null) hash ^= AvatarUrl.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void WriteTo(pb::CodedOutputStream output) {
-      if (make_ != null) {
-        _single_make_codec.WriteTagAndValue(output, Make);
-      }
-      if (model_ != null) {
-        _single_model_codec.WriteTagAndValue(output, Model);
-      }
-      if (year_ != null) {
-        _single_year_codec.WriteTagAndValue(output, Year);
-      }
-      if (avatarUrl_ != null) {
-        _single_avatarUrl_codec.WriteTagAndValue(output, AvatarUrl);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int CalculateSize() {
-      int size = 0;
-      if (make_ != null) {
-        size += _single_make_codec.CalculateSizeWithTag(Make);
-      }
-      if (model_ != null) {
-        size += _single_model_codec.CalculateSizeWithTag(Model);
-      }
-      if (year_ != null) {
-        size += _single_year_codec.CalculateSizeWithTag(Year);
-      }
-      if (avatarUrl_ != null) {
-        size += _single_avatarUrl_codec.CalculateSizeWithTag(AvatarUrl);
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(VehicleUpdates other) {
-      if (other == null) {
-        return;
-      }
-      if (other.make_ != null) {
-        if (make_ == null || other.Make != "") {
-          Make = other.Make;
-        }
-      }
-      if (other.model_ != null) {
-        if (model_ == null || other.Model != "") {
-          Model = other.Model;
-        }
-      }
-      if (other.year_ != null) {
-        if (year_ == null || other.Year != 0) {
-          Year = other.Year;
-        }
-      }
-      if (other.avatarUrl_ != null) {
-        if (avatarUrl_ == null || other.AvatarUrl != "") {
-          AvatarUrl = other.AvatarUrl;
-        }
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(pb::CodedInputStream input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 10: {
-            string value = _single_make_codec.Read(input);
-            if (make_ == null || value != "") {
-              Make = value;
-            }
-            break;
-          }
-          case 18: {
-            string value = _single_model_codec.Read(input);
-            if (model_ == null || value != "") {
-              Model = value;
-            }
-            break;
-          }
-          case 26: {
-            int? value = _single_year_codec.Read(input);
-            if (year_ == null || value != 0) {
-              Year = value;
-            }
-            break;
-          }
-          case 34: {
-            string value = _single_avatarUrl_codec.Read(input);
-            if (avatarUrl_ == null || value != "") {
-              AvatarUrl = value;
-            }
             break;
           }
         }

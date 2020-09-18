@@ -24,8 +24,8 @@ type VehicleDto =
       make: string
       model: string
       year: int
-      avatarUrl: string
-      imageUrls: string array
+      avatarUri: string
+      imageUris: string array
       status: string }
 
 type Store() =
@@ -43,8 +43,8 @@ type Store() =
                       make = doc.make
                       model = doc.model
                       year = doc.year
-                      avatarUrl = doc.avatarUrl
-                      imageUrls = doc.imageUrls
+                      avatarUri = match doc.avatarUri with uri when isNull uri -> "" | uri -> uri
+                      imageUris = match doc.imageUris with uris when isNull uris -> [||] | uris -> uris
                       status = doc.status })
                 .First()
         with ex ->
@@ -69,17 +69,17 @@ let assertPermissionDenied (permission:string) (ex:exn) =
             (Status(StatusCode.PermissionDenied, msg))
     | other -> failwithf "wrong exception %A" other
 
-let addVehicle (user:CosmicDealership.User.V1.User) (vehicle:CosmicDealership.Vehicle.V1.Vehicle) =
-    let req = CosmicDealership.Vehicle.V1.AddVehicleRequest(User=user, Vehicle=vehicle)
+let addVehicle (user:CosmicDealership.User.V1.User) (vehicleId:string) (vehicle:CosmicDealership.Vehicle.V1.Vehicle) =
+    let req = CosmicDealership.Vehicle.V1.AddVehicleRequest(User=user, VehicleId=vehicleId, Vehicle=vehicle)
     vehicleService.AddVehicle(req)
 
-let updateVehicle (user:CosmicDealership.User.V1.User) (updates:CosmicDealership.Vehicle.V1.VehicleUpdates) =
-    let req = CosmicDealership.Vehicle.V1.UpdateVehicleRequest(User = user, VehicleUpdates = updates)
+let updateVehicle (user:CosmicDealership.User.V1.User) (vehicleId:string) (vehicle:CosmicDealership.Vehicle.V1.Vehicle) =
+    let req = CosmicDealership.Vehicle.V1.UpdateVehicleRequest(User=user, VehicleId=vehicleId, Vehicle = vehicle)
     vehicleService.UpdateVehicle(req)
 
-let addVehicleImage (user:CosmicDealership.User.V1.User) (imageUrl:string) =
-    let req = CosmicDealership.Vehicle.V1.AddVehicleImageRequest(User = user, ImageUrl = imageUrl)
-    vehicleService.AddVehicleImage(req)
+let addImage (user:CosmicDealership.User.V1.User) (vehicleId:string) (imageUri:string) =
+    let req = CosmicDealership.Vehicle.V1.AddImageRequest(User=user, VehicleId=vehicleId, ImageUri=imageUri)
+    vehicleService.AddImage(req)
 
 let removeVehicle (user:CosmicDealership.User.V1.User) (vehicleId:string) =
     let req = CosmicDealership.Vehicle.V1.RemoveVehicleRequest(User=user, VehicleId=vehicleId)
@@ -101,25 +101,22 @@ let testAddVehicle =
                 let vehicleId = createVehicleId()
                 let vehicle =
                     CosmicDealership.Vehicle.V1.Vehicle(
-                        VehicleId=vehicleId,
                         Make="Falcon",
                         Model=sprintf "%i" i,
-                        Year=2016,
-                        AvatarUrl="http://localhost:8000/avatar.png")
-                vehicle.ImageUrls.AddRange(["http://localhost:8000/image.png"])
-                yield vehicle ]
-        for vehicle in vehicles do
-            addVehicle user vehicle |> ignore
+                        Year=2016)
+                yield vehicleId, vehicle ]
+        for vehicleId, vehicle in vehicles do
+            addVehicle user vehicleId vehicle |> ignore
         Thread.Sleep 2000
-        for i, vehicle in vehicles |> List.indexed do
-            let vehicleState = store.GetVehicle(vehicle.VehicleId)
+        for i, (vehicleId, vehicle) in vehicles |> List.indexed do
+            let vehicleState = store.GetVehicle(vehicleId)
             let expectedVehicleState =
-                { vehicleId = vehicle.VehicleId
+                { vehicleId = vehicleId
                   make = "Falcon" 
                   model = sprintf "%i" i
                   year = 2016
-                  avatarUrl = "http://localhost:8000/avatar.png"
-                  imageUrls = [|"http://localhost:8000/image.png"|]
+                  avatarUri = ""
+                  imageUris = [||]
                   status = "Available" }
             vehicleState
             |> Expect.equal "should return vehicle in available state" expectedVehicleState
@@ -131,11 +128,10 @@ let testAddVehicleDenied =
         let vehicleId = createVehicleId()
         let vehicle =
             CosmicDealership.Vehicle.V1.Vehicle(
-                VehicleId=vehicleId,
                 Make="Falcon",
                 Model="9",
                 Year=2016)
-        let f () = addVehicle user vehicle |> ignore
+        let f () = addVehicle user vehicleId vehicle |> ignore
         let cont = assertPermissionDenied "add:vehicles"
         Expect.throwsC cont f
     }
@@ -146,26 +142,25 @@ let testUpdateVehicle =
         let vehicleId = createVehicleId()
         let vehicle =
             CosmicDealership.Vehicle.V1.Vehicle(
-                VehicleId=vehicleId,
                 Make="Falcon",
                 Model="9",
-                AvatarUrl="http://localhost:8000/avatar.png",
                 Year=2016)
-        addVehicle user vehicle |> ignore
-        let updates =
-            CosmicDealership.Vehicle.V1.VehicleUpdates(
+        addVehicle user vehicleId vehicle |> ignore
+        let newVehicle =
+            CosmicDealership.Vehicle.V1.Vehicle(
                 Make="Hawk",
-                Model="10")
-        updateVehicle user updates |> ignore
+                Model="10",
+                Year=2016)
+        updateVehicle user vehicleId newVehicle |> ignore
         Thread.Sleep 2000
-        let vehicleState = store.GetVehicle(vehicle.VehicleId)
+        let vehicleState = store.GetVehicle(vehicleId)
         let expectedVehicleState =
-            { vehicleId = vehicle.VehicleId
+            { vehicleId = vehicleId
               make = "Hawk"
               model = "10"
               year = 2016
-              avatarUrl = "http://localhost:8000/avatar.png"
-              imageUrls = [||]
+              avatarUri = ""
+              imageUris = [||]
               status = "Available" }
         vehicleState
         |> Expect.equal "should return vehicle in available state" expectedVehicleState
@@ -177,12 +172,10 @@ let testRemoveVehicle =
         let vehicleId = Guid.NewGuid().ToString("N")
         let vehicle =
             CosmicDealership.Vehicle.V1.Vehicle(
-                VehicleId=vehicleId,
                 Make="Falcon",
                 Model="9",
-                AvatarUrl="http://localhost:8000/avatar.png",
                 Year=2016)
-        addVehicle user vehicle |> ignore
+        addVehicle user vehicleId vehicle |> ignore
         removeVehicle user vehicleId |> ignore
         Thread.Sleep 2000
         let vehicleState = store.GetVehicle(vehicleId)
@@ -191,8 +184,8 @@ let testRemoveVehicle =
               make = "Falcon"
               model = "9"
               year = 2016
-              avatarUrl = "http://localhost:8000/avatar.png"
-              imageUrls = [||]
+              avatarUri = ""
+              imageUris = [||]
               status = "Removed" }
         vehicleState
         |> Expect.equal "should return vehicle in removed state" expectedVehicleState
@@ -204,12 +197,10 @@ let testRemoveVehicleDenied =
         let vehicleId = Guid.NewGuid().ToString("N")
         let vehicle =
             CosmicDealership.Vehicle.V1.Vehicle(
-                VehicleId=vehicleId,
                 Make="Falcon",
                 Model="9",
-                AvatarUrl="http://localhost:8000/avatar.png",
                 Year=2016)
-        addVehicle user vehicle |> ignore
+        addVehicle user vehicleId vehicle |> ignore
         let f () = removeVehicle user vehicleId |> ignore
         let cont = assertPermissionDenied "remove:vehicles"
         Expect.throwsC cont f

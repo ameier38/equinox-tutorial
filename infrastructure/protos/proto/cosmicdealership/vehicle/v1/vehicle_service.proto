@@ -14,8 +14,14 @@ service VehicleService {
   rpc AddVehicle(AddVehicleRequest) returns (AddVehicleResponse);
   // Update an existing vehicle.
   rpc UpdateVehicle(UpdateVehicleRequest) returns (UpdateVehicleResponse);
+  // Update the vehicle avatar.
+  rpc UpdateAvatar(UpdateAvatarRequest) returns (UpdateAvatarResponse);
+  // Remove the vehicle avatar.
+  rpc RemoveAvatar(RemoveAvatarRequest) returns (RemoveAvatarResponse);
   // Add a vehicle image.
-  rpc AddVehicleImage(AddVehicleImageRequest) returns (AddVehicleImageResponse);
+  rpc AddImage(AddImageRequest) returns (AddImageResponse);
+  // Remove a vehicle image.
+  rpc RemoveImage(RemoveImageRequest) returns (RemoveImageResponse);
   // Remove a vehicle from inventory.
   rpc RemoveVehicle(RemoveVehicleRequest) returns (RemoveVehicleResponse);
   // Lease a vehicle.
@@ -26,31 +32,90 @@ service VehicleService {
 
 message AddVehicleRequest {
   user.v1.User user = 1;
-  Vehicle vehicle = 2;
+  string vehicle_id = 2;
+  Vehicle vehicle = 3;
 }
 
 message AddVehicleResponse {
-  string message = 1;
+  oneof response {
+    string success = 1;
+    string vehicle_already_exists = 2;
+    string vehicle_invalid = 3;
+    string permission_denied = 4;
+  }
 }
 
 message UpdateVehicleRequest {
   user.v1.User user = 1;
   string vehicle_id = 2;
-  VehicleUpdates vehicle_updates = 3;
+  Vehicle vehicle = 3;
 }
 
 message UpdateVehicleResponse {
-  string message = 1;
+  oneof response {
+    string success = 1;
+    string vehicle_not_found = 2;
+    string vehicle_invalid = 3;
+    string permission_denied = 4;
+  }
 }
 
-message AddVehicleImageRequest {
+message UpdateAvatarRequest {
+    user.v1.User user = 1;
+    string vehicle_id = 2;
+    string avatar_uri = 3;
+}
+
+message UpdateAvatarResponse {
+  oneof response {
+    string success = 1;
+    string vehicle_not_found = 2;
+    string avatar_invalid = 3;
+    string permission_denied = 4;
+  }
+}
+
+message RemoveAvatarRequest {
+    user.v1.User user = 1;
+    string vehicle_id = 2;
+}
+
+message RemoveAvatarResponse {
+  oneof response {
+    string success = 1;
+    string vehicle_not_found = 2;
+    string permission_denied = 3;
+  }
+}
+
+message AddImageRequest {
   user.v1.User user = 1;
   string vehicle_id = 2;
-  string image_url = 3;
+  string image_uri = 3;
 }
 
-message AddVehicleImageResponse {
-  string message = 1;
+message AddImageResponse {
+  oneof response {
+    string success = 1;
+    string vehicle_not_found = 2;
+    string image_invalid = 3;
+    string permission_denied = 4;
+  }
+}
+
+message RemoveImageRequest {
+    user.v1.User user = 1;
+    string vehicle_id = 2;
+    string image_uri = 3;
+}
+
+message RemoveImageResponse {
+  oneof response {
+    string success = 1;
+    string vehicle_not_found = 2;
+    string image_not_found = 3;
+    string permission_denied = 4;
+  }
 }
 
 message RemoveVehicleRequest {
@@ -59,7 +124,12 @@ message RemoveVehicleRequest {
 }
 
 message RemoveVehicleResponse {
-  string message = 1;
+  oneof response {
+    string success = 1;
+    string vehicle_not_found = 2;
+    string vehicle_currently_leased = 3;
+    string permission_denied = 4;
+  }
 }
 
 message LeaseVehicleRequest {
@@ -68,7 +138,12 @@ message LeaseVehicleRequest {
 }
 
 message LeaseVehicleResponse {
-  string message = 1;
+  oneof response {
+    string success = 1;
+    string vehicle_not_found = 2;
+    string vehicle_currently_leased = 3;
+    string permission_denied = 4;
+  }
 }
 
 message ReturnVehicleRequest {
@@ -77,5 +152,10 @@ message ReturnVehicleRequest {
 }
 
 message ReturnVehicleResponse {
-  string message = 1;
+  oneof response {
+    string success = 1;
+    string vehicle_not_found = 2;
+    string vehicle_already_returned = 3;
+    string permission_denied = 4;
+  }
 }

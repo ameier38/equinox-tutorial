@@ -1,0 +1,21 @@
+query ListVehicles($input:ListVehiclesInput!) {
+    listVehicles(input:$input) {
+        __typename
+        ... on PermissionDenied {
+            __typename
+            message
+        }
+        ... on Vehicles {
+            __typename
+            totalCount
+            prevPageToken
+            nextPageToken
+            vehicles {
+                vehicleId
+                make
+                model
+                year
+            }
+        }
+    }
+}

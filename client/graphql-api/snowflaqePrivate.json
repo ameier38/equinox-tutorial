@@ -1,0 +1,8 @@
+{
+    "schema": "http://localhost:4001/schema",
+    "queries": "./queries/private",
+    "project": "PrivateClient",
+    "output": "./src/PrivateClient",
+    "overrideClientName": "PrivateGraphqlClient",
+    "target": "fsharp"
+}

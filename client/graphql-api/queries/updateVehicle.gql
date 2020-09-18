@@ -1,3 +1,0 @@
-mutation UpdateVehicle($input:UpdateVehicleInput!) {
-    updateVehicle(input:$input)
-}

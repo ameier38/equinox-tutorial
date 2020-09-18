@@ -1,124 +1,150 @@
 module Server.Aggregate
 
 open Shared
-open System
 
 let initial = Unknown
-
-module Vehicle =
-    let addImageUrl (imageUrl:Uri) (vehicle:Vehicle) =
-        { vehicle with
-            ImageUrls = imageUrl :: vehicle.ImageUrls }
 
 let evolve : VehicleState -> VehicleEvent -> VehicleState =
     fun state event ->
         match event with
-        | VehicleAdded vehicle ->
-            Available vehicle
-        | VehicleUpdated vehicle ->
-            match state with
-            | Available _ -> Available vehicle
-            | Leased _ -> Leased vehicle
-            | other -> other
-        | VehicleImageAdded vehicle ->
-            match state with
-            | Available _ -> Available vehicle
-            | Leased _ -> Leased vehicle
-            | other -> other
-        | VehicleRemoved _ ->
-            Removed
-        | VehicleLeased _ ->
-            match state with
-            | Available vehicle -> Leased vehicle
-            | other -> other
-        | VehicleReturned _ ->
-            match state with
-            | Leased vehicle -> Available vehicle
-            | other -> other
+        | VehicleUpdated _
+        | ImageAdded _
+        | ImageRemoved _
+        | AvatarUpdated _
+        | AvatarRemoved _ -> state
+        | VehicleAdded _ -> Available
+        | VehicleRemoved _ -> Unknown
+        | VehicleLeased _ -> Leased
+        | VehicleReturned _ -> Available
 
-let interpret
+let decide
     (vehicleId:VehicleId)
-    : VehicleCommand -> VehicleState -> VehicleEvent list =
+    : VehicleCommand -> VehicleState -> Result<string, VehicleError> * VehicleEvent list =
     fun command state ->
-        let vehicleIdStr = Guid.toStringN vehicleId
+        let vehicleIdStr = VehicleId.toStringN vehicleId
         match command with
         | AddVehicle vehicle ->
             match state with
             | Unknown ->
-                [VehicleAdded vehicle]
+                Ok (sprintf "successfully added Vehicle-%s" vehicleIdStr),
+                [VehicleAdded {| VehicleId = vehicleId; Vehicle = vehicle |}]
             | other -> 
-                sprintf "cannot add vehicle; Vehicle-%s already exists: %A" vehicleIdStr other
-                |> RpcException.raiseAlreadyExists
-        | UpdateVehicle updates ->
+                let error =
+                    sprintf "cannot add vehicle; Vehicle-%s already exists: %A" vehicleIdStr other
+                    |> VehicleAlreadyExists
+                    |> Error
+                error, []
+        | UpdateVehicle vehicle ->
             match state with
-            | Available vehicle
-            | Leased vehicle ->
-                { vehicle with
-                    Make = updates.Make |> Option.defaultValue vehicle.Make
-                    Model = updates.Model |> Option.defaultValue vehicle.Model
-                    Year = updates.Year |> Option.defaultValue vehicle.Year
-                    AvatarUrl = updates.AvatarUrl |> Option.defaultValue vehicle.AvatarUrl }
-                |> VehicleUpdated
-                |> List.singleton
-            | Removed ->
-                sprintf "cannot update vehicle; Vehicle-%s already removed" vehicleIdStr
-                |> RpcException.raiseInternal
+            | Available
+            | Leased ->
+                Ok (sprintf "successfully updated Vehicle-%s" vehicleIdStr),
+                [VehicleUpdated {| VehicleId = vehicleId; Vehicle = vehicle |}]
             | Unknown ->
-                sprintf "cannot update vehicle; Vehicle-%s does not exist" vehicleIdStr
-                |> RpcException.raiseNotFound
-        | AddVehicleImage imageUrl ->
+                let error =
+                    sprintf "cannot update vehicle; Vehicle-%s does not exist" vehicleIdStr
+                    |> VehicleNotFound
+                    |> Error
+                error, []
+        | UpdateAvatar imageUri ->
             match state with
-            | Available vehicle
-            | Leased vehicle ->
-                vehicle
-                |> Vehicle.addImageUrl imageUrl
-                |> VehicleImageAdded
-                |> List.singleton
-            | Removed ->
-                sprintf "cannot add vehicle image; Vehicle-%s already removed" vehicleIdStr
-                |> RpcException.raiseInternal
+            | Available
+            | Leased ->
+                Ok (sprintf "successfully updated Vehicle-%s avatar" vehicleIdStr),
+                [AvatarUpdated {| VehicleId = vehicleId; AvatarUri = imageUri |}]
             | Unknown ->
-                sprintf "cannot add vehicle image; Vehicle-%s does not exist" vehicleIdStr
-                |> RpcException.raiseNotFound
+                let error =
+                    sprintf "cannot update vehicle avatar; Vehicle-%s does not exist" vehicleIdStr
+                    |> VehicleNotFound
+                    |> Error
+                error, []
+        | RemoveAvatar ->
+            match state with
+            | Available
+            | Leased ->
+                Ok (sprintf "successfully removed Vehicle-%s avatar" vehicleIdStr),
+                [AvatarRemoved {| VehicleId = vehicleId |}]
+            | Unknown ->
+                let error =
+                    sprintf "cannot remove vehicle avatar; Vehicle-%s does not exist" vehicleIdStr
+                    |> VehicleNotFound
+                    |> Error
+                error, []
+        | AddImage imageUri ->
+            match state with
+            | Available
+            | Leased ->
+                Ok (sprintf "successfully added Vehicle-%s image" vehicleIdStr),
+                [ImageAdded {| VehicleId = vehicleId; ImageUri = imageUri |}]
+            | Unknown ->
+                let error =
+                    sprintf "cannot add vehicle image; Vehicle-%s does not exist" vehicleIdStr
+                    |> VehicleNotFound
+                    |> Error
+                error, []
+        | RemoveImage imageUri ->
+            match state with
+            | Available
+            | Leased ->
+                Ok (sprintf "successfully removed Vehicle-%s image" vehicleIdStr),
+                [ImageRemoved {| VehicleId = vehicleId; ImageUri = imageUri |}]
+            | Unknown ->
+                let error =
+                    sprintf "cannot remove vehicle image; Vehicle-%s does not exist" vehicleIdStr
+                    |> VehicleNotFound
+                    |> Error
+                error, []
         | RemoveVehicle ->
             match state with
-            | Available vehicle ->
-                [VehicleRemoved {| VehicleId = vehicle.VehicleId |}]
-            | Removed ->
-                sprintf "cannot remove vehicle; Vehicle-%s already removed" vehicleIdStr
-                |> RpcException.raiseInternal
-            | Leased _ ->
-                sprintf "cannot remove vehicle; Vehicle-%s is leased" vehicleIdStr
-                |> RpcException.raiseInternal
+            | Available ->
+                Ok (sprintf "successfully removed Vehicle-%s" vehicleIdStr),
+                [ VehicleRemoved {| VehicleId = vehicleId |} ]
+            | Leased ->
+                let error =
+                    sprintf "cannot remove vehicle; Vehicle-%s is leased" vehicleIdStr
+                    |> VehicleCurrentlyLeased
+                    |> Error
+                error, []
             | Unknown ->
-                sprintf "cannot remove vehicle; Vehicle-%s does not exist" vehicleIdStr
-                |> RpcException.raiseNotFound
+                let error =
+                    sprintf "cannot remove vehicle; Vehicle-%s does not exist" vehicleIdStr
+                    |> VehicleNotFound
+                    |> Error
+                error, []
         | LeaseVehicle ->
             match state with
-            | Available vehicle ->
-                [VehicleLeased {| VehicleId = vehicle.VehicleId |}]
-            | Removed ->
-                sprintf "cannot lease vehicle; Vehicle-%s removed" vehicleIdStr
-                |> RpcException.raiseInternal
+            | Available ->
+                Ok (sprintf "successfully leased Vehicle-%s" vehicleIdStr),
+                [VehicleLeased {| VehicleId = vehicleId |}]
             | Leased _ ->
-                sprintf "cannot lease vehicle; Vehicle-%s already leased" vehicleIdStr
-                |> RpcException.raiseInternal
+                let error =
+                    sprintf "cannot lease vehicle; Vehicle-%s currently leased" vehicleIdStr
+                    |> VehicleCurrentlyLeased
+                    |> Error
+                error, []
             | Unknown ->
-                sprintf "cannot lease vehicle; Vehicle-%s does not exist" vehicleIdStr
-                |> RpcException.raiseNotFound
+                let error =
+                    sprintf "cannot lease vehicle; Vehicle-%s does not exist" vehicleIdStr
+                    |> VehicleNotFound
+                    |> Error
+                error, []
         | ReturnVehicle ->
             match state with
-            | Leased vehicle ->
-                [VehicleReturned {| VehicleId = vehicle.VehicleId |}]
+            | Leased ->
+                Ok (sprintf "successfully returned Vehicle-%s" vehicleIdStr),
+                [ VehicleReturned {| VehicleId = vehicleId |} ]
             | Available _ ->
-                sprintf "cannot return vehicle; Vehicle-%s already returned" vehicleIdStr
-                |> RpcException.raiseInternal
-            | Removed ->
-                sprintf "cannot return vehicle; Vehicle-%s is removed" vehicleIdStr
-                |> RpcException.raiseInternal
+                let error =
+                    sprintf "cannot return vehicle; Vehicle-%s already returned" vehicleIdStr
+                    |> VehicleAlreadyReturned
+                    |> Error
+                error, []
             | Unknown ->
-                sprintf "cannot return vehicle; Vehicle-%s does not exist" vehicleIdStr
-                |> RpcException.raiseNotFound
+                let error =
+                    sprintf "cannot return vehicle; Vehicle-%s does not exist" vehicleIdStr
+                    |> VehicleNotFound
+                    |> Error
+                error, []
 
 let fold: VehicleState -> seq<VehicleEvent> -> VehicleState =
     Seq.fold evolve

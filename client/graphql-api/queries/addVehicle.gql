@@ -1,3 +1,0 @@
-mutation AddVehicle($input:AddVehicleInput!) {
-    addVehicle(input: $input)
-}

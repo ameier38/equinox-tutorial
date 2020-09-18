@@ -1,0 +1,17 @@
+mutation RemoveVehicle($input:RemoveVehicleInput!) {
+    removeVehicle(input: $input) {
+        __typename
+        ...on Success {
+            __typename
+            message
+        }
+        ... on NotFound {
+            __typename
+            message
+        }
+        ... on PermissionDenied {
+            __typename
+            message
+        }
+    }
+}

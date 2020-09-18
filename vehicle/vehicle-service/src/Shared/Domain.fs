@@ -3,23 +3,17 @@ namespace Shared
 open System
 
 type Vehicle =
-    { VehicleId: VehicleId
-      Make: string
-      Model: string
-      Year: int
-      AvatarUrl: Uri
-      ImageUrls: Uri list }
-
-type VehicleUpdates =
-    { Make: string option
-      Model: string option
-      Year: int option
-      AvatarUrl: Uri option }
+    { Make: Make
+      Model: Model
+      Year: Year }
 
 type VehicleEvent =
-    | VehicleAdded of Vehicle
-    | VehicleUpdated of Vehicle
-    | VehicleImageAdded of Vehicle
+    | VehicleAdded of {| VehicleId: VehicleId; Vehicle: Vehicle |}
+    | VehicleUpdated of {| VehicleId: VehicleId; Vehicle: Vehicle |}
+    | AvatarUpdated of {| VehicleId: VehicleId; AvatarUri: Uri |}
+    | AvatarRemoved of {| VehicleId: VehicleId |}
+    | ImageAdded of {| VehicleId: VehicleId; ImageUri: Uri |}
+    | ImageRemoved of {| VehicleId: VehicleId; ImageUri: Uri |}
     | VehicleRemoved of {| VehicleId: VehicleId |}
     | VehicleLeased of {| VehicleId: VehicleId |}
     | VehicleReturned of {| VehicleId: VehicleId |}
@@ -27,14 +21,22 @@ type VehicleEvent =
 
 type VehicleCommand =
     | AddVehicle of Vehicle
-    | UpdateVehicle of VehicleUpdates
-    | AddVehicleImage of Uri
+    | UpdateVehicle of Vehicle
+    | UpdateAvatar of Uri
+    | RemoveAvatar
+    | AddImage of Uri
+    | RemoveImage of Uri
     | RemoveVehicle
     | LeaseVehicle
     | ReturnVehicle
 
 type VehicleState =
     | Unknown
-    | Available of Vehicle
-    | Leased of Vehicle
-    | Removed
+    | Available
+    | Leased
+
+type VehicleError =
+    | VehicleNotFound of string
+    | VehicleAlreadyExists of string
+    | VehicleCurrentlyLeased of string
+    | VehicleAlreadyReturned of string

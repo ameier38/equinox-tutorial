@@ -3,20 +3,22 @@ version 5.241.2
 source https://www.nuget.org/api/v2
 storage: none
 
+nuget Argu
 nuget Expecto
 nuget FSharp.Data.GraphQL.Server
 nuget FSharp.Data.GraphQL.Client
 nuget FSharp.UMX
+nuget Giraffe
 nuget Google.Api.CommonProtos
 nuget Google.Protobuf 3.11.2
 nuget Grpc.Core 2.28.1
 nuget Grpc.Core.Api 2.28.1
+nuget Microsoft.AspNetCore.Authentication.JwtBearer
 nuget MongoDB.Driver
 nuget Newtonsoft.Json
 nuget Serilog
 nuget Serilog.Sinks.Console
 nuget Serilog.Sinks.Seq
-nuget Suave
 nuget System.IdentityModel.Tokens.Jwt
 
 // [ FAKE GROUP ]

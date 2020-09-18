@@ -53,17 +53,24 @@ BuildTask.create "UpdateProtos" [copyGenerated] {
 
 BuildTask.create "Restore" [] {
     Trace.trace "Restoring..."
-    [ "src/Server/Server.fsproj"
+    [ "src/GraphqlApi/GraphqlApi.fsproj"
       "src/IntegrationTests/IntegrationTests.fsproj" ]
     |> List.iter (DotNet.restore id)
 }
 
-let generateTestClient = BuildTask.create "Generate" [] {
-    Trace.trace "Generating test client..."
-    snowflaqe ["--generate"]
+let generatePublic = BuildTask.create "GeneratePublic" [] {
+    Trace.trace "Generating public test client..."
+    snowflaqe ["--generate"; "--config"; "snowflaqePublic.json"]
 }
 
-BuildTask.create "TestIntegrations" [generateTestClient] {
+let generatePrivate = BuildTask.create "GeneratePrivate" [] {
+    Trace.trace "Generating private test client..."
+    snowflaqe ["--generate"; "--config"; "snowflaqePrivate.json"]
+}
+
+let generate = BuildTask.createEmpty "Generate" [generatePublic; generatePrivate]
+
+BuildTask.create "TestIntegrations" [generate] {
     Trace.trace "Running integration tests..."
     let result = DotNet.exec id "run" "--project src/IntegrationTests/IntegrationTests.fsproj"
     if not result.OK then failwithf "Error! %A" result.Errors
@@ -79,13 +86,13 @@ BuildTask.create "Publish" [] {
         else failwithf "environment not supported"
     DotNet.publish (fun args ->
         { args with
-            OutputPath = Some "src/Server/out"
+            OutputPath = Some "src/GraphqlApi/out"
             Runtime = Some runtime })
-        "src/Server/Server.fsproj"
+        "src/GraphqlApi/GraphqlApi.fsproj"
 }
 
-BuildTask.create "Serve" [] {
-    DotNet.exec id "run" "--project src/Server/Server.fsproj"
+BuildTask.create "ServePublic" [] {
+    DotNet.exec id "run" "--project src/GraphqlApi/GraphqlApi.fsproj -- --audience public --insecure"
     |> ignore
 }
 

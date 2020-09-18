@@ -73,14 +73,31 @@ services:
       - seq
       - eventstore
       - mongo
-  graphql-api:
+  public-graphql-api:
     build:
       context: ./client/graphql-api
       target: runner
+    command: ["--audience", "public"]
     ports:
       - "4000:4000"
     environment:
       SERVER_PORT: 4000
+      VEHICLE_API_HOST: vehicle-api
+      VEHICLE_API_PORT: 50051
+      MONGO_HOST: mongo
+      SEQ_HOST: seq
+    depends_on: 
+      - vehicle-api
+      - vehicle-reactor
+  private-graphql-api:
+    build:
+      context: ./client/graphql-api
+      target: runner
+    command: ["--audience", "private", "--insecure"]
+    ports:
+      - "4001:4001"
+    environment:
+      SERVER_PORT: 4001
       VEHICLE_API_HOST: vehicle-api
       VEHICLE_API_PORT: 50051
       MONGO_HOST: mongo
@@ -101,4 +118,5 @@ services:
       - "3000:3000"
       - "35729:35729"
     depends_on:
-      - graphql-api
+      - public-graphql-api
+      - private-graphql-api

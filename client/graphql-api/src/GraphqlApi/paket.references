@@ -1,0 +1,12 @@
+Argu
+FSharp.Data.GraphQL.Server
+FSharp.UMX
+Giraffe
+Grpc.Core
+Microsoft.AspNetCore.Authentication.JwtBearer
+MongoDB.Driver
+Newtonsoft.Json
+Serilog
+Serilog.Sinks.Console
+Serilog.Sinks.Seq
+System.IdentityModel.Tokens.Jwt

@@ -11,6 +11,7 @@ nuget FsCodec
 nuget FsCodec.NewtonsoftJson
 nuget FSharp.UMX
 nuget FSharp.Control.AsyncSeq 2.0.21
+nuget FSharp.ValidationBlocks
 nuget Google.Api.CommonProtos
 nuget Google.Protobuf 3.11.2
 nuget Grpc.Core 2.28.1

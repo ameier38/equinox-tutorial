@@ -19,8 +19,14 @@ namespace CosmicDealership.Vehicle.V1 {
     static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.AddVehicleResponse> __Marshaller_cosmicdealership_vehicle_v1_AddVehicleResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CosmicDealership.Vehicle.V1.AddVehicleResponse.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.UpdateVehicleRequest> __Marshaller_cosmicdealership_vehicle_v1_UpdateVehicleRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CosmicDealership.Vehicle.V1.UpdateVehicleRequest.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.UpdateVehicleResponse> __Marshaller_cosmicdealership_vehicle_v1_UpdateVehicleResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CosmicDealership.Vehicle.V1.UpdateVehicleResponse.Parser.ParseFrom);
-    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.AddVehicleImageRequest> __Marshaller_cosmicdealership_vehicle_v1_AddVehicleImageRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CosmicDealership.Vehicle.V1.AddVehicleImageRequest.Parser.ParseFrom);
-    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.AddVehicleImageResponse> __Marshaller_cosmicdealership_vehicle_v1_AddVehicleImageResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CosmicDealership.Vehicle.V1.AddVehicleImageResponse.Parser.ParseFrom);
+    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.UpdateAvatarRequest> __Marshaller_cosmicdealership_vehicle_v1_UpdateAvatarRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CosmicDealership.Vehicle.V1.UpdateAvatarRequest.Parser.ParseFrom);
+    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.UpdateAvatarResponse> __Marshaller_cosmicdealership_vehicle_v1_UpdateAvatarResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CosmicDealership.Vehicle.V1.UpdateAvatarResponse.Parser.ParseFrom);
+    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.RemoveAvatarRequest> __Marshaller_cosmicdealership_vehicle_v1_RemoveAvatarRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CosmicDealership.Vehicle.V1.RemoveAvatarRequest.Parser.ParseFrom);
+    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.RemoveAvatarResponse> __Marshaller_cosmicdealership_vehicle_v1_RemoveAvatarResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CosmicDealership.Vehicle.V1.RemoveAvatarResponse.Parser.ParseFrom);
+    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.AddImageRequest> __Marshaller_cosmicdealership_vehicle_v1_AddImageRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CosmicDealership.Vehicle.V1.AddImageRequest.Parser.ParseFrom);
+    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.AddImageResponse> __Marshaller_cosmicdealership_vehicle_v1_AddImageResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CosmicDealership.Vehicle.V1.AddImageResponse.Parser.ParseFrom);
+    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.RemoveImageRequest> __Marshaller_cosmicdealership_vehicle_v1_RemoveImageRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CosmicDealership.Vehicle.V1.RemoveImageRequest.Parser.ParseFrom);
+    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.RemoveImageResponse> __Marshaller_cosmicdealership_vehicle_v1_RemoveImageResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CosmicDealership.Vehicle.V1.RemoveImageResponse.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.RemoveVehicleRequest> __Marshaller_cosmicdealership_vehicle_v1_RemoveVehicleRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CosmicDealership.Vehicle.V1.RemoveVehicleRequest.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.RemoveVehicleResponse> __Marshaller_cosmicdealership_vehicle_v1_RemoveVehicleResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CosmicDealership.Vehicle.V1.RemoveVehicleResponse.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.LeaseVehicleRequest> __Marshaller_cosmicdealership_vehicle_v1_LeaseVehicleRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CosmicDealership.Vehicle.V1.LeaseVehicleRequest.Parser.ParseFrom);
@@ -42,12 +48,33 @@ namespace CosmicDealership.Vehicle.V1 {
         __Marshaller_cosmicdealership_vehicle_v1_UpdateVehicleRequest,
         __Marshaller_cosmicdealership_vehicle_v1_UpdateVehicleResponse);
 
-    static readonly grpc::Method<global::CosmicDealership.Vehicle.V1.AddVehicleImageRequest, global::CosmicDealership.Vehicle.V1.AddVehicleImageResponse> __Method_AddVehicleImage = new grpc::Method<global::CosmicDealership.Vehicle.V1.AddVehicleImageRequest, global::CosmicDealership.Vehicle.V1.AddVehicleImageResponse>(
+    static readonly grpc::Method<global::CosmicDealership.Vehicle.V1.UpdateAvatarRequest, global::CosmicDealership.Vehicle.V1.UpdateAvatarResponse> __Method_UpdateAvatar = new grpc::Method<global::CosmicDealership.Vehicle.V1.UpdateAvatarRequest, global::CosmicDealership.Vehicle.V1.UpdateAvatarResponse>(
         grpc::MethodType.Unary,
         __ServiceName,
-        "AddVehicleImage",
-        __Marshaller_cosmicdealership_vehicle_v1_AddVehicleImageRequest,
-        __Marshaller_cosmicdealership_vehicle_v1_AddVehicleImageResponse);
+        "UpdateAvatar",
+        __Marshaller_cosmicdealership_vehicle_v1_UpdateAvatarRequest,
+        __Marshaller_cosmicdealership_vehicle_v1_UpdateAvatarResponse);
+
+    static readonly grpc::Method<global::CosmicDealership.Vehicle.V1.RemoveAvatarRequest, global::CosmicDealership.Vehicle.V1.RemoveAvatarResponse> __Method_RemoveAvatar = new grpc::Method<global::CosmicDealership.Vehicle.V1.RemoveAvatarRequest, global::CosmicDealership.Vehicle.V1.RemoveAvatarResponse>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "RemoveAvatar",
+        __Marshaller_cosmicdealership_vehicle_v1_RemoveAvatarRequest,
+        __Marshaller_cosmicdealership_vehicle_v1_RemoveAvatarResponse);
+
+    static readonly grpc::Method<global::CosmicDealership.Vehicle.V1.AddImageRequest, global::CosmicDealership.Vehicle.V1.AddImageResponse> __Method_AddImage = new grpc::Method<global::CosmicDealership.Vehicle.V1.AddImageRequest, global::CosmicDealership.Vehicle.V1.AddImageResponse>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "AddImage",
+        __Marshaller_cosmicdealership_vehicle_v1_AddImageRequest,
+        __Marshaller_cosmicdealership_vehicle_v1_AddImageResponse);
+
+    static readonly grpc::Method<global::CosmicDealership.Vehicle.V1.RemoveImageRequest, global::CosmicDealership.Vehicle.V1.RemoveImageResponse> __Method_RemoveImage = new grpc::Method<global::CosmicDealership.Vehicle.V1.RemoveImageRequest, global::CosmicDealership.Vehicle.V1.RemoveImageResponse>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "RemoveImage",
+        __Marshaller_cosmicdealership_vehicle_v1_RemoveImageRequest,
+        __Marshaller_cosmicdealership_vehicle_v1_RemoveImageResponse);
 
     static readonly grpc::Method<global::CosmicDealership.Vehicle.V1.RemoveVehicleRequest, global::CosmicDealership.Vehicle.V1.RemoveVehicleResponse> __Method_RemoveVehicle = new grpc::Method<global::CosmicDealership.Vehicle.V1.RemoveVehicleRequest, global::CosmicDealership.Vehicle.V1.RemoveVehicleResponse>(
         grpc::MethodType.Unary,
@@ -103,12 +130,45 @@ namespace CosmicDealership.Vehicle.V1 {
       }
 
       /// <summary>
+      /// Update the vehicle avatar.
+      /// </summary>
+      /// <param name="request">The request received from the client.</param>
+      /// <param name="context">The context of the server-side call handler being invoked.</param>
+      /// <returns>The response to send back to the client (wrapped by a task).</returns>
+      public virtual global::System.Threading.Tasks.Task<global::CosmicDealership.Vehicle.V1.UpdateAvatarResponse> UpdateAvatar(global::CosmicDealership.Vehicle.V1.UpdateAvatarRequest request, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
+      /// <summary>
+      /// Remove the vehicle avatar.
+      /// </summary>
+      /// <param name="request">The request received from the client.</param>
+      /// <param name="context">The context of the server-side call handler being invoked.</param>
+      /// <returns>The response to send back to the client (wrapped by a task).</returns>
+      public virtual global::System.Threading.Tasks.Task<global::CosmicDealership.Vehicle.V1.RemoveAvatarResponse> RemoveAvatar(global::CosmicDealership.Vehicle.V1.RemoveAvatarRequest request, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
+      /// <summary>
       /// Add a vehicle image.
       /// </summary>
       /// <param name="request">The request received from the client.</param>
       /// <param name="context">The context of the server-side call handler being invoked.</param>
       /// <returns>The response to send back to the client (wrapped by a task).</returns>
-      public virtual global::System.Threading.Tasks.Task<global::CosmicDealership.Vehicle.V1.AddVehicleImageResponse> AddVehicleImage(global::CosmicDealership.Vehicle.V1.AddVehicleImageRequest request, grpc::ServerCallContext context)
+      public virtual global::System.Threading.Tasks.Task<global::CosmicDealership.Vehicle.V1.AddImageResponse> AddImage(global::CosmicDealership.Vehicle.V1.AddImageRequest request, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
+      /// <summary>
+      /// Remove a vehicle image.
+      /// </summary>
+      /// <param name="request">The request received from the client.</param>
+      /// <param name="context">The context of the server-side call handler being invoked.</param>
+      /// <returns>The response to send back to the client (wrapped by a task).</returns>
+      public virtual global::System.Threading.Tasks.Task<global::CosmicDealership.Vehicle.V1.RemoveImageResponse> RemoveImage(global::CosmicDealership.Vehicle.V1.RemoveImageRequest request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
@@ -260,6 +320,94 @@ namespace CosmicDealership.Vehicle.V1 {
         return CallInvoker.AsyncUnaryCall(__Method_UpdateVehicle, null, options, request);
       }
       /// <summary>
+      /// Update the vehicle avatar.
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The response received from the server.</returns>
+      public virtual global::CosmicDealership.Vehicle.V1.UpdateAvatarResponse UpdateAvatar(global::CosmicDealership.Vehicle.V1.UpdateAvatarRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return UpdateAvatar(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      /// <summary>
+      /// Update the vehicle avatar.
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The response received from the server.</returns>
+      public virtual global::CosmicDealership.Vehicle.V1.UpdateAvatarResponse UpdateAvatar(global::CosmicDealership.Vehicle.V1.UpdateAvatarRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_UpdateAvatar, null, options, request);
+      }
+      /// <summary>
+      /// Update the vehicle avatar.
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The call object.</returns>
+      public virtual grpc::AsyncUnaryCall<global::CosmicDealership.Vehicle.V1.UpdateAvatarResponse> UpdateAvatarAsync(global::CosmicDealership.Vehicle.V1.UpdateAvatarRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return UpdateAvatarAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      /// <summary>
+      /// Update the vehicle avatar.
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The call object.</returns>
+      public virtual grpc::AsyncUnaryCall<global::CosmicDealership.Vehicle.V1.UpdateAvatarResponse> UpdateAvatarAsync(global::CosmicDealership.Vehicle.V1.UpdateAvatarRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_UpdateAvatar, null, options, request);
+      }
+      /// <summary>
+      /// Remove the vehicle avatar.
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The response received from the server.</returns>
+      public virtual global::CosmicDealership.Vehicle.V1.RemoveAvatarResponse RemoveAvatar(global::CosmicDealership.Vehicle.V1.RemoveAvatarRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return RemoveAvatar(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      /// <summary>
+      /// Remove the vehicle avatar.
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The response received from the server.</returns>
+      public virtual global::CosmicDealership.Vehicle.V1.RemoveAvatarResponse RemoveAvatar(global::CosmicDealership.Vehicle.V1.RemoveAvatarRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_RemoveAvatar, null, options, request);
+      }
+      /// <summary>
+      /// Remove the vehicle avatar.
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The call object.</returns>
+      public virtual grpc::AsyncUnaryCall<global::CosmicDealership.Vehicle.V1.RemoveAvatarResponse> RemoveAvatarAsync(global::CosmicDealership.Vehicle.V1.RemoveAvatarRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return RemoveAvatarAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      /// <summary>
+      /// Remove the vehicle avatar.
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The call object.</returns>
+      public virtual grpc::AsyncUnaryCall<global::CosmicDealership.Vehicle.V1.RemoveAvatarResponse> RemoveAvatarAsync(global::CosmicDealership.Vehicle.V1.RemoveAvatarRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_RemoveAvatar, null, options, request);
+      }
+      /// <summary>
       /// Add a vehicle image.
       /// </summary>
       /// <param name="request">The request to send to the server.</param>
@@ -267,9 +415,9 @@ namespace CosmicDealership.Vehicle.V1 {
       /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
       /// <param name="cancellationToken">An optional token for canceling the call.</param>
       /// <returns>The response received from the server.</returns>
-      public virtual global::CosmicDealership.Vehicle.V1.AddVehicleImageResponse AddVehicleImage(global::CosmicDealership.Vehicle.V1.AddVehicleImageRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual global::CosmicDealership.Vehicle.V1.AddImageResponse AddImage(global::CosmicDealership.Vehicle.V1.AddImageRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
-        return AddVehicleImage(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+        return AddImage(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
       /// <summary>
       /// Add a vehicle image.
@@ -277,9 +425,9 @@ namespace CosmicDealership.Vehicle.V1 {
       /// <param name="request">The request to send to the server.</param>
       /// <param name="options">The options for the call.</param>
       /// <returns>The response received from the server.</returns>
-      public virtual global::CosmicDealership.Vehicle.V1.AddVehicleImageResponse AddVehicleImage(global::CosmicDealership.Vehicle.V1.AddVehicleImageRequest request, grpc::CallOptions options)
+      public virtual global::CosmicDealership.Vehicle.V1.AddImageResponse AddImage(global::CosmicDealership.Vehicle.V1.AddImageRequest request, grpc::CallOptions options)
       {
-        return CallInvoker.BlockingUnaryCall(__Method_AddVehicleImage, null, options, request);
+        return CallInvoker.BlockingUnaryCall(__Method_AddImage, null, options, request);
       }
       /// <summary>
       /// Add a vehicle image.
@@ -289,9 +437,9 @@ namespace CosmicDealership.Vehicle.V1 {
       /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
       /// <param name="cancellationToken">An optional token for canceling the call.</param>
       /// <returns>The call object.</returns>
-      public virtual grpc::AsyncUnaryCall<global::CosmicDealership.Vehicle.V1.AddVehicleImageResponse> AddVehicleImageAsync(global::CosmicDealership.Vehicle.V1.AddVehicleImageRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual grpc::AsyncUnaryCall<global::CosmicDealership.Vehicle.V1.AddImageResponse> AddImageAsync(global::CosmicDealership.Vehicle.V1.AddImageRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
-        return AddVehicleImageAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+        return AddImageAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
       /// <summary>
       /// Add a vehicle image.
@@ -299,9 +447,53 @@ namespace CosmicDealership.Vehicle.V1 {
       /// <param name="request">The request to send to the server.</param>
       /// <param name="options">The options for the call.</param>
       /// <returns>The call object.</returns>
-      public virtual grpc::AsyncUnaryCall<global::CosmicDealership.Vehicle.V1.AddVehicleImageResponse> AddVehicleImageAsync(global::CosmicDealership.Vehicle.V1.AddVehicleImageRequest request, grpc::CallOptions options)
+      public virtual grpc::AsyncUnaryCall<global::CosmicDealership.Vehicle.V1.AddImageResponse> AddImageAsync(global::CosmicDealership.Vehicle.V1.AddImageRequest request, grpc::CallOptions options)
       {
-        return CallInvoker.AsyncUnaryCall(__Method_AddVehicleImage, null, options, request);
+        return CallInvoker.AsyncUnaryCall(__Method_AddImage, null, options, request);
+      }
+      /// <summary>
+      /// Remove a vehicle image.
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The response received from the server.</returns>
+      public virtual global::CosmicDealership.Vehicle.V1.RemoveImageResponse RemoveImage(global::CosmicDealership.Vehicle.V1.RemoveImageRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return RemoveImage(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      /// <summary>
+      /// Remove a vehicle image.
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The response received from the server.</returns>
+      public virtual global::CosmicDealership.Vehicle.V1.RemoveImageResponse RemoveImage(global::CosmicDealership.Vehicle.V1.RemoveImageRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_RemoveImage, null, options, request);
+      }
+      /// <summary>
+      /// Remove a vehicle image.
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The call object.</returns>
+      public virtual grpc::AsyncUnaryCall<global::CosmicDealership.Vehicle.V1.RemoveImageResponse> RemoveImageAsync(global::CosmicDealership.Vehicle.V1.RemoveImageRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return RemoveImageAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      /// <summary>
+      /// Remove a vehicle image.
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The call object.</returns>
+      public virtual grpc::AsyncUnaryCall<global::CosmicDealership.Vehicle.V1.RemoveImageResponse> RemoveImageAsync(global::CosmicDealership.Vehicle.V1.RemoveImageRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_RemoveImage, null, options, request);
       }
       /// <summary>
       /// Remove a vehicle from inventory.
@@ -449,7 +641,10 @@ namespace CosmicDealership.Vehicle.V1 {
       return grpc::ServerServiceDefinition.CreateBuilder()
           .AddMethod(__Method_AddVehicle, serviceImpl.AddVehicle)
           .AddMethod(__Method_UpdateVehicle, serviceImpl.UpdateVehicle)
-          .AddMethod(__Method_AddVehicleImage, serviceImpl.AddVehicleImage)
+          .AddMethod(__Method_UpdateAvatar, serviceImpl.UpdateAvatar)
+          .AddMethod(__Method_RemoveAvatar, serviceImpl.RemoveAvatar)
+          .AddMethod(__Method_AddImage, serviceImpl.AddImage)
+          .AddMethod(__Method_RemoveImage, serviceImpl.RemoveImage)
           .AddMethod(__Method_RemoveVehicle, serviceImpl.RemoveVehicle)
           .AddMethod(__Method_LeaseVehicle, serviceImpl.LeaseVehicle)
           .AddMethod(__Method_ReturnVehicle, serviceImpl.ReturnVehicle).Build();
@@ -463,7 +658,10 @@ namespace CosmicDealership.Vehicle.V1 {
     {
       serviceBinder.AddMethod(__Method_AddVehicle, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::CosmicDealership.Vehicle.V1.AddVehicleRequest, global::CosmicDealership.Vehicle.V1.AddVehicleResponse>(serviceImpl.AddVehicle));
       serviceBinder.AddMethod(__Method_UpdateVehicle, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::CosmicDealership.Vehicle.V1.UpdateVehicleRequest, global::CosmicDealership.Vehicle.V1.UpdateVehicleResponse>(serviceImpl.UpdateVehicle));
-      serviceBinder.AddMethod(__Method_AddVehicleImage, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::CosmicDealership.Vehicle.V1.AddVehicleImageRequest, global::CosmicDealership.Vehicle.V1.AddVehicleImageResponse>(serviceImpl.AddVehicleImage));
+      serviceBinder.AddMethod(__Method_UpdateAvatar, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::CosmicDealership.Vehicle.V1.UpdateAvatarRequest, global::CosmicDealership.Vehicle.V1.UpdateAvatarResponse>(serviceImpl.UpdateAvatar));
+      serviceBinder.AddMethod(__Method_RemoveAvatar, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::CosmicDealership.Vehicle.V1.RemoveAvatarRequest, global::CosmicDealership.Vehicle.V1.RemoveAvatarResponse>(serviceImpl.RemoveAvatar));
+      serviceBinder.AddMethod(__Method_AddImage, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::CosmicDealership.Vehicle.V1.AddImageRequest, global::CosmicDealership.Vehicle.V1.AddImageResponse>(serviceImpl.AddImage));
+      serviceBinder.AddMethod(__Method_RemoveImage, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::CosmicDealership.Vehicle.V1.RemoveImageRequest, global::CosmicDealership.Vehicle.V1.RemoveImageResponse>(serviceImpl.RemoveImage));
       serviceBinder.AddMethod(__Method_RemoveVehicle, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::CosmicDealership.Vehicle.V1.RemoveVehicleRequest, global::CosmicDealership.Vehicle.V1.RemoveVehicleResponse>(serviceImpl.RemoveVehicle));
       serviceBinder.AddMethod(__Method_LeaseVehicle, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::CosmicDealership.Vehicle.V1.LeaseVehicleRequest, global::CosmicDealership.Vehicle.V1.LeaseVehicleResponse>(serviceImpl.LeaseVehicle));
       serviceBinder.AddMethod(__Method_ReturnVehicle, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::CosmicDealership.Vehicle.V1.ReturnVehicleRequest, global::CosmicDealership.Vehicle.V1.ReturnVehicleResponse>(serviceImpl.ReturnVehicle));

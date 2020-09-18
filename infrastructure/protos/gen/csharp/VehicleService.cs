@@ -27,60 +27,103 @@ namespace CosmicDealership.Vehicle.V1 {
             "CjFjb3NtaWNkZWFsZXJzaGlwL3ZlaGljbGUvdjEvdmVoaWNsZV9zZXJ2aWNl",
             "LnByb3RvEhtjb3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEaKWNvc21pY2Rl",
             "YWxlcnNoaXAvdmVoaWNsZS92MS92ZWhpY2xlLnByb3RvGiNjb3NtaWNkZWFs",
-            "ZXJzaGlwL3VzZXIvdjEvdXNlci5wcm90byJ4ChFBZGRWZWhpY2xlUmVxdWVz",
-            "dBIsCgR1c2VyGAEgASgLMh4uY29zbWljZGVhbGVyc2hpcC51c2VyLnYxLlVz",
-            "ZXISNQoHdmVoaWNsZRgCIAEoCzIkLmNvc21pY2RlYWxlcnNoaXAudmVoaWNs",
-            "ZS52MS5WZWhpY2xlIiUKEkFkZFZlaGljbGVSZXNwb25zZRIPCgdtZXNzYWdl",
-            "GAEgASgJIp4BChRVcGRhdGVWZWhpY2xlUmVxdWVzdBIsCgR1c2VyGAEgASgL",
+            "ZXJzaGlwL3VzZXIvdjEvdXNlci5wcm90byKMAQoRQWRkVmVoaWNsZVJlcXVl",
+            "c3QSLAoEdXNlchgBIAEoCzIeLmNvc21pY2RlYWxlcnNoaXAudXNlci52MS5V",
+            "c2VyEhIKCnZlaGljbGVfaWQYAiABKAkSNQoHdmVoaWNsZRgDIAEoCzIkLmNv",
+            "c21pY2RlYWxlcnNoaXAudmVoaWNsZS52MS5WZWhpY2xlIo0BChJBZGRWZWhp",
+            "Y2xlUmVzcG9uc2USEQoHc3VjY2VzcxgBIAEoCUgAEiAKFnZlaGljbGVfYWxy",
+            "ZWFkeV9leGlzdHMYAiABKAlIABIZCg92ZWhpY2xlX2ludmFsaWQYAyABKAlI",
+            "ABIbChFwZXJtaXNzaW9uX2RlbmllZBgEIAEoCUgAQgoKCHJlc3BvbnNlIo8B",
+            "ChRVcGRhdGVWZWhpY2xlUmVxdWVzdBIsCgR1c2VyGAEgASgLMh4uY29zbWlj",
+            "ZGVhbGVyc2hpcC51c2VyLnYxLlVzZXISEgoKdmVoaWNsZV9pZBgCIAEoCRI1",
+            "Cgd2ZWhpY2xlGAMgASgLMiQuY29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYx",
+            "LlZlaGljbGUiiwEKFVVwZGF0ZVZlaGljbGVSZXNwb25zZRIRCgdzdWNjZXNz",
+            "GAEgASgJSAASGwoRdmVoaWNsZV9ub3RfZm91bmQYAiABKAlIABIZCg92ZWhp",
+            "Y2xlX2ludmFsaWQYAyABKAlIABIbChFwZXJtaXNzaW9uX2RlbmllZBgEIAEo",
+            "CUgAQgoKCHJlc3BvbnNlImsKE1VwZGF0ZUF2YXRhclJlcXVlc3QSLAoEdXNl",
+            "chgBIAEoCzIeLmNvc21pY2RlYWxlcnNoaXAudXNlci52MS5Vc2VyEhIKCnZl",
+            "aGljbGVfaWQYAiABKAkSEgoKYXZhdGFyX3VyaRgDIAEoCSKJAQoUVXBkYXRl",
+            "QXZhdGFyUmVzcG9uc2USEQoHc3VjY2VzcxgBIAEoCUgAEhsKEXZlaGljbGVf",
+            "bm90X2ZvdW5kGAIgASgJSAASGAoOYXZhdGFyX2ludmFsaWQYAyABKAlIABIb",
+            "ChFwZXJtaXNzaW9uX2RlbmllZBgEIAEoCUgAQgoKCHJlc3BvbnNlIlcKE1Jl",
+            "bW92ZUF2YXRhclJlcXVlc3QSLAoEdXNlchgBIAEoCzIeLmNvc21pY2RlYWxl",
+            "cnNoaXAudXNlci52MS5Vc2VyEhIKCnZlaGljbGVfaWQYAiABKAkibwoUUmVt",
+            "b3ZlQXZhdGFyUmVzcG9uc2USEQoHc3VjY2VzcxgBIAEoCUgAEhsKEXZlaGlj",
+            "bGVfbm90X2ZvdW5kGAIgASgJSAASGwoRcGVybWlzc2lvbl9kZW5pZWQYAyAB",
+            "KAlIAEIKCghyZXNwb25zZSJmCg9BZGRJbWFnZVJlcXVlc3QSLAoEdXNlchgB",
+            "IAEoCzIeLmNvc21pY2RlYWxlcnNoaXAudXNlci52MS5Vc2VyEhIKCnZlaGlj",
+            "bGVfaWQYAiABKAkSEQoJaW1hZ2VfdXJpGAMgASgJIoQBChBBZGRJbWFnZVJl",
+            "c3BvbnNlEhEKB3N1Y2Nlc3MYASABKAlIABIbChF2ZWhpY2xlX25vdF9mb3Vu",
+            "ZBgCIAEoCUgAEhcKDWltYWdlX2ludmFsaWQYAyABKAlIABIbChFwZXJtaXNz",
+            "aW9uX2RlbmllZBgEIAEoCUgAQgoKCHJlc3BvbnNlImkKElJlbW92ZUltYWdl",
+            "UmVxdWVzdBIsCgR1c2VyGAEgASgLMh4uY29zbWljZGVhbGVyc2hpcC51c2Vy",
+            "LnYxLlVzZXISEgoKdmVoaWNsZV9pZBgCIAEoCRIRCglpbWFnZV91cmkYAyAB",
+            "KAkiiQEKE1JlbW92ZUltYWdlUmVzcG9uc2USEQoHc3VjY2VzcxgBIAEoCUgA",
+            "EhsKEXZlaGljbGVfbm90X2ZvdW5kGAIgASgJSAASGQoPaW1hZ2Vfbm90X2Zv",
+            "dW5kGAMgASgJSAASGwoRcGVybWlzc2lvbl9kZW5pZWQYBCABKAlIAEIKCghy",
+            "ZXNwb25zZSJYChRSZW1vdmVWZWhpY2xlUmVxdWVzdBIsCgR1c2VyGAEgASgL",
             "Mh4uY29zbWljZGVhbGVyc2hpcC51c2VyLnYxLlVzZXISEgoKdmVoaWNsZV9p",
-            "ZBgCIAEoCRJECg92ZWhpY2xlX3VwZGF0ZXMYAyABKAsyKy5jb3NtaWNkZWFs",
-            "ZXJzaGlwLnZlaGljbGUudjEuVmVoaWNsZVVwZGF0ZXMiKAoVVXBkYXRlVmVo",
-            "aWNsZVJlc3BvbnNlEg8KB21lc3NhZ2UYASABKAkibQoWQWRkVmVoaWNsZUlt",
-            "YWdlUmVxdWVzdBIsCgR1c2VyGAEgASgLMh4uY29zbWljZGVhbGVyc2hpcC51",
-            "c2VyLnYxLlVzZXISEgoKdmVoaWNsZV9pZBgCIAEoCRIRCglpbWFnZV91cmwY",
-            "AyABKAkiKgoXQWRkVmVoaWNsZUltYWdlUmVzcG9uc2USDwoHbWVzc2FnZRgB",
-            "IAEoCSJYChRSZW1vdmVWZWhpY2xlUmVxdWVzdBIsCgR1c2VyGAEgASgLMh4u",
-            "Y29zbWljZGVhbGVyc2hpcC51c2VyLnYxLlVzZXISEgoKdmVoaWNsZV9pZBgC",
-            "IAEoCSIoChVSZW1vdmVWZWhpY2xlUmVzcG9uc2USDwoHbWVzc2FnZRgBIAEo",
-            "CSJXChNMZWFzZVZlaGljbGVSZXF1ZXN0EiwKBHVzZXIYASABKAsyHi5jb3Nt",
-            "aWNkZWFsZXJzaGlwLnVzZXIudjEuVXNlchISCgp2ZWhpY2xlX2lkGAIgASgJ",
-            "IicKFExlYXNlVmVoaWNsZVJlc3BvbnNlEg8KB21lc3NhZ2UYASABKAkiWAoU",
-            "UmV0dXJuVmVoaWNsZVJlcXVlc3QSLAoEdXNlchgBIAEoCzIeLmNvc21pY2Rl",
-            "YWxlcnNoaXAudXNlci52MS5Vc2VyEhIKCnZlaGljbGVfaWQYAiABKAkiKAoV",
-            "UmV0dXJuVmVoaWNsZVJlc3BvbnNlEg8KB21lc3NhZ2UYASABKAky2gUKDlZl",
-            "aGljbGVTZXJ2aWNlEm0KCkFkZFZlaGljbGUSLi5jb3NtaWNkZWFsZXJzaGlw",
-            "LnZlaGljbGUudjEuQWRkVmVoaWNsZVJlcXVlc3QaLy5jb3NtaWNkZWFsZXJz",
-            "aGlwLnZlaGljbGUudjEuQWRkVmVoaWNsZVJlc3BvbnNlEnYKDVVwZGF0ZVZl",
-            "aGljbGUSMS5jb3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEuVXBkYXRlVmVo",
-            "aWNsZVJlcXVlc3QaMi5jb3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEuVXBk",
-            "YXRlVmVoaWNsZVJlc3BvbnNlEnwKD0FkZFZlaGljbGVJbWFnZRIzLmNvc21p",
-            "Y2RlYWxlcnNoaXAudmVoaWNsZS52MS5BZGRWZWhpY2xlSW1hZ2VSZXF1ZXN0",
-            "GjQuY29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxLkFkZFZlaGljbGVJbWFn",
-            "ZVJlc3BvbnNlEnYKDVJlbW92ZVZlaGljbGUSMS5jb3NtaWNkZWFsZXJzaGlw",
-            "LnZlaGljbGUudjEuUmVtb3ZlVmVoaWNsZVJlcXVlc3QaMi5jb3NtaWNkZWFs",
-            "ZXJzaGlwLnZlaGljbGUudjEuUmVtb3ZlVmVoaWNsZVJlc3BvbnNlEnMKDExl",
-            "YXNlVmVoaWNsZRIwLmNvc21pY2RlYWxlcnNoaXAudmVoaWNsZS52MS5MZWFz",
-            "ZVZlaGljbGVSZXF1ZXN0GjEuY29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYx",
-            "LkxlYXNlVmVoaWNsZVJlc3BvbnNlEnYKDVJldHVyblZlaGljbGUSMS5jb3Nt",
-            "aWNkZWFsZXJzaGlwLnZlaGljbGUudjEuUmV0dXJuVmVoaWNsZVJlcXVlc3Qa",
-            "Mi5jb3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEuUmV0dXJuVmVoaWNsZVJl",
-            "c3BvbnNlQjtaG2Nvc21pY2RlYWxlcnNoaXAvdmVoaWNsZS92MaoCG0Nvc21p",
-            "Y0RlYWxlcnNoaXAuVmVoaWNsZS5WMWIGcHJvdG8z"));
+            "ZBgCIAEoCSKUAQoVUmVtb3ZlVmVoaWNsZVJlc3BvbnNlEhEKB3N1Y2Nlc3MY",
+            "ASABKAlIABIbChF2ZWhpY2xlX25vdF9mb3VuZBgCIAEoCUgAEiIKGHZlaGlj",
+            "bGVfY3VycmVudGx5X2xlYXNlZBgDIAEoCUgAEhsKEXBlcm1pc3Npb25fZGVu",
+            "aWVkGAQgASgJSABCCgoIcmVzcG9uc2UiVwoTTGVhc2VWZWhpY2xlUmVxdWVz",
+            "dBIsCgR1c2VyGAEgASgLMh4uY29zbWljZGVhbGVyc2hpcC51c2VyLnYxLlVz",
+            "ZXISEgoKdmVoaWNsZV9pZBgCIAEoCSKTAQoUTGVhc2VWZWhpY2xlUmVzcG9u",
+            "c2USEQoHc3VjY2VzcxgBIAEoCUgAEhsKEXZlaGljbGVfbm90X2ZvdW5kGAIg",
+            "ASgJSAASIgoYdmVoaWNsZV9jdXJyZW50bHlfbGVhc2VkGAMgASgJSAASGwoR",
+            "cGVybWlzc2lvbl9kZW5pZWQYBCABKAlIAEIKCghyZXNwb25zZSJYChRSZXR1",
+            "cm5WZWhpY2xlUmVxdWVzdBIsCgR1c2VyGAEgASgLMh4uY29zbWljZGVhbGVy",
+            "c2hpcC51c2VyLnYxLlVzZXISEgoKdmVoaWNsZV9pZBgCIAEoCSKUAQoVUmV0",
+            "dXJuVmVoaWNsZVJlc3BvbnNlEhEKB3N1Y2Nlc3MYASABKAlIABIbChF2ZWhp",
+            "Y2xlX25vdF9mb3VuZBgCIAEoCUgAEiIKGHZlaGljbGVfYWxyZWFkeV9yZXR1",
+            "cm5lZBgDIAEoCUgAEhsKEXBlcm1pc3Npb25fZGVuaWVkGAQgASgJSABCCgoI",
+            "cmVzcG9uc2UyoQgKDlZlaGljbGVTZXJ2aWNlEm0KCkFkZFZlaGljbGUSLi5j",
+            "b3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEuQWRkVmVoaWNsZVJlcXVlc3Qa",
+            "Ly5jb3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEuQWRkVmVoaWNsZVJlc3Bv",
+            "bnNlEnYKDVVwZGF0ZVZlaGljbGUSMS5jb3NtaWNkZWFsZXJzaGlwLnZlaGlj",
+            "bGUudjEuVXBkYXRlVmVoaWNsZVJlcXVlc3QaMi5jb3NtaWNkZWFsZXJzaGlw",
+            "LnZlaGljbGUudjEuVXBkYXRlVmVoaWNsZVJlc3BvbnNlEnMKDFVwZGF0ZUF2",
+            "YXRhchIwLmNvc21pY2RlYWxlcnNoaXAudmVoaWNsZS52MS5VcGRhdGVBdmF0",
+            "YXJSZXF1ZXN0GjEuY29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxLlVwZGF0",
+            "ZUF2YXRhclJlc3BvbnNlEnMKDFJlbW92ZUF2YXRhchIwLmNvc21pY2RlYWxl",
+            "cnNoaXAudmVoaWNsZS52MS5SZW1vdmVBdmF0YXJSZXF1ZXN0GjEuY29zbWlj",
+            "ZGVhbGVyc2hpcC52ZWhpY2xlLnYxLlJlbW92ZUF2YXRhclJlc3BvbnNlEmcK",
+            "CEFkZEltYWdlEiwuY29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxLkFkZElt",
+            "YWdlUmVxdWVzdBotLmNvc21pY2RlYWxlcnNoaXAudmVoaWNsZS52MS5BZGRJ",
+            "bWFnZVJlc3BvbnNlEnAKC1JlbW92ZUltYWdlEi8uY29zbWljZGVhbGVyc2hp",
+            "cC52ZWhpY2xlLnYxLlJlbW92ZUltYWdlUmVxdWVzdBowLmNvc21pY2RlYWxl",
+            "cnNoaXAudmVoaWNsZS52MS5SZW1vdmVJbWFnZVJlc3BvbnNlEnYKDVJlbW92",
+            "ZVZlaGljbGUSMS5jb3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEuUmVtb3Zl",
+            "VmVoaWNsZVJlcXVlc3QaMi5jb3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEu",
+            "UmVtb3ZlVmVoaWNsZVJlc3BvbnNlEnMKDExlYXNlVmVoaWNsZRIwLmNvc21p",
+            "Y2RlYWxlcnNoaXAudmVoaWNsZS52MS5MZWFzZVZlaGljbGVSZXF1ZXN0GjEu",
+            "Y29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxLkxlYXNlVmVoaWNsZVJlc3Bv",
+            "bnNlEnYKDVJldHVyblZlaGljbGUSMS5jb3NtaWNkZWFsZXJzaGlwLnZlaGlj",
+            "bGUudjEuUmV0dXJuVmVoaWNsZVJlcXVlc3QaMi5jb3NtaWNkZWFsZXJzaGlw",
+            "LnZlaGljbGUudjEuUmV0dXJuVmVoaWNsZVJlc3BvbnNlQjtaG2Nvc21pY2Rl",
+            "YWxlcnNoaXAvdmVoaWNsZS92MaoCG0Nvc21pY0RlYWxlcnNoaXAuVmVoaWNs",
+            "ZS5WMWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::CosmicDealership.Vehicle.V1.VehicleReflection.Descriptor, global::CosmicDealership.User.V1.UserReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.AddVehicleRequest), global::CosmicDealership.Vehicle.V1.AddVehicleRequest.Parser, new[]{ "User", "Vehicle" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.AddVehicleResponse), global::CosmicDealership.Vehicle.V1.AddVehicleResponse.Parser, new[]{ "Message" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.UpdateVehicleRequest), global::CosmicDealership.Vehicle.V1.UpdateVehicleRequest.Parser, new[]{ "User", "VehicleId", "VehicleUpdates" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.UpdateVehicleResponse), global::CosmicDealership.Vehicle.V1.UpdateVehicleResponse.Parser, new[]{ "Message" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.AddVehicleImageRequest), global::CosmicDealership.Vehicle.V1.AddVehicleImageRequest.Parser, new[]{ "User", "VehicleId", "ImageUrl" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.AddVehicleImageResponse), global::CosmicDealership.Vehicle.V1.AddVehicleImageResponse.Parser, new[]{ "Message" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.AddVehicleRequest), global::CosmicDealership.Vehicle.V1.AddVehicleRequest.Parser, new[]{ "User", "VehicleId", "Vehicle" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.AddVehicleResponse), global::CosmicDealership.Vehicle.V1.AddVehicleResponse.Parser, new[]{ "Success", "VehicleAlreadyExists", "VehicleInvalid", "PermissionDenied" }, new[]{ "Response" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.UpdateVehicleRequest), global::CosmicDealership.Vehicle.V1.UpdateVehicleRequest.Parser, new[]{ "User", "VehicleId", "Vehicle" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.UpdateVehicleResponse), global::CosmicDealership.Vehicle.V1.UpdateVehicleResponse.Parser, new[]{ "Success", "VehicleNotFound", "VehicleInvalid", "PermissionDenied" }, new[]{ "Response" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.UpdateAvatarRequest), global::CosmicDealership.Vehicle.V1.UpdateAvatarRequest.Parser, new[]{ "User", "VehicleId", "AvatarUri" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.UpdateAvatarResponse), global::CosmicDealership.Vehicle.V1.UpdateAvatarResponse.Parser, new[]{ "Success", "VehicleNotFound", "AvatarInvalid", "PermissionDenied" }, new[]{ "Response" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.RemoveAvatarRequest), global::CosmicDealership.Vehicle.V1.RemoveAvatarRequest.Parser, new[]{ "User", "VehicleId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.RemoveAvatarResponse), global::CosmicDealership.Vehicle.V1.RemoveAvatarResponse.Parser, new[]{ "Success", "VehicleNotFound", "PermissionDenied" }, new[]{ "Response" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.AddImageRequest), global::CosmicDealership.Vehicle.V1.AddImageRequest.Parser, new[]{ "User", "VehicleId", "ImageUri" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.AddImageResponse), global::CosmicDealership.Vehicle.V1.AddImageResponse.Parser, new[]{ "Success", "VehicleNotFound", "ImageInvalid", "PermissionDenied" }, new[]{ "Response" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.RemoveImageRequest), global::CosmicDealership.Vehicle.V1.RemoveImageRequest.Parser, new[]{ "User", "VehicleId", "ImageUri" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.RemoveImageResponse), global::CosmicDealership.Vehicle.V1.RemoveImageResponse.Parser, new[]{ "Success", "VehicleNotFound", "ImageNotFound", "PermissionDenied" }, new[]{ "Response" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.RemoveVehicleRequest), global::CosmicDealership.Vehicle.V1.RemoveVehicleRequest.Parser, new[]{ "User", "VehicleId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.RemoveVehicleResponse), global::CosmicDealership.Vehicle.V1.RemoveVehicleResponse.Parser, new[]{ "Message" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.RemoveVehicleResponse), global::CosmicDealership.Vehicle.V1.RemoveVehicleResponse.Parser, new[]{ "Success", "VehicleNotFound", "VehicleCurrentlyLeased", "PermissionDenied" }, new[]{ "Response" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.LeaseVehicleRequest), global::CosmicDealership.Vehicle.V1.LeaseVehicleRequest.Parser, new[]{ "User", "VehicleId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.LeaseVehicleResponse), global::CosmicDealership.Vehicle.V1.LeaseVehicleResponse.Parser, new[]{ "Message" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.LeaseVehicleResponse), global::CosmicDealership.Vehicle.V1.LeaseVehicleResponse.Parser, new[]{ "Success", "VehicleNotFound", "VehicleCurrentlyLeased", "PermissionDenied" }, new[]{ "Response" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.ReturnVehicleRequest), global::CosmicDealership.Vehicle.V1.ReturnVehicleRequest.Parser, new[]{ "User", "VehicleId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.ReturnVehicleResponse), global::CosmicDealership.Vehicle.V1.ReturnVehicleResponse.Parser, new[]{ "Message" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.ReturnVehicleResponse), global::CosmicDealership.Vehicle.V1.ReturnVehicleResponse.Parser, new[]{ "Success", "VehicleNotFound", "VehicleAlreadyReturned", "PermissionDenied" }, new[]{ "Response" }, null, null, null)
           }));
     }
     #endregion
@@ -113,6 +156,7 @@ namespace CosmicDealership.Vehicle.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public AddVehicleRequest(AddVehicleRequest other) : this() {
       user_ = other.user_ != null ? other.user_.Clone() : null;
+      vehicleId_ = other.vehicleId_;
       vehicle_ = other.vehicle_ != null ? other.vehicle_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -133,8 +177,19 @@ namespace CosmicDealership.Vehicle.V1 {
       }
     }
 
+    /// <summary>Field number for the "vehicle_id" field.</summary>
+    public const int VehicleIdFieldNumber = 2;
+    private string vehicleId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string VehicleId {
+      get { return vehicleId_; }
+      set {
+        vehicleId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     /// <summary>Field number for the "vehicle" field.</summary>
-    public const int VehicleFieldNumber = 2;
+    public const int VehicleFieldNumber = 3;
     private global::CosmicDealership.Vehicle.V1.Vehicle vehicle_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::CosmicDealership.Vehicle.V1.Vehicle Vehicle {
@@ -158,6 +213,7 @@ namespace CosmicDealership.Vehicle.V1 {
         return true;
       }
       if (!object.Equals(User, other.User)) return false;
+      if (VehicleId != other.VehicleId) return false;
       if (!object.Equals(Vehicle, other.Vehicle)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -166,6 +222,7 @@ namespace CosmicDealership.Vehicle.V1 {
     public override int GetHashCode() {
       int hash = 1;
       if (user_ != null) hash ^= User.GetHashCode();
+      if (VehicleId.Length != 0) hash ^= VehicleId.GetHashCode();
       if (vehicle_ != null) hash ^= Vehicle.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -184,8 +241,12 @@ namespace CosmicDealership.Vehicle.V1 {
         output.WriteRawTag(10);
         output.WriteMessage(User);
       }
-      if (vehicle_ != null) {
+      if (VehicleId.Length != 0) {
         output.WriteRawTag(18);
+        output.WriteString(VehicleId);
+      }
+      if (vehicle_ != null) {
+        output.WriteRawTag(26);
         output.WriteMessage(Vehicle);
       }
       if (_unknownFields != null) {
@@ -198,6 +259,9 @@ namespace CosmicDealership.Vehicle.V1 {
       int size = 0;
       if (user_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(User);
+      }
+      if (VehicleId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleId);
       }
       if (vehicle_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Vehicle);
@@ -218,6 +282,9 @@ namespace CosmicDealership.Vehicle.V1 {
           User = new global::CosmicDealership.User.V1.User();
         }
         User.MergeFrom(other.User);
+      }
+      if (other.VehicleId.Length != 0) {
+        VehicleId = other.VehicleId;
       }
       if (other.vehicle_ != null) {
         if (vehicle_ == null) {
@@ -244,6 +311,10 @@ namespace CosmicDealership.Vehicle.V1 {
             break;
           }
           case 18: {
+            VehicleId = input.ReadString();
+            break;
+          }
+          case 26: {
             if (vehicle_ == null) {
               Vehicle = new global::CosmicDealership.Vehicle.V1.Vehicle();
             }
@@ -281,7 +352,21 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public AddVehicleResponse(AddVehicleResponse other) : this() {
-      message_ = other.message_;
+      switch (other.ResponseCase) {
+        case ResponseOneofCase.Success:
+          Success = other.Success;
+          break;
+        case ResponseOneofCase.VehicleAlreadyExists:
+          VehicleAlreadyExists = other.VehicleAlreadyExists;
+          break;
+        case ResponseOneofCase.VehicleInvalid:
+          VehicleInvalid = other.VehicleInvalid;
+          break;
+        case ResponseOneofCase.PermissionDenied:
+          PermissionDenied = other.PermissionDenied;
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -290,15 +375,69 @@ namespace CosmicDealership.Vehicle.V1 {
       return new AddVehicleResponse(this);
     }
 
-    /// <summary>Field number for the "message" field.</summary>
-    public const int MessageFieldNumber = 1;
-    private string message_ = "";
+    /// <summary>Field number for the "success" field.</summary>
+    public const int SuccessFieldNumber = 1;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Message {
-      get { return message_; }
+    public string Success {
+      get { return responseCase_ == ResponseOneofCase.Success ? (string) response_ : ""; }
       set {
-        message_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.Success;
       }
+    }
+
+    /// <summary>Field number for the "vehicle_already_exists" field.</summary>
+    public const int VehicleAlreadyExistsFieldNumber = 2;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string VehicleAlreadyExists {
+      get { return responseCase_ == ResponseOneofCase.VehicleAlreadyExists ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.VehicleAlreadyExists;
+      }
+    }
+
+    /// <summary>Field number for the "vehicle_invalid" field.</summary>
+    public const int VehicleInvalidFieldNumber = 3;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string VehicleInvalid {
+      get { return responseCase_ == ResponseOneofCase.VehicleInvalid ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.VehicleInvalid;
+      }
+    }
+
+    /// <summary>Field number for the "permission_denied" field.</summary>
+    public const int PermissionDeniedFieldNumber = 4;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string PermissionDenied {
+      get { return responseCase_ == ResponseOneofCase.PermissionDenied ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.PermissionDenied;
+      }
+    }
+
+    private object response_;
+    /// <summary>Enum of possible cases for the "response" oneof.</summary>
+    public enum ResponseOneofCase {
+      None = 0,
+      Success = 1,
+      VehicleAlreadyExists = 2,
+      VehicleInvalid = 3,
+      PermissionDenied = 4,
+    }
+    private ResponseOneofCase responseCase_ = ResponseOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ResponseOneofCase ResponseCase {
+      get { return responseCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearResponse() {
+      responseCase_ = ResponseOneofCase.None;
+      response_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -314,14 +453,22 @@ namespace CosmicDealership.Vehicle.V1 {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Message != other.Message) return false;
+      if (Success != other.Success) return false;
+      if (VehicleAlreadyExists != other.VehicleAlreadyExists) return false;
+      if (VehicleInvalid != other.VehicleInvalid) return false;
+      if (PermissionDenied != other.PermissionDenied) return false;
+      if (ResponseCase != other.ResponseCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Message.Length != 0) hash ^= Message.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.Success) hash ^= Success.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.VehicleAlreadyExists) hash ^= VehicleAlreadyExists.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.VehicleInvalid) hash ^= VehicleInvalid.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) hash ^= PermissionDenied.GetHashCode();
+      hash ^= (int) responseCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -335,9 +482,21 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (Message.Length != 0) {
+      if (responseCase_ == ResponseOneofCase.Success) {
         output.WriteRawTag(10);
-        output.WriteString(Message);
+        output.WriteString(Success);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleAlreadyExists) {
+        output.WriteRawTag(18);
+        output.WriteString(VehicleAlreadyExists);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleInvalid) {
+        output.WriteRawTag(26);
+        output.WriteString(VehicleInvalid);
+      }
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) {
+        output.WriteRawTag(34);
+        output.WriteString(PermissionDenied);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -347,8 +506,17 @@ namespace CosmicDealership.Vehicle.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Message.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
+      if (responseCase_ == ResponseOneofCase.Success) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Success);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleAlreadyExists) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleAlreadyExists);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleInvalid) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleInvalid);
+      }
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(PermissionDenied);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -361,9 +529,21 @@ namespace CosmicDealership.Vehicle.V1 {
       if (other == null) {
         return;
       }
-      if (other.Message.Length != 0) {
-        Message = other.Message;
+      switch (other.ResponseCase) {
+        case ResponseOneofCase.Success:
+          Success = other.Success;
+          break;
+        case ResponseOneofCase.VehicleAlreadyExists:
+          VehicleAlreadyExists = other.VehicleAlreadyExists;
+          break;
+        case ResponseOneofCase.VehicleInvalid:
+          VehicleInvalid = other.VehicleInvalid;
+          break;
+        case ResponseOneofCase.PermissionDenied:
+          PermissionDenied = other.PermissionDenied;
+          break;
       }
+
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -376,7 +556,19 @@ namespace CosmicDealership.Vehicle.V1 {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            Message = input.ReadString();
+            Success = input.ReadString();
+            break;
+          }
+          case 18: {
+            VehicleAlreadyExists = input.ReadString();
+            break;
+          }
+          case 26: {
+            VehicleInvalid = input.ReadString();
+            break;
+          }
+          case 34: {
+            PermissionDenied = input.ReadString();
             break;
           }
         }
@@ -412,7 +604,7 @@ namespace CosmicDealership.Vehicle.V1 {
     public UpdateVehicleRequest(UpdateVehicleRequest other) : this() {
       user_ = other.user_ != null ? other.user_.Clone() : null;
       vehicleId_ = other.vehicleId_;
-      vehicleUpdates_ = other.vehicleUpdates_ != null ? other.vehicleUpdates_.Clone() : null;
+      vehicle_ = other.vehicle_ != null ? other.vehicle_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -443,14 +635,14 @@ namespace CosmicDealership.Vehicle.V1 {
       }
     }
 
-    /// <summary>Field number for the "vehicle_updates" field.</summary>
-    public const int VehicleUpdatesFieldNumber = 3;
-    private global::CosmicDealership.Vehicle.V1.VehicleUpdates vehicleUpdates_;
+    /// <summary>Field number for the "vehicle" field.</summary>
+    public const int VehicleFieldNumber = 3;
+    private global::CosmicDealership.Vehicle.V1.Vehicle vehicle_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::CosmicDealership.Vehicle.V1.VehicleUpdates VehicleUpdates {
-      get { return vehicleUpdates_; }
+    public global::CosmicDealership.Vehicle.V1.Vehicle Vehicle {
+      get { return vehicle_; }
       set {
-        vehicleUpdates_ = value;
+        vehicle_ = value;
       }
     }
 
@@ -469,7 +661,7 @@ namespace CosmicDealership.Vehicle.V1 {
       }
       if (!object.Equals(User, other.User)) return false;
       if (VehicleId != other.VehicleId) return false;
-      if (!object.Equals(VehicleUpdates, other.VehicleUpdates)) return false;
+      if (!object.Equals(Vehicle, other.Vehicle)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -478,7 +670,7 @@ namespace CosmicDealership.Vehicle.V1 {
       int hash = 1;
       if (user_ != null) hash ^= User.GetHashCode();
       if (VehicleId.Length != 0) hash ^= VehicleId.GetHashCode();
-      if (vehicleUpdates_ != null) hash ^= VehicleUpdates.GetHashCode();
+      if (vehicle_ != null) hash ^= Vehicle.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -500,9 +692,9 @@ namespace CosmicDealership.Vehicle.V1 {
         output.WriteRawTag(18);
         output.WriteString(VehicleId);
       }
-      if (vehicleUpdates_ != null) {
+      if (vehicle_ != null) {
         output.WriteRawTag(26);
-        output.WriteMessage(VehicleUpdates);
+        output.WriteMessage(Vehicle);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -518,8 +710,8 @@ namespace CosmicDealership.Vehicle.V1 {
       if (VehicleId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleId);
       }
-      if (vehicleUpdates_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(VehicleUpdates);
+      if (vehicle_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Vehicle);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -541,11 +733,11 @@ namespace CosmicDealership.Vehicle.V1 {
       if (other.VehicleId.Length != 0) {
         VehicleId = other.VehicleId;
       }
-      if (other.vehicleUpdates_ != null) {
-        if (vehicleUpdates_ == null) {
-          VehicleUpdates = new global::CosmicDealership.Vehicle.V1.VehicleUpdates();
+      if (other.vehicle_ != null) {
+        if (vehicle_ == null) {
+          Vehicle = new global::CosmicDealership.Vehicle.V1.Vehicle();
         }
-        VehicleUpdates.MergeFrom(other.VehicleUpdates);
+        Vehicle.MergeFrom(other.Vehicle);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -570,10 +762,10 @@ namespace CosmicDealership.Vehicle.V1 {
             break;
           }
           case 26: {
-            if (vehicleUpdates_ == null) {
-              VehicleUpdates = new global::CosmicDealership.Vehicle.V1.VehicleUpdates();
+            if (vehicle_ == null) {
+              Vehicle = new global::CosmicDealership.Vehicle.V1.Vehicle();
             }
-            input.ReadMessage(VehicleUpdates);
+            input.ReadMessage(Vehicle);
             break;
           }
         }
@@ -607,7 +799,21 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public UpdateVehicleResponse(UpdateVehicleResponse other) : this() {
-      message_ = other.message_;
+      switch (other.ResponseCase) {
+        case ResponseOneofCase.Success:
+          Success = other.Success;
+          break;
+        case ResponseOneofCase.VehicleNotFound:
+          VehicleNotFound = other.VehicleNotFound;
+          break;
+        case ResponseOneofCase.VehicleInvalid:
+          VehicleInvalid = other.VehicleInvalid;
+          break;
+        case ResponseOneofCase.PermissionDenied:
+          PermissionDenied = other.PermissionDenied;
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -616,15 +822,69 @@ namespace CosmicDealership.Vehicle.V1 {
       return new UpdateVehicleResponse(this);
     }
 
-    /// <summary>Field number for the "message" field.</summary>
-    public const int MessageFieldNumber = 1;
-    private string message_ = "";
+    /// <summary>Field number for the "success" field.</summary>
+    public const int SuccessFieldNumber = 1;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Message {
-      get { return message_; }
+    public string Success {
+      get { return responseCase_ == ResponseOneofCase.Success ? (string) response_ : ""; }
       set {
-        message_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.Success;
       }
+    }
+
+    /// <summary>Field number for the "vehicle_not_found" field.</summary>
+    public const int VehicleNotFoundFieldNumber = 2;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string VehicleNotFound {
+      get { return responseCase_ == ResponseOneofCase.VehicleNotFound ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.VehicleNotFound;
+      }
+    }
+
+    /// <summary>Field number for the "vehicle_invalid" field.</summary>
+    public const int VehicleInvalidFieldNumber = 3;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string VehicleInvalid {
+      get { return responseCase_ == ResponseOneofCase.VehicleInvalid ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.VehicleInvalid;
+      }
+    }
+
+    /// <summary>Field number for the "permission_denied" field.</summary>
+    public const int PermissionDeniedFieldNumber = 4;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string PermissionDenied {
+      get { return responseCase_ == ResponseOneofCase.PermissionDenied ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.PermissionDenied;
+      }
+    }
+
+    private object response_;
+    /// <summary>Enum of possible cases for the "response" oneof.</summary>
+    public enum ResponseOneofCase {
+      None = 0,
+      Success = 1,
+      VehicleNotFound = 2,
+      VehicleInvalid = 3,
+      PermissionDenied = 4,
+    }
+    private ResponseOneofCase responseCase_ = ResponseOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ResponseOneofCase ResponseCase {
+      get { return responseCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearResponse() {
+      responseCase_ = ResponseOneofCase.None;
+      response_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -640,14 +900,22 @@ namespace CosmicDealership.Vehicle.V1 {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Message != other.Message) return false;
+      if (Success != other.Success) return false;
+      if (VehicleNotFound != other.VehicleNotFound) return false;
+      if (VehicleInvalid != other.VehicleInvalid) return false;
+      if (PermissionDenied != other.PermissionDenied) return false;
+      if (ResponseCase != other.ResponseCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Message.Length != 0) hash ^= Message.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.Success) hash ^= Success.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.VehicleNotFound) hash ^= VehicleNotFound.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.VehicleInvalid) hash ^= VehicleInvalid.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) hash ^= PermissionDenied.GetHashCode();
+      hash ^= (int) responseCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -661,9 +929,21 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (Message.Length != 0) {
+      if (responseCase_ == ResponseOneofCase.Success) {
         output.WriteRawTag(10);
-        output.WriteString(Message);
+        output.WriteString(Success);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleNotFound) {
+        output.WriteRawTag(18);
+        output.WriteString(VehicleNotFound);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleInvalid) {
+        output.WriteRawTag(26);
+        output.WriteString(VehicleInvalid);
+      }
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) {
+        output.WriteRawTag(34);
+        output.WriteString(PermissionDenied);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -673,8 +953,17 @@ namespace CosmicDealership.Vehicle.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Message.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
+      if (responseCase_ == ResponseOneofCase.Success) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Success);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleNotFound) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleNotFound);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleInvalid) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleInvalid);
+      }
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(PermissionDenied);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -687,9 +976,21 @@ namespace CosmicDealership.Vehicle.V1 {
       if (other == null) {
         return;
       }
-      if (other.Message.Length != 0) {
-        Message = other.Message;
+      switch (other.ResponseCase) {
+        case ResponseOneofCase.Success:
+          Success = other.Success;
+          break;
+        case ResponseOneofCase.VehicleNotFound:
+          VehicleNotFound = other.VehicleNotFound;
+          break;
+        case ResponseOneofCase.VehicleInvalid:
+          VehicleInvalid = other.VehicleInvalid;
+          break;
+        case ResponseOneofCase.PermissionDenied:
+          PermissionDenied = other.PermissionDenied;
+          break;
       }
+
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -702,7 +1003,19 @@ namespace CosmicDealership.Vehicle.V1 {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            Message = input.ReadString();
+            Success = input.ReadString();
+            break;
+          }
+          case 18: {
+            VehicleNotFound = input.ReadString();
+            break;
+          }
+          case 26: {
+            VehicleInvalid = input.ReadString();
+            break;
+          }
+          case 34: {
+            PermissionDenied = input.ReadString();
             break;
           }
         }
@@ -711,11 +1024,11 @@ namespace CosmicDealership.Vehicle.V1 {
 
   }
 
-  public sealed partial class AddVehicleImageRequest : pb::IMessage<AddVehicleImageRequest> {
-    private static readonly pb::MessageParser<AddVehicleImageRequest> _parser = new pb::MessageParser<AddVehicleImageRequest>(() => new AddVehicleImageRequest());
+  public sealed partial class UpdateAvatarRequest : pb::IMessage<UpdateAvatarRequest> {
+    private static readonly pb::MessageParser<UpdateAvatarRequest> _parser = new pb::MessageParser<UpdateAvatarRequest>(() => new UpdateAvatarRequest());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<AddVehicleImageRequest> Parser { get { return _parser; } }
+    public static pb::MessageParser<UpdateAvatarRequest> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -728,23 +1041,23 @@ namespace CosmicDealership.Vehicle.V1 {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public AddVehicleImageRequest() {
+    public UpdateAvatarRequest() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public AddVehicleImageRequest(AddVehicleImageRequest other) : this() {
+    public UpdateAvatarRequest(UpdateAvatarRequest other) : this() {
       user_ = other.user_ != null ? other.user_.Clone() : null;
       vehicleId_ = other.vehicleId_;
-      imageUrl_ = other.imageUrl_;
+      avatarUri_ = other.avatarUri_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public AddVehicleImageRequest Clone() {
-      return new AddVehicleImageRequest(this);
+    public UpdateAvatarRequest Clone() {
+      return new UpdateAvatarRequest(this);
     }
 
     /// <summary>Field number for the "user" field.</summary>
@@ -769,24 +1082,24 @@ namespace CosmicDealership.Vehicle.V1 {
       }
     }
 
-    /// <summary>Field number for the "image_url" field.</summary>
-    public const int ImageUrlFieldNumber = 3;
-    private string imageUrl_ = "";
+    /// <summary>Field number for the "avatar_uri" field.</summary>
+    public const int AvatarUriFieldNumber = 3;
+    private string avatarUri_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string ImageUrl {
-      get { return imageUrl_; }
+    public string AvatarUri {
+      get { return avatarUri_; }
       set {
-        imageUrl_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        avatarUri_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as AddVehicleImageRequest);
+      return Equals(other as UpdateAvatarRequest);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(AddVehicleImageRequest other) {
+    public bool Equals(UpdateAvatarRequest other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -795,7 +1108,7 @@ namespace CosmicDealership.Vehicle.V1 {
       }
       if (!object.Equals(User, other.User)) return false;
       if (VehicleId != other.VehicleId) return false;
-      if (ImageUrl != other.ImageUrl) return false;
+      if (AvatarUri != other.AvatarUri) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -804,7 +1117,7 @@ namespace CosmicDealership.Vehicle.V1 {
       int hash = 1;
       if (user_ != null) hash ^= User.GetHashCode();
       if (VehicleId.Length != 0) hash ^= VehicleId.GetHashCode();
-      if (ImageUrl.Length != 0) hash ^= ImageUrl.GetHashCode();
+      if (AvatarUri.Length != 0) hash ^= AvatarUri.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -826,9 +1139,9 @@ namespace CosmicDealership.Vehicle.V1 {
         output.WriteRawTag(18);
         output.WriteString(VehicleId);
       }
-      if (ImageUrl.Length != 0) {
+      if (AvatarUri.Length != 0) {
         output.WriteRawTag(26);
-        output.WriteString(ImageUrl);
+        output.WriteString(AvatarUri);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -844,8 +1157,8 @@ namespace CosmicDealership.Vehicle.V1 {
       if (VehicleId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleId);
       }
-      if (ImageUrl.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(ImageUrl);
+      if (AvatarUri.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(AvatarUri);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -854,7 +1167,7 @@ namespace CosmicDealership.Vehicle.V1 {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(AddVehicleImageRequest other) {
+    public void MergeFrom(UpdateAvatarRequest other) {
       if (other == null) {
         return;
       }
@@ -867,8 +1180,8 @@ namespace CosmicDealership.Vehicle.V1 {
       if (other.VehicleId.Length != 0) {
         VehicleId = other.VehicleId;
       }
-      if (other.ImageUrl.Length != 0) {
-        ImageUrl = other.ImageUrl;
+      if (other.AvatarUri.Length != 0) {
+        AvatarUri = other.AvatarUri;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -893,7 +1206,7 @@ namespace CosmicDealership.Vehicle.V1 {
             break;
           }
           case 26: {
-            ImageUrl = input.ReadString();
+            AvatarUri = input.ReadString();
             break;
           }
         }
@@ -902,11 +1215,11 @@ namespace CosmicDealership.Vehicle.V1 {
 
   }
 
-  public sealed partial class AddVehicleImageResponse : pb::IMessage<AddVehicleImageResponse> {
-    private static readonly pb::MessageParser<AddVehicleImageResponse> _parser = new pb::MessageParser<AddVehicleImageResponse>(() => new AddVehicleImageResponse());
+  public sealed partial class UpdateAvatarResponse : pb::IMessage<UpdateAvatarResponse> {
+    private static readonly pb::MessageParser<UpdateAvatarResponse> _parser = new pb::MessageParser<UpdateAvatarResponse>(() => new UpdateAvatarResponse());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<AddVehicleImageResponse> Parser { get { return _parser; } }
+    public static pb::MessageParser<UpdateAvatarResponse> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -919,55 +1232,131 @@ namespace CosmicDealership.Vehicle.V1 {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public AddVehicleImageResponse() {
+    public UpdateAvatarResponse() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public AddVehicleImageResponse(AddVehicleImageResponse other) : this() {
-      message_ = other.message_;
+    public UpdateAvatarResponse(UpdateAvatarResponse other) : this() {
+      switch (other.ResponseCase) {
+        case ResponseOneofCase.Success:
+          Success = other.Success;
+          break;
+        case ResponseOneofCase.VehicleNotFound:
+          VehicleNotFound = other.VehicleNotFound;
+          break;
+        case ResponseOneofCase.AvatarInvalid:
+          AvatarInvalid = other.AvatarInvalid;
+          break;
+        case ResponseOneofCase.PermissionDenied:
+          PermissionDenied = other.PermissionDenied;
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public AddVehicleImageResponse Clone() {
-      return new AddVehicleImageResponse(this);
+    public UpdateAvatarResponse Clone() {
+      return new UpdateAvatarResponse(this);
     }
 
-    /// <summary>Field number for the "message" field.</summary>
-    public const int MessageFieldNumber = 1;
-    private string message_ = "";
+    /// <summary>Field number for the "success" field.</summary>
+    public const int SuccessFieldNumber = 1;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Message {
-      get { return message_; }
+    public string Success {
+      get { return responseCase_ == ResponseOneofCase.Success ? (string) response_ : ""; }
       set {
-        message_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.Success;
       }
+    }
+
+    /// <summary>Field number for the "vehicle_not_found" field.</summary>
+    public const int VehicleNotFoundFieldNumber = 2;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string VehicleNotFound {
+      get { return responseCase_ == ResponseOneofCase.VehicleNotFound ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.VehicleNotFound;
+      }
+    }
+
+    /// <summary>Field number for the "avatar_invalid" field.</summary>
+    public const int AvatarInvalidFieldNumber = 3;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string AvatarInvalid {
+      get { return responseCase_ == ResponseOneofCase.AvatarInvalid ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.AvatarInvalid;
+      }
+    }
+
+    /// <summary>Field number for the "permission_denied" field.</summary>
+    public const int PermissionDeniedFieldNumber = 4;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string PermissionDenied {
+      get { return responseCase_ == ResponseOneofCase.PermissionDenied ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.PermissionDenied;
+      }
+    }
+
+    private object response_;
+    /// <summary>Enum of possible cases for the "response" oneof.</summary>
+    public enum ResponseOneofCase {
+      None = 0,
+      Success = 1,
+      VehicleNotFound = 2,
+      AvatarInvalid = 3,
+      PermissionDenied = 4,
+    }
+    private ResponseOneofCase responseCase_ = ResponseOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ResponseOneofCase ResponseCase {
+      get { return responseCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearResponse() {
+      responseCase_ = ResponseOneofCase.None;
+      response_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as AddVehicleImageResponse);
+      return Equals(other as UpdateAvatarResponse);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(AddVehicleImageResponse other) {
+    public bool Equals(UpdateAvatarResponse other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Message != other.Message) return false;
+      if (Success != other.Success) return false;
+      if (VehicleNotFound != other.VehicleNotFound) return false;
+      if (AvatarInvalid != other.AvatarInvalid) return false;
+      if (PermissionDenied != other.PermissionDenied) return false;
+      if (ResponseCase != other.ResponseCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Message.Length != 0) hash ^= Message.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.Success) hash ^= Success.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.VehicleNotFound) hash ^= VehicleNotFound.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.AvatarInvalid) hash ^= AvatarInvalid.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) hash ^= PermissionDenied.GetHashCode();
+      hash ^= (int) responseCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -981,9 +1370,21 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (Message.Length != 0) {
+      if (responseCase_ == ResponseOneofCase.Success) {
         output.WriteRawTag(10);
-        output.WriteString(Message);
+        output.WriteString(Success);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleNotFound) {
+        output.WriteRawTag(18);
+        output.WriteString(VehicleNotFound);
+      }
+      if (responseCase_ == ResponseOneofCase.AvatarInvalid) {
+        output.WriteRawTag(26);
+        output.WriteString(AvatarInvalid);
+      }
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) {
+        output.WriteRawTag(34);
+        output.WriteString(PermissionDenied);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -993,8 +1394,17 @@ namespace CosmicDealership.Vehicle.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Message.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
+      if (responseCase_ == ResponseOneofCase.Success) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Success);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleNotFound) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleNotFound);
+      }
+      if (responseCase_ == ResponseOneofCase.AvatarInvalid) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(AvatarInvalid);
+      }
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(PermissionDenied);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1003,12 +1413,192 @@ namespace CosmicDealership.Vehicle.V1 {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(AddVehicleImageResponse other) {
+    public void MergeFrom(UpdateAvatarResponse other) {
       if (other == null) {
         return;
       }
-      if (other.Message.Length != 0) {
-        Message = other.Message;
+      switch (other.ResponseCase) {
+        case ResponseOneofCase.Success:
+          Success = other.Success;
+          break;
+        case ResponseOneofCase.VehicleNotFound:
+          VehicleNotFound = other.VehicleNotFound;
+          break;
+        case ResponseOneofCase.AvatarInvalid:
+          AvatarInvalid = other.AvatarInvalid;
+          break;
+        case ResponseOneofCase.PermissionDenied:
+          PermissionDenied = other.PermissionDenied;
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Success = input.ReadString();
+            break;
+          }
+          case 18: {
+            VehicleNotFound = input.ReadString();
+            break;
+          }
+          case 26: {
+            AvatarInvalid = input.ReadString();
+            break;
+          }
+          case 34: {
+            PermissionDenied = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class RemoveAvatarRequest : pb::IMessage<RemoveAvatarRequest> {
+    private static readonly pb::MessageParser<RemoveAvatarRequest> _parser = new pb::MessageParser<RemoveAvatarRequest>(() => new RemoveAvatarRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<RemoveAvatarRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[6]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public RemoveAvatarRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public RemoveAvatarRequest(RemoveAvatarRequest other) : this() {
+      user_ = other.user_ != null ? other.user_.Clone() : null;
+      vehicleId_ = other.vehicleId_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public RemoveAvatarRequest Clone() {
+      return new RemoveAvatarRequest(this);
+    }
+
+    /// <summary>Field number for the "user" field.</summary>
+    public const int UserFieldNumber = 1;
+    private global::CosmicDealership.User.V1.User user_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::CosmicDealership.User.V1.User User {
+      get { return user_; }
+      set {
+        user_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "vehicle_id" field.</summary>
+    public const int VehicleIdFieldNumber = 2;
+    private string vehicleId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string VehicleId {
+      get { return vehicleId_; }
+      set {
+        vehicleId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as RemoveAvatarRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(RemoveAvatarRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(User, other.User)) return false;
+      if (VehicleId != other.VehicleId) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (user_ != null) hash ^= User.GetHashCode();
+      if (VehicleId.Length != 0) hash ^= VehicleId.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (user_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(User);
+      }
+      if (VehicleId.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(VehicleId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (user_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(User);
+      }
+      if (VehicleId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleId);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(RemoveAvatarRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.user_ != null) {
+        if (user_ == null) {
+          User = new global::CosmicDealership.User.V1.User();
+        }
+        User.MergeFrom(other.User);
+      }
+      if (other.VehicleId.Length != 0) {
+        VehicleId = other.VehicleId;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1022,7 +1612,1115 @@ namespace CosmicDealership.Vehicle.V1 {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            Message = input.ReadString();
+            if (user_ == null) {
+              User = new global::CosmicDealership.User.V1.User();
+            }
+            input.ReadMessage(User);
+            break;
+          }
+          case 18: {
+            VehicleId = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class RemoveAvatarResponse : pb::IMessage<RemoveAvatarResponse> {
+    private static readonly pb::MessageParser<RemoveAvatarResponse> _parser = new pb::MessageParser<RemoveAvatarResponse>(() => new RemoveAvatarResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<RemoveAvatarResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[7]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public RemoveAvatarResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public RemoveAvatarResponse(RemoveAvatarResponse other) : this() {
+      switch (other.ResponseCase) {
+        case ResponseOneofCase.Success:
+          Success = other.Success;
+          break;
+        case ResponseOneofCase.VehicleNotFound:
+          VehicleNotFound = other.VehicleNotFound;
+          break;
+        case ResponseOneofCase.PermissionDenied:
+          PermissionDenied = other.PermissionDenied;
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public RemoveAvatarResponse Clone() {
+      return new RemoveAvatarResponse(this);
+    }
+
+    /// <summary>Field number for the "success" field.</summary>
+    public const int SuccessFieldNumber = 1;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Success {
+      get { return responseCase_ == ResponseOneofCase.Success ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.Success;
+      }
+    }
+
+    /// <summary>Field number for the "vehicle_not_found" field.</summary>
+    public const int VehicleNotFoundFieldNumber = 2;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string VehicleNotFound {
+      get { return responseCase_ == ResponseOneofCase.VehicleNotFound ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.VehicleNotFound;
+      }
+    }
+
+    /// <summary>Field number for the "permission_denied" field.</summary>
+    public const int PermissionDeniedFieldNumber = 3;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string PermissionDenied {
+      get { return responseCase_ == ResponseOneofCase.PermissionDenied ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.PermissionDenied;
+      }
+    }
+
+    private object response_;
+    /// <summary>Enum of possible cases for the "response" oneof.</summary>
+    public enum ResponseOneofCase {
+      None = 0,
+      Success = 1,
+      VehicleNotFound = 2,
+      PermissionDenied = 3,
+    }
+    private ResponseOneofCase responseCase_ = ResponseOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ResponseOneofCase ResponseCase {
+      get { return responseCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearResponse() {
+      responseCase_ = ResponseOneofCase.None;
+      response_ = null;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as RemoveAvatarResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(RemoveAvatarResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Success != other.Success) return false;
+      if (VehicleNotFound != other.VehicleNotFound) return false;
+      if (PermissionDenied != other.PermissionDenied) return false;
+      if (ResponseCase != other.ResponseCase) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (responseCase_ == ResponseOneofCase.Success) hash ^= Success.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.VehicleNotFound) hash ^= VehicleNotFound.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) hash ^= PermissionDenied.GetHashCode();
+      hash ^= (int) responseCase_;
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (responseCase_ == ResponseOneofCase.Success) {
+        output.WriteRawTag(10);
+        output.WriteString(Success);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleNotFound) {
+        output.WriteRawTag(18);
+        output.WriteString(VehicleNotFound);
+      }
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) {
+        output.WriteRawTag(26);
+        output.WriteString(PermissionDenied);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (responseCase_ == ResponseOneofCase.Success) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Success);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleNotFound) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleNotFound);
+      }
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(PermissionDenied);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(RemoveAvatarResponse other) {
+      if (other == null) {
+        return;
+      }
+      switch (other.ResponseCase) {
+        case ResponseOneofCase.Success:
+          Success = other.Success;
+          break;
+        case ResponseOneofCase.VehicleNotFound:
+          VehicleNotFound = other.VehicleNotFound;
+          break;
+        case ResponseOneofCase.PermissionDenied:
+          PermissionDenied = other.PermissionDenied;
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Success = input.ReadString();
+            break;
+          }
+          case 18: {
+            VehicleNotFound = input.ReadString();
+            break;
+          }
+          case 26: {
+            PermissionDenied = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class AddImageRequest : pb::IMessage<AddImageRequest> {
+    private static readonly pb::MessageParser<AddImageRequest> _parser = new pb::MessageParser<AddImageRequest>(() => new AddImageRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<AddImageRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[8]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AddImageRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AddImageRequest(AddImageRequest other) : this() {
+      user_ = other.user_ != null ? other.user_.Clone() : null;
+      vehicleId_ = other.vehicleId_;
+      imageUri_ = other.imageUri_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AddImageRequest Clone() {
+      return new AddImageRequest(this);
+    }
+
+    /// <summary>Field number for the "user" field.</summary>
+    public const int UserFieldNumber = 1;
+    private global::CosmicDealership.User.V1.User user_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::CosmicDealership.User.V1.User User {
+      get { return user_; }
+      set {
+        user_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "vehicle_id" field.</summary>
+    public const int VehicleIdFieldNumber = 2;
+    private string vehicleId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string VehicleId {
+      get { return vehicleId_; }
+      set {
+        vehicleId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "image_uri" field.</summary>
+    public const int ImageUriFieldNumber = 3;
+    private string imageUri_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string ImageUri {
+      get { return imageUri_; }
+      set {
+        imageUri_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as AddImageRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(AddImageRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(User, other.User)) return false;
+      if (VehicleId != other.VehicleId) return false;
+      if (ImageUri != other.ImageUri) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (user_ != null) hash ^= User.GetHashCode();
+      if (VehicleId.Length != 0) hash ^= VehicleId.GetHashCode();
+      if (ImageUri.Length != 0) hash ^= ImageUri.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (user_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(User);
+      }
+      if (VehicleId.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(VehicleId);
+      }
+      if (ImageUri.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(ImageUri);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (user_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(User);
+      }
+      if (VehicleId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleId);
+      }
+      if (ImageUri.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ImageUri);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(AddImageRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.user_ != null) {
+        if (user_ == null) {
+          User = new global::CosmicDealership.User.V1.User();
+        }
+        User.MergeFrom(other.User);
+      }
+      if (other.VehicleId.Length != 0) {
+        VehicleId = other.VehicleId;
+      }
+      if (other.ImageUri.Length != 0) {
+        ImageUri = other.ImageUri;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (user_ == null) {
+              User = new global::CosmicDealership.User.V1.User();
+            }
+            input.ReadMessage(User);
+            break;
+          }
+          case 18: {
+            VehicleId = input.ReadString();
+            break;
+          }
+          case 26: {
+            ImageUri = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class AddImageResponse : pb::IMessage<AddImageResponse> {
+    private static readonly pb::MessageParser<AddImageResponse> _parser = new pb::MessageParser<AddImageResponse>(() => new AddImageResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<AddImageResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[9]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AddImageResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AddImageResponse(AddImageResponse other) : this() {
+      switch (other.ResponseCase) {
+        case ResponseOneofCase.Success:
+          Success = other.Success;
+          break;
+        case ResponseOneofCase.VehicleNotFound:
+          VehicleNotFound = other.VehicleNotFound;
+          break;
+        case ResponseOneofCase.ImageInvalid:
+          ImageInvalid = other.ImageInvalid;
+          break;
+        case ResponseOneofCase.PermissionDenied:
+          PermissionDenied = other.PermissionDenied;
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AddImageResponse Clone() {
+      return new AddImageResponse(this);
+    }
+
+    /// <summary>Field number for the "success" field.</summary>
+    public const int SuccessFieldNumber = 1;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Success {
+      get { return responseCase_ == ResponseOneofCase.Success ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.Success;
+      }
+    }
+
+    /// <summary>Field number for the "vehicle_not_found" field.</summary>
+    public const int VehicleNotFoundFieldNumber = 2;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string VehicleNotFound {
+      get { return responseCase_ == ResponseOneofCase.VehicleNotFound ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.VehicleNotFound;
+      }
+    }
+
+    /// <summary>Field number for the "image_invalid" field.</summary>
+    public const int ImageInvalidFieldNumber = 3;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string ImageInvalid {
+      get { return responseCase_ == ResponseOneofCase.ImageInvalid ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.ImageInvalid;
+      }
+    }
+
+    /// <summary>Field number for the "permission_denied" field.</summary>
+    public const int PermissionDeniedFieldNumber = 4;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string PermissionDenied {
+      get { return responseCase_ == ResponseOneofCase.PermissionDenied ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.PermissionDenied;
+      }
+    }
+
+    private object response_;
+    /// <summary>Enum of possible cases for the "response" oneof.</summary>
+    public enum ResponseOneofCase {
+      None = 0,
+      Success = 1,
+      VehicleNotFound = 2,
+      ImageInvalid = 3,
+      PermissionDenied = 4,
+    }
+    private ResponseOneofCase responseCase_ = ResponseOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ResponseOneofCase ResponseCase {
+      get { return responseCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearResponse() {
+      responseCase_ = ResponseOneofCase.None;
+      response_ = null;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as AddImageResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(AddImageResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Success != other.Success) return false;
+      if (VehicleNotFound != other.VehicleNotFound) return false;
+      if (ImageInvalid != other.ImageInvalid) return false;
+      if (PermissionDenied != other.PermissionDenied) return false;
+      if (ResponseCase != other.ResponseCase) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (responseCase_ == ResponseOneofCase.Success) hash ^= Success.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.VehicleNotFound) hash ^= VehicleNotFound.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.ImageInvalid) hash ^= ImageInvalid.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) hash ^= PermissionDenied.GetHashCode();
+      hash ^= (int) responseCase_;
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (responseCase_ == ResponseOneofCase.Success) {
+        output.WriteRawTag(10);
+        output.WriteString(Success);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleNotFound) {
+        output.WriteRawTag(18);
+        output.WriteString(VehicleNotFound);
+      }
+      if (responseCase_ == ResponseOneofCase.ImageInvalid) {
+        output.WriteRawTag(26);
+        output.WriteString(ImageInvalid);
+      }
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) {
+        output.WriteRawTag(34);
+        output.WriteString(PermissionDenied);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (responseCase_ == ResponseOneofCase.Success) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Success);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleNotFound) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleNotFound);
+      }
+      if (responseCase_ == ResponseOneofCase.ImageInvalid) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ImageInvalid);
+      }
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(PermissionDenied);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(AddImageResponse other) {
+      if (other == null) {
+        return;
+      }
+      switch (other.ResponseCase) {
+        case ResponseOneofCase.Success:
+          Success = other.Success;
+          break;
+        case ResponseOneofCase.VehicleNotFound:
+          VehicleNotFound = other.VehicleNotFound;
+          break;
+        case ResponseOneofCase.ImageInvalid:
+          ImageInvalid = other.ImageInvalid;
+          break;
+        case ResponseOneofCase.PermissionDenied:
+          PermissionDenied = other.PermissionDenied;
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Success = input.ReadString();
+            break;
+          }
+          case 18: {
+            VehicleNotFound = input.ReadString();
+            break;
+          }
+          case 26: {
+            ImageInvalid = input.ReadString();
+            break;
+          }
+          case 34: {
+            PermissionDenied = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class RemoveImageRequest : pb::IMessage<RemoveImageRequest> {
+    private static readonly pb::MessageParser<RemoveImageRequest> _parser = new pb::MessageParser<RemoveImageRequest>(() => new RemoveImageRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<RemoveImageRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[10]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public RemoveImageRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public RemoveImageRequest(RemoveImageRequest other) : this() {
+      user_ = other.user_ != null ? other.user_.Clone() : null;
+      vehicleId_ = other.vehicleId_;
+      imageUri_ = other.imageUri_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public RemoveImageRequest Clone() {
+      return new RemoveImageRequest(this);
+    }
+
+    /// <summary>Field number for the "user" field.</summary>
+    public const int UserFieldNumber = 1;
+    private global::CosmicDealership.User.V1.User user_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::CosmicDealership.User.V1.User User {
+      get { return user_; }
+      set {
+        user_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "vehicle_id" field.</summary>
+    public const int VehicleIdFieldNumber = 2;
+    private string vehicleId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string VehicleId {
+      get { return vehicleId_; }
+      set {
+        vehicleId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "image_uri" field.</summary>
+    public const int ImageUriFieldNumber = 3;
+    private string imageUri_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string ImageUri {
+      get { return imageUri_; }
+      set {
+        imageUri_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as RemoveImageRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(RemoveImageRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(User, other.User)) return false;
+      if (VehicleId != other.VehicleId) return false;
+      if (ImageUri != other.ImageUri) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (user_ != null) hash ^= User.GetHashCode();
+      if (VehicleId.Length != 0) hash ^= VehicleId.GetHashCode();
+      if (ImageUri.Length != 0) hash ^= ImageUri.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (user_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(User);
+      }
+      if (VehicleId.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(VehicleId);
+      }
+      if (ImageUri.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(ImageUri);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (user_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(User);
+      }
+      if (VehicleId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleId);
+      }
+      if (ImageUri.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ImageUri);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(RemoveImageRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.user_ != null) {
+        if (user_ == null) {
+          User = new global::CosmicDealership.User.V1.User();
+        }
+        User.MergeFrom(other.User);
+      }
+      if (other.VehicleId.Length != 0) {
+        VehicleId = other.VehicleId;
+      }
+      if (other.ImageUri.Length != 0) {
+        ImageUri = other.ImageUri;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (user_ == null) {
+              User = new global::CosmicDealership.User.V1.User();
+            }
+            input.ReadMessage(User);
+            break;
+          }
+          case 18: {
+            VehicleId = input.ReadString();
+            break;
+          }
+          case 26: {
+            ImageUri = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class RemoveImageResponse : pb::IMessage<RemoveImageResponse> {
+    private static readonly pb::MessageParser<RemoveImageResponse> _parser = new pb::MessageParser<RemoveImageResponse>(() => new RemoveImageResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<RemoveImageResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[11]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public RemoveImageResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public RemoveImageResponse(RemoveImageResponse other) : this() {
+      switch (other.ResponseCase) {
+        case ResponseOneofCase.Success:
+          Success = other.Success;
+          break;
+        case ResponseOneofCase.VehicleNotFound:
+          VehicleNotFound = other.VehicleNotFound;
+          break;
+        case ResponseOneofCase.ImageNotFound:
+          ImageNotFound = other.ImageNotFound;
+          break;
+        case ResponseOneofCase.PermissionDenied:
+          PermissionDenied = other.PermissionDenied;
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public RemoveImageResponse Clone() {
+      return new RemoveImageResponse(this);
+    }
+
+    /// <summary>Field number for the "success" field.</summary>
+    public const int SuccessFieldNumber = 1;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Success {
+      get { return responseCase_ == ResponseOneofCase.Success ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.Success;
+      }
+    }
+
+    /// <summary>Field number for the "vehicle_not_found" field.</summary>
+    public const int VehicleNotFoundFieldNumber = 2;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string VehicleNotFound {
+      get { return responseCase_ == ResponseOneofCase.VehicleNotFound ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.VehicleNotFound;
+      }
+    }
+
+    /// <summary>Field number for the "image_not_found" field.</summary>
+    public const int ImageNotFoundFieldNumber = 3;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string ImageNotFound {
+      get { return responseCase_ == ResponseOneofCase.ImageNotFound ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.ImageNotFound;
+      }
+    }
+
+    /// <summary>Field number for the "permission_denied" field.</summary>
+    public const int PermissionDeniedFieldNumber = 4;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string PermissionDenied {
+      get { return responseCase_ == ResponseOneofCase.PermissionDenied ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.PermissionDenied;
+      }
+    }
+
+    private object response_;
+    /// <summary>Enum of possible cases for the "response" oneof.</summary>
+    public enum ResponseOneofCase {
+      None = 0,
+      Success = 1,
+      VehicleNotFound = 2,
+      ImageNotFound = 3,
+      PermissionDenied = 4,
+    }
+    private ResponseOneofCase responseCase_ = ResponseOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ResponseOneofCase ResponseCase {
+      get { return responseCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearResponse() {
+      responseCase_ = ResponseOneofCase.None;
+      response_ = null;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as RemoveImageResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(RemoveImageResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Success != other.Success) return false;
+      if (VehicleNotFound != other.VehicleNotFound) return false;
+      if (ImageNotFound != other.ImageNotFound) return false;
+      if (PermissionDenied != other.PermissionDenied) return false;
+      if (ResponseCase != other.ResponseCase) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (responseCase_ == ResponseOneofCase.Success) hash ^= Success.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.VehicleNotFound) hash ^= VehicleNotFound.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.ImageNotFound) hash ^= ImageNotFound.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) hash ^= PermissionDenied.GetHashCode();
+      hash ^= (int) responseCase_;
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (responseCase_ == ResponseOneofCase.Success) {
+        output.WriteRawTag(10);
+        output.WriteString(Success);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleNotFound) {
+        output.WriteRawTag(18);
+        output.WriteString(VehicleNotFound);
+      }
+      if (responseCase_ == ResponseOneofCase.ImageNotFound) {
+        output.WriteRawTag(26);
+        output.WriteString(ImageNotFound);
+      }
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) {
+        output.WriteRawTag(34);
+        output.WriteString(PermissionDenied);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (responseCase_ == ResponseOneofCase.Success) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Success);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleNotFound) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleNotFound);
+      }
+      if (responseCase_ == ResponseOneofCase.ImageNotFound) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ImageNotFound);
+      }
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(PermissionDenied);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(RemoveImageResponse other) {
+      if (other == null) {
+        return;
+      }
+      switch (other.ResponseCase) {
+        case ResponseOneofCase.Success:
+          Success = other.Success;
+          break;
+        case ResponseOneofCase.VehicleNotFound:
+          VehicleNotFound = other.VehicleNotFound;
+          break;
+        case ResponseOneofCase.ImageNotFound:
+          ImageNotFound = other.ImageNotFound;
+          break;
+        case ResponseOneofCase.PermissionDenied:
+          PermissionDenied = other.PermissionDenied;
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Success = input.ReadString();
+            break;
+          }
+          case 18: {
+            VehicleNotFound = input.ReadString();
+            break;
+          }
+          case 26: {
+            ImageNotFound = input.ReadString();
+            break;
+          }
+          case 34: {
+            PermissionDenied = input.ReadString();
             break;
           }
         }
@@ -1039,7 +2737,7 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[6]; }
+      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[12]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1202,7 +2900,7 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[7]; }
+      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[13]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1219,7 +2917,21 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public RemoveVehicleResponse(RemoveVehicleResponse other) : this() {
-      message_ = other.message_;
+      switch (other.ResponseCase) {
+        case ResponseOneofCase.Success:
+          Success = other.Success;
+          break;
+        case ResponseOneofCase.VehicleNotFound:
+          VehicleNotFound = other.VehicleNotFound;
+          break;
+        case ResponseOneofCase.VehicleCurrentlyLeased:
+          VehicleCurrentlyLeased = other.VehicleCurrentlyLeased;
+          break;
+        case ResponseOneofCase.PermissionDenied:
+          PermissionDenied = other.PermissionDenied;
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1228,15 +2940,69 @@ namespace CosmicDealership.Vehicle.V1 {
       return new RemoveVehicleResponse(this);
     }
 
-    /// <summary>Field number for the "message" field.</summary>
-    public const int MessageFieldNumber = 1;
-    private string message_ = "";
+    /// <summary>Field number for the "success" field.</summary>
+    public const int SuccessFieldNumber = 1;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Message {
-      get { return message_; }
+    public string Success {
+      get { return responseCase_ == ResponseOneofCase.Success ? (string) response_ : ""; }
       set {
-        message_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.Success;
       }
+    }
+
+    /// <summary>Field number for the "vehicle_not_found" field.</summary>
+    public const int VehicleNotFoundFieldNumber = 2;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string VehicleNotFound {
+      get { return responseCase_ == ResponseOneofCase.VehicleNotFound ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.VehicleNotFound;
+      }
+    }
+
+    /// <summary>Field number for the "vehicle_currently_leased" field.</summary>
+    public const int VehicleCurrentlyLeasedFieldNumber = 3;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string VehicleCurrentlyLeased {
+      get { return responseCase_ == ResponseOneofCase.VehicleCurrentlyLeased ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.VehicleCurrentlyLeased;
+      }
+    }
+
+    /// <summary>Field number for the "permission_denied" field.</summary>
+    public const int PermissionDeniedFieldNumber = 4;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string PermissionDenied {
+      get { return responseCase_ == ResponseOneofCase.PermissionDenied ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.PermissionDenied;
+      }
+    }
+
+    private object response_;
+    /// <summary>Enum of possible cases for the "response" oneof.</summary>
+    public enum ResponseOneofCase {
+      None = 0,
+      Success = 1,
+      VehicleNotFound = 2,
+      VehicleCurrentlyLeased = 3,
+      PermissionDenied = 4,
+    }
+    private ResponseOneofCase responseCase_ = ResponseOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ResponseOneofCase ResponseCase {
+      get { return responseCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearResponse() {
+      responseCase_ = ResponseOneofCase.None;
+      response_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1252,14 +3018,22 @@ namespace CosmicDealership.Vehicle.V1 {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Message != other.Message) return false;
+      if (Success != other.Success) return false;
+      if (VehicleNotFound != other.VehicleNotFound) return false;
+      if (VehicleCurrentlyLeased != other.VehicleCurrentlyLeased) return false;
+      if (PermissionDenied != other.PermissionDenied) return false;
+      if (ResponseCase != other.ResponseCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Message.Length != 0) hash ^= Message.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.Success) hash ^= Success.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.VehicleNotFound) hash ^= VehicleNotFound.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.VehicleCurrentlyLeased) hash ^= VehicleCurrentlyLeased.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) hash ^= PermissionDenied.GetHashCode();
+      hash ^= (int) responseCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1273,9 +3047,21 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (Message.Length != 0) {
+      if (responseCase_ == ResponseOneofCase.Success) {
         output.WriteRawTag(10);
-        output.WriteString(Message);
+        output.WriteString(Success);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleNotFound) {
+        output.WriteRawTag(18);
+        output.WriteString(VehicleNotFound);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleCurrentlyLeased) {
+        output.WriteRawTag(26);
+        output.WriteString(VehicleCurrentlyLeased);
+      }
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) {
+        output.WriteRawTag(34);
+        output.WriteString(PermissionDenied);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -1285,8 +3071,17 @@ namespace CosmicDealership.Vehicle.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Message.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
+      if (responseCase_ == ResponseOneofCase.Success) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Success);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleNotFound) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleNotFound);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleCurrentlyLeased) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleCurrentlyLeased);
+      }
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(PermissionDenied);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1299,9 +3094,21 @@ namespace CosmicDealership.Vehicle.V1 {
       if (other == null) {
         return;
       }
-      if (other.Message.Length != 0) {
-        Message = other.Message;
+      switch (other.ResponseCase) {
+        case ResponseOneofCase.Success:
+          Success = other.Success;
+          break;
+        case ResponseOneofCase.VehicleNotFound:
+          VehicleNotFound = other.VehicleNotFound;
+          break;
+        case ResponseOneofCase.VehicleCurrentlyLeased:
+          VehicleCurrentlyLeased = other.VehicleCurrentlyLeased;
+          break;
+        case ResponseOneofCase.PermissionDenied:
+          PermissionDenied = other.PermissionDenied;
+          break;
       }
+
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -1314,7 +3121,19 @@ namespace CosmicDealership.Vehicle.V1 {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            Message = input.ReadString();
+            Success = input.ReadString();
+            break;
+          }
+          case 18: {
+            VehicleNotFound = input.ReadString();
+            break;
+          }
+          case 26: {
+            VehicleCurrentlyLeased = input.ReadString();
+            break;
+          }
+          case 34: {
+            PermissionDenied = input.ReadString();
             break;
           }
         }
@@ -1331,7 +3150,7 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[8]; }
+      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[14]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1494,7 +3313,7 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[9]; }
+      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[15]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1511,7 +3330,21 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public LeaseVehicleResponse(LeaseVehicleResponse other) : this() {
-      message_ = other.message_;
+      switch (other.ResponseCase) {
+        case ResponseOneofCase.Success:
+          Success = other.Success;
+          break;
+        case ResponseOneofCase.VehicleNotFound:
+          VehicleNotFound = other.VehicleNotFound;
+          break;
+        case ResponseOneofCase.VehicleCurrentlyLeased:
+          VehicleCurrentlyLeased = other.VehicleCurrentlyLeased;
+          break;
+        case ResponseOneofCase.PermissionDenied:
+          PermissionDenied = other.PermissionDenied;
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1520,15 +3353,69 @@ namespace CosmicDealership.Vehicle.V1 {
       return new LeaseVehicleResponse(this);
     }
 
-    /// <summary>Field number for the "message" field.</summary>
-    public const int MessageFieldNumber = 1;
-    private string message_ = "";
+    /// <summary>Field number for the "success" field.</summary>
+    public const int SuccessFieldNumber = 1;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Message {
-      get { return message_; }
+    public string Success {
+      get { return responseCase_ == ResponseOneofCase.Success ? (string) response_ : ""; }
       set {
-        message_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.Success;
       }
+    }
+
+    /// <summary>Field number for the "vehicle_not_found" field.</summary>
+    public const int VehicleNotFoundFieldNumber = 2;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string VehicleNotFound {
+      get { return responseCase_ == ResponseOneofCase.VehicleNotFound ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.VehicleNotFound;
+      }
+    }
+
+    /// <summary>Field number for the "vehicle_currently_leased" field.</summary>
+    public const int VehicleCurrentlyLeasedFieldNumber = 3;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string VehicleCurrentlyLeased {
+      get { return responseCase_ == ResponseOneofCase.VehicleCurrentlyLeased ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.VehicleCurrentlyLeased;
+      }
+    }
+
+    /// <summary>Field number for the "permission_denied" field.</summary>
+    public const int PermissionDeniedFieldNumber = 4;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string PermissionDenied {
+      get { return responseCase_ == ResponseOneofCase.PermissionDenied ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.PermissionDenied;
+      }
+    }
+
+    private object response_;
+    /// <summary>Enum of possible cases for the "response" oneof.</summary>
+    public enum ResponseOneofCase {
+      None = 0,
+      Success = 1,
+      VehicleNotFound = 2,
+      VehicleCurrentlyLeased = 3,
+      PermissionDenied = 4,
+    }
+    private ResponseOneofCase responseCase_ = ResponseOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ResponseOneofCase ResponseCase {
+      get { return responseCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearResponse() {
+      responseCase_ = ResponseOneofCase.None;
+      response_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1544,14 +3431,22 @@ namespace CosmicDealership.Vehicle.V1 {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Message != other.Message) return false;
+      if (Success != other.Success) return false;
+      if (VehicleNotFound != other.VehicleNotFound) return false;
+      if (VehicleCurrentlyLeased != other.VehicleCurrentlyLeased) return false;
+      if (PermissionDenied != other.PermissionDenied) return false;
+      if (ResponseCase != other.ResponseCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Message.Length != 0) hash ^= Message.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.Success) hash ^= Success.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.VehicleNotFound) hash ^= VehicleNotFound.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.VehicleCurrentlyLeased) hash ^= VehicleCurrentlyLeased.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) hash ^= PermissionDenied.GetHashCode();
+      hash ^= (int) responseCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1565,9 +3460,21 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (Message.Length != 0) {
+      if (responseCase_ == ResponseOneofCase.Success) {
         output.WriteRawTag(10);
-        output.WriteString(Message);
+        output.WriteString(Success);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleNotFound) {
+        output.WriteRawTag(18);
+        output.WriteString(VehicleNotFound);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleCurrentlyLeased) {
+        output.WriteRawTag(26);
+        output.WriteString(VehicleCurrentlyLeased);
+      }
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) {
+        output.WriteRawTag(34);
+        output.WriteString(PermissionDenied);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -1577,8 +3484,17 @@ namespace CosmicDealership.Vehicle.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Message.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
+      if (responseCase_ == ResponseOneofCase.Success) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Success);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleNotFound) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleNotFound);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleCurrentlyLeased) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleCurrentlyLeased);
+      }
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(PermissionDenied);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1591,9 +3507,21 @@ namespace CosmicDealership.Vehicle.V1 {
       if (other == null) {
         return;
       }
-      if (other.Message.Length != 0) {
-        Message = other.Message;
+      switch (other.ResponseCase) {
+        case ResponseOneofCase.Success:
+          Success = other.Success;
+          break;
+        case ResponseOneofCase.VehicleNotFound:
+          VehicleNotFound = other.VehicleNotFound;
+          break;
+        case ResponseOneofCase.VehicleCurrentlyLeased:
+          VehicleCurrentlyLeased = other.VehicleCurrentlyLeased;
+          break;
+        case ResponseOneofCase.PermissionDenied:
+          PermissionDenied = other.PermissionDenied;
+          break;
       }
+
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -1606,7 +3534,19 @@ namespace CosmicDealership.Vehicle.V1 {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            Message = input.ReadString();
+            Success = input.ReadString();
+            break;
+          }
+          case 18: {
+            VehicleNotFound = input.ReadString();
+            break;
+          }
+          case 26: {
+            VehicleCurrentlyLeased = input.ReadString();
+            break;
+          }
+          case 34: {
+            PermissionDenied = input.ReadString();
             break;
           }
         }
@@ -1623,7 +3563,7 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[10]; }
+      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[16]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1786,7 +3726,7 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[11]; }
+      get { return global::CosmicDealership.Vehicle.V1.VehicleServiceReflection.Descriptor.MessageTypes[17]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1803,7 +3743,21 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ReturnVehicleResponse(ReturnVehicleResponse other) : this() {
-      message_ = other.message_;
+      switch (other.ResponseCase) {
+        case ResponseOneofCase.Success:
+          Success = other.Success;
+          break;
+        case ResponseOneofCase.VehicleNotFound:
+          VehicleNotFound = other.VehicleNotFound;
+          break;
+        case ResponseOneofCase.VehicleAlreadyReturned:
+          VehicleAlreadyReturned = other.VehicleAlreadyReturned;
+          break;
+        case ResponseOneofCase.PermissionDenied:
+          PermissionDenied = other.PermissionDenied;
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1812,15 +3766,69 @@ namespace CosmicDealership.Vehicle.V1 {
       return new ReturnVehicleResponse(this);
     }
 
-    /// <summary>Field number for the "message" field.</summary>
-    public const int MessageFieldNumber = 1;
-    private string message_ = "";
+    /// <summary>Field number for the "success" field.</summary>
+    public const int SuccessFieldNumber = 1;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Message {
-      get { return message_; }
+    public string Success {
+      get { return responseCase_ == ResponseOneofCase.Success ? (string) response_ : ""; }
       set {
-        message_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.Success;
       }
+    }
+
+    /// <summary>Field number for the "vehicle_not_found" field.</summary>
+    public const int VehicleNotFoundFieldNumber = 2;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string VehicleNotFound {
+      get { return responseCase_ == ResponseOneofCase.VehicleNotFound ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.VehicleNotFound;
+      }
+    }
+
+    /// <summary>Field number for the "vehicle_already_returned" field.</summary>
+    public const int VehicleAlreadyReturnedFieldNumber = 3;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string VehicleAlreadyReturned {
+      get { return responseCase_ == ResponseOneofCase.VehicleAlreadyReturned ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.VehicleAlreadyReturned;
+      }
+    }
+
+    /// <summary>Field number for the "permission_denied" field.</summary>
+    public const int PermissionDeniedFieldNumber = 4;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string PermissionDenied {
+      get { return responseCase_ == ResponseOneofCase.PermissionDenied ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.PermissionDenied;
+      }
+    }
+
+    private object response_;
+    /// <summary>Enum of possible cases for the "response" oneof.</summary>
+    public enum ResponseOneofCase {
+      None = 0,
+      Success = 1,
+      VehicleNotFound = 2,
+      VehicleAlreadyReturned = 3,
+      PermissionDenied = 4,
+    }
+    private ResponseOneofCase responseCase_ = ResponseOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ResponseOneofCase ResponseCase {
+      get { return responseCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearResponse() {
+      responseCase_ = ResponseOneofCase.None;
+      response_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1836,14 +3844,22 @@ namespace CosmicDealership.Vehicle.V1 {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Message != other.Message) return false;
+      if (Success != other.Success) return false;
+      if (VehicleNotFound != other.VehicleNotFound) return false;
+      if (VehicleAlreadyReturned != other.VehicleAlreadyReturned) return false;
+      if (PermissionDenied != other.PermissionDenied) return false;
+      if (ResponseCase != other.ResponseCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Message.Length != 0) hash ^= Message.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.Success) hash ^= Success.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.VehicleNotFound) hash ^= VehicleNotFound.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.VehicleAlreadyReturned) hash ^= VehicleAlreadyReturned.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) hash ^= PermissionDenied.GetHashCode();
+      hash ^= (int) responseCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1857,9 +3873,21 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (Message.Length != 0) {
+      if (responseCase_ == ResponseOneofCase.Success) {
         output.WriteRawTag(10);
-        output.WriteString(Message);
+        output.WriteString(Success);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleNotFound) {
+        output.WriteRawTag(18);
+        output.WriteString(VehicleNotFound);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleAlreadyReturned) {
+        output.WriteRawTag(26);
+        output.WriteString(VehicleAlreadyReturned);
+      }
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) {
+        output.WriteRawTag(34);
+        output.WriteString(PermissionDenied);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -1869,8 +3897,17 @@ namespace CosmicDealership.Vehicle.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Message.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
+      if (responseCase_ == ResponseOneofCase.Success) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Success);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleNotFound) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleNotFound);
+      }
+      if (responseCase_ == ResponseOneofCase.VehicleAlreadyReturned) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleAlreadyReturned);
+      }
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(PermissionDenied);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1883,9 +3920,21 @@ namespace CosmicDealership.Vehicle.V1 {
       if (other == null) {
         return;
       }
-      if (other.Message.Length != 0) {
-        Message = other.Message;
+      switch (other.ResponseCase) {
+        case ResponseOneofCase.Success:
+          Success = other.Success;
+          break;
+        case ResponseOneofCase.VehicleNotFound:
+          VehicleNotFound = other.VehicleNotFound;
+          break;
+        case ResponseOneofCase.VehicleAlreadyReturned:
+          VehicleAlreadyReturned = other.VehicleAlreadyReturned;
+          break;
+        case ResponseOneofCase.PermissionDenied:
+          PermissionDenied = other.PermissionDenied;
+          break;
       }
+
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -1898,7 +3947,19 @@ namespace CosmicDealership.Vehicle.V1 {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            Message = input.ReadString();
+            Success = input.ReadString();
+            break;
+          }
+          case 18: {
+            VehicleNotFound = input.ReadString();
+            break;
+          }
+          case 26: {
+            VehicleAlreadyReturned = input.ReadString();
+            break;
+          }
+          case 34: {
+            PermissionDenied = input.ReadString();
             break;
           }
         }

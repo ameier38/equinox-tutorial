@@ -7,7 +7,7 @@ open System
 type Store(config:Config, log:Serilog.ILogger) =
     let codec = FsCodec.NewtonsoftJson.Codec.Create<VehicleEvent>()
     let getVehicleStreamName (vehicleId:VehicleId) =
-        FsCodec.StreamName.create "Vehicle" (Guid.toStringN vehicleId)
+        FsCodec.StreamName.create "Vehicle" (VehicleId.toStringN vehicleId)
     let cache = Equinox.Cache(config.AppName, 20) 
     let connector =
         Connector(

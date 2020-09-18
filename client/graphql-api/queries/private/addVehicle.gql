@@ -1,0 +1,17 @@
+mutation AddVehicle($input:AddVehicleInput!) {
+    addVehicle(input: $input) {
+        __typename
+        ...on Success {
+            __typename
+            message
+        }
+        ... on AlreadyExists {
+            __typename
+            message
+        }
+        ... on PermissionDenied {
+            __typename
+            message
+        }
+    }
+}

@@ -2,5 +2,5 @@ projects:
   Dealership:
     extensions:
       endpoints:
-        private: 'http://localhost:4000'
-        public: 'http://localhost:4000/public'
+        private: 'http://localhost:4001'
+        public: 'http://localhost:4000'
