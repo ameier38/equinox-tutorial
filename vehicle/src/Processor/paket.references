@@ -1,7 +1,6 @@
 Equinox
 Equinox.EventStore
 FSharp.UMX
-FSharp.ValidationBlocks
 FsCodec
 FsCodec.NewtonsoftJson
 Grpc.Core

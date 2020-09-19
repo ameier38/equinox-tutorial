@@ -59,16 +59,6 @@ let createUser (permissions:string list) =
     user.Permissions.AddRange(permissions)
     user
 
-let assertPermissionDenied (permission:string) (ex:exn) =
-    let msg = sprintf "user test does not have %s permission" permission
-    match ex with
-    | :? RpcException as ex ->
-        ex.Status
-        |> Expect.equal
-            "should equal permission denied"
-            (Status(StatusCode.PermissionDenied, msg))
-    | other -> failwithf "wrong exception %A" other
-
 let addVehicle (user:CosmicDealership.User.V1.User) (vehicleId:string) (vehicle:CosmicDealership.Vehicle.V1.Vehicle) =
     let req = CosmicDealership.Vehicle.V1.AddVehicleRequest(User=user, VehicleId=vehicleId, Vehicle=vehicle)
     vehicleService.AddVehicle(req)
@@ -77,8 +67,8 @@ let updateVehicle (user:CosmicDealership.User.V1.User) (vehicleId:string) (vehic
     let req = CosmicDealership.Vehicle.V1.UpdateVehicleRequest(User=user, VehicleId=vehicleId, Vehicle = vehicle)
     vehicleService.UpdateVehicle(req)
 
-let addImage (user:CosmicDealership.User.V1.User) (vehicleId:string) (imageUri:string) =
-    let req = CosmicDealership.Vehicle.V1.AddImageRequest(User=user, VehicleId=vehicleId, ImageUri=imageUri)
+let addImage (user:CosmicDealership.User.V1.User) (vehicleId:string) (imageUrl:string) =
+    let req = CosmicDealership.Vehicle.V1.AddImageRequest(User=user, VehicleId=vehicleId, ImageUrl=imageUrl)
     vehicleService.AddImage(req)
 
 let removeVehicle (user:CosmicDealership.User.V1.User) (vehicleId:string) =
@@ -108,7 +98,7 @@ let testAddVehicle =
         for vehicleId, vehicle in vehicles do
             addVehicle user vehicleId vehicle |> ignore
         Thread.Sleep 2000
-        for i, (vehicleId, vehicle) in vehicles |> List.indexed do
+        for i, (vehicleId, _) in vehicles |> List.indexed do
             let vehicleState = store.GetVehicle(vehicleId)
             let expectedVehicleState =
                 { vehicleId = vehicleId
@@ -131,9 +121,12 @@ let testAddVehicleDenied =
                 Make="Falcon",
                 Model="9",
                 Year=2016)
-        let f () = addVehicle user vehicleId vehicle |> ignore
-        let cont = assertPermissionDenied "add:vehicles"
-        Expect.throwsC cont f
+        let actualResponse = addVehicle user vehicleId vehicle
+        let expectedResponse =
+            CosmicDealership.Vehicle.V1.AddVehicleResponse(
+                PermissionDenied="user test does not have add:vehicles permission")
+        actualResponse
+        |> Expect.equal "should have permission denied" expectedResponse
     }
 
 let testUpdateVehicle =
@@ -201,9 +194,12 @@ let testRemoveVehicleDenied =
                 Model="9",
                 Year=2016)
         addVehicle user vehicleId vehicle |> ignore
-        let f () = removeVehicle user vehicleId |> ignore
-        let cont = assertPermissionDenied "remove:vehicles"
-        Expect.throwsC cont f
+        let actualResponse = removeVehicle user vehicleId
+        let expectedResponse =
+            CosmicDealership.Vehicle.V1.RemoveVehicleResponse(
+                PermissionDenied="user test does not have remove:vehicles permission")
+        actualResponse
+        |> Expect.equal "should have permission denied" expectedResponse
     }
 
 [<Tests>]

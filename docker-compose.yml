@@ -46,10 +46,10 @@ services:
     depends_on: 
       - seq
       - minio
-  vehicle-api:
+  vehicle-processor:
     build:
-      context: ./vehicle/vehicle-service
-      dockerfile: deploy/server.Dockerfile
+      context: ./vehicle
+      dockerfile: deploy/processor.Dockerfile
       target: runner
     ports:
       - "50051:50051"
@@ -62,7 +62,7 @@ services:
       - eventstore
   vehicle-reactor:
     build:
-      context: ./vehicle/vehicle-service
+      context: ./vehicle
       dockerfile: deploy/reactor.Dockerfile
       target: runner
     environment: 
@@ -73,6 +73,7 @@ services:
       - seq
       - eventstore
       - mongo
+      - vehicle-processor
   public-graphql-api:
     build:
       context: ./client/graphql-api
@@ -87,7 +88,7 @@ services:
       MONGO_HOST: mongo
       SEQ_HOST: seq
     depends_on: 
-      - vehicle-api
+      - vehicle-processor
       - vehicle-reactor
   private-graphql-api:
     build:
@@ -103,7 +104,7 @@ services:
       MONGO_HOST: mongo
       SEQ_HOST: seq
     depends_on: 
-      - vehicle-api
+      - vehicle-processor
       - vehicle-reactor
   web-app:
     build:

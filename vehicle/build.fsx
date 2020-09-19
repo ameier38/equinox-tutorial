@@ -6,8 +6,6 @@ open Fake.IO.FileSystemOperators
 open Fake.IO.Globbing.Operators
 open BlackFox.Fake
 
-let sln = __SOURCE_DIRECTORY__ </> "VehicleService.sln"
-
 BuildTask.create "Clean" [] {
     let directories =
         !! "**/out"
@@ -28,8 +26,7 @@ let cleanProto = BuildTask.create "CleanProto" [] {
 
 let copyGenerated = BuildTask.create "CopyGenerated" [cleanProto] {
     let genDir =
-        __SOURCE_DIRECTORY__ // vehicle-service
-        |> Path.getDirectory // vehicle
+        __SOURCE_DIRECTORY__ // vehicle
         |> Path.getDirectory // equinox-tutorial
         </> "infrastructure" </> "protos" </> "gen" </> "csharp"
     if not (DirectoryInfo.exists (DirectoryInfo.ofPath genDir)) then failwithf "%s does not exist" genDir
@@ -47,7 +44,8 @@ BuildTask.create "UpdateProtos" [copyGenerated] {
 }
 
 BuildTask.create "Restore" [] {
-    DotNet.restore id sln
+    for proj in !! "**/*.*proj" do
+        DotNet.restore id proj
 }
 
 let testUnits = BuildTask.create "TestUnits" [] {
@@ -62,8 +60,8 @@ BuildTask.create "TestIntegrations" [] {
     if not result.OK then failwith "Error!"
 }
 
-BuildTask.create "PublishServer" [testUnits] {
-    Trace.trace "Publishing Server..."
+BuildTask.create "PublishProcessor" [testUnits] {
+    Trace.trace "Publishing Processor..."
     // ref: https://docs.microsoft.com/en-us/dotnet/core/rid-catalog
     let runtime =
         if Environment.isLinux then "linux-x64"
@@ -72,9 +70,9 @@ BuildTask.create "PublishServer" [testUnits] {
         else failwithf "environment not supported"
     DotNet.publish (fun args ->
         { args with
-            OutputPath = Some "src/Server/out"
+            OutputPath = Some "src/Processor/out"
             Runtime = Some runtime })
-        "src/Server/Server.fsproj"
+        "src/Processor/Processor.fsproj"
 }
 
 BuildTask.create "PublishReactor" [testUnits] {

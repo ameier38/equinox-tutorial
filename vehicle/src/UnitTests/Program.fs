@@ -1,9 +1,13 @@
 ﻿open Expecto
 open Expecto.Flip
-open FSharp.ValidationBlocks
+open FSharp.UMX
 open Server
 open Shared
-open System
+
+let emptyState =
+    { VehicleStatus = Unknown
+      AvatarUrl = UMX.tag<url> ""
+      ImageUrls = [] }
 
 let testEvolve =
     test "test evolve" {
@@ -12,31 +16,36 @@ let testEvolve =
         // WHEN vehicle is added
         let vehicleId = VehicleId.create()
         let vehicle =
-            { Make = Unchecked.blockof<Make> "Falcon"
-              Model = Unchecked.blockof<Model> "9"
-              Year = Unchecked.blockof<Year> 2016 }
-        let vehicleAdded = VehicleAdded {| VehicleId = vehicleId; Vehicle = vehicle |}
-        let newState = Aggregate.evolve prevState vehicleAdded
+            { Make = UMX.tag<make> "Falcon"
+              Model = UMX.tag<model> "9"
+              Year = UMX.tag<year> 2016 }
+        let addVehicle = AddVehicle vehicle
+        let events = Aggregate.decide vehicleId addVehicle prevState |> snd
+        let newState = events |> List.fold Aggregate.evolve prevState
         // THEN status should be Available
+        let expectedState = { emptyState with VehicleStatus = Available }
         newState
-        |> Expect.equal "status should be Available" Available
+        |> Expect.equal "status should be Available" expectedState
         // GIVEN previous state
         let prevState = newState
         // WHEN vehicle is updated
-        let updatedVehicle = { vehicle with Model = Unchecked.blockof<Model> "10" }
-        let vehicleUpdated = VehicleUpdated {| VehicleId = vehicleId; Vehicle = vehicle |}
-        let newState = Aggregate.evolve prevState vehicleUpdated
+        let updatedVehicle = { vehicle with Model = UMX.tag<model> "10" }
+        let updateVehicle = UpdateVehicle updatedVehicle
+        let events = Aggregate.decide vehicleId updateVehicle prevState |> snd
+        let newState = events |> List.fold Aggregate.evolve prevState
         // THEN vehicle should be updated
         newState
-        |> Expect.equal "vehicle should be updated" Available
+        |> Expect.equal "status should not change" prevState
         // GIVEN previous state
         let prevState = newState
         // WHEN vehicle is removed
-        let vehicleRemoved = VehicleRemoved {| VehicleId = vehicleId |}
-        let newState = Aggregate.evolve prevState vehicleRemoved
+        let removeVehicle = RemoveVehicle
+        let events = Aggregate.decide vehicleId removeVehicle prevState |> snd
+        let newState = events |> List.fold Aggregate.evolve prevState
         // THEN state should be Removed
+        let expectedState = { prevState with VehicleStatus = Unknown }
         newState
-        |> Expect.equal "status should be Unknown" Unknown
+        |> Expect.equal "status should be Unknown" expectedState
     }
 
 [<Tests>]

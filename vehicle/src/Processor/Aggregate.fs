@@ -1,21 +1,33 @@
 module Server.Aggregate
 
+open FSharp.UMX
 open Shared
 
-let initial = Unknown
+let initial =
+    { VehicleStatus = Unknown
+      AvatarUrl = Url.empty
+      ImageUrls = [] }
 
 let evolve : VehicleState -> VehicleEvent -> VehicleState =
     fun state event ->
         match event with
-        | VehicleUpdated _
-        | ImageAdded _
-        | ImageRemoved _
-        | AvatarUpdated _
-        | AvatarRemoved _ -> state
-        | VehicleAdded _ -> Available
-        | VehicleRemoved _ -> Unknown
-        | VehicleLeased _ -> Leased
-        | VehicleReturned _ -> Available
+        | VehicleUpdated _ -> state
+        | AvatarUpdated payload -> 
+            { state with AvatarUrl = payload.AvatarUrl }
+        | AvatarRemoved _ ->
+            { state with AvatarUrl = Url.empty }
+        | ImageAdded payload ->
+            { state with ImageUrls = payload.ImageUrl :: state.ImageUrls }
+        | ImageRemoved payload ->
+            { state with ImageUrls = state.ImageUrls |> List.filter ((<>) payload.ImageUrl) }
+        | VehicleAdded _ ->
+            { state with VehicleStatus = Available }
+        | VehicleRemoved _ ->
+            { state with VehicleStatus = Unknown }
+        | VehicleLeased _ ->
+            { state with VehicleStatus = Leased }
+        | VehicleReturned _ ->
+            { state with VehicleStatus = Available }
 
 let decide
     (vehicleId:VehicleId)
@@ -24,7 +36,7 @@ let decide
         let vehicleIdStr = VehicleId.toStringN vehicleId
         match command with
         | AddVehicle vehicle ->
-            match state with
+            match state.VehicleStatus with
             | Unknown ->
                 Ok (sprintf "successfully added Vehicle-%s" vehicleIdStr),
                 [VehicleAdded {| VehicleId = vehicleId; Vehicle = vehicle |}]
@@ -35,67 +47,81 @@ let decide
                     |> Error
                 error, []
         | UpdateVehicle vehicle ->
-            match state with
+            match state.VehicleStatus with
             | Available
             | Leased ->
                 Ok (sprintf "successfully updated Vehicle-%s" vehicleIdStr),
                 [VehicleUpdated {| VehicleId = vehicleId; Vehicle = vehicle |}]
             | Unknown ->
                 let error =
-                    sprintf "cannot update vehicle; Vehicle-%s does not exist" vehicleIdStr
+                    sprintf "cannot update vehicle; Vehicle-%s not found" vehicleIdStr
                     |> VehicleNotFound
                     |> Error
                 error, []
-        | UpdateAvatar imageUri ->
-            match state with
+        | UpdateAvatar avatarUrl ->
+            match state.VehicleStatus with
             | Available
             | Leased ->
                 Ok (sprintf "successfully updated Vehicle-%s avatar" vehicleIdStr),
-                [AvatarUpdated {| VehicleId = vehicleId; AvatarUri = imageUri |}]
+                [AvatarUpdated {| VehicleId = vehicleId; AvatarUrl = avatarUrl |}]
             | Unknown ->
                 let error =
-                    sprintf "cannot update vehicle avatar; Vehicle-%s does not exist" vehicleIdStr
+                    sprintf "cannot update avatar; Vehicle-%s not found" vehicleIdStr
                     |> VehicleNotFound
                     |> Error
                 error, []
         | RemoveAvatar ->
-            match state with
+            match state.VehicleStatus with
             | Available
             | Leased ->
                 Ok (sprintf "successfully removed Vehicle-%s avatar" vehicleIdStr),
                 [AvatarRemoved {| VehicleId = vehicleId |}]
             | Unknown ->
                 let error =
-                    sprintf "cannot remove vehicle avatar; Vehicle-%s does not exist" vehicleIdStr
+                    sprintf "cannot remove avatar; Vehicle-%s not found" vehicleIdStr
                     |> VehicleNotFound
                     |> Error
                 error, []
-        | AddImage imageUri ->
-            match state with
+        | AddImage imageUrl ->
+            match state.VehicleStatus with
             | Available
             | Leased ->
-                Ok (sprintf "successfully added Vehicle-%s image" vehicleIdStr),
-                [ImageAdded {| VehicleId = vehicleId; ImageUri = imageUri |}]
+                if state.ImageUrls |> List.length < 10 then
+                    Ok (sprintf "successfully added Vehicle-%s image" vehicleIdStr),
+                    [ImageAdded {| VehicleId = vehicleId; ImageUrl = imageUrl |}]
+                else
+                    let error =
+                        sprintf "cannot add image %s; max image count reached" %imageUrl
+                        |> MaxImageCountReached
+                        |> Error
+                    error, []
             | Unknown ->
                 let error =
-                    sprintf "cannot add vehicle image; Vehicle-%s does not exist" vehicleIdStr
+                    sprintf "cannot add image; Vehicle-%s not found" vehicleIdStr
                     |> VehicleNotFound
                     |> Error
                 error, []
-        | RemoveImage imageUri ->
-            match state with
+        | RemoveImage imageUrl ->
+            match state.VehicleStatus with
             | Available
             | Leased ->
-                Ok (sprintf "successfully removed Vehicle-%s image" vehicleIdStr),
-                [ImageRemoved {| VehicleId = vehicleId; ImageUri = imageUri |}]
+                if state.ImageUrls |> List.contains imageUrl then
+                    Ok (sprintf "successfully removed Vehicle-%s image" vehicleIdStr),
+                    [ImageRemoved {| VehicleId = vehicleId; ImageUrl = imageUrl |}]
+                else
+                    let error =
+                        sprintf "cannot remove image; %s not found" %imageUrl 
+                        |> ImageNotFound
+                        |> Error
+                    error, []
             | Unknown ->
                 let error =
-                    sprintf "cannot remove vehicle image; Vehicle-%s does not exist" vehicleIdStr
+                    sprintf "cannot remove image; Vehicle-%s not found" vehicleIdStr
                     |> VehicleNotFound
                     |> Error
                 error, []
         | RemoveVehicle ->
-            match state with
+            match state.VehicleStatus with
             | Available ->
                 Ok (sprintf "successfully removed Vehicle-%s" vehicleIdStr),
                 [ VehicleRemoved {| VehicleId = vehicleId |} ]
@@ -107,12 +133,12 @@ let decide
                 error, []
             | Unknown ->
                 let error =
-                    sprintf "cannot remove vehicle; Vehicle-%s does not exist" vehicleIdStr
+                    sprintf "cannot remove vehicle; Vehicle-%s not found" vehicleIdStr
                     |> VehicleNotFound
                     |> Error
                 error, []
         | LeaseVehicle ->
-            match state with
+            match state.VehicleStatus with
             | Available ->
                 Ok (sprintf "successfully leased Vehicle-%s" vehicleIdStr),
                 [VehicleLeased {| VehicleId = vehicleId |}]
@@ -124,12 +150,12 @@ let decide
                 error, []
             | Unknown ->
                 let error =
-                    sprintf "cannot lease vehicle; Vehicle-%s does not exist" vehicleIdStr
+                    sprintf "cannot lease vehicle; Vehicle-%s not found" vehicleIdStr
                     |> VehicleNotFound
                     |> Error
                 error, []
         | ReturnVehicle ->
-            match state with
+            match state.VehicleStatus with
             | Leased ->
                 Ok (sprintf "successfully returned Vehicle-%s" vehicleIdStr),
                 [ VehicleReturned {| VehicleId = vehicleId |} ]
@@ -141,7 +167,7 @@ let decide
                 error, []
             | Unknown ->
                 let error =
-                    sprintf "cannot return vehicle; Vehicle-%s does not exist" vehicleIdStr
+                    sprintf "cannot return vehicle; Vehicle-%s not found" vehicleIdStr
                     |> VehicleNotFound
                     |> Error
                 error, []

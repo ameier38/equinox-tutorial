@@ -2,7 +2,6 @@ EventStore.Client
 FsCodec
 FsCodec.NewtonsoftJson
 FSharp.Control.AsyncSeq
-FSharp.ValidationBlocks
 MongoDB.Driver
 Serilog
 Serilog.Sinks.Console

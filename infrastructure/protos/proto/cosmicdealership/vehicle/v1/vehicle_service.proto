@@ -63,7 +63,7 @@ message UpdateVehicleResponse {
 message UpdateAvatarRequest {
     user.v1.User user = 1;
     string vehicle_id = 2;
-    string avatar_uri = 3;
+    string avatar_url = 3;
 }
 
 message UpdateAvatarResponse {
@@ -91,7 +91,7 @@ message RemoveAvatarResponse {
 message AddImageRequest {
   user.v1.User user = 1;
   string vehicle_id = 2;
-  string image_uri = 3;
+  string image_url = 3;
 }
 
 message AddImageResponse {
@@ -99,22 +99,24 @@ message AddImageResponse {
     string success = 1;
     string vehicle_not_found = 2;
     string image_invalid = 3;
-    string permission_denied = 4;
+    string max_image_count_reached = 4;
+    string permission_denied = 5;
   }
 }
 
 message RemoveImageRequest {
     user.v1.User user = 1;
     string vehicle_id = 2;
-    string image_uri = 3;
+    string image_url = 3;
 }
 
 message RemoveImageResponse {
   oneof response {
     string success = 1;
     string vehicle_not_found = 2;
-    string image_not_found = 3;
-    string permission_denied = 4;
+    string image_invalid = 3;
+    string image_not_found = 4;
+    string permission_denied = 5;
   }
 }
 

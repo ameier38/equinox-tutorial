@@ -34,7 +34,7 @@ RUN paket install
 # copy everything else and build
 COPY build.fsx .
 COPY src src
-RUN fake build -t PublishServer
+RUN fake build -t PublishProcessor
 
 # download grpc-health-probe
 RUN curl -sL -o grpc-health-probe \
@@ -44,9 +44,9 @@ FROM mcr.microsoft.com/dotnet/core/runtime:3.1 as runner
 
 WORKDIR /app
 
-COPY --from=builder /app/src/Server/out .
+COPY --from=builder /app/src/Processor/out .
 
 COPY --from=builder /app/grpc-health-probe /usr/local/bin/grpc-health-probe
 RUN chmod +x /usr/local/bin/grpc-health-probe
 
-ENTRYPOINT [ "dotnet", "Server.dll" ]
+ENTRYPOINT [ "dotnet", "Processor.dll" ]

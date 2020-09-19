@@ -1,49 +1,42 @@
 ﻿namespace Shared
 
-open FSharp.ValidationBlocks
+open FSharp.UMX
 open System
 open System.IO
-open System.Text.RegularExpressions
 
-type TextError =
-    | InvalidCharacters
-    | TooLong
-    | Empty
+module Guid =
+    let inline toStringN (x: Guid<'t>) =
+        let x = x |> UMX.untag
+        x.ToString("N")
+    let parse<[<Measure>] 't>(s:string): Guid<'t> =
+        match Guid.TryParse(s) with
+        | (true, d) ->
+            UMX.tag<'t> d
+        | _ -> 
+            failwithf "could not parse %s as Guid" s
 
-type ITextBlock = inherit IBlock<string, TextError>
-
-type Text = private Text of string with
-    interface ITextBlock with
-        member _.Validate =
-            fun s ->
-                [ if Regex("[^a-zA-Z0-9]+").IsMatch(s) then InvalidCharacters
-                  if String.IsNullOrEmpty(s) then Empty ]
-
-type Make = private Make of Text with
-    interface ITextBlock with
-        member _.Validate = fun _ -> []
-
-type Model = private Model of Text with
-    interface ITextBlock with
-        member _.Validate = fun _ -> []
-
-type Year = private Year of int with
-    interface IBlock<int, string> with
-        member _.Validate =
-            fun i ->
-                [ if i < 1970  then "must be greater than 1970"
-                  if i > 3000 then "must be less than 3000" ]
-
-type VehicleId = private VehicleId of Guid
+type VehicleId = Guid<vehicleId>
+and [<Measure>] vehicleId
 
 module VehicleId =
-    let fromString (s:string) =
-        match Guid.TryParse(s) with
-        | (true, vehicleId) -> VehicleId vehicleId |> Ok
-        | _ -> sprintf "could not parse %s" s |> Error
-    let toStringN (VehicleId vehicleId) = vehicleId.ToString("N")
-    let create () = Guid.NewGuid() |> VehicleId
+    let toStringN (vehicleId:VehicleId) = Guid.toStringN vehicleId
+    let parse (s:string) = Guid.parse<vehicleId> s
+    let create () = Guid.NewGuid() |> UMX.tag<vehicleId>
 
+type Make = string<make>
+and [<Measure>] make
+
+type Model = string<model>
+and [<Measure>] model
+
+type Year = int<year>
+and [<Measure>] year
+
+type Url = string<url>
+and [<Measure>] url
+
+module Url =
+    let empty = UMX.tag<url> ""
 
 module Env = 
     let getEnv (key:string) (defaultValue:string) =

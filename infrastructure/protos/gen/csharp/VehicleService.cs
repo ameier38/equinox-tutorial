@@ -42,7 +42,7 @@ namespace CosmicDealership.Vehicle.V1 {
             "Y2xlX2ludmFsaWQYAyABKAlIABIbChFwZXJtaXNzaW9uX2RlbmllZBgEIAEo",
             "CUgAQgoKCHJlc3BvbnNlImsKE1VwZGF0ZUF2YXRhclJlcXVlc3QSLAoEdXNl",
             "chgBIAEoCzIeLmNvc21pY2RlYWxlcnNoaXAudXNlci52MS5Vc2VyEhIKCnZl",
-            "aGljbGVfaWQYAiABKAkSEgoKYXZhdGFyX3VyaRgDIAEoCSKJAQoUVXBkYXRl",
+            "aGljbGVfaWQYAiABKAkSEgoKYXZhdGFyX3VybBgDIAEoCSKJAQoUVXBkYXRl",
             "QXZhdGFyUmVzcG9uc2USEQoHc3VjY2VzcxgBIAEoCUgAEhsKEXZlaGljbGVf",
             "bm90X2ZvdW5kGAIgASgJSAASGAoOYXZhdGFyX2ludmFsaWQYAyABKAlIABIb",
             "ChFwZXJtaXNzaW9uX2RlbmllZBgEIAEoCUgAQgoKCHJlc3BvbnNlIlcKE1Jl",
@@ -52,57 +52,58 @@ namespace CosmicDealership.Vehicle.V1 {
             "bGVfbm90X2ZvdW5kGAIgASgJSAASGwoRcGVybWlzc2lvbl9kZW5pZWQYAyAB",
             "KAlIAEIKCghyZXNwb25zZSJmCg9BZGRJbWFnZVJlcXVlc3QSLAoEdXNlchgB",
             "IAEoCzIeLmNvc21pY2RlYWxlcnNoaXAudXNlci52MS5Vc2VyEhIKCnZlaGlj",
-            "bGVfaWQYAiABKAkSEQoJaW1hZ2VfdXJpGAMgASgJIoQBChBBZGRJbWFnZVJl",
+            "bGVfaWQYAiABKAkSEQoJaW1hZ2VfdXJsGAMgASgJIqcBChBBZGRJbWFnZVJl",
             "c3BvbnNlEhEKB3N1Y2Nlc3MYASABKAlIABIbChF2ZWhpY2xlX25vdF9mb3Vu",
-            "ZBgCIAEoCUgAEhcKDWltYWdlX2ludmFsaWQYAyABKAlIABIbChFwZXJtaXNz",
-            "aW9uX2RlbmllZBgEIAEoCUgAQgoKCHJlc3BvbnNlImkKElJlbW92ZUltYWdl",
-            "UmVxdWVzdBIsCgR1c2VyGAEgASgLMh4uY29zbWljZGVhbGVyc2hpcC51c2Vy",
-            "LnYxLlVzZXISEgoKdmVoaWNsZV9pZBgCIAEoCRIRCglpbWFnZV91cmkYAyAB",
-            "KAkiiQEKE1JlbW92ZUltYWdlUmVzcG9uc2USEQoHc3VjY2VzcxgBIAEoCUgA",
-            "EhsKEXZlaGljbGVfbm90X2ZvdW5kGAIgASgJSAASGQoPaW1hZ2Vfbm90X2Zv",
-            "dW5kGAMgASgJSAASGwoRcGVybWlzc2lvbl9kZW5pZWQYBCABKAlIAEIKCghy",
-            "ZXNwb25zZSJYChRSZW1vdmVWZWhpY2xlUmVxdWVzdBIsCgR1c2VyGAEgASgL",
-            "Mh4uY29zbWljZGVhbGVyc2hpcC51c2VyLnYxLlVzZXISEgoKdmVoaWNsZV9p",
-            "ZBgCIAEoCSKUAQoVUmVtb3ZlVmVoaWNsZVJlc3BvbnNlEhEKB3N1Y2Nlc3MY",
-            "ASABKAlIABIbChF2ZWhpY2xlX25vdF9mb3VuZBgCIAEoCUgAEiIKGHZlaGlj",
-            "bGVfY3VycmVudGx5X2xlYXNlZBgDIAEoCUgAEhsKEXBlcm1pc3Npb25fZGVu",
-            "aWVkGAQgASgJSABCCgoIcmVzcG9uc2UiVwoTTGVhc2VWZWhpY2xlUmVxdWVz",
+            "ZBgCIAEoCUgAEhcKDWltYWdlX2ludmFsaWQYAyABKAlIABIhChdtYXhfaW1h",
+            "Z2VfY291bnRfcmVhY2hlZBgEIAEoCUgAEhsKEXBlcm1pc3Npb25fZGVuaWVk",
+            "GAUgASgJSABCCgoIcmVzcG9uc2UiaQoSUmVtb3ZlSW1hZ2VSZXF1ZXN0EiwK",
+            "BHVzZXIYASABKAsyHi5jb3NtaWNkZWFsZXJzaGlwLnVzZXIudjEuVXNlchIS",
+            "Cgp2ZWhpY2xlX2lkGAIgASgJEhEKCWltYWdlX3VybBgDIAEoCSKiAQoTUmVt",
+            "b3ZlSW1hZ2VSZXNwb25zZRIRCgdzdWNjZXNzGAEgASgJSAASGwoRdmVoaWNs",
+            "ZV9ub3RfZm91bmQYAiABKAlIABIXCg1pbWFnZV9pbnZhbGlkGAMgASgJSAAS",
+            "GQoPaW1hZ2Vfbm90X2ZvdW5kGAQgASgJSAASGwoRcGVybWlzc2lvbl9kZW5p",
+            "ZWQYBSABKAlIAEIKCghyZXNwb25zZSJYChRSZW1vdmVWZWhpY2xlUmVxdWVz",
             "dBIsCgR1c2VyGAEgASgLMh4uY29zbWljZGVhbGVyc2hpcC51c2VyLnYxLlVz",
-            "ZXISEgoKdmVoaWNsZV9pZBgCIAEoCSKTAQoUTGVhc2VWZWhpY2xlUmVzcG9u",
-            "c2USEQoHc3VjY2VzcxgBIAEoCUgAEhsKEXZlaGljbGVfbm90X2ZvdW5kGAIg",
-            "ASgJSAASIgoYdmVoaWNsZV9jdXJyZW50bHlfbGVhc2VkGAMgASgJSAASGwoR",
-            "cGVybWlzc2lvbl9kZW5pZWQYBCABKAlIAEIKCghyZXNwb25zZSJYChRSZXR1",
-            "cm5WZWhpY2xlUmVxdWVzdBIsCgR1c2VyGAEgASgLMh4uY29zbWljZGVhbGVy",
-            "c2hpcC51c2VyLnYxLlVzZXISEgoKdmVoaWNsZV9pZBgCIAEoCSKUAQoVUmV0",
-            "dXJuVmVoaWNsZVJlc3BvbnNlEhEKB3N1Y2Nlc3MYASABKAlIABIbChF2ZWhp",
-            "Y2xlX25vdF9mb3VuZBgCIAEoCUgAEiIKGHZlaGljbGVfYWxyZWFkeV9yZXR1",
-            "cm5lZBgDIAEoCUgAEhsKEXBlcm1pc3Npb25fZGVuaWVkGAQgASgJSABCCgoI",
-            "cmVzcG9uc2UyoQgKDlZlaGljbGVTZXJ2aWNlEm0KCkFkZFZlaGljbGUSLi5j",
-            "b3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEuQWRkVmVoaWNsZVJlcXVlc3Qa",
-            "Ly5jb3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEuQWRkVmVoaWNsZVJlc3Bv",
-            "bnNlEnYKDVVwZGF0ZVZlaGljbGUSMS5jb3NtaWNkZWFsZXJzaGlwLnZlaGlj",
-            "bGUudjEuVXBkYXRlVmVoaWNsZVJlcXVlc3QaMi5jb3NtaWNkZWFsZXJzaGlw",
-            "LnZlaGljbGUudjEuVXBkYXRlVmVoaWNsZVJlc3BvbnNlEnMKDFVwZGF0ZUF2",
-            "YXRhchIwLmNvc21pY2RlYWxlcnNoaXAudmVoaWNsZS52MS5VcGRhdGVBdmF0",
-            "YXJSZXF1ZXN0GjEuY29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxLlVwZGF0",
-            "ZUF2YXRhclJlc3BvbnNlEnMKDFJlbW92ZUF2YXRhchIwLmNvc21pY2RlYWxl",
-            "cnNoaXAudmVoaWNsZS52MS5SZW1vdmVBdmF0YXJSZXF1ZXN0GjEuY29zbWlj",
-            "ZGVhbGVyc2hpcC52ZWhpY2xlLnYxLlJlbW92ZUF2YXRhclJlc3BvbnNlEmcK",
-            "CEFkZEltYWdlEiwuY29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxLkFkZElt",
-            "YWdlUmVxdWVzdBotLmNvc21pY2RlYWxlcnNoaXAudmVoaWNsZS52MS5BZGRJ",
-            "bWFnZVJlc3BvbnNlEnAKC1JlbW92ZUltYWdlEi8uY29zbWljZGVhbGVyc2hp",
-            "cC52ZWhpY2xlLnYxLlJlbW92ZUltYWdlUmVxdWVzdBowLmNvc21pY2RlYWxl",
-            "cnNoaXAudmVoaWNsZS52MS5SZW1vdmVJbWFnZVJlc3BvbnNlEnYKDVJlbW92",
-            "ZVZlaGljbGUSMS5jb3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEuUmVtb3Zl",
-            "VmVoaWNsZVJlcXVlc3QaMi5jb3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEu",
-            "UmVtb3ZlVmVoaWNsZVJlc3BvbnNlEnMKDExlYXNlVmVoaWNsZRIwLmNvc21p",
-            "Y2RlYWxlcnNoaXAudmVoaWNsZS52MS5MZWFzZVZlaGljbGVSZXF1ZXN0GjEu",
-            "Y29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxLkxlYXNlVmVoaWNsZVJlc3Bv",
-            "bnNlEnYKDVJldHVyblZlaGljbGUSMS5jb3NtaWNkZWFsZXJzaGlwLnZlaGlj",
-            "bGUudjEuUmV0dXJuVmVoaWNsZVJlcXVlc3QaMi5jb3NtaWNkZWFsZXJzaGlw",
-            "LnZlaGljbGUudjEuUmV0dXJuVmVoaWNsZVJlc3BvbnNlQjtaG2Nvc21pY2Rl",
-            "YWxlcnNoaXAvdmVoaWNsZS92MaoCG0Nvc21pY0RlYWxlcnNoaXAuVmVoaWNs",
-            "ZS5WMWIGcHJvdG8z"));
+            "ZXISEgoKdmVoaWNsZV9pZBgCIAEoCSKUAQoVUmVtb3ZlVmVoaWNsZVJlc3Bv",
+            "bnNlEhEKB3N1Y2Nlc3MYASABKAlIABIbChF2ZWhpY2xlX25vdF9mb3VuZBgC",
+            "IAEoCUgAEiIKGHZlaGljbGVfY3VycmVudGx5X2xlYXNlZBgDIAEoCUgAEhsK",
+            "EXBlcm1pc3Npb25fZGVuaWVkGAQgASgJSABCCgoIcmVzcG9uc2UiVwoTTGVh",
+            "c2VWZWhpY2xlUmVxdWVzdBIsCgR1c2VyGAEgASgLMh4uY29zbWljZGVhbGVy",
+            "c2hpcC51c2VyLnYxLlVzZXISEgoKdmVoaWNsZV9pZBgCIAEoCSKTAQoUTGVh",
+            "c2VWZWhpY2xlUmVzcG9uc2USEQoHc3VjY2VzcxgBIAEoCUgAEhsKEXZlaGlj",
+            "bGVfbm90X2ZvdW5kGAIgASgJSAASIgoYdmVoaWNsZV9jdXJyZW50bHlfbGVh",
+            "c2VkGAMgASgJSAASGwoRcGVybWlzc2lvbl9kZW5pZWQYBCABKAlIAEIKCghy",
+            "ZXNwb25zZSJYChRSZXR1cm5WZWhpY2xlUmVxdWVzdBIsCgR1c2VyGAEgASgL",
+            "Mh4uY29zbWljZGVhbGVyc2hpcC51c2VyLnYxLlVzZXISEgoKdmVoaWNsZV9p",
+            "ZBgCIAEoCSKUAQoVUmV0dXJuVmVoaWNsZVJlc3BvbnNlEhEKB3N1Y2Nlc3MY",
+            "ASABKAlIABIbChF2ZWhpY2xlX25vdF9mb3VuZBgCIAEoCUgAEiIKGHZlaGlj",
+            "bGVfYWxyZWFkeV9yZXR1cm5lZBgDIAEoCUgAEhsKEXBlcm1pc3Npb25fZGVu",
+            "aWVkGAQgASgJSABCCgoIcmVzcG9uc2UyoQgKDlZlaGljbGVTZXJ2aWNlEm0K",
+            "CkFkZFZlaGljbGUSLi5jb3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEuQWRk",
+            "VmVoaWNsZVJlcXVlc3QaLy5jb3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEu",
+            "QWRkVmVoaWNsZVJlc3BvbnNlEnYKDVVwZGF0ZVZlaGljbGUSMS5jb3NtaWNk",
+            "ZWFsZXJzaGlwLnZlaGljbGUudjEuVXBkYXRlVmVoaWNsZVJlcXVlc3QaMi5j",
+            "b3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEuVXBkYXRlVmVoaWNsZVJlc3Bv",
+            "bnNlEnMKDFVwZGF0ZUF2YXRhchIwLmNvc21pY2RlYWxlcnNoaXAudmVoaWNs",
+            "ZS52MS5VcGRhdGVBdmF0YXJSZXF1ZXN0GjEuY29zbWljZGVhbGVyc2hpcC52",
+            "ZWhpY2xlLnYxLlVwZGF0ZUF2YXRhclJlc3BvbnNlEnMKDFJlbW92ZUF2YXRh",
+            "chIwLmNvc21pY2RlYWxlcnNoaXAudmVoaWNsZS52MS5SZW1vdmVBdmF0YXJS",
+            "ZXF1ZXN0GjEuY29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxLlJlbW92ZUF2",
+            "YXRhclJlc3BvbnNlEmcKCEFkZEltYWdlEiwuY29zbWljZGVhbGVyc2hpcC52",
+            "ZWhpY2xlLnYxLkFkZEltYWdlUmVxdWVzdBotLmNvc21pY2RlYWxlcnNoaXAu",
+            "dmVoaWNsZS52MS5BZGRJbWFnZVJlc3BvbnNlEnAKC1JlbW92ZUltYWdlEi8u",
+            "Y29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxLlJlbW92ZUltYWdlUmVxdWVz",
+            "dBowLmNvc21pY2RlYWxlcnNoaXAudmVoaWNsZS52MS5SZW1vdmVJbWFnZVJl",
+            "c3BvbnNlEnYKDVJlbW92ZVZlaGljbGUSMS5jb3NtaWNkZWFsZXJzaGlwLnZl",
+            "aGljbGUudjEuUmVtb3ZlVmVoaWNsZVJlcXVlc3QaMi5jb3NtaWNkZWFsZXJz",
+            "aGlwLnZlaGljbGUudjEuUmVtb3ZlVmVoaWNsZVJlc3BvbnNlEnMKDExlYXNl",
+            "VmVoaWNsZRIwLmNvc21pY2RlYWxlcnNoaXAudmVoaWNsZS52MS5MZWFzZVZl",
+            "aGljbGVSZXF1ZXN0GjEuY29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxLkxl",
+            "YXNlVmVoaWNsZVJlc3BvbnNlEnYKDVJldHVyblZlaGljbGUSMS5jb3NtaWNk",
+            "ZWFsZXJzaGlwLnZlaGljbGUudjEuUmV0dXJuVmVoaWNsZVJlcXVlc3QaMi5j",
+            "b3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEuUmV0dXJuVmVoaWNsZVJlc3Bv",
+            "bnNlQjtaG2Nvc21pY2RlYWxlcnNoaXAvdmVoaWNsZS92MaoCG0Nvc21pY0Rl",
+            "YWxlcnNoaXAuVmVoaWNsZS5WMWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::CosmicDealership.Vehicle.V1.VehicleReflection.Descriptor, global::CosmicDealership.User.V1.UserReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -110,14 +111,14 @@ namespace CosmicDealership.Vehicle.V1 {
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.AddVehicleResponse), global::CosmicDealership.Vehicle.V1.AddVehicleResponse.Parser, new[]{ "Success", "VehicleAlreadyExists", "VehicleInvalid", "PermissionDenied" }, new[]{ "Response" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.UpdateVehicleRequest), global::CosmicDealership.Vehicle.V1.UpdateVehicleRequest.Parser, new[]{ "User", "VehicleId", "Vehicle" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.UpdateVehicleResponse), global::CosmicDealership.Vehicle.V1.UpdateVehicleResponse.Parser, new[]{ "Success", "VehicleNotFound", "VehicleInvalid", "PermissionDenied" }, new[]{ "Response" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.UpdateAvatarRequest), global::CosmicDealership.Vehicle.V1.UpdateAvatarRequest.Parser, new[]{ "User", "VehicleId", "AvatarUri" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.UpdateAvatarRequest), global::CosmicDealership.Vehicle.V1.UpdateAvatarRequest.Parser, new[]{ "User", "VehicleId", "AvatarUrl" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.UpdateAvatarResponse), global::CosmicDealership.Vehicle.V1.UpdateAvatarResponse.Parser, new[]{ "Success", "VehicleNotFound", "AvatarInvalid", "PermissionDenied" }, new[]{ "Response" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.RemoveAvatarRequest), global::CosmicDealership.Vehicle.V1.RemoveAvatarRequest.Parser, new[]{ "User", "VehicleId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.RemoveAvatarResponse), global::CosmicDealership.Vehicle.V1.RemoveAvatarResponse.Parser, new[]{ "Success", "VehicleNotFound", "PermissionDenied" }, new[]{ "Response" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.AddImageRequest), global::CosmicDealership.Vehicle.V1.AddImageRequest.Parser, new[]{ "User", "VehicleId", "ImageUri" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.AddImageResponse), global::CosmicDealership.Vehicle.V1.AddImageResponse.Parser, new[]{ "Success", "VehicleNotFound", "ImageInvalid", "PermissionDenied" }, new[]{ "Response" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.RemoveImageRequest), global::CosmicDealership.Vehicle.V1.RemoveImageRequest.Parser, new[]{ "User", "VehicleId", "ImageUri" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.RemoveImageResponse), global::CosmicDealership.Vehicle.V1.RemoveImageResponse.Parser, new[]{ "Success", "VehicleNotFound", "ImageNotFound", "PermissionDenied" }, new[]{ "Response" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.AddImageRequest), global::CosmicDealership.Vehicle.V1.AddImageRequest.Parser, new[]{ "User", "VehicleId", "ImageUrl" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.AddImageResponse), global::CosmicDealership.Vehicle.V1.AddImageResponse.Parser, new[]{ "Success", "VehicleNotFound", "ImageInvalid", "MaxImageCountReached", "PermissionDenied" }, new[]{ "Response" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.RemoveImageRequest), global::CosmicDealership.Vehicle.V1.RemoveImageRequest.Parser, new[]{ "User", "VehicleId", "ImageUrl" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.RemoveImageResponse), global::CosmicDealership.Vehicle.V1.RemoveImageResponse.Parser, new[]{ "Success", "VehicleNotFound", "ImageInvalid", "ImageNotFound", "PermissionDenied" }, new[]{ "Response" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.RemoveVehicleRequest), global::CosmicDealership.Vehicle.V1.RemoveVehicleRequest.Parser, new[]{ "User", "VehicleId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.RemoveVehicleResponse), global::CosmicDealership.Vehicle.V1.RemoveVehicleResponse.Parser, new[]{ "Success", "VehicleNotFound", "VehicleCurrentlyLeased", "PermissionDenied" }, new[]{ "Response" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.LeaseVehicleRequest), global::CosmicDealership.Vehicle.V1.LeaseVehicleRequest.Parser, new[]{ "User", "VehicleId" }, null, null, null, null),
@@ -1051,7 +1052,7 @@ namespace CosmicDealership.Vehicle.V1 {
     public UpdateAvatarRequest(UpdateAvatarRequest other) : this() {
       user_ = other.user_ != null ? other.user_.Clone() : null;
       vehicleId_ = other.vehicleId_;
-      avatarUri_ = other.avatarUri_;
+      avatarUrl_ = other.avatarUrl_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1082,14 +1083,14 @@ namespace CosmicDealership.Vehicle.V1 {
       }
     }
 
-    /// <summary>Field number for the "avatar_uri" field.</summary>
-    public const int AvatarUriFieldNumber = 3;
-    private string avatarUri_ = "";
+    /// <summary>Field number for the "avatar_url" field.</summary>
+    public const int AvatarUrlFieldNumber = 3;
+    private string avatarUrl_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string AvatarUri {
-      get { return avatarUri_; }
+    public string AvatarUrl {
+      get { return avatarUrl_; }
       set {
-        avatarUri_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        avatarUrl_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -1108,7 +1109,7 @@ namespace CosmicDealership.Vehicle.V1 {
       }
       if (!object.Equals(User, other.User)) return false;
       if (VehicleId != other.VehicleId) return false;
-      if (AvatarUri != other.AvatarUri) return false;
+      if (AvatarUrl != other.AvatarUrl) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1117,7 +1118,7 @@ namespace CosmicDealership.Vehicle.V1 {
       int hash = 1;
       if (user_ != null) hash ^= User.GetHashCode();
       if (VehicleId.Length != 0) hash ^= VehicleId.GetHashCode();
-      if (AvatarUri.Length != 0) hash ^= AvatarUri.GetHashCode();
+      if (AvatarUrl.Length != 0) hash ^= AvatarUrl.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1139,9 +1140,9 @@ namespace CosmicDealership.Vehicle.V1 {
         output.WriteRawTag(18);
         output.WriteString(VehicleId);
       }
-      if (AvatarUri.Length != 0) {
+      if (AvatarUrl.Length != 0) {
         output.WriteRawTag(26);
-        output.WriteString(AvatarUri);
+        output.WriteString(AvatarUrl);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -1157,8 +1158,8 @@ namespace CosmicDealership.Vehicle.V1 {
       if (VehicleId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleId);
       }
-      if (AvatarUri.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(AvatarUri);
+      if (AvatarUrl.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(AvatarUrl);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1180,8 +1181,8 @@ namespace CosmicDealership.Vehicle.V1 {
       if (other.VehicleId.Length != 0) {
         VehicleId = other.VehicleId;
       }
-      if (other.AvatarUri.Length != 0) {
-        AvatarUri = other.AvatarUri;
+      if (other.AvatarUrl.Length != 0) {
+        AvatarUrl = other.AvatarUrl;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1206,7 +1207,7 @@ namespace CosmicDealership.Vehicle.V1 {
             break;
           }
           case 26: {
-            AvatarUri = input.ReadString();
+            AvatarUrl = input.ReadString();
             break;
           }
         }
@@ -1874,7 +1875,7 @@ namespace CosmicDealership.Vehicle.V1 {
     public AddImageRequest(AddImageRequest other) : this() {
       user_ = other.user_ != null ? other.user_.Clone() : null;
       vehicleId_ = other.vehicleId_;
-      imageUri_ = other.imageUri_;
+      imageUrl_ = other.imageUrl_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1905,14 +1906,14 @@ namespace CosmicDealership.Vehicle.V1 {
       }
     }
 
-    /// <summary>Field number for the "image_uri" field.</summary>
-    public const int ImageUriFieldNumber = 3;
-    private string imageUri_ = "";
+    /// <summary>Field number for the "image_url" field.</summary>
+    public const int ImageUrlFieldNumber = 3;
+    private string imageUrl_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string ImageUri {
-      get { return imageUri_; }
+    public string ImageUrl {
+      get { return imageUrl_; }
       set {
-        imageUri_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        imageUrl_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -1931,7 +1932,7 @@ namespace CosmicDealership.Vehicle.V1 {
       }
       if (!object.Equals(User, other.User)) return false;
       if (VehicleId != other.VehicleId) return false;
-      if (ImageUri != other.ImageUri) return false;
+      if (ImageUrl != other.ImageUrl) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1940,7 +1941,7 @@ namespace CosmicDealership.Vehicle.V1 {
       int hash = 1;
       if (user_ != null) hash ^= User.GetHashCode();
       if (VehicleId.Length != 0) hash ^= VehicleId.GetHashCode();
-      if (ImageUri.Length != 0) hash ^= ImageUri.GetHashCode();
+      if (ImageUrl.Length != 0) hash ^= ImageUrl.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1962,9 +1963,9 @@ namespace CosmicDealership.Vehicle.V1 {
         output.WriteRawTag(18);
         output.WriteString(VehicleId);
       }
-      if (ImageUri.Length != 0) {
+      if (ImageUrl.Length != 0) {
         output.WriteRawTag(26);
-        output.WriteString(ImageUri);
+        output.WriteString(ImageUrl);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -1980,8 +1981,8 @@ namespace CosmicDealership.Vehicle.V1 {
       if (VehicleId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleId);
       }
-      if (ImageUri.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(ImageUri);
+      if (ImageUrl.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ImageUrl);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -2003,8 +2004,8 @@ namespace CosmicDealership.Vehicle.V1 {
       if (other.VehicleId.Length != 0) {
         VehicleId = other.VehicleId;
       }
-      if (other.ImageUri.Length != 0) {
-        ImageUri = other.ImageUri;
+      if (other.ImageUrl.Length != 0) {
+        ImageUrl = other.ImageUrl;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -2029,7 +2030,7 @@ namespace CosmicDealership.Vehicle.V1 {
             break;
           }
           case 26: {
-            ImageUri = input.ReadString();
+            ImageUrl = input.ReadString();
             break;
           }
         }
@@ -2072,6 +2073,9 @@ namespace CosmicDealership.Vehicle.V1 {
           break;
         case ResponseOneofCase.ImageInvalid:
           ImageInvalid = other.ImageInvalid;
+          break;
+        case ResponseOneofCase.MaxImageCountReached:
+          MaxImageCountReached = other.MaxImageCountReached;
           break;
         case ResponseOneofCase.PermissionDenied:
           PermissionDenied = other.PermissionDenied;
@@ -2119,8 +2123,19 @@ namespace CosmicDealership.Vehicle.V1 {
       }
     }
 
+    /// <summary>Field number for the "max_image_count_reached" field.</summary>
+    public const int MaxImageCountReachedFieldNumber = 4;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string MaxImageCountReached {
+      get { return responseCase_ == ResponseOneofCase.MaxImageCountReached ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.MaxImageCountReached;
+      }
+    }
+
     /// <summary>Field number for the "permission_denied" field.</summary>
-    public const int PermissionDeniedFieldNumber = 4;
+    public const int PermissionDeniedFieldNumber = 5;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string PermissionDenied {
       get { return responseCase_ == ResponseOneofCase.PermissionDenied ? (string) response_ : ""; }
@@ -2137,7 +2152,8 @@ namespace CosmicDealership.Vehicle.V1 {
       Success = 1,
       VehicleNotFound = 2,
       ImageInvalid = 3,
-      PermissionDenied = 4,
+      MaxImageCountReached = 4,
+      PermissionDenied = 5,
     }
     private ResponseOneofCase responseCase_ = ResponseOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2167,6 +2183,7 @@ namespace CosmicDealership.Vehicle.V1 {
       if (Success != other.Success) return false;
       if (VehicleNotFound != other.VehicleNotFound) return false;
       if (ImageInvalid != other.ImageInvalid) return false;
+      if (MaxImageCountReached != other.MaxImageCountReached) return false;
       if (PermissionDenied != other.PermissionDenied) return false;
       if (ResponseCase != other.ResponseCase) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -2178,6 +2195,7 @@ namespace CosmicDealership.Vehicle.V1 {
       if (responseCase_ == ResponseOneofCase.Success) hash ^= Success.GetHashCode();
       if (responseCase_ == ResponseOneofCase.VehicleNotFound) hash ^= VehicleNotFound.GetHashCode();
       if (responseCase_ == ResponseOneofCase.ImageInvalid) hash ^= ImageInvalid.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.MaxImageCountReached) hash ^= MaxImageCountReached.GetHashCode();
       if (responseCase_ == ResponseOneofCase.PermissionDenied) hash ^= PermissionDenied.GetHashCode();
       hash ^= (int) responseCase_;
       if (_unknownFields != null) {
@@ -2205,8 +2223,12 @@ namespace CosmicDealership.Vehicle.V1 {
         output.WriteRawTag(26);
         output.WriteString(ImageInvalid);
       }
-      if (responseCase_ == ResponseOneofCase.PermissionDenied) {
+      if (responseCase_ == ResponseOneofCase.MaxImageCountReached) {
         output.WriteRawTag(34);
+        output.WriteString(MaxImageCountReached);
+      }
+      if (responseCase_ == ResponseOneofCase.PermissionDenied) {
+        output.WriteRawTag(42);
         output.WriteString(PermissionDenied);
       }
       if (_unknownFields != null) {
@@ -2225,6 +2247,9 @@ namespace CosmicDealership.Vehicle.V1 {
       }
       if (responseCase_ == ResponseOneofCase.ImageInvalid) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(ImageInvalid);
+      }
+      if (responseCase_ == ResponseOneofCase.MaxImageCountReached) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(MaxImageCountReached);
       }
       if (responseCase_ == ResponseOneofCase.PermissionDenied) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(PermissionDenied);
@@ -2249,6 +2274,9 @@ namespace CosmicDealership.Vehicle.V1 {
           break;
         case ResponseOneofCase.ImageInvalid:
           ImageInvalid = other.ImageInvalid;
+          break;
+        case ResponseOneofCase.MaxImageCountReached:
+          MaxImageCountReached = other.MaxImageCountReached;
           break;
         case ResponseOneofCase.PermissionDenied:
           PermissionDenied = other.PermissionDenied;
@@ -2279,6 +2307,10 @@ namespace CosmicDealership.Vehicle.V1 {
             break;
           }
           case 34: {
+            MaxImageCountReached = input.ReadString();
+            break;
+          }
+          case 42: {
             PermissionDenied = input.ReadString();
             break;
           }
@@ -2315,7 +2347,7 @@ namespace CosmicDealership.Vehicle.V1 {
     public RemoveImageRequest(RemoveImageRequest other) : this() {
       user_ = other.user_ != null ? other.user_.Clone() : null;
       vehicleId_ = other.vehicleId_;
-      imageUri_ = other.imageUri_;
+      imageUrl_ = other.imageUrl_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2346,14 +2378,14 @@ namespace CosmicDealership.Vehicle.V1 {
       }
     }
 
-    /// <summary>Field number for the "image_uri" field.</summary>
-    public const int ImageUriFieldNumber = 3;
-    private string imageUri_ = "";
+    /// <summary>Field number for the "image_url" field.</summary>
+    public const int ImageUrlFieldNumber = 3;
+    private string imageUrl_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string ImageUri {
-      get { return imageUri_; }
+    public string ImageUrl {
+      get { return imageUrl_; }
       set {
-        imageUri_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        imageUrl_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -2372,7 +2404,7 @@ namespace CosmicDealership.Vehicle.V1 {
       }
       if (!object.Equals(User, other.User)) return false;
       if (VehicleId != other.VehicleId) return false;
-      if (ImageUri != other.ImageUri) return false;
+      if (ImageUrl != other.ImageUrl) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -2381,7 +2413,7 @@ namespace CosmicDealership.Vehicle.V1 {
       int hash = 1;
       if (user_ != null) hash ^= User.GetHashCode();
       if (VehicleId.Length != 0) hash ^= VehicleId.GetHashCode();
-      if (ImageUri.Length != 0) hash ^= ImageUri.GetHashCode();
+      if (ImageUrl.Length != 0) hash ^= ImageUrl.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2403,9 +2435,9 @@ namespace CosmicDealership.Vehicle.V1 {
         output.WriteRawTag(18);
         output.WriteString(VehicleId);
       }
-      if (ImageUri.Length != 0) {
+      if (ImageUrl.Length != 0) {
         output.WriteRawTag(26);
-        output.WriteString(ImageUri);
+        output.WriteString(ImageUrl);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -2421,8 +2453,8 @@ namespace CosmicDealership.Vehicle.V1 {
       if (VehicleId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleId);
       }
-      if (ImageUri.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(ImageUri);
+      if (ImageUrl.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ImageUrl);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -2444,8 +2476,8 @@ namespace CosmicDealership.Vehicle.V1 {
       if (other.VehicleId.Length != 0) {
         VehicleId = other.VehicleId;
       }
-      if (other.ImageUri.Length != 0) {
-        ImageUri = other.ImageUri;
+      if (other.ImageUrl.Length != 0) {
+        ImageUrl = other.ImageUrl;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -2470,7 +2502,7 @@ namespace CosmicDealership.Vehicle.V1 {
             break;
           }
           case 26: {
-            ImageUri = input.ReadString();
+            ImageUrl = input.ReadString();
             break;
           }
         }
@@ -2511,6 +2543,9 @@ namespace CosmicDealership.Vehicle.V1 {
         case ResponseOneofCase.VehicleNotFound:
           VehicleNotFound = other.VehicleNotFound;
           break;
+        case ResponseOneofCase.ImageInvalid:
+          ImageInvalid = other.ImageInvalid;
+          break;
         case ResponseOneofCase.ImageNotFound:
           ImageNotFound = other.ImageNotFound;
           break;
@@ -2549,8 +2584,19 @@ namespace CosmicDealership.Vehicle.V1 {
       }
     }
 
+    /// <summary>Field number for the "image_invalid" field.</summary>
+    public const int ImageInvalidFieldNumber = 3;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string ImageInvalid {
+      get { return responseCase_ == ResponseOneofCase.ImageInvalid ? (string) response_ : ""; }
+      set {
+        response_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        responseCase_ = ResponseOneofCase.ImageInvalid;
+      }
+    }
+
     /// <summary>Field number for the "image_not_found" field.</summary>
-    public const int ImageNotFoundFieldNumber = 3;
+    public const int ImageNotFoundFieldNumber = 4;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string ImageNotFound {
       get { return responseCase_ == ResponseOneofCase.ImageNotFound ? (string) response_ : ""; }
@@ -2561,7 +2607,7 @@ namespace CosmicDealership.Vehicle.V1 {
     }
 
     /// <summary>Field number for the "permission_denied" field.</summary>
-    public const int PermissionDeniedFieldNumber = 4;
+    public const int PermissionDeniedFieldNumber = 5;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string PermissionDenied {
       get { return responseCase_ == ResponseOneofCase.PermissionDenied ? (string) response_ : ""; }
@@ -2577,8 +2623,9 @@ namespace CosmicDealership.Vehicle.V1 {
       None = 0,
       Success = 1,
       VehicleNotFound = 2,
-      ImageNotFound = 3,
-      PermissionDenied = 4,
+      ImageInvalid = 3,
+      ImageNotFound = 4,
+      PermissionDenied = 5,
     }
     private ResponseOneofCase responseCase_ = ResponseOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2607,6 +2654,7 @@ namespace CosmicDealership.Vehicle.V1 {
       }
       if (Success != other.Success) return false;
       if (VehicleNotFound != other.VehicleNotFound) return false;
+      if (ImageInvalid != other.ImageInvalid) return false;
       if (ImageNotFound != other.ImageNotFound) return false;
       if (PermissionDenied != other.PermissionDenied) return false;
       if (ResponseCase != other.ResponseCase) return false;
@@ -2618,6 +2666,7 @@ namespace CosmicDealership.Vehicle.V1 {
       int hash = 1;
       if (responseCase_ == ResponseOneofCase.Success) hash ^= Success.GetHashCode();
       if (responseCase_ == ResponseOneofCase.VehicleNotFound) hash ^= VehicleNotFound.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.ImageInvalid) hash ^= ImageInvalid.GetHashCode();
       if (responseCase_ == ResponseOneofCase.ImageNotFound) hash ^= ImageNotFound.GetHashCode();
       if (responseCase_ == ResponseOneofCase.PermissionDenied) hash ^= PermissionDenied.GetHashCode();
       hash ^= (int) responseCase_;
@@ -2642,12 +2691,16 @@ namespace CosmicDealership.Vehicle.V1 {
         output.WriteRawTag(18);
         output.WriteString(VehicleNotFound);
       }
-      if (responseCase_ == ResponseOneofCase.ImageNotFound) {
+      if (responseCase_ == ResponseOneofCase.ImageInvalid) {
         output.WriteRawTag(26);
+        output.WriteString(ImageInvalid);
+      }
+      if (responseCase_ == ResponseOneofCase.ImageNotFound) {
+        output.WriteRawTag(34);
         output.WriteString(ImageNotFound);
       }
       if (responseCase_ == ResponseOneofCase.PermissionDenied) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(42);
         output.WriteString(PermissionDenied);
       }
       if (_unknownFields != null) {
@@ -2663,6 +2716,9 @@ namespace CosmicDealership.Vehicle.V1 {
       }
       if (responseCase_ == ResponseOneofCase.VehicleNotFound) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleNotFound);
+      }
+      if (responseCase_ == ResponseOneofCase.ImageInvalid) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ImageInvalid);
       }
       if (responseCase_ == ResponseOneofCase.ImageNotFound) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(ImageNotFound);
@@ -2687,6 +2743,9 @@ namespace CosmicDealership.Vehicle.V1 {
           break;
         case ResponseOneofCase.VehicleNotFound:
           VehicleNotFound = other.VehicleNotFound;
+          break;
+        case ResponseOneofCase.ImageInvalid:
+          ImageInvalid = other.ImageInvalid;
           break;
         case ResponseOneofCase.ImageNotFound:
           ImageNotFound = other.ImageNotFound;
@@ -2716,10 +2775,14 @@ namespace CosmicDealership.Vehicle.V1 {
             break;
           }
           case 26: {
-            ImageNotFound = input.ReadString();
+            ImageInvalid = input.ReadString();
             break;
           }
           case 34: {
+            ImageNotFound = input.ReadString();
+            break;
+          }
+          case 42: {
             PermissionDenied = input.ReadString();
             break;
           }
