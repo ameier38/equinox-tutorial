@@ -90,12 +90,12 @@ BuildTask.create "PublishReactor" [testUnits] {
         "src/Reactor/Reactor.fsproj"
 }
 
-BuildTask.create "Serve" [] {
-    DotNet.exec id "run" "--project src/Server/Server.fsproj"
+BuildTask.create "RunProcessor" [] {
+    DotNet.exec id "run" "--project src/Processor/Processor.fsproj"
     |> ignore
 }
 
-BuildTask.create "React" [] {
+BuildTask.create "RunReactor" [] {
     DotNet.exec id "run" "--project src/Reactor/Reactor.fsproj"
     |> ignore
 }

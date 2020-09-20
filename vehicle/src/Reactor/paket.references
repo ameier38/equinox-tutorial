@@ -3,6 +3,7 @@ FsCodec
 FsCodec.NewtonsoftJson
 FSharp.Control.AsyncSeq
 MongoDB.Driver
+protobuf-net
 Serilog
 Serilog.Sinks.Console
 Serilog.Sinks.Seq

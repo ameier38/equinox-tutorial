@@ -5,6 +5,7 @@ FsCodec
 FsCodec.NewtonsoftJson
 Grpc.Core
 Grpc.HealthCheck
+protobuf-net
 Serilog
 Serilog.Sinks.Console
 Serilog.Sinks.Seq
