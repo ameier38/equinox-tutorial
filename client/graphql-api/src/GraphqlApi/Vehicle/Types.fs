@@ -3,49 +3,29 @@ module GraphqlApi.Vehicle.Types
 open MongoDB.Bson
 open GraphqlApi.Common.Types
 
-type AddVehicleInput =
+type VehicleInput =
     { vehicleId: string
       make: string
       model: string
-      year: int
-      avatarUrl:  }
+      year: int }
 
-[<RequireQualifiedAccess>]
-type AddVehicleResponse =
-    | Success of Message
-    | AlreadyExists of Message
-    | PermissionDenied of Message
-
-type UpdateVehicleInput =
+type UpdateVehicleAvatarInput =
     { vehicleId: string
-      make: string option
-      model: string option
-      year: int option }
+      avatarUrl: string }
 
-[<RequireQualifiedAccess>]
-type UpdateVehicleResponse =
-    | Success of Message
-    | NotFound of Message
-    | PermissionDenied of Message
+type RemoveVehicleAvatarInput =
+    { vehicleId: string }
 
 type AddVehicleImageInput =
     { vehicleId: string
       imageUrl: string }
 
-[<RequireQualifiedAccess>]
-type AddVehicleImageResponse =
-    | Success of Message
-    | NotFound of Message
-    | PermissionDenied of Message
+type RemoveVehicleImageInput =
+    { vehicleId: string
+      imageUrl: string }
 
 type RemoveVehicleInput =
     { vehicleId: string }
-
-[<RequireQualifiedAccess>]
-type RemoveVehicleResponse =
-    | Success of Message
-    | NotFound of Message
-    | PermissionDenied of Message
 
 type Vehicle =
     { _id: ObjectId
@@ -61,13 +41,13 @@ type GetVehicleInput =
 [<RequireQualifiedAccess>]
 type GetVehicleResponse =
     | Vehicle of Vehicle
-    | NotFound of Message
+    | VehicleNotFound of Message
     | PermissionDenied of Message
 
 [<RequireQualifiedAccess>]
 type GetAvailableVehicleResponse =
     | Vehicle of Vehicle
-    | NotFound of Message
+    | VehicleNotFound of Message
 
 type Vehicles =
     { vehicles: Vehicle list

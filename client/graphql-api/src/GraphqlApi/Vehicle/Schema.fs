@@ -1,10 +1,38 @@
 module GraphqlApi.Vehicle.Schema
 
 open GraphqlApi
+open GraphqlApi.Common.Types
 open GraphqlApi.Common.Schema
 open GraphqlApi.Vehicle.Types
 open GraphqlApi.Vehicle.Client
 open FSharp.Data.GraphQL.Types
+
+let VehicleAlreadyExistsType =
+    Define.Object<Message>(name = "VehicleAlreadyExists", fields = [ Define.AutoField("message", String) ])
+
+let VehicleInvalidType =
+    Define.Object<Message>(name = "VehicleInvalid", fields = [ Define.AutoField("message", String) ])
+
+let VehicleNotFoundType =
+    Define.Object<Message>(name = "VehicleNotFound", fields = [ Define.AutoField("message", String) ])
+
+let VehicleCurrentlyLeasedType =
+    Define.Object<Message>(name = "VehicleCurrentlyLeased", fields = [ Define.AutoField("message", String) ])
+
+let VehicleAlreadyReturnedType =
+    Define.Object<Message>(name = "VehicleAlreadyReturned", fields = [ Define.AutoField("message", String) ])
+
+let AvatarInvalidType =
+    Define.Object<Message>(name = "AvatarInvalid", fields = [ Define.AutoField("message", String) ])
+
+let ImageInvalidType =
+    Define.Object<Message>(name = "ImageInvalid", fields = [ Define.AutoField("message", String) ])
+
+let MaxImageCountReachedType =
+    Define.Object<Message>(name = "MaxImageCountReached", fields = [ Define.AutoField("message", String) ])
+
+let ImageNotFoundType =
+    Define.Object<Message>(name = "ImageNotFound", fields = [ Define.AutoField("message", String) ])
 
 let vehicleIdInputField =
     Define.Input(
@@ -94,19 +122,20 @@ let GetVehicleInputType =
 let GetVehicleResponseType =
     Define.Union<GetVehicleResponse,obj>(
         name = "GetVehicleResponse",
-        options = [VehicleType; NotFoundType; PermissionDeniedType],
-        resolveValue = (fun res ->
-            match res with
-            | GetVehicleResponse.Vehicle vehicle -> box vehicle
-            | GetVehicleResponse.NotFound msg -> box msg
-            | GetVehicleResponse.PermissionDenied msg -> box msg
-        ),
+        options = [VehicleType; VehicleNotFoundType; PermissionDeniedType],
         resolveType = (fun res ->
             match res with
             | GetVehicleResponse.Vehicle _ -> upcast VehicleType
-            | GetVehicleResponse.NotFound _ -> upcast NotFoundType
+            | GetVehicleResponse.VehicleNotFound _ -> upcast VehicleNotFoundType
             | GetVehicleResponse.PermissionDenied _ -> upcast PermissionDeniedType
-        ))
+        ),
+        resolveValue = (fun res ->
+            match res with
+            | GetVehicleResponse.Vehicle vehicle -> box vehicle
+            | GetVehicleResponse.VehicleNotFound msg -> box msg
+            | GetVehicleResponse.PermissionDenied msg -> box msg
+        )
+    )
 
 let getVehicle
     (vehicleClient:VehicleClient) =
@@ -126,17 +155,18 @@ let getVehicle
 let GetAvailableVehicleResponseType =
     Define.Union<GetAvailableVehicleResponse,obj>(
         name = "GetAvailableVehicleResponse",
-        options = [VehicleType; NotFoundType; PermissionDeniedType],
-        resolveValue = (fun res ->
-            match res with
-            | GetAvailableVehicleResponse.Vehicle vehicle -> box vehicle
-            | GetAvailableVehicleResponse.NotFound msg -> box msg
-        ),
+        options = [VehicleType; VehicleNotFoundType; PermissionDeniedType],
         resolveType = (fun res ->
             match res with
             | GetAvailableVehicleResponse.Vehicle _ -> upcast VehicleType
-            | GetAvailableVehicleResponse.NotFound _ -> upcast NotFoundType
-        ))
+            | GetAvailableVehicleResponse.VehicleNotFound _ -> upcast VehicleNotFoundType
+        ),
+        resolveValue = (fun res ->
+            match res with
+            | GetAvailableVehicleResponse.Vehicle vehicle -> box vehicle
+            | GetAvailableVehicleResponse.VehicleNotFound msg -> box msg
+        )
+    )
 
 let getAvailableVehicle
     (vehicleClient:VehicleClient) =
@@ -152,7 +182,7 @@ let getAvailableVehicle
     )
 
 let AddVehicleInputType =
-    Define.InputObject<AddVehicleInput>(
+    Define.InputObject<VehicleInput>(
         name = "AddVehicleInput",
         fields = [
             vehicleIdInputField
@@ -161,21 +191,27 @@ let AddVehicleInputType =
             Define.Input("year", Int)
         ])
 
+type AddVehicleResponseCase = CosmicDealership.Vehicle.V1.AddVehicleResponse.ResponseOneofCase
+
 let AddVehicleResponseType =
-    Define.Union<AddVehicleResponse, obj>(
+    Define.Union<CosmicDealership.Vehicle.V1.AddVehicleResponse, obj>(
         name = "AddVehicleResponse",
-        options = [SuccessType; PermissionDeniedType; AlreadyExistsType],
-        resolveValue = (fun o ->
-            match o with
-            | AddVehicleResponse.Success msg
-            | AddVehicleResponse.PermissionDenied msg
-            | AddVehicleResponse.AlreadyExists msg -> box msg
-        ),
+        options = [SuccessType; VehicleAlreadyExistsType; VehicleInvalidType; PermissionDeniedType],
         resolveType = (fun o ->
-            match o with
-            | AddVehicleResponse.Success _ -> upcast SuccessType
-            | AddVehicleResponse.PermissionDenied _ -> upcast PermissionDeniedType
-            | AddVehicleResponse.AlreadyExists _ -> upcast AlreadyExistsType
+            match o.ResponseCase with
+            | AddVehicleResponseCase.Success -> upcast SuccessType
+            | AddVehicleResponseCase.VehicleAlreadyExists -> upcast VehicleAlreadyExistsType
+            | AddVehicleResponseCase.VehicleInvalid -> upcast VehicleInvalidType
+            | AddVehicleResponseCase.PermissionDenied -> upcast PermissionDeniedType
+            | other -> failwithf "invalid response case: %A" other
+        ),
+        resolveValue = (fun o ->
+            match o.ResponseCase with
+            | AddVehicleResponseCase.Success -> box { message = o.Success }
+            | AddVehicleResponseCase.VehicleAlreadyExists -> box { message = o.VehicleAlreadyExists }
+            | AddVehicleResponseCase.VehicleInvalid -> box { message = o.VehicleInvalid }
+            | AddVehicleResponseCase.PermissionDenied -> box { message = o.PermissionDenied }
+            | other -> failwithf "invalid response case: %A" other
         )
     )
 
@@ -190,37 +226,42 @@ let addVehicle
             let user =
                 ctx.Context.Metadata
                 |> User.fromMetadata
-            let input = ctx.Arg<AddVehicleInput>("input")
+            let input = ctx.Arg<VehicleInput>("input")
             vehicleClient.AddVehicle(user, input)
         ))
 
 let UpdateVehicleInputType = 
-    Define.InputObject<UpdateVehicleInput>(
+    Define.InputObject<VehicleInput>(
         name = "UpdateVehicleInput",
         fields = [
             vehicleIdInputField
-            Define.Input("make", Nullable String)
-            Define.Input("model", Nullable String)
-            Define.Input("year", Nullable Int)
+            Define.Input("make", String)
+            Define.Input("model", String)
+            Define.Input("year", Int)
         ])
 
+type UpdateVehicleResponseCase = CosmicDealership.Vehicle.V1.UpdateVehicleResponse.ResponseOneofCase
+
 let UpdateVehicleResponseType =
-    Define.Union<UpdateVehicleResponse, obj>(
+    Define.Union<CosmicDealership.Vehicle.V1.UpdateVehicleResponse, obj>(
         name = "UpdateVehicleResponse",
-        options = [SuccessType; PermissionDeniedType; NotFoundType],
-        resolveValue = (fun o ->
-            match o with
-            | UpdateVehicleResponse.Success msg
-            | UpdateVehicleResponse.NotFound msg
-            | UpdateVehicleResponse.PermissionDenied msg -> box msg
-        ),
+        options = [SuccessType; VehicleNotFoundType; VehicleInvalidType; PermissionDeniedType],
         resolveType = (fun o ->
-            match o with
-            | UpdateVehicleResponse.Success _ -> upcast SuccessType
-            | UpdateVehicleResponse.NotFound _ -> upcast NotFoundType
-            | UpdateVehicleResponse.PermissionDenied _ -> upcast PermissionDeniedType
-        )
-    )
+            match o.ResponseCase with
+            | UpdateVehicleResponseCase.Success -> upcast SuccessType
+            | UpdateVehicleResponseCase.VehicleNotFound -> upcast VehicleNotFoundType
+            | UpdateVehicleResponseCase.VehicleInvalid -> upcast VehicleInvalidType
+            | UpdateVehicleResponseCase.PermissionDenied -> upcast PermissionDeniedType
+            | other -> failwithf "invalid response case: %A" other
+        ),
+        resolveValue = (fun o ->
+            match o.ResponseCase with
+            | UpdateVehicleResponseCase.Success -> box { message = o.Success }
+            | UpdateVehicleResponseCase.VehicleNotFound -> box { message = o.VehicleNotFound }
+            | UpdateVehicleResponseCase.VehicleInvalid -> box { message = o.VehicleInvalid }
+            | UpdateVehicleResponseCase.PermissionDenied -> box { message = o.PermissionDenied }
+            | other -> failwithf "invalid response case: %A" other
+        ))
 
 let updateVehicle
     (vehicleClient:VehicleClient) =
@@ -233,8 +274,54 @@ let updateVehicle
             let user = 
                 ctx.Context.Metadata
                 |> User.fromMetadata
-            let input = ctx.Arg<UpdateVehicleInput>("input")
+            let input = ctx.Arg<VehicleInput>("input")
             vehicleClient.UpdateVehicle(user, input)
+        ))
+
+let UpdateVehicleAvatarInputType =
+    Define.InputObject<UpdateVehicleAvatarInput>(
+        name="UpdateVehicleAvatarInput",
+        fields=[
+            vehicleIdInputField
+            Define.Input("avatarUrl", String)
+        ])
+
+type UpdateVehicleAvatarResponseCase = CosmicDealership.Vehicle.V1.UpdateAvatarResponse.ResponseOneofCase
+
+let UpdateVehicleAvatarResponseType =
+    Define.Union<CosmicDealership.Vehicle.V1.UpdateAvatarResponse, obj>(
+        name="UpdateVehicleAvatarResponse",
+        options=[SuccessType; VehicleNotFoundType; AvatarInvalidType; PermissionDeniedType],
+        resolveType=(fun o ->
+            match o.ResponseCase with
+            | UpdateVehicleAvatarResponseCase.Success -> upcast SuccessType
+            | UpdateVehicleAvatarResponseCase.VehicleNotFound -> upcast VehicleNotFoundType
+            | UpdateVehicleAvatarResponseCase.AvatarInvalid -> upcast AvatarInvalidType
+            | UpdateVehicleAvatarResponseCase.PermissionDenied -> upcast PermissionDeniedType
+            | other -> failwithf "invalid response case: %A" other
+        ),
+        resolveValue=(fun o ->
+            match o.ResponseCase with
+            | UpdateVehicleAvatarResponseCase.Success -> box { message = o.Success }
+            | UpdateVehicleAvatarResponseCase.VehicleNotFound -> box { message = o.VehicleNotFound } 
+            | UpdateVehicleAvatarResponseCase.AvatarInvalid -> box { message = o.AvatarInvalid }
+            | UpdateVehicleAvatarResponseCase.PermissionDenied -> box { message = o.PermissionDenied }
+            | other -> failwithf "invalid response case: %A" other
+        ))
+
+let updateVehicleAvatar
+    (vehicleClient:VehicleClient) =
+    Define.Field(
+        name="updateVehicleAvatar",
+        description="Update a vehicle's avatar",
+        typedef=UpdateVehicleAvatarResponseType,
+        args = [Define.Input("input", UpdateVehicleAvatarInputType)],
+        resolve = (fun ctx _ ->
+            let user = 
+                ctx.Context.Metadata
+                |> User.fromMetadata
+            let input = ctx.Arg<UpdateVehicleAvatarInput>("input")
+            vehicleClient.UpdateAvatar(user, input)
         ))
 
 let AddVehicleImageInputType =
@@ -245,21 +332,29 @@ let AddVehicleImageInputType =
             Define.Input("imageUrl", String)
         ])
 
+type AddVehicleImageResponseCase = CosmicDealership.Vehicle.V1.AddImageResponse.ResponseOneofCase
+
 let AddVehicleImageResponseType =
-    Define.Union<AddVehicleImageResponse, obj>(
+    Define.Union<CosmicDealership.Vehicle.V1.AddImageResponse, obj>(
         name  = "AddVehicleImageResponse",
-        options = [SuccessType; NotFoundType; PermissionDeniedType],
-        resolveValue = (fun o ->
-            match o with
-            | AddVehicleImageResponse.Success msg
-            | AddVehicleImageResponse.NotFound msg
-            | AddVehicleImageResponse.PermissionDenied msg -> box msg
-        ),
+        options = [SuccessType; VehicleNotFoundType; ImageInvalidType; MaxImageCountReachedType; PermissionDeniedType],
         resolveType = (fun o ->
-            match o with
-            | AddVehicleImageResponse.Success _ -> upcast SuccessType
-            | AddVehicleImageResponse.NotFound _ -> upcast NotFoundType
-            | AddVehicleImageResponse.PermissionDenied _ -> upcast PermissionDeniedType
+            match o.ResponseCase with
+            | AddVehicleImageResponseCase.Success -> upcast SuccessType
+            | AddVehicleImageResponseCase.VehicleNotFound -> upcast VehicleNotFoundType
+            | AddVehicleImageResponseCase.ImageInvalid -> upcast ImageInvalidType
+            | AddVehicleImageResponseCase.MaxImageCountReached -> upcast MaxImageCountReachedType
+            | AddVehicleImageResponseCase.PermissionDenied -> upcast PermissionDeniedType
+            | other -> failwithf "invalid response case: %A" other
+        ),
+        resolveValue = (fun o ->
+            match o.ResponseCase with
+            | AddVehicleImageResponseCase.Success -> box { message = o.Success }
+            | AddVehicleImageResponseCase.VehicleNotFound -> box { message = o.VehicleNotFound }
+            | AddVehicleImageResponseCase.ImageInvalid -> box { message = o.ImageInvalid }
+            | AddVehicleImageResponseCase.MaxImageCountReached -> box { message = o.MaxImageCountReached }
+            | AddVehicleImageResponseCase.PermissionDenied -> box { message = o.PermissionDenied }
+            | other -> failwithf "invalid response case: %A" other
         )
     )
 
@@ -275,7 +370,40 @@ let addVehicleImage
                 ctx.Context.Metadata
                 |> User.fromMetadata
             let input = ctx.Arg<AddVehicleImageInput>("input")
-            vehicleClient.AddVehicleImage(user, input)
+            vehicleClient.AddImage(user, input)
+        ))
+
+let RemoveVehicleImageInputType =
+    Define.InputObject<RemoveVehicleImageInput>(
+        name="RemoveVehicleImageInput",
+        fields=[
+            vehicleIdInputField
+            Define.Input("imageUrl", String)
+        ])
+
+type RemoveVehicleImageResponseCase = CosmicDealership.Vehicle.V1.RemoveImageResponse.ResponseOneofCase
+
+let RemoveVehicleImageResponseType =
+    Define.Union<CosmicDealership.Vehicle.V1.RemoveImageResponse, obj>(
+        name="RemoveVehicleImageResponse",
+        options=[SuccessType; VehicleNotFoundType; ImageNotFoundType; ImageInvalidType; PermissionDeniedType],
+        resolveType=(fun o ->
+            match o.ResponseCase with
+            | RemoveVehicleImageResponseCase.Success -> upcast SuccessType
+            | RemoveVehicleImageResponseCase.VehicleNotFound -> upcast VehicleNotFoundType
+            | RemoveVehicleImageResponseCase.ImageNotFound -> upcast ImageNotFoundType
+            | RemoveVehicleImageResponseCase.ImageInvalid -> upcast ImageInvalidType
+            | RemoveVehicleImageResponseCase.PermissionDenied -> upcast PermissionDeniedType
+            | other -> failwithf "invalid response case: %A" other
+        ),
+        resolveValue=(fun o ->
+            match o.ResponseCase with
+            | RemoveVehicleImageResponseCase.Success -> box { message = o.Success }
+            | RemoveVehicleImageResponseCase.VehicleNotFound -> box { message = o.VehicleNotFound }
+            | RemoveVehicleImageResponseCase.ImageNotFound -> box { message = o.ImageNotFound }
+            | RemoveVehicleImageResponseCase.ImageInvalid -> box { message = o.ImageInvalid }
+            | RemoveVehicleImageResponseCase.PermissionDenied -> box { message = o.PermissionDenied }
+            | other -> failwithf "invalid response case: %A" other
         ))
 
 let RemoveVehicleInputType =
@@ -283,23 +411,28 @@ let RemoveVehicleInputType =
         name = "RemoveVehicleInput",
         fields = [vehicleIdInputField])
 
+type RemoveVehicleResponseCase = CosmicDealership.Vehicle.V1.RemoveVehicleResponse.ResponseOneofCase
+
 let RemoveVehicleResponseType =
-    Define.Union<RemoveVehicleResponse, obj>(
+    Define.Union<CosmicDealership.Vehicle.V1.RemoveVehicleResponse, obj>(
         name = "RemoveVehicleResponse",
-        options = [SuccessType; NotFoundType; PermissionDeniedType],
-        resolveValue = (fun o ->
-            match o with
-            | RemoveVehicleResponse.Success msg
-            | RemoveVehicleResponse.NotFound msg
-            | RemoveVehicleResponse.PermissionDenied msg -> box msg
-        ),
+        options = [SuccessType; VehicleNotFoundType; VehicleCurrentlyLeasedType; PermissionDeniedType],
         resolveType = (fun o ->
-            match o with
-            | RemoveVehicleResponse.Success _ -> upcast SuccessType
-            | RemoveVehicleResponse.NotFound _ -> upcast NotFoundType
-            | RemoveVehicleResponse.PermissionDenied _ -> upcast PermissionDeniedType
-        )
-    )
+            match o.ResponseCase with
+            | RemoveVehicleResponseCase.Success -> upcast SuccessType
+            | RemoveVehicleResponseCase.VehicleNotFound -> upcast VehicleNotFoundType
+            | RemoveVehicleResponseCase.VehicleCurrentlyLeased -> upcast VehicleCurrentlyLeasedType
+            | RemoveVehicleResponseCase.PermissionDenied -> upcast PermissionDeniedType
+            | other -> failwithf "invalid response case: %A" other
+        ),
+        resolveValue = (fun o ->
+            match o.ResponseCase with
+            | RemoveVehicleResponseCase.Success -> box { message = o.Success }
+            | RemoveVehicleResponseCase.VehicleNotFound -> box { message = o.VehicleNotFound }
+            | RemoveVehicleResponseCase.VehicleCurrentlyLeased -> box { message = o.VehicleCurrentlyLeased }
+            | RemoveVehicleResponseCase.PermissionDenied -> box { message = o.PermissionDenied }
+            | other -> failwithf "invalid response case: %A" other
+        ))
 
 let removeVehicle
     (vehicleClient:VehicleClient) =

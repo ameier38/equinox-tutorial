@@ -96,6 +96,11 @@ BuildTask.create "ServePublic" [] {
     |> ignore
 }
 
+BuildTask.create "ServePrivate" [] {
+    DotNet.exec id "run" "--project src/GraphqlApi/GraphqlApi.fsproj -- --audience private --insecure"
+    |> ignore
+}
+
 let _default = BuildTask.createEmpty "Default" []
 
 BuildTask.runOrDefault _default

@@ -18,11 +18,5 @@ let pageTokenInputField =
 let SuccessType =
     Define.Object<Message>(name = "Success", fields = [ Define.AutoField("message", String) ])
 
-let NotFoundType =
-    Define.Object<Message>(name = "NotFound", fields = [ Define.AutoField("message", String) ])
-
-let AlreadyExistsType =
-    Define.Object<Message>(name = "AlreadyExists", fields = [ Define.AutoField("message", String) ])
-
 let PermissionDeniedType =
     Define.Object<Message>(name = "PermissionDenied", fields = [ Define.AutoField("message", String) ])

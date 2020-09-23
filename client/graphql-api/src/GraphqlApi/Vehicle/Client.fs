@@ -84,7 +84,7 @@ type VehicleClient(vehicleApiConfig:VehicleApiConfig, mongoConfig:MongoConfig) =
             Log.Debug("Getting vehicle {@VehicleId}", input.vehicleId)
             let vehicle = vehiclesCollection.Find(vehicleIdFilter).FirstOrDefault()
             if isNull (box vehicle) then
-                GetVehicleResponse.NotFound { message = sprintf "could not find Vehicle-%s" input.vehicleId }
+                GetVehicleResponse.VehicleNotFound { message = sprintf "could not find Vehicle-%s" input.vehicleId }
             else
                 GetVehicleResponse.Vehicle vehicle
         | NotAuthorized msg ->
@@ -99,97 +99,113 @@ type VehicleClient(vehicleApiConfig:VehicleApiConfig, mongoConfig:MongoConfig) =
         Log.Debug("Getting vehicle {@VehicleId}", input.vehicleId)
         let vehicle = vehiclesCollection.Find(vehicleIdFilter).FirstOrDefault()
         if isNull (box vehicle) then
-            GetAvailableVehicleResponse.NotFound { message = sprintf "could not find Vehicle-%s" input.vehicleId }
+            GetAvailableVehicleResponse.VehicleNotFound { message = sprintf "could not find Vehicle-%s" input.vehicleId }
         else
             GetAvailableVehicleResponse.Vehicle vehicle
 
-    member _.AddVehicle(user:User, input:AddVehicleInput) =
+    member _.AddVehicle(user:User, input:VehicleInput) =
         let vehicleId = Guid.Parse(input.vehicleId).ToString("N")
         let userProto = User.toProto user
-        let vehicle =
+        let vehicleProto =
             CosmicDealership.Vehicle.V1.Vehicle(
-                VehicleId = vehicleId,
                 Make = input.make,
                 Model = input.model,
                 Year = input.year)
         let req =
             CosmicDealership.Vehicle.V1.AddVehicleRequest(
                 User = userProto,
-                Vehicle = vehicle)
+                Vehicle = vehicleProto)
         Log.Debug("Adding vehicle {@Request}", req)
         try
             let res = vehicleService.AddVehicle(req)
             Log.Debug("Successfully added vehicle {@Response}", res)
-            AddVehicleResponse.Success { message = res.Message }
-        with
-        | :? RpcException as ex ->
-            match ex.StatusCode with
-            | StatusCode.PermissionDenied ->
-                AddVehicleResponse.PermissionDenied { message = ex.Message }
-            | StatusCode.AlreadyExists ->
-                AddVehicleResponse.AlreadyExists { message = ex.Message }
-            | _ ->
-                Log.Error(ex, "Error adding Vehicle-{VehicleId}", vehicleId)
-                raise ex
-        | ex ->
+            res
+        with ex ->
             Log.Error(ex, "Error adding Vehicle-{VehicleId}", vehicleId)
             raise ex
 
-    member _.UpdateVehicle(user:User, input:UpdateVehicleInput) =
+    member _.UpdateVehicle(user:User, input:VehicleInput) =
         let userProto = User.toProto user
-        let vehicleUpdates = 
-            CosmicDealership.Vehicle.V1.VehicleUpdates(
-                Make = (input.make |> Option.defaultValue null),
-                Model = (input.model |> Option.defaultValue null),
-                Year = (match input.year with Some year -> new Nullable<int>(year) | None -> new Nullable<int>()))
+        let vehicle = 
+            CosmicDealership.Vehicle.V1.Vehicle(
+                Make = input.make,
+                Model = input.model,
+                Year = input.year)
         let req =
             CosmicDealership.Vehicle.V1.UpdateVehicleRequest(
                 User = userProto,
                 VehicleId = input.vehicleId,
-                VehicleUpdates = vehicleUpdates)
+                Vehicle = vehicle)
         Log.Debug("Updating vehicle {@Request}", req)
         try
             let res = vehicleService.UpdateVehicle(req)
             Log.Debug("Successfully updated Vehicle-{VehicleId}", input.vehicleId)
-            UpdateVehicleResponse.Success { message = res.Message }
-        with
-        | :? RpcException as ex ->
-            match ex.StatusCode with
-            | StatusCode.PermissionDenied ->
-                UpdateVehicleResponse.PermissionDenied { message = ex.Message }
-            | StatusCode.NotFound ->
-                UpdateVehicleResponse.NotFound { message = ex.Message }
-            | _ ->
-                Log.Error(ex, "Error updating Vehicle-{VehicleId}", input.vehicleId)
-                raise ex
-        | ex ->
+            res
+        with ex ->
             Log.Error(ex, "Error updating Vehicle-{VehicleId}", input.vehicleId)
             raise ex
 
-    member _.AddVehicleImage(user:User, input: AddVehicleImageInput) =
+    member _.UpdateAvatar(user:User, input:UpdateVehicleAvatarInput) =
         let userProto = User.toProto user
         let req =
-            CosmicDealership.Vehicle.V1.AddVehicleImageRequest(
+            CosmicDealership.Vehicle.V1.UpdateAvatarRequest(
+                User = userProto,
+                VehicleId = input.vehicleId,
+                AvatarUrl = input.avatarUrl)
+        Log.Debug("Updating vehicle avatar {@Request}", req)
+        try
+            let res = vehicleService.UpdateAvatar(req)
+            Log.Debug("Successfully updated Vehicle-{VehicleId} avatar", input.vehicleId)
+            res
+        with ex ->
+            Log.Error(ex, "Error updating Vehicle-{VehicleId} avatar", input.vehicleId)
+            raise ex
+
+    member _.RemoveAvatar(user:User, input:RemoveVehicleAvatarInput) =
+        let userProto = User.toProto user
+        let req =
+            CosmicDealership.Vehicle.V1.RemoveAvatarRequest(
+                User = userProto,
+                VehicleId = input.vehicleId)
+        Log.Debug("Removing vehicle avatar {@Request}", req)
+        try
+            let res = vehicleService.RemoveAvatar(req)
+            Log.Debug("Successfully removed Vehicle-{VehicleId} avatar", input.vehicleId)
+            res
+        with ex ->
+            Log.Error(ex, "Error removing Vehicle-{VehicleId} avatar", input.vehicleId)
+            raise ex
+
+    member _.AddImage(user:User, input: AddVehicleImageInput) =
+        let userProto = User.toProto user
+        let req =
+            CosmicDealership.Vehicle.V1.AddImageRequest(
                 User = userProto,
                 VehicleId = input.vehicleId,
                 ImageUrl = input.imageUrl)
         Log.Debug("Adding vehicle image {@Request}", req)
         try
-            let res = vehicleService.AddVehicleImage(req)
+            let res = vehicleService.AddImage(req)
             Log.Debug("Successfully added image to Vehicle-{VehicleId}", input.vehicleId)
-            AddVehicleImageResponse.Success { message = res.Message }
-        with
-        | :? RpcException as ex ->
-            match ex.StatusCode with
-            | StatusCode.PermissionDenied ->
-                AddVehicleImageResponse.PermissionDenied { message = ex.Message }
-            | StatusCode.NotFound ->
-                AddVehicleImageResponse.NotFound { message = ex.Message }
-            | _ ->
-                Log.Error(ex, "Error adding image for Vehicle-{VehicleId}", input.vehicleId)
-                raise ex
-        | ex ->
+            res
+        with ex ->
             Log.Error(ex, "Error adding image for Vehicle-{VehicleId}", input.vehicleId)
+            raise ex
+    
+    member _.RemoveImage(user:User, input: RemoveVehicleImageInput) =
+        let userProto = User.toProto user
+        let req =
+            CosmicDealership.Vehicle.V1.RemoveImageRequest(
+                User = userProto,
+                VehicleId = input.vehicleId,
+                ImageUrl = input.imageUrl)
+        Log.Debug("Removing vehicle image {@Request}", req)
+        try
+            let res = vehicleService.RemoveImage(req)
+            Log.Debug("Successfully removed image from Vehicle-{VehicleId}", input.vehicleId)
+            res
+        with ex ->
+            Log.Error(ex, "Error removing image from Vehicle-{VehicleId}", input.vehicleId)
             raise ex
     
     member _.RemoveVehicle(user:User, input:RemoveVehicleInput) =
@@ -202,17 +218,7 @@ type VehicleClient(vehicleApiConfig:VehicleApiConfig, mongoConfig:MongoConfig) =
         try
             let res = vehicleService.RemoveVehicle(req)
             Log.Debug("Successfully removed Vehicle-{VehicleId}", input.vehicleId)
-            RemoveVehicleResponse.Success { message = res.Message }
-        with
-        | :? RpcException as ex ->
-            match ex.StatusCode with
-            | StatusCode.PermissionDenied ->
-                RemoveVehicleResponse.PermissionDenied { message = ex.Message }
-            | StatusCode.NotFound ->
-                RemoveVehicleResponse.NotFound { message = ex.Message }
-            | _ ->
-                Log.Error("Error removing Vehicle-{VehicleId}", input.vehicleId)
-                raise ex
-        | ex ->
+            res
+        with ex ->
             Log.Error("Error removing Vehicle-{VehicleId}", input.vehicleId)
             raise ex

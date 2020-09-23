@@ -5,7 +5,7 @@ mutation RemoveVehicle($input:RemoveVehicleInput!) {
             __typename
             message
         }
-        ... on NotFound {
+        ... on VehicleNotFound {
             __typename
             message
         }

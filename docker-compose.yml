@@ -78,7 +78,7 @@ services:
     build:
       context: ./client/graphql-api
       target: runner
-    command: ["--audience", "public"]
+    command: ["--audience", "public", "--insecure"]
     ports:
       - "4000:4000"
     environment:

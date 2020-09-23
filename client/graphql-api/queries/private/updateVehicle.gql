@@ -5,7 +5,11 @@ mutation UpdateVehicle($input:UpdateVehicleInput!) {
             __typename
             message
         }
-        ... on NotFound {
+        ... on VehicleNotFound {
+            __typename
+            message
+        }
+        ... on VehicleInvalid {
             __typename
             message
         }

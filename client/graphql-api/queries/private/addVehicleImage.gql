@@ -5,7 +5,15 @@ mutation AddVehicleImage($input:AddVehicleImageInput!) {
             __typename
             message
         }
-        ... on NotFound {
+        ... on VehicleNotFound {
+            __typename
+            message
+        }
+        ... on ImageInvalid {
+            __typename
+            message
+        }
+        ... on MaxImageCountReached {
             __typename
             message
         }

@@ -5,7 +5,11 @@ mutation AddVehicle($input:AddVehicleInput!) {
             __typename
             message
         }
-        ... on AlreadyExists {
+        ... on VehicleAlreadyExists {
+            __typename
+            message
+        }
+        ... on VehicleInvalid {
             __typename
             message
         }
