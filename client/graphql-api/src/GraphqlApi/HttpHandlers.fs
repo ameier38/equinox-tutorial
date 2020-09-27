@@ -9,24 +9,21 @@ open Microsoft.AspNetCore.Http
 open Microsoft.AspNetCore.Authentication.JwtBearer
 open Microsoft.Net.Http.Headers
 open Serilog
-open System.Threading.Tasks
 
 type HttpHandler = HttpFunc -> HttpContext -> HttpFuncResult
 
 let setContentTypeAsJson : HttpHandler =
     setHttpHeader HeaderNames.ContentType "application/json"
 
-let mustBeLoggedIn: HttpHandler =
+let mustBeLoggedIn : HttpHandler =
     requiresAuthentication (challenge JwtBearerDefaults.AuthenticationScheme)
 
-let noop : HttpHandler = handleContext(Some >> Task.FromResult)
-
 let introspection
-    (executor:Executor<Root.Root>): HttpHandler =
+    (handler:GraphQLQueryHandler<'R>): HttpHandler =
     fun next ctx ->
         task {
             let! gqlResp =
-                executor.AsyncExecute(Introspection.IntrospectionQuery)
+                handler.ExecuteAsync(Introspection.IntrospectionQuery)
                 |> Async.StartAsTask
             let res =
                 match gqlResp.Content with
@@ -41,12 +38,14 @@ let introspection
             return! res next ctx
         }
 
-let graphql 
-    (executor:Executor<Root.Root>): HttpHandler =
+let graphql
+    (handler:GraphQLQueryHandler<'R>) : HttpHandler =
     fun next ctx ->
         task {
             try
-                let! query = ctx.BindJsonAsync<GraphQLQuery>()
+                // NB: we don't use ctx.BindJsonAsync() because the deserialization is specifc to the executor
+                let! body = ctx.ReadBodyFromRequestAsync()
+                let query = handler.Deserialize<GraphQLQuery>(body)
                 let permissions =
                     ctx.User.Claims
                     |> Seq.choose (fun claim ->
@@ -64,7 +63,7 @@ let graphql
                 let meta = ["user", box user] |> Metadata.FromList
                 let query = { query with ExecutionPlan = { query.ExecutionPlan with Metadata = meta } }
                 let! gqlResp = 
-                    executor.AsyncExecute(
+                    handler.ExecuteAsync(
                         executionPlan = query.ExecutionPlan,
                         variables = query.Variables)
                 let res =
@@ -86,17 +85,26 @@ let graphql
                 return! res next ctx
         }
 
-let app (executor:Executor<Root.Root>) (authenticate:bool) =
+let app
+    (publicHandler:GraphQLQueryHandler<Root.PublicRoot>)
+    (privateHandler:GraphQLQueryHandler<Root.PrivateRoot>) =
     choose [
-        if authenticate then mustBeLoggedIn else noop >=> choose [
-            route "/schema" >=> choose [
-                POST >=> introspection executor >=> setContentTypeAsJson
-            ]
-            route "/" >=> choose [
-                GET >=> introspection executor >=> setContentTypeAsJson
-                POST >=> graphql executor >=> setContentTypeAsJson
-            ]
-        ] 
+        route "/public/graphiql" >=> htmlFile "./graphiql/public.html"
+        route "/public/schema" >=> choose [
+            POST >=> introspection publicHandler >=> setContentTypeAsJson
+        ]
+        route "/public" >=> choose [
+            GET >=> introspection publicHandler >=> setContentTypeAsJson
+            POST >=> graphql publicHandler >=> setContentTypeAsJson
+        ]
+        route "/graphiql" >=> htmlFile "./graphiql/private.html"
+        route "/schema" >=> choose [
+            POST >=> introspection privateHandler >=> setContentTypeAsJson
+        ]
+        route "/" >=> choose [
+            GET >=> introspection privateHandler >=> setContentTypeAsJson
+            POST >=> mustBeLoggedIn >=> graphql privateHandler >=> setContentTypeAsJson
+        ]
         route "/_health" >=> Successful.OK "Healthy!"
         RequestErrors.NOT_FOUND "location not available"
     ]

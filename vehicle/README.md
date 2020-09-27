@@ -27,3 +27,4 @@ fake build -t TestIntegrations
 ## Resources
 - [Equinox](https://github.com/jet/equinox)
 - [EventStore Samples](https://github.com/EventStore/EventStore.Samples.Dotnet)
+- [API Pagination](https://cloud.google.com/apis/design/design_patterns#list_pagination)

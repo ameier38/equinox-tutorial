@@ -1,10 +1,10 @@
 namespace GraphqlApi
 
-type VehicleApiConfig =
+type VehicleProcessorConfig =
     { Url: string } with
     static member Load() =
-        let host = Shared.Env.getEnv "VEHICLE_API_HOST" "localhost"
-        let port = Shared.Env.getEnv "VEHICLE_API_PORT" "50051" |> int
+        let host = Shared.Env.getEnv "VEHICLE_PROCESSOR_HOST" "localhost"
+        let port = Shared.Env.getEnv "VEHICLE_PROCESSOR_PORT" "50051" |> int
         { Url = sprintf "%s:%i" host port }
 
 type MongoConfig =
@@ -44,7 +44,7 @@ type Auth0Config =
         let getSecret = Shared.Env.getSecret secretsDir "auth0"
         let audience = getSecret "audience" "AUTH0_AUDIENCE" "https://cosmicdealership.com"
         let issuer = getSecret "issuer" "AUTH0_ISSUER" "https://ameier38.auth0.com/"
-        // see README to generate test secret
+        // see README to generate test authentication key
         let secret = getSecret "secret" "AUTH0_SECRET" "671f54ce0c540f78ffe1e26dcf9c2a047aea4fda"
         { Audience = audience
           Issuer = issuer
@@ -64,7 +64,7 @@ type Config =
       Debug: bool
       ServerConfig: ServerConfig
       Auth0Config: Auth0Config
-      VehicleApiConfig: VehicleApiConfig
+      VehicleProcessorConfig: VehicleProcessorConfig
       MongoConfig: MongoConfig
       SeqConfig: SeqConfig } with
     static member Load() =
@@ -73,6 +73,6 @@ type Config =
           Debug = Shared.Env.getEnv "DEBUG" "true" |> bool.Parse
           ServerConfig = ServerConfig.Load()
           Auth0Config = Auth0Config.Load(secretsDir)
-          VehicleApiConfig = VehicleApiConfig.Load()
+          VehicleProcessorConfig = VehicleProcessorConfig.Load()
           MongoConfig = MongoConfig.Load(secretsDir)
           SeqConfig = SeqConfig.Load() }

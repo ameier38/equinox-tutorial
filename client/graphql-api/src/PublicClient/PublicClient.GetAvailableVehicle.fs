@@ -3,12 +3,7 @@ module rec PublicClient.GetAvailableVehicle
 
 type InputVariables = { input: GetVehicleInput }
 
-type NotFound =
-    { ///The name of the type
-      __typename: string
-      message: string }
-
-type PermissionDenied =
+type VehicleNotFound =
     { ///The name of the type
       __typename: string
       message: string }
@@ -25,8 +20,7 @@ type Vehicle =
 
 [<RequireQualifiedAccess>]
 type GetAvailableVehicleResponse =
-    | NotFound of notfound: NotFound
-    | PermissionDenied of permissiondenied: PermissionDenied
+    | VehicleNotFound of vehiclenotfound: VehicleNotFound
     | Vehicle of vehicle: Vehicle
 
 type Query =

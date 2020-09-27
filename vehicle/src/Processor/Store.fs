@@ -11,13 +11,13 @@ type Store(config:Config, log:Serilog.ILogger) =
     let cache = Equinox.Cache(config.AppName, 20) 
     let connector =
         Connector(
-            username=config.EventStore.User,
-            password=config.EventStore.Password,
+            username=config.EventStoreConfig.User,
+            password=config.EventStoreConfig.Password,
             reqTimeout=TimeSpan.FromSeconds 5.,
             reqRetries=3,
             log=Logger.SerilogNormal log)
     let eventStoreConn =
-        connector.Connect(config.AppName, Discovery.Uri config.EventStore.DiscoveryUri)
+        connector.Connect(config.AppName, Discovery.Uri(Uri(config.EventStoreConfig.Url)))
         |> Async.RunSynchronously
     let conn = Connection(eventStoreConn)
     let context = Context(conn, BatchingPolicy (maxBatchSize=500))

@@ -8,7 +8,12 @@ type Success =
       __typename: string
       message: string }
 
-type AlreadyExists =
+type VehicleAlreadyExists =
+    { ///The name of the type
+      __typename: string
+      message: string }
+
+type VehicleInvalid =
     { ///The name of the type
       __typename: string
       message: string }
@@ -21,7 +26,8 @@ type PermissionDenied =
 [<RequireQualifiedAccess>]
 type AddVehicleResponse =
     | Success of success: Success
-    | AlreadyExists of alreadyexists: AlreadyExists
+    | VehicleAlreadyExists of vehiclealreadyexists: VehicleAlreadyExists
+    | VehicleInvalid of vehicleinvalid: VehicleInvalid
     | PermissionDenied of permissiondenied: PermissionDenied
 
 type Query =

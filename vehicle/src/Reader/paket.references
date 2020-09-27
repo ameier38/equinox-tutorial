@@ -1,8 +1,6 @@
-EventStore.Client
-FsCodec
-FsCodec.NewtonsoftJson
 FSharp.Core
-FSharp.Control.AsyncSeq
+Grpc.Core
+Grpc.HealthCheck
 MongoDB.Driver
 Serilog
 Serilog.Sinks.Console

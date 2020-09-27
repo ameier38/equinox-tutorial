@@ -29,9 +29,9 @@ type RemoveVehicleInput =
 type UpdateVehicleInput =
     { /// Unique identifier for the vehicle
       vehicleId: string
-      make: Option<string>
-      model: Option<string>
-      year: Option<int> }
+      make: string
+      model: string
+      year: int }
 
 /// The error returned by the GraphQL backend
 type ErrorType = { message: string }

@@ -1,6 +1,7 @@
 open Expecto
 open Expecto.Flip
 open PrivateClient
+open PublicClient
 open Microsoft.IdentityModel.Tokens
 open Shared
 open System
@@ -9,17 +10,15 @@ open System.Net.Http
 open System.Security.Claims
 open System.Text
 
-let publicHost = Env.getEnv "PUBLIC_GRAPHQL_API_HOST" "localhost" 
-let publicPort = Env.getEnv "PUBLIC_GRAPHQL_API_PORT" "4000" |> int
-let publicUrl = sprintf "http://%s:%i" publicHost publicPort
-let privateHost = Env.getEnv "PRIVATE_GRAPHQL_API_HOST" "localhost"
-let privatePort = Env.getEnv "PRIVATE_GRAPHQL_API_PORT" "4001" |> int 
-let privateUrl = sprintf "http://%s:%i" privateHost privatePort
+let host = Env.getEnv "GRAPHQL_API_HOST" "localhost" 
+let port = Env.getEnv "GRAPHQL_API_PORT" "4000" |> int
+let url = sprintf "http://%s:%i" host port
 
 // NB: You can also use jwt.io; add a 'permissions' array claim to the payload with desired permissions (e.g. "add:vehicles")
 let generateToken (permissions:string list) =
     let tokenHandler = Jwt.JwtSecurityTokenHandler()
     let claims = [| for permission in permissions -> Claim("permissions", permission) |]
+    // NB: see README to generate the test authentication key
     let signingKey = SymmetricSecurityKey(Encoding.UTF8.GetBytes("671f54ce0c540f78ffe1e26dcf9c2a047aea4fda"))
     let signingCreds =
         SigningCredentials(
@@ -41,8 +40,11 @@ let getPrivateClient (permissions:string list) =
     let bearer = sprintf "Bearer %s" token
     let httpClient = new HttpClient()
     httpClient.DefaultRequestHeaders.Add("Authorization", bearer)
-    PrivateGraphqlClient(privateUrl, httpClient)
+    PrivateGraphqlClient(url, httpClient)
 
+let getPublicClient () =
+    let httpClient = new HttpClient()
+    PublicGraphqlClient(url, httpClient)
 
 let testAddVehicle =
     testAsync "add vehicle" {
@@ -55,26 +57,24 @@ let testAddVehicle =
                   make = "Falcon"
                   model = "9"
                   year = 2016 }}
-        let! res = client.AddVehicleAsync(input)
-        res
-        |> Expect.isOk "should successfully add vehicle"
+        match! client.AddVehicleAsync(input) with
+        | Ok ({ addVehicle = AddVehicle.AddVehicleResponse.Success { message = msg } }) -> printfn "success: %s" msg
+        | error -> failwithf "error: %A" error
         do! Async.Sleep(2000)
         let input: GetVehicle.InputVariables =
             { input = { vehicleId = vehicleId }}
-        let! res = client.GetVehicleAsync(input)
-        let expectedVehicleState:GetVehicle.Vehicle =
-            { __typename = "VehicleState"
-              vehicleId = vehicleId
-              make = "Falcon"
-              model = "9"
-              year = 2016
-              status = "Available" }
-        let expectedResponse =
-            { GetVehicle.Query.getVehicle =
-                GetVehicle.GetVehicleResponse.Vehicle expectedVehicleState }
-            |> Ok
-        res
-        |> Expect.equal "should equal expected response" expectedResponse
+        match! client.GetVehicleAsync(input) with
+        | Ok { getVehicle = GetVehicle.GetVehicleResponse.Vehicle actualVehicleState } ->
+            let expectedVehicleState:GetVehicle.Vehicle =
+                { __typename = "VehicleState"
+                  vehicleId = vehicleId
+                  make = "Falcon"
+                  model = "9"
+                  year = 2016
+                  status = "Available" }
+            actualVehicleState
+            |> Expect.equal "should equal expected vehicle" expectedVehicleState
+        | error -> failwithf "error: %A" error
     }
 
 let testUpdateVehicle =
@@ -88,35 +88,33 @@ let testUpdateVehicle =
                   make = "Falcon"
                   model = "9"
                   year = 2016 }}
-        let! res = client.AddVehicleAsync(input)
-        res
-        |> Expect.isOk "should successfully add vehicle"
+        match! client.AddVehicleAsync(input) with
+        | Ok { addVehicle = AddVehicle.AddVehicleResponse.Success { message = msg } } -> printfn "success: %s" msg
+        | error -> failwithf "error: %A" error
         let input: UpdateVehicle.InputVariables =
             { input =
                 { vehicleId = vehicleId
-                  make = Some "Hawk"
-                  model = Some "10"
-                  year = None }}
-        let! res = client.UpdateVehicleAsync(input)
-        res
-        |> Expect.isOk "should successfully update vehicle"
+                  make = "Hawk"
+                  model = "10"
+                  year = 2016 }}
+        match! client.UpdateVehicleAsync(input) with
+        | Ok { updateVehicle = UpdateVehicle.UpdateVehicleResponse.Success { message = msg }} -> printfn "success: %s" msg
+        | error -> failwithf "error: %A" error
         do! Async.Sleep(2000)
         let input: GetVehicle.InputVariables =
             { input = { vehicleId = vehicleId }}
-        let! res = client.GetVehicleAsync(input)
-        let expectedVehicleState:GetVehicle.Vehicle =
-            { __typename = "VehicleState"
-              vehicleId = vehicleId
-              make = "Hawk"
-              model = "10"
-              year = 2016
-              status = "Available" }
-        let expectedResponse =
-            { GetVehicle.Query.getVehicle =
-                GetVehicle.GetVehicleResponse.Vehicle expectedVehicleState }
-            |> Ok
-        res
-        |> Expect.equal "should equal expected response" expectedResponse
+        match! client.GetVehicleAsync(input) with
+        | Ok { getVehicle = GetVehicle.GetVehicleResponse.Vehicle actualVehicleState } ->
+            let expectedVehicleState:GetVehicle.Vehicle =
+                { __typename = "VehicleState"
+                  vehicleId = vehicleId
+                  make = "Hawk"
+                  model = "10"
+                  year = 2016
+                  status = "Available" }
+            actualVehicleState
+            |> Expect.equal "should equal expected vehicle state" expectedVehicleState
+        | error -> failwithf "error: %A" error
     }
 
 let testRemoveVehicle =
@@ -130,32 +128,30 @@ let testRemoveVehicle =
                   make = "Falcon"
                   model = "9"
                   year = 2016 }}
-        let! res = client.AddVehicleAsync(input)
-        res
-        |> Expect.isOk "should successfully add vehicle"
+        match! client.AddVehicleAsync(input) with
+        | Ok { addVehicle = AddVehicle.AddVehicleResponse.Success { message = msg }} -> printfn "success: %s" msg
+        | error -> failwithf "error: %A" error
         let input: RemoveVehicle.InputVariables =
             { input =
                 { vehicleId = vehicleId }}
-        let! res = client.RemoveVehicleAsync(input)
-        res
-        |> Expect.isOk "should successfully remove vehicle"
+        match! client.RemoveVehicleAsync(input) with
+        | Ok { removeVehicle = RemoveVehicle.RemoveVehicleResponse.Success { message = msg }} -> printfn "success: %s" msg
+        | error -> failwithf "error: %A" error
         do! Async.Sleep(2000)
         let input: GetVehicle.InputVariables =
             { input = { vehicleId = vehicleId }}
-        let! res = client.GetVehicleAsync(input)
-        let expectedVehicleState:GetVehicle.Vehicle =
-            { __typename = "VehicleState"
-              vehicleId = vehicleId
-              make = "Falcon"
-              model = "9"
-              year = 2016
-              status = "Removed" }
-        let expectedResponse =
-            { GetVehicle.Query.getVehicle =
-                GetVehicle.GetVehicleResponse.Vehicle expectedVehicleState }
-            |> Ok
-        res
-        |> Expect.equal "should equal expected response" expectedResponse
+        match! client.GetVehicleAsync(input) with
+        | Ok { getVehicle = GetVehicle.GetVehicleResponse.Vehicle actualVehicleState } ->
+            let expectedVehicleState:GetVehicle.Vehicle =
+                { __typename = "VehicleState"
+                  vehicleId = vehicleId
+                  make = "Falcon"
+                  model = "9"
+                  year = 2016
+                  status = "Removed" }
+            actualVehicleState
+            |> Expect.equal "should equal expected vehicle state" expectedVehicleState
+        | error -> failwithf "error: %A" error
     }
 
 let tests =

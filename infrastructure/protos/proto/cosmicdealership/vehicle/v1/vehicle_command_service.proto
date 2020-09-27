@@ -9,7 +9,7 @@ import "cosmicdealership/vehicle/v1/vehicle.proto";
 import "cosmicdealership/user/v1/user.proto";
 
 // Service to handle interactions with Vehicles.
-service VehicleService {
+service VehicleCommandService {
   // Add a vehicle to inventory.
   rpc AddVehicle(AddVehicleRequest) returns (AddVehicleResponse);
   // Update an existing vehicle.

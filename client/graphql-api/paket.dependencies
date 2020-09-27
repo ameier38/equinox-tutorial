@@ -1,9 +1,8 @@
-version 5.241.2
+version 5.249.0
 
 source https://www.nuget.org/api/v2
 storage: none
 
-nuget Argu
 nuget Expecto
 nuget FSharp.Data.GraphQL.Server
 nuget FSharp.Data.GraphQL.Client

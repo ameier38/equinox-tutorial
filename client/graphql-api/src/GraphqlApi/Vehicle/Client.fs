@@ -10,10 +10,10 @@ open MongoDB.Driver
 open Serilog
 open System
 
-type VehicleClient(vehicleApiConfig:VehicleApiConfig, mongoConfig:MongoConfig) =
-    let vehicleChannel = Channel(vehicleApiConfig.Url, ChannelCredentials.Insecure)
+type VehicleClient(vehicleProcessorConfig:VehicleProcessorConfig, mongoConfig:MongoConfig) =
+    let vehicleChannel = Channel(vehicleProcessorConfig.Url, ChannelCredentials.Insecure)
     let vehicleService = CosmicDealership.Vehicle.V1.VehicleService.VehicleServiceClient(vehicleChannel)
-    do Log.Information("🔗 Connected to Vehicle API at {Url}", vehicleApiConfig.Url)
+    do Log.Information("🔗 Connected to Vehicle API at {Url}", vehicleProcessorConfig.Url)
     let store = Store(mongoConfig)
     let vehiclesCollection = store.GetCollection<Vehicle>("vehicles")
     do Log.Information("🍃 Connected to MongoDB at {Url}", mongoConfig.Url)
@@ -104,40 +104,40 @@ type VehicleClient(vehicleApiConfig:VehicleApiConfig, mongoConfig:MongoConfig) =
             GetAvailableVehicleResponse.Vehicle vehicle
 
     member _.AddVehicle(user:User, input:VehicleInput) =
-        let vehicleId = Guid.Parse(input.vehicleId).ToString("N")
-        let userProto = User.toProto user
-        let vehicleProto =
-            CosmicDealership.Vehicle.V1.Vehicle(
-                Make = input.make,
-                Model = input.model,
-                Year = input.year)
-        let req =
-            CosmicDealership.Vehicle.V1.AddVehicleRequest(
-                User = userProto,
-                Vehicle = vehicleProto)
-        Log.Debug("Adding vehicle {@Request}", req)
         try
+            let userProto = User.toProto user
+            let vehicleProto =
+                CosmicDealership.Vehicle.V1.Vehicle(
+                    Make = input.make,
+                    Model = input.model,
+                    Year = input.year)
+            let req =
+                CosmicDealership.Vehicle.V1.AddVehicleRequest(
+                    User = userProto,
+                    VehicleId = input.vehicleId,
+                    Vehicle = vehicleProto)
+            Log.Debug("Adding vehicle {@Request}", req)
             let res = vehicleService.AddVehicle(req)
             Log.Debug("Successfully added vehicle {@Response}", res)
             res
         with ex ->
-            Log.Error(ex, "Error adding Vehicle-{VehicleId}", vehicleId)
+            Log.Error(ex, "Error adding Vehicle-{VehicleId}", input.vehicleId)
             raise ex
 
     member _.UpdateVehicle(user:User, input:VehicleInput) =
-        let userProto = User.toProto user
-        let vehicle = 
-            CosmicDealership.Vehicle.V1.Vehicle(
-                Make = input.make,
-                Model = input.model,
-                Year = input.year)
-        let req =
-            CosmicDealership.Vehicle.V1.UpdateVehicleRequest(
-                User = userProto,
-                VehicleId = input.vehicleId,
-                Vehicle = vehicle)
-        Log.Debug("Updating vehicle {@Request}", req)
         try
+            let userProto = User.toProto user
+            let vehicle = 
+                CosmicDealership.Vehicle.V1.Vehicle(
+                    Make = input.make,
+                    Model = input.model,
+                    Year = input.year)
+            let req =
+                CosmicDealership.Vehicle.V1.UpdateVehicleRequest(
+                    User = userProto,
+                    VehicleId = input.vehicleId,
+                    Vehicle = vehicle)
+            Log.Debug("Updating vehicle {@Request}", req)
             let res = vehicleService.UpdateVehicle(req)
             Log.Debug("Successfully updated Vehicle-{VehicleId}", input.vehicleId)
             res

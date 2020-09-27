@@ -25,7 +25,7 @@ Start the server locally for integration tests.
 docker-compose up -d --build graphql-api
 ```
 
-Run integration tests.
+Run the integration tests.
 ```
 fake build -t TestIntegrations
 ```

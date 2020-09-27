@@ -3,7 +3,7 @@ module rec PrivateClient.GetVehicle
 
 type InputVariables = { input: GetVehicleInput }
 
-type NotFound =
+type VehicleNotFound =
     { ///The name of the type
       __typename: string
       message: string }
@@ -25,7 +25,7 @@ type Vehicle =
 
 [<RequireQualifiedAccess>]
 type GetVehicleResponse =
-    | NotFound of notfound: NotFound
+    | VehicleNotFound of vehiclenotfound: VehicleNotFound
     | PermissionDenied of permissiondenied: PermissionDenied
     | Vehicle of vehicle: Vehicle
 

@@ -17,14 +17,18 @@ let main _ =
             .WriteTo.Seq(config.SeqConfig.Url)
             .CreateLogger()
     Log.Logger <- logger
-    let vehicleReadModel = ReadModel.VehicleReadModel(config)
+    let documentStore = Store.DocumentStore(config.MongoConfig)
+    let eventStore = Store.EventStore(config.EventStoreConfig)
+    let reactor = Reactor(documentStore, eventStore)
     Log.Information("📜 Logs sent to {Url}", config.SeqConfig.Url)
-    Log.Information("🚀 Starting vehicle read model")
+    Log.Information("🍃 Connected to MongoDB at {Url}", config.MongoConfig.Url)
+    Log.Information("🐲 Connected to EventStore at {Url}", config.EventStoreConfig.Url)
+    Log.Information("🚀 Starting vehicle reactor")
     use cancellation = new CancellationTokenSource()
     Console.CancelKeyPress |> Event.add (fun _ ->
         Log.Information("shutting down...")
         cancellation.Cancel())
-    vehicleReadModel.StartAsync(cancellation.Token)
+    reactor.StartAsync(cancellation.Token)
     |> Async.RunSynchronously
     Log.CloseAndFlush()
     0 // return an integer exit code

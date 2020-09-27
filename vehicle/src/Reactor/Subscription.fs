@@ -29,11 +29,8 @@ type SubscriptionMessage =
 
 type SubscriptionMailbox = MailboxProcessor<SubscriptionMessage>
 
-type Subscription(name:string, stream:Stream, eventHandler:EventHandler, eventstoreConfig:EventStoreConfig) =
-    let log = Log.ForContext("SubscriptionId", name)
-    let eventstore = EventStoreConnection.Create(Uri(eventstoreConfig.Url))
-    do eventstore.ConnectAsync().Wait()
-    do log.Information("🐲 Connected to EventStore at {Url}", eventstoreConfig.Url)
+type Subscription(name:string, stream:Stream, eventHandler:EventHandler, eventstore:Store.EventStore) =
+    let log = Log.ForContext<Subscription>()
 
     let settings =
         CatchUpSubscriptionSettings(
@@ -42,10 +39,6 @@ type Subscription(name:string, stream:Stream, eventHandler:EventHandler, eventst
             verboseLogging = false,
             resolveLinkTos = true,
             subscriptionName = name)
-    let credentials =
-        SystemData.UserCredentials(
-            username = eventstoreConfig.User,
-            password = eventstoreConfig.Password)
 
     let subscribe (state:SubscriptionState) (mailbox:SubscriptionMailbox): Async<unit> =
         async {
@@ -69,13 +62,13 @@ type Subscription(name:string, stream:Stream, eventHandler:EventHandler, eventst
                     match state.Checkpoint with
                     | Checkpoint.StreamStart -> StreamCheckpoint.StreamStart
                     | Checkpoint.StreamPosition pos -> Nullable(pos)
-                eventstore.SubscribeToStreamFrom(
+                eventstore.Connection.SubscribeToStreamFrom(
                     stream = %stream,
                     lastCheckpoint = lastCheckpoint,
                     settings = settings,
                     eventAppeared = eventAppeared,
                     subscriptionDropped = subscriptionDropped,
-                    userCredentials = credentials)
+                    userCredentials = eventstore.Credentials)
             mailbox.Post(Subscribed subscription)
         }
 

@@ -1,11 +1,11 @@
 Equinox
 Equinox.EventStore
+FSharp.Core
 FSharp.UMX
 FsCodec
 FsCodec.NewtonsoftJson
 Grpc.Core
 Grpc.HealthCheck
-protobuf-net
 Serilog
 Serilog.Sinks.Console
 Serilog.Sinks.Seq

@@ -1,5 +1,5 @@
 {
-    "schema": "http://localhost:4000/schema",
+    "schema": "http://localhost:4000/public/schema",
     "queries": "./queries/public",
     "project": "PublicClient",
     "output": "./src/PublicClient",

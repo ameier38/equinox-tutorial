@@ -26,7 +26,11 @@ type PrivateGraphqlClient(url: string, httpClient: HttpClient) =
                             __typename
                             message
                         }
-                        ... on AlreadyExists {
+                        ... on VehicleAlreadyExists {
+                            __typename
+                            message
+                        }
+                        ... on VehicleInvalid {
                             __typename
                             message
                         }
@@ -79,7 +83,15 @@ type PrivateGraphqlClient(url: string, httpClient: HttpClient) =
                             __typename
                             message
                         }
-                        ... on NotFound {
+                        ... on VehicleNotFound {
+                            __typename
+                            message
+                        }
+                        ... on ImageInvalid {
+                            __typename
+                            message
+                        }
+                        ... on MaxImageCountReached {
                             __typename
                             message
                         }
@@ -128,7 +140,7 @@ type PrivateGraphqlClient(url: string, httpClient: HttpClient) =
                 query GetVehicle($input: GetVehicleInput!) {
                     getVehicle(input: $input) {
                         __typename
-                        ... on NotFound {
+                        ... on VehicleNotFound {
                             __typename
                             message
                         }
@@ -246,7 +258,7 @@ type PrivateGraphqlClient(url: string, httpClient: HttpClient) =
                             __typename
                             message
                         }
-                        ... on NotFound {
+                        ... on VehicleNotFound {
                             __typename
                             message
                         }
@@ -299,7 +311,11 @@ type PrivateGraphqlClient(url: string, httpClient: HttpClient) =
                             __typename
                             message
                         }
-                        ... on NotFound {
+                        ... on VehicleNotFound {
+                            __typename
+                            message
+                        }
+                        ... on VehicleInvalid {
                             __typename
                             message
                         }

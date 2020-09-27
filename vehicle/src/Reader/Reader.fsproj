@@ -5,15 +5,14 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Infrastructure.fs" />
     <Compile Include="Config.fs" />
     <Compile Include="Store.fs" />
-    <Compile Include="Subscription.fs" />
-    <Compile Include="Reactor.fs" />
+    <Compile Include="Service.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.fsproj" />
+    <ProjectReference Include="..\Proto\Proto.csproj" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

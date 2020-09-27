@@ -39,5 +39,6 @@ FROM mcr.microsoft.com/dotnet/core/runtime:3.1 as runner
 WORKDIR /app
 
 COPY --from=builder /app/src/GraphqlApi/out .
+COPY graphiql graphiql
 
 ENTRYPOINT [ "dotnet", "GraphqlApi.dll" ]

@@ -22,11 +22,7 @@ type PublicGraphqlClient(url: string, httpClient: HttpClient) =
                 query GetAvailableVehicle($input: GetVehicleInput!) {
                     getAvailableVehicle(input: $input) {
                         __typename
-                        ... on NotFound {
-                            __typename
-                            message
-                        }
-                        ... on PermissionDenied {
+                        ... on VehicleNotFound {
                             __typename
                             message
                         }

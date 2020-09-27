@@ -8,7 +8,12 @@ type Success =
       __typename: string
       message: string }
 
-type NotFound =
+type VehicleNotFound =
+    { ///The name of the type
+      __typename: string
+      message: string }
+
+type VehicleInvalid =
     { ///The name of the type
       __typename: string
       message: string }
@@ -21,7 +26,8 @@ type PermissionDenied =
 [<RequireQualifiedAccess>]
 type UpdateVehicleResponse =
     | Success of success: Success
-    | NotFound of notfound: NotFound
+    | VehicleNotFound of vehiclenotfound: VehicleNotFound
+    | VehicleInvalid of vehicleinvalid: VehicleInvalid
     | PermissionDenied of permissiondenied: PermissionDenied
 
 type Query =

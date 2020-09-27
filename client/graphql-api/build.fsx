@@ -58,19 +58,19 @@ BuildTask.create "Restore" [] {
     |> List.iter (DotNet.restore id)
 }
 
-let generatePublic = BuildTask.create "GeneratePublic" [] {
+let generatePublicTestClient = BuildTask.create "GeneratePublicTestClient" [] {
     Trace.trace "Generating public test client..."
     snowflaqe ["--generate"; "--config"; "snowflaqePublic.json"]
 }
 
-let generatePrivate = BuildTask.create "GeneratePrivate" [] {
+let generatePrivateTestClient = BuildTask.create "GeneratePrivateTestClient" [] {
     Trace.trace "Generating private test client..."
     snowflaqe ["--generate"; "--config"; "snowflaqePrivate.json"]
 }
 
-let generate = BuildTask.createEmpty "Generate" [generatePublic; generatePrivate]
+let generateTestClients = BuildTask.createEmpty "GenerateTestClients" [generatePublicTestClient; generatePrivateTestClient]
 
-BuildTask.create "TestIntegrations" [generate] {
+BuildTask.create "TestIntegrations" [generateTestClients] {
     Trace.trace "Running integration tests..."
     let result = DotNet.exec id "run" "--project src/IntegrationTests/IntegrationTests.fsproj"
     if not result.OK then failwithf "Error! %A" result.Errors
@@ -91,13 +91,8 @@ BuildTask.create "Publish" [] {
         "src/GraphqlApi/GraphqlApi.fsproj"
 }
 
-BuildTask.create "ServePublic" [] {
-    DotNet.exec id "run" "--project src/GraphqlApi/GraphqlApi.fsproj -- --audience public --insecure"
-    |> ignore
-}
-
-BuildTask.create "ServePrivate" [] {
-    DotNet.exec id "run" "--project src/GraphqlApi/GraphqlApi.fsproj -- --audience private --insecure"
+BuildTask.create "Serve" [] {
+    DotNet.exec id "run" "--project src/GraphqlApi/GraphqlApi.fsproj -- --insecure"
     |> ignore
 }
 

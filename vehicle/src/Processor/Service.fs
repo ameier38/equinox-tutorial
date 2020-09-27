@@ -4,8 +4,8 @@ open Grpc.Core
 open Serilog
 open Shared
 
-type VehicleServiceImpl(store:Store) =
-    inherit CosmicDealership.Vehicle.V1.VehicleService.VehicleServiceBase()
+type VehicleCommandServiceImpl(store:Store) =
+    inherit CosmicDealership.Vehicle.V1.VehicleCommandService.VehicleCommandServiceBase()
 
     let authorize (user:CosmicDealership.User.V1.User) (permission:string) =
         if (user.Permissions |> Seq.contains permission) then

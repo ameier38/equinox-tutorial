@@ -24,6 +24,7 @@ services:
       EVENTSTORE_RUN_PROJECTIONS: All
   mongo:
     image: mongo:4.2
+    command: ["mongod", "--replSet", "rs0"]
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: changeit
@@ -74,33 +75,16 @@ services:
       - eventstore
       - mongo
       - vehicle-processor
-  public-graphql-api:
+  graphql-api:
     build:
       context: ./client/graphql-api
       target: runner
-    command: ["--audience", "public", "--insecure"]
     ports:
       - "4000:4000"
     environment:
       SERVER_PORT: 4000
-      VEHICLE_API_HOST: vehicle-api
-      VEHICLE_API_PORT: 50051
-      MONGO_HOST: mongo
-      SEQ_HOST: seq
-    depends_on: 
-      - vehicle-processor
-      - vehicle-reactor
-  private-graphql-api:
-    build:
-      context: ./client/graphql-api
-      target: runner
-    command: ["--audience", "private", "--insecure"]
-    ports:
-      - "4001:4001"
-    environment:
-      SERVER_PORT: 4001
-      VEHICLE_API_HOST: vehicle-api
-      VEHICLE_API_PORT: 50051
+      VEHICLE_PROCESSOR_HOST: vehicle-processor
+      VEHICLE_PROCESSOR_PORT: 50051
       MONGO_HOST: mongo
       SEQ_HOST: seq
     depends_on: 
@@ -119,5 +103,4 @@ services:
       - "3000:3000"
       - "35729:35729"
     depends_on:
-      - public-graphql-api
-      - private-graphql-api
+      - graphql-api

@@ -7,6 +7,7 @@ open FSharp.Reflection
 open FSharp.UMX
 open Newtonsoft.Json
 open Newtonsoft.Json.Linq
+open Newtonsoft.Json.Serialization
 open Shared
 open System
 
@@ -33,8 +34,8 @@ module User =
 
 [<CLIMutable>]
 type GraphQLQuery =
-    { ExecutionPlan : ExecutionPlan
-      Variables : Map<string, obj> }
+    { ExecutionPlan: ExecutionPlan
+      Variables: Map<string, obj> }
 
 module JsonConverter =
     [<Sealed>]
@@ -63,10 +64,10 @@ module JsonConverter =
             else FSharpValue.MakeUnion(cases.[1], [|value|])
 
     [<Sealed>]
-    type GraphQLQueryConverter<'a>(executor : Executor<'a>) =
+    type GraphQLQueryConverter<'R>(executor:Executor<'R>) =
         inherit JsonConverter()
 
-        override __.CanConvert(t) = t = typeof<GraphQLQuery>  
+        override __.CanConvert(t) = t = typeof<GraphQLQuery>
         
         override __.WriteJson(_, _, _) =  failwith "Not supported"    
 
@@ -109,3 +110,17 @@ module JsonConverter =
                             | _, Nullable _ -> acc
                             | None, _ -> failwithf "Variable %s has no default value and is missing!" vdef.Name) Map.empty
                 upcast { ExecutionPlan = plan; Variables = variables }
+
+type GraphQLQueryHandler<'R>(executor: Executor<'R>) =
+    let jsonOptions = JsonSerializerSettings(ContractResolver = CamelCasePropertyNamesContractResolver())
+    do jsonOptions.Converters.Add(JsonConverter.GraphQLQueryConverter(executor))
+    do jsonOptions.Converters.Add(JsonConverter.OptionConverter())
+
+    member _.ExecuteAsync(executionPlan:ExecutionPlan, ?variables:Map<string,obj>) =
+        match variables with
+        | Some variables -> executor.AsyncExecute(executionPlan=executionPlan, variables=variables)
+        | None -> executor.AsyncExecute(executionPlan=executionPlan)
+
+    member _.ExecuteAsync(query:string) = executor.AsyncExecute(query)
+
+    member _.Deserialize<'T>(s:string) = JsonConvert.DeserializeObject<'T>(s, jsonOptions)

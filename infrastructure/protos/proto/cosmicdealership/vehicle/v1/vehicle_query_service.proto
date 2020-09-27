@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+package cosmicdealership.vehicle.v1;
+
+option csharp_namespace = "CosmicDealership.Vehicle.V1";
+option go_package = "cosmicdealership/vehicle/v1";
+
+import "cosmicdealership/vehicle/v1/vehicle.proto";
+import "cosmicdealership/user/v1/user.proto";
+
+// Service to handle interactions with Vehicles.
+service VehicleQueryService {
+  // List vehicles.
+  rpc ListVehicles(ListVehiclesRequest) returns (ListVehiclesResponse);
+  // List available vehicles.
+  rpc ListAvailableVehicles(ListAvailableVehiclesRequest) returns (ListAvailableVehiclesResponse);
+  // Get a vehicle.
+  rpc GetVehicle(GetVehicleRequest) returns (GetVehicleResponse);
+  // Get an available vehicle.
+  rpc GetAvailableVehicle(GetAvailableVehicleRequest) returns (GetAvailableVehicleResponse);
+}
+
+message ListVehiclesSuccess {
+  repeated InventoriedVehicle vehicles = 1;
+  int64 total_count = 2;
+  string next_page_token = 3;
+}
+
+message ListVehiclesRequest {
+  user.v1.User user = 1;
+  string page_token = 2;
+  int32 page_size = 3;
+}
+
+message ListVehiclesResponse {
+  oneof response {
+    ListVehiclesSuccess success = 1;
+    string page_token_invalid = 2;
+    string page_size_invalid = 3;
+    string permission_denied = 4;
+  }
+}
+
+message ListAvailableVehiclesRequest {
+  user.v1.User user = 1;
+  string page_token = 2;
+  int32 page_size = 3;
+}
+
+message ListAvailableVehiclesResponse {
+  oneof response {
+    ListVehiclesSuccess success = 1;
+    string page_token_invalid = 2;
+    string page_size_invalid = 3;
+  }
+}
+
+message GetVehicleRequest {
+  user.v1.User user = 1;
+  string vehicle_id = 2;
+}
+
+message GetVehicleResponse {
+  oneof response {
+    InventoriedVehicle vehicle = 1;
+    string vehicle_not_found = 2;
+    string permission_denied = 3;
+  }
+}
+
+message GetAvailableVehicleRequest {
+  user.v1.User user = 1;
+  string vehicle_id = 2;
+}
+
+message GetAvailableVehicleResponse {
+  oneof response {
+    InventoriedVehicle vehicle = 1;
+    string vehicle_not_found = 2;
+  }
+}
