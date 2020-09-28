@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1 as builder
 # install locales
 RUN DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
-    apt-get install -y locales
+    apt-get install -y locales curl
 
 RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     dpkg-reconfigure --frontend=noninteractive locales && \
@@ -34,12 +34,19 @@ RUN paket install
 # copy everything else and build
 COPY build.fsx .
 COPY src src
-RUN fake build -t PublishReactor
+RUN fake build -t PublishReader
+
+# download grpc-health-probe
+RUN curl -sL -o grpc-health-probe \
+    'https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.3.2/grpc_health_probe-linux-amd64'
 
 FROM mcr.microsoft.com/dotnet/core/runtime:3.1 as runner
 
 WORKDIR /app
 
-COPY --from=builder /app/src/Reactor/out .
+COPY --from=builder /app/src/Reader/out .
 
-ENTRYPOINT [ "dotnet", "Reactor.dll" ]
+COPY --from=builder /app/grpc-health-probe /usr/local/bin/grpc-health-probe
+RUN chmod +x /usr/local/bin/grpc-health-probe
+
+ENTRYPOINT [ "dotnet", "Reader.dll" ]

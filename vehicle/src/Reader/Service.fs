@@ -53,8 +53,8 @@ module InventoriedVehicleDto =
         let inventoriedVehicle =
             CosmicDealership.Vehicle.V1.InventoriedVehicle(
                 VehicleId=dto.vehicleId,
-                AddedAt=Timestamp.FromDateTimeOffset(dto.addedAt),
-                UpdatedAt=Timestamp.FromDateTimeOffset(dto.updatedAt),
+                AddedAt=Timestamp.FromDateTime(dto.addedAt),
+                UpdatedAt=Timestamp.FromDateTime(dto.updatedAt),
                 Vehicle=vehicle,
                 Status=status,
                 Avatar=dto.avatar)
@@ -76,6 +76,7 @@ type VehicleQueryServiceImpl(store:Store) =
     override _.ListVehicles(req:CosmicDealership.Vehicle.V1.ListVehiclesRequest, context:ServerCallContext) =
         async {
             try
+                log.Debug("listing vehicles {@Request}", req)
                 let authorizeResult = authorize req.User "list:vehicles"
                 let pageTokenResult = PageToken.tryDecode req.PageToken
                 let pageSizeResult = PageSize.validate req.PageSize
@@ -83,7 +84,7 @@ type VehicleQueryServiceImpl(store:Store) =
                 | Ok _, Ok pageToken, Ok pageSize ->
                     let statusFilter =
                         Builders<Dto.InventoriedVehicleDto>.Filter
-                            .In((fun doc -> doc.status), ["Available"; "Leased"])
+                            .Ne((fun doc -> doc.status), "Removed")
                     let totalCount = vehiclesCollection.CountDocuments(statusFilter)
                     if totalCount > 0L then
                         let idFilter = 
@@ -122,12 +123,12 @@ type VehicleQueryServiceImpl(store:Store) =
                                 TotalCount=totalCount,
                                 NextPageToken="")
                         return CosmicDealership.Vehicle.V1.ListVehiclesResponse(Success=success)
+                | Error permissionError, _, _ ->
+                    return CosmicDealership.Vehicle.V1.ListVehiclesResponse(PermissionDenied=permissionError)
                 | Ok _, Error pageTokenError, _ ->
                     return CosmicDealership.Vehicle.V1.ListVehiclesResponse(PageTokenInvalid=pageTokenError)
                 | Ok _, _, Error pageSizeError ->
                     return CosmicDealership.Vehicle.V1.ListVehiclesResponse(PageSizeInvalid=pageSizeError)
-                | Error permissionError, _, _ ->
-                    return CosmicDealership.Vehicle.V1.ListVehiclesResponse(PermissionDenied=permissionError)
             with ex ->
                 log.Error("Error! {@Exception}", ex)
                 return raise ex
@@ -136,13 +137,14 @@ type VehicleQueryServiceImpl(store:Store) =
     override _.ListAvailableVehicles(req:CosmicDealership.Vehicle.V1.ListAvailableVehiclesRequest, context:ServerCallContext) =
         async {
             try
+                log.Debug("listing available vehicles {@Request}", req)
                 let pageTokenResult = PageToken.tryDecode req.PageToken
                 let pageSizeResult = PageSize.validate req.PageSize
                 match pageTokenResult, pageSizeResult with
                 | Ok pageToken, Ok pageSize ->
                     let statusFilter =
                         Builders<Dto.InventoriedVehicleDto>.Filter
-                            .In((fun doc -> doc.status), ["Available"])
+                            .Eq((fun doc -> doc.status), "Available")
                     let totalCount = vehiclesCollection.CountDocuments(statusFilter)
                     if totalCount > 0L then
                         let idFilter = 
@@ -193,18 +195,23 @@ type VehicleQueryServiceImpl(store:Store) =
     override _.GetVehicle(req:CosmicDealership.Vehicle.V1.GetVehicleRequest, context:ServerCallContext) =
         async {
             try
+                log.Debug("getting vehicle {@Request}", req)
                 match authorize req.User "get:vehicles" with
                 | Ok _ ->
+                    let statusFilter =
+                        Builders<Dto.InventoriedVehicleDto>.Filter
+                            .Ne((fun v -> v.status), "Removed")
                     let vehicleIdFilter =
                         Builders<Dto.InventoriedVehicleDto>.Filter
-                            .Where(fun doc -> doc.vehicleId = req.VehicleId)
-                    let vehicle = vehiclesCollection.Find(vehicleIdFilter).FirstOrDefault()
+                            .Eq((fun v -> v.vehicleId), req.VehicleId)
+                    let filter = Builders.Filter.And(statusFilter, vehicleIdFilter)
+                    let vehicle = vehiclesCollection.Find(filter).FirstOrDefault()
                     if isNull (box vehicle) then
-                        let vehicleProto = InventoriedVehicleDto.toProto vehicle
-                        return CosmicDealership.Vehicle.V1.GetVehicleResponse(Vehicle=vehicleProto)
-                    else
                         let msg = sprintf "Vehicle-%s not found" req.VehicleId 
                         return CosmicDealership.Vehicle.V1.GetVehicleResponse(VehicleNotFound=msg)
+                    else
+                        let vehicleProto = InventoriedVehicleDto.toProto vehicle
+                        return CosmicDealership.Vehicle.V1.GetVehicleResponse(Success=vehicleProto)
                 | Error permissionError ->
                     return CosmicDealership.Vehicle.V1.GetVehicleResponse(PermissionDenied=permissionError)
             with ex ->
@@ -215,18 +222,21 @@ type VehicleQueryServiceImpl(store:Store) =
     override _.GetAvailableVehicle(req:CosmicDealership.Vehicle.V1.GetAvailableVehicleRequest, context:ServerCallContext) =
         async {
             try
+                log.Debug("getting available vehicle {@Request}", req)
+                let statusFilter =
+                    Builders<Dto.InventoriedVehicleDto>.Filter
+                        .Eq((fun doc -> doc.status), "Available")
                 let vehicleIdFilter =
                     Builders<Dto.InventoriedVehicleDto>.Filter
-                        .Where(fun doc ->
-                            doc.vehicleId = req.VehicleId
-                            && doc.status = "Available")
-                let vehicle = vehiclesCollection.Find(vehicleIdFilter).FirstOrDefault()
+                        .Eq((fun v -> v.vehicleId), req.VehicleId)
+                let filter = Builders.Filter.And(statusFilter, vehicleIdFilter)
+                let vehicle = vehiclesCollection.Find(filter).FirstOrDefault()
                 if isNull (box vehicle) then
-                    let vehicleProto = InventoriedVehicleDto.toProto vehicle
-                    return CosmicDealership.Vehicle.V1.GetAvailableVehicleResponse(Vehicle=vehicleProto)
-                else
                     let msg = sprintf "Vehicle-%s not found" req.VehicleId 
                     return CosmicDealership.Vehicle.V1.GetAvailableVehicleResponse(VehicleNotFound=msg)
+                else
+                    let vehicleProto = InventoriedVehicleDto.toProto vehicle
+                    return CosmicDealership.Vehicle.V1.GetAvailableVehicleResponse(Success=vehicleProto)
             with ex ->
                 log.Error("Error! {@Exception}", ex)
                 return raise ex

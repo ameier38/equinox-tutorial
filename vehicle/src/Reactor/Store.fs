@@ -12,15 +12,28 @@ type CheckpointDto =
       model: string
       checkpoint: int64 }
 
+let private getCollection<'T> (log:ILogger) (db:IMongoDatabase) (name:string) : IMongoCollection<'T> =
+    // NB: transactions require the collection to exist first
+    try
+        db.CreateCollection(name)
+    with
+        ex -> log.Debug("{Collection} already exists: {@Error}", name, ex)
+    db.GetCollection<'T>(name)
+
 type DocumentStore(mongoConfig:MongoConfig) =
     let checkpointCollectionName = "checkpoints"
     let address = MongoServerAddress(mongoConfig.Host, mongoConfig.Port)
     let credential = MongoCredential.CreateCredential("admin", mongoConfig.User, mongoConfig.Password)
-    let settings = MongoClientSettings(Credential = credential, Server = address)
+    let settings =
+        MongoClientSettings(
+            ConnectionMode=ConnectionMode.ReplicaSet,
+            ReplicaSetName=mongoConfig.ReplicaSet,
+            Server=address,
+            Credential=credential)
     let mongo = MongoClient(settings)
     let db = mongo.GetDatabase("dealership")
-    let checkpointCollection = db.GetCollection<CheckpointDto>(checkpointCollectionName)
     let log = Log.ForContext<DocumentStore>()
+    let checkpointCollection = getCollection<CheckpointDto> log db checkpointCollectionName
 
     member _.GetCheckpointAsync(model:string): Async<int64 option> =
         async {
@@ -46,7 +59,7 @@ type DocumentStore(mongoConfig:MongoConfig) =
                 |> Async.Ignore
         }
 
-    member _.GetCollection<'T>(name:string) = db.GetCollection<'T>(name)
+    member _.GetCollection<'T>(name:string) = getCollection<'T> log db name
 
     member _.TransactAsync(work:IClientSessionHandle -> Async<unit>) =
         async {

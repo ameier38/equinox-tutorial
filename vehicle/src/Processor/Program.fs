@@ -19,6 +19,7 @@ let main _ =
             .WriteTo.Seq(config.SeqConfig.Url)
             .CreateLogger()
     Log.Logger <- logger
+    Log.Debug("🐛 Debug mode")
     let store = Store(config, logger)
     let vehicleCommandService = VehicleCommandServiceImpl(store)
     let healthService = HealthServiceImpl()

@@ -19,6 +19,7 @@ type MongoConfig =
     { Url: string
       Host: string
       Port: int
+      ReplicaSet: string
       User: string
       Password: string
       Database: string } with
@@ -26,6 +27,7 @@ type MongoConfig =
         let getMongoSecret = Env.getSecret secretsDir "mongo"
         let host = getMongoSecret "host" "MONGO_HOST" "localhost"
         let port = getMongoSecret "port" "MONGO_PORT" "27017" |> int
+        let replicaSet = getMongoSecret "replica-set" "MONGO_REPLICA_SET" "rs0"
         let user = getMongoSecret "user" "MONGO_USER" "admin"
         let password = getMongoSecret "password" "MONGO_PASSWORD" "changeit"
         let url = sprintf "mongodb://%s:%i" host port
@@ -33,6 +35,7 @@ type MongoConfig =
         { Url = url
           Host = host
           Port = port
+          ReplicaSet = replicaSet
           User = user
           Password = password
           Database = database }

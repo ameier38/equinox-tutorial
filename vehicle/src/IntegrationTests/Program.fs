@@ -1,56 +1,21 @@
 ﻿open Expecto
 open Expecto.Flip
 open Grpc.Core
-open MongoDB.Driver
 open Shared
 open System
 open System.Threading
 
-let vehicleApiHost = Env.getEnv "VEHICLE_API_HOST" "localhost"
-let vehicleApiPort = Env.getEnv "VEHICLE_API_PORT" "50051" |> int
-let channelTarget = sprintf "%s:%d" vehicleApiHost vehicleApiPort
+let vehicleProcessorHost = Env.getEnv "VEHICLE_PROCESSOR_HOST" "localhost"
+let vehicleProcessorPort = Env.getEnv "VEHICLE_PROCESSOR_PORT" "50051" |> int
+let vehicleProcessorChannelTarget = sprintf "%s:%d" vehicleProcessorHost vehicleProcessorPort
+let vehicleProcessorChannel = Channel(vehicleProcessorChannelTarget, ChannelCredentials.Insecure)
+let vehicleCommandService = CosmicDealership.Vehicle.V1.VehicleCommandService.VehicleCommandServiceClient(vehicleProcessorChannel)
 
-let vehicleChannel = Channel(channelTarget, ChannelCredentials.Insecure)
-let vehicleService = CosmicDealership.Vehicle.V1.VehicleService.VehicleServiceClient(vehicleChannel)
-
-let mongoHost = Env.getEnv "MONGO_HOST" "localhost"
-let mongoPort = Env.getEnv "MONGO_PORT" "27017" |> int
-let mongoUser = Env.getEnv "MONGO_USER" "admin"
-let mongoPassword = Env.getEnv "MONGO_PASSWORD" "changeit"
-let mongoUrl = sprintf "mongodb://%s:%s@%s:%d" mongoUser mongoPassword mongoHost mongoPort
-
-type VehicleDto =
-    { vehicleId: string
-      make: string
-      model: string
-      year: int
-      avatarUri: string
-      imageUris: string array
-      status: string }
-
-type Store() =
-    let vehicleCollectionName = "vehicles"
-    let mongo = MongoClient(mongoUrl)
-    let db = mongo.GetDatabase("dealership")
-    let vehicleCollection = db.GetCollection<VehicleDto>(vehicleCollectionName)
-
-    member _.GetVehicle(vehicleId:string) =
-        try
-            vehicleCollection
-                .Find(fun doc -> doc.vehicleId = vehicleId)
-                .Project(fun doc ->
-                    { vehicleId = doc.vehicleId
-                      make = doc.make
-                      model = doc.model
-                      year = doc.year
-                      avatarUri = match doc.avatarUri with uri when isNull uri -> "" | uri -> uri
-                      imageUris = match doc.imageUris with uris when isNull uris -> [||] | uris -> uris
-                      status = doc.status })
-                .First()
-        with ex ->
-            failwithf "could not find Vehicle-%s: %A" vehicleId ex
-
-let store = Store()
+let vehicleReaderHost = Env.getEnv "VEHICLE_READER_HOST" "localhost"
+let vehicleReaderPort = Env.getEnv "VEHICLE_READER_PORT" "50052" |> int
+let vehicleReaderChannelTarget = sprintf "%s:%d" vehicleReaderHost vehicleReaderPort
+let vehicleReaderChannel = Channel(vehicleReaderChannelTarget, ChannelCredentials.Insecure)
+let vehicleQueryService = CosmicDealership.Vehicle.V1.VehicleQueryService.VehicleQueryServiceClient(vehicleReaderChannel)
 
 let createVehicleId () = Guid.NewGuid().ToString("N")
 
@@ -61,27 +26,54 @@ let createUser (permissions:string list) =
 
 let addVehicle (user:CosmicDealership.User.V1.User) (vehicleId:string) (vehicle:CosmicDealership.Vehicle.V1.Vehicle) =
     let req = CosmicDealership.Vehicle.V1.AddVehicleRequest(User=user, VehicleId=vehicleId, Vehicle=vehicle)
-    vehicleService.AddVehicle(req)
+    vehicleCommandService.AddVehicle(req)
 
 let updateVehicle (user:CosmicDealership.User.V1.User) (vehicleId:string) (vehicle:CosmicDealership.Vehicle.V1.Vehicle) =
     let req = CosmicDealership.Vehicle.V1.UpdateVehicleRequest(User=user, VehicleId=vehicleId, Vehicle = vehicle)
-    vehicleService.UpdateVehicle(req)
+    vehicleCommandService.UpdateVehicle(req)
 
 let addImage (user:CosmicDealership.User.V1.User) (vehicleId:string) (imageUrl:string) =
     let req = CosmicDealership.Vehicle.V1.AddImageRequest(User=user, VehicleId=vehicleId, ImageUrl=imageUrl)
-    vehicleService.AddImage(req)
+    vehicleCommandService.AddImage(req)
 
 let removeVehicle (user:CosmicDealership.User.V1.User) (vehicleId:string) =
     let req = CosmicDealership.Vehicle.V1.RemoveVehicleRequest(User=user, VehicleId=vehicleId)
-    vehicleService.RemoveVehicle(req)
+    vehicleCommandService.RemoveVehicle(req)
 
 let leaseVehicle (user:CosmicDealership.User.V1.User) (vehicleId:string) =
     let req = CosmicDealership.Vehicle.V1.LeaseVehicleRequest(User=user, VehicleId=vehicleId)
-    vehicleService.LeaseVehicle(req)
+    vehicleCommandService.LeaseVehicle(req)
 
 let returnVehicle (user:CosmicDealership.User.V1.User) (vehicleId:string) =
     let req = CosmicDealership.Vehicle.V1.ReturnVehicleRequest(User=user, VehicleId=vehicleId)
-    vehicleService.ReturnVehicle(req)
+    vehicleCommandService.ReturnVehicle(req)
+
+type ListVehiclesResponseCase = CosmicDealership.Vehicle.V1.ListVehiclesResponse.ResponseOneofCase
+
+let listVehicles (user:CosmicDealership.User.V1.User) =
+    let rec recurse (pageToken:string option) =
+        seq {
+            let req =
+                match pageToken with
+                | Some pageToken ->
+                    CosmicDealership.Vehicle.V1.ListVehiclesRequest(User=user, PageToken=pageToken, PageSize=1)
+                | None ->
+                    CosmicDealership.Vehicle.V1.ListVehiclesRequest(User=user, PageSize=1)
+            let res = vehicleQueryService.ListVehicles(req)
+            match res.ResponseCase with
+            | ListVehiclesResponseCase.Success ->
+                match res.Success.NextPageToken with
+                | "" -> yield! res.Success.Vehicles
+                | nextPageToken -> yield! recurse (Some nextPageToken)
+            | _ -> failwith "error!"
+        }
+    recurse None
+
+type GetVehicleResponseCase = CosmicDealership.Vehicle.V1.GetVehicleResponse.ResponseOneofCase
+
+let getVehicle (user:CosmicDealership.User.V1.User) (vehicleId:string) =
+    let req = CosmicDealership.Vehicle.V1.GetVehicleRequest(User=user, VehicleId=vehicleId)
+    vehicleQueryService.GetVehicle(req)
 
 let testAddVehicle =
     test "add vehicle" {
@@ -98,18 +90,17 @@ let testAddVehicle =
         for vehicleId, vehicle in vehicles do
             addVehicle user vehicleId vehicle |> ignore
         Thread.Sleep 2000
-        for i, (vehicleId, _) in vehicles |> List.indexed do
-            let vehicleState = store.GetVehicle(vehicleId)
-            let expectedVehicleState =
-                { vehicleId = vehicleId
-                  make = "Falcon" 
-                  model = sprintf "%i" i
-                  year = 2016
-                  avatarUri = ""
-                  imageUris = [||]
-                  status = "Available" }
-            vehicleState
-            |> Expect.equal "should return vehicle in available state" expectedVehicleState
+        for (vehicleId, vehicle) in vehicles do
+            let res = getVehicle user vehicleId
+            match res.ResponseCase with
+            | GetVehicleResponseCase.Success ->
+                res.Success.VehicleId
+                |> Expect.equal "should have same vehicle id" vehicleId
+                res.Success.Vehicle
+                |> Expect.equal "should be same vehicle" vehicle
+                res.Success.Status.ToString()
+                |> Expect.equal "should be available" "Available"
+            | _ -> failwithf "error!: %A" res
     }
 
 let testAddVehicleDenied =
@@ -146,22 +137,21 @@ let testUpdateVehicle =
                 Year=2016)
         updateVehicle user vehicleId newVehicle |> ignore
         Thread.Sleep 2000
-        let vehicleState = store.GetVehicle(vehicleId)
-        let expectedVehicleState =
-            { vehicleId = vehicleId
-              make = "Hawk"
-              model = "10"
-              year = 2016
-              avatarUri = ""
-              imageUris = [||]
-              status = "Available" }
-        vehicleState
-        |> Expect.equal "should return vehicle in available state" expectedVehicleState
+        let res = getVehicle user vehicleId
+        match res.ResponseCase with
+        | GetVehicleResponseCase.Success ->
+            res.Success.VehicleId
+            |> Expect.equal "should have same vehicle id" vehicleId
+            res.Success.Vehicle
+            |> Expect.equal "should equal updated vehicle" newVehicle
+            res.Success.Status.ToString()
+            |> Expect.equal "status should still be available" "Available"
+        | _ -> failwithf "error!: %A" res
     }
 
 let testRemoveVehicle =
     test "remove vehicle" {
-        let user = createUser ["add:vehicles"; "remove:vehicles"]
+        let user = createUser ["add:vehicles"; "remove:vehicles"; "get:vehicles"]
         let vehicleId = Guid.NewGuid().ToString("N")
         let vehicle =
             CosmicDealership.Vehicle.V1.Vehicle(
@@ -171,17 +161,10 @@ let testRemoveVehicle =
         addVehicle user vehicleId vehicle |> ignore
         removeVehicle user vehicleId |> ignore
         Thread.Sleep 2000
-        let vehicleState = store.GetVehicle(vehicleId)
-        let expectedVehicleState =
-            { vehicleId = vehicleId
-              make = "Falcon"
-              model = "9"
-              year = 2016
-              avatarUri = ""
-              imageUris = [||]
-              status = "Removed" }
-        vehicleState
-        |> Expect.equal "should return vehicle in removed state" expectedVehicleState
+        let res = getVehicle user vehicleId
+        match res.ResponseCase with
+        | GetVehicleResponseCase.VehicleNotFound -> ()
+        | _ -> failwithf "error!: %A" res
     }
 
 let testRemoveVehicleDenied =

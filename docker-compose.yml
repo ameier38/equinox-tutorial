@@ -30,6 +30,10 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: changeit
     ports: 
       - "27017:27017"
+    healthcheck:
+      test: test $$(echo "rs.initiate().ok || rs.status().ok" | mongo -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --quiet) -eq 1
+      interval: 10s
+      start_period: 30s
   upload-api:
     build: ./client/upload-api
     ports: 
@@ -55,6 +59,7 @@ services:
     ports:
       - "50051:50051"
     environment:
+      DEBUG: "true"
       SERVER_PORT: 50051
       EVENTSTORE_HOST: eventstore
       SEQ_HOST: seq
@@ -67,14 +72,35 @@ services:
       dockerfile: deploy/reactor.Dockerfile
       target: runner
     environment: 
+      DEBUG: "true"
       EVENTSTORE_HOST: eventstore
       MONGO_HOST: mongo
+      MONGO_REPLICA_SET: rs0
       SEQ_HOST: seq
     depends_on: 
       - seq
       - eventstore
       - mongo
       - vehicle-processor
+  vehicle-reader:
+    build:
+      context: ./vehicle
+      dockerfile: deploy/reader.Dockerfile
+      target: runner
+    ports:
+      - "50052:50052"
+    environment: 
+      DEBUG: "true"
+      SERVER_PORT: 50052
+      MONGO_HOST: mongo
+      MONGO_REPLICA_SET: rs0
+      SEQ_HOST: seq
+    depends_on: 
+      - seq
+      - eventstore
+      - mongo
+      - vehicle-processor
+      - vehicle-reactor
   graphql-api:
     build:
       context: ./client/graphql-api
@@ -82,20 +108,22 @@ services:
     ports:
       - "4000:4000"
     environment:
+      DEBUG: "true"
       SERVER_PORT: 4000
       VEHICLE_PROCESSOR_HOST: vehicle-processor
       VEHICLE_PROCESSOR_PORT: 50051
-      MONGO_HOST: mongo
+      VEHICLE_READER_HOST: vehicle-reader
+      VEHICLE_READER_PORT: 50052
       SEQ_HOST: seq
     depends_on: 
       - vehicle-processor
-      - vehicle-reactor
+      - vehicle-reader
   web-app:
     build:
       context: ./client/web-app
     environment:
-      REACT_APP_GRAPHQL_API_HOST: localhost
-      REACT_APP_GRAPHQL_API_PORT: 4000
+      GRAPHQL_API_HOST: localhost
+      GRAPHQL_API_PORT: 4000
     volumes:
       - ./fable-web-app:/app
       - /app/node_modules

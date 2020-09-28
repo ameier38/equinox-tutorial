@@ -6,8 +6,8 @@ open System
 type InventoriedVehicleDto =
     { _id: ObjectId
       vehicleId: string
-      addedAt: DateTimeOffset
-      updatedAt: DateTimeOffset
+      addedAt: DateTime
+      updatedAt: DateTime
       make: string
       model: string
       year: int

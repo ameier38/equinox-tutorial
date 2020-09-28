@@ -17,6 +17,7 @@ let main _ =
             .WriteTo.Seq(config.SeqConfig.Url)
             .CreateLogger()
     Log.Logger <- logger
+    Log.Debug("🐛 Debug mode")
     let documentStore = Store.DocumentStore(config.MongoConfig)
     let eventStore = Store.EventStore(config.EventStoreConfig)
     let reactor = Reactor(documentStore, eventStore)

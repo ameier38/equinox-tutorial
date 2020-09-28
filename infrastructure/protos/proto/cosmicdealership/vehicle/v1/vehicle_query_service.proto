@@ -62,7 +62,7 @@ message GetVehicleRequest {
 
 message GetVehicleResponse {
   oneof response {
-    InventoriedVehicle vehicle = 1;
+    InventoriedVehicle success = 1;
     string vehicle_not_found = 2;
     string permission_denied = 3;
   }
@@ -75,7 +75,7 @@ message GetAvailableVehicleRequest {
 
 message GetAvailableVehicleResponse {
   oneof response {
-    InventoriedVehicle vehicle = 1;
+    InventoriedVehicle success = 1;
     string vehicle_not_found = 2;
   }
 }

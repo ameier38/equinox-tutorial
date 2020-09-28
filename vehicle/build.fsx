@@ -60,8 +60,7 @@ BuildTask.create "TestIntegrations" [] {
     if not result.OK then failwith "Error!"
 }
 
-BuildTask.create "PublishProcessor" [testUnits] {
-    Trace.trace "Publishing Processor..."
+let publish (proj:string) =
     // ref: https://docs.microsoft.com/en-us/dotnet/core/rid-catalog
     let runtime =
         if Environment.isLinux then "linux-x64"
@@ -70,24 +69,23 @@ BuildTask.create "PublishProcessor" [testUnits] {
         else failwithf "environment not supported"
     DotNet.publish (fun args ->
         { args with
-            OutputPath = Some "src/Processor/out"
+            OutputPath = Some (sprintf "src/%s/out" proj)
             Runtime = Some runtime })
-        "src/Processor/Processor.fsproj"
+        (sprintf "src/%s/%s.fsproj" proj proj)
+
+BuildTask.create "PublishProcessor" [testUnits] {
+    Trace.trace "Publishing Processor..."
+    publish "Processor"
 }
 
 BuildTask.create "PublishReactor" [testUnits] {
     Trace.trace "Publishing Reactor..."
-    // ref: https://docs.microsoft.com/en-us/dotnet/core/rid-catalog
-    let runtime =
-        if Environment.isLinux then "linux-musl-x64"
-        elif Environment.isWindows then "win-x64"
-        elif Environment.isMacOS then "osx-x64"
-        else failwithf "environment not supported"
-    DotNet.publish (fun args ->
-        { args with
-            OutputPath = Some "src/Reactor/out"
-            Runtime = Some runtime })
-        "src/Reactor/Reactor.fsproj"
+    publish "Reactor"
+}
+
+BuildTask.create "PublishReader" [testUnits] {
+    Trace.trace "Publishing Reader..."
+    publish "Reader"
 }
 
 BuildTask.create "RunProcessor" [] {
@@ -97,6 +95,11 @@ BuildTask.create "RunProcessor" [] {
 
 BuildTask.create "RunReactor" [] {
     DotNet.exec id "run" "--project src/Reactor/Reactor.fsproj"
+    |> ignore
+}
+
+BuildTask.create "RunReader" [] {
+    DotNet.exec id "run" "--project src/Reader/Reader.fsproj"
     |> ignore
 }
 

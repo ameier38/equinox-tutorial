@@ -19,6 +19,7 @@ let main argv =
             .WriteTo.Seq(config.SeqConfig.Url)
             .CreateLogger()
     Log.Logger <- logger
+    Log.Debug("🐛 Debug mode")
     let store = Store(config.MongoConfig)
     let vehicleQueryService = VehicleQueryServiceImpl(store)
     let healthService = HealthServiceImpl()
