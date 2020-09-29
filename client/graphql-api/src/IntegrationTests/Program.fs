@@ -64,16 +64,18 @@ let testAddVehicle =
         let input: GetVehicle.InputVariables =
             { input = { vehicleId = vehicleId }}
         match! client.GetVehicleAsync(input) with
-        | Ok { getVehicle = GetVehicle.GetVehicleResponse.Vehicle actualVehicleState } ->
-            let expectedVehicleState:GetVehicle.Vehicle =
-                { __typename = "VehicleState"
+        | Ok { getVehicle = GetVehicle.GetVehicleResponse.InventoriedVehicle actualVehicle } ->
+            let expectedVehicle:GetVehicle.InventoriedVehicle =
+                { __typename = "InventoriedVehicle"
                   vehicleId = vehicleId
-                  make = "Falcon"
-                  model = "9"
-                  year = 2016
-                  status = "Available" }
-            actualVehicleState
-            |> Expect.equal "should equal expected vehicle" expectedVehicleState
+                  vehicle = {
+                      make = "Falcon"
+                      model = "9"
+                      year = 2016
+                  }
+                  status = PrivateClient.VehicleStatus.Available }
+            actualVehicle
+            |> Expect.equal "should equal expected vehicle" expectedVehicle
         | error -> failwithf "error: %A" error
     }
 
@@ -104,16 +106,18 @@ let testUpdateVehicle =
         let input: GetVehicle.InputVariables =
             { input = { vehicleId = vehicleId }}
         match! client.GetVehicleAsync(input) with
-        | Ok { getVehicle = GetVehicle.GetVehicleResponse.Vehicle actualVehicleState } ->
-            let expectedVehicleState:GetVehicle.Vehicle =
-                { __typename = "VehicleState"
+        | Ok { getVehicle = GetVehicle.GetVehicleResponse.InventoriedVehicle actualVehicle } ->
+            let expectedVehicle:GetVehicle.InventoriedVehicle =
+                { __typename = "InventoriedVehicle"
                   vehicleId = vehicleId
-                  make = "Hawk"
-                  model = "10"
-                  year = 2016
-                  status = "Available" }
-            actualVehicleState
-            |> Expect.equal "should equal expected vehicle state" expectedVehicleState
+                  vehicle = {
+                      make = "Hawk"
+                      model = "10"
+                      year = 2016
+                  }
+                  status = PrivateClient.VehicleStatus.Available }
+            actualVehicle
+            |> Expect.equal "should equal expected vehicle" expectedVehicle
         | error -> failwithf "error: %A" error
     }
 
@@ -141,16 +145,9 @@ let testRemoveVehicle =
         let input: GetVehicle.InputVariables =
             { input = { vehicleId = vehicleId }}
         match! client.GetVehicleAsync(input) with
-        | Ok { getVehicle = GetVehicle.GetVehicleResponse.Vehicle actualVehicleState } ->
-            let expectedVehicleState:GetVehicle.Vehicle =
-                { __typename = "VehicleState"
-                  vehicleId = vehicleId
-                  make = "Falcon"
-                  model = "9"
-                  year = 2016
-                  status = "Removed" }
-            actualVehicleState
-            |> Expect.equal "should equal expected vehicle state" expectedVehicleState
+        | Ok { getVehicle = GetVehicle.GetVehicleResponse.VehicleNotFound { message = msg }} ->
+            msg
+            |> Expect.equal "should equal expected message" (sprintf "Vehicle-%s not found" vehicleId)
         | error -> failwithf "error: %A" error
     }
 

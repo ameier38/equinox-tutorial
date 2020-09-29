@@ -26,13 +26,15 @@ type PublicGraphqlClient(url: string, httpClient: HttpClient) =
                             __typename
                             message
                         }
-                        ... on Vehicle {
+                        ... on InventoriedVehicle {
                             __typename
                             vehicleId
-                            make
-                            model
-                            year
                             status
+                            vehicle {
+                                make
+                                model
+                                year
+                            }
                         }
                     }
                 }
@@ -74,14 +76,28 @@ type PublicGraphqlClient(url: string, httpClient: HttpClient) =
             let query = """
                 query ListAvailableVehicles($input:ListVehiclesInput!) {
                     listAvailableVehicles(input:$input) {
-                        totalCount
-                        prevPageToken
-                        nextPageToken
-                        vehicles {
-                            vehicleId
-                            make
-                            model
-                            year
+                        __typename
+                        ... on PageTokenInvalid {
+                            __typename
+                            message
+                        }
+                        ... on PageSizeInvalid {
+                            __typename
+                            message
+                        }
+                        ... on ListVehiclesSuccess {
+                            __typename
+                            totalCount
+                            nextPageToken
+                            vehicles {
+                                vehicleId
+                                status
+                                vehicle {
+                                    make
+                                    model
+                                    year
+                                }
+                            }
                         }
                     }
                 }

@@ -7,6 +7,13 @@ type VehicleProcessorConfig =
         let port = Shared.Env.getEnv "VEHICLE_PROCESSOR_PORT" "50051" |> int
         { Url = sprintf "%s:%i" host port }
 
+type VehicleReaderConfig =
+    { Url: string } with
+    static member Load() =
+        let host = Shared.Env.getEnv "VEHICLE_READER_HOST" "localhost"
+        let port = Shared.Env.getEnv "VEHICLE_READER_PORT" "50052" |> int
+        { Url = sprintf "%s:%i" host port }
+
 type MongoConfig =
     { Url: string
       Host: string
@@ -65,6 +72,7 @@ type Config =
       ServerConfig: ServerConfig
       Auth0Config: Auth0Config
       VehicleProcessorConfig: VehicleProcessorConfig
+      VehicleReaderConfig: VehicleReaderConfig
       MongoConfig: MongoConfig
       SeqConfig: SeqConfig } with
     static member Load() =
@@ -74,5 +82,6 @@ type Config =
           ServerConfig = ServerConfig.Load()
           Auth0Config = Auth0Config.Load(secretsDir)
           VehicleProcessorConfig = VehicleProcessorConfig.Load()
+          VehicleReaderConfig = VehicleReaderConfig.Load()
           MongoConfig = MongoConfig.Load(secretsDir)
           SeqConfig = SeqConfig.Load() }

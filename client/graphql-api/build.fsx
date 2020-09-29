@@ -92,7 +92,7 @@ BuildTask.create "Publish" [] {
 }
 
 BuildTask.create "Serve" [] {
-    DotNet.exec id "run" "--project src/GraphqlApi/GraphqlApi.fsproj -- --insecure"
+    DotNet.exec id "run" "--project src/GraphqlApi/GraphqlApi.fsproj"
     |> ignore
 }
 

@@ -148,13 +148,15 @@ type PrivateGraphqlClient(url: string, httpClient: HttpClient) =
                             __typename
                             message
                         }
-                        ... on Vehicle {
+                        ... on InventoriedVehicle {
                             __typename
                             vehicleId
-                            make
-                            model
-                            year
                             status
+                            vehicle {
+                                make
+                                model
+                                year
+                            }
                         }
                     }
                 }
@@ -201,16 +203,26 @@ type PrivateGraphqlClient(url: string, httpClient: HttpClient) =
                             __typename
                             message
                         }
-                        ... on Vehicles {
+                        ... on PageTokenInvalid {
+                            __typename
+                            message
+                        }
+                        ... on PageSizeInvalid {
+                            __typename
+                            message
+                        }
+                        ... on ListVehiclesSuccess {
                             __typename
                             totalCount
-                            prevPageToken
                             nextPageToken
                             vehicles {
                                 vehicleId
-                                make
-                                model
-                                year
+                                status
+                                vehicle {
+                                    make
+                                    model
+                                    year
+                                }
                             }
                         }
                     }

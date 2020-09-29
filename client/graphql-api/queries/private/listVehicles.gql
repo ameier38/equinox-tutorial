@@ -5,16 +5,26 @@ query ListVehicles($input:ListVehiclesInput!) {
             __typename
             message
         }
-        ... on Vehicles {
+        ... on PageTokenInvalid {
+            __typename
+            message
+        }
+        ... on PageSizeInvalid {
+            __typename
+            message
+        }
+        ... on ListVehiclesSuccess {
             __typename
             totalCount
-            prevPageToken
             nextPageToken
             vehicles {
                 vehicleId
-                make
-                model
-                year
+                status
+                vehicle {
+                    make
+                    model
+                    year
+                }
             }
         }
     }

@@ -2,6 +2,7 @@
 open Giraffe
 open GraphqlApi
 open GraphqlApi.Vehicle.Client
+open Grpc.Core
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
 open Microsoft.AspNetCore.Authentication.JwtBearer
@@ -23,7 +24,12 @@ let main argv =
             .WriteTo.Seq(config.SeqConfig.Url)
             .CreateLogger()
     Log.Logger <- logger
-    let vehicleClient = VehicleClient(config.VehicleProcessorConfig, config.MongoConfig)
+    Log.Debug("🐛 Debug mode")
+    let vehicleCommandChannel = Channel(config.VehicleProcessorConfig.Url, ChannelCredentials.Insecure)
+    let vehicleCommandClient = CosmicDealership.Vehicle.V1.VehicleCommandService.VehicleCommandServiceClient(vehicleCommandChannel)
+    let vehicleQueryChannel = Channel(config.VehicleReaderConfig.Url, ChannelCredentials.Insecure)
+    let vehicleQueryClient = CosmicDealership.Vehicle.V1.VehicleQueryService.VehicleQueryServiceClient(vehicleQueryChannel)
+    let vehicleClient = VehicleClient(vehicleCommandClient, vehicleQueryClient)
     let publicHandler =
         let query = Root.PublicQuery vehicleClient
         let schema = GraphQL.Schema(query)

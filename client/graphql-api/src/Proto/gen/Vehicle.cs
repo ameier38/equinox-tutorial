@@ -25,19 +25,38 @@ namespace CosmicDealership.Vehicle.V1 {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Ciljb3NtaWNkZWFsZXJzaGlwL3ZlaGljbGUvdjEvdmVoaWNsZS5wcm90bxIb",
-            "Y29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxIjQKB1ZlaGljbGUSDAoEbWFr",
-            "ZRgCIAEoCRINCgVtb2RlbBgDIAEoCRIMCgR5ZWFyGAQgASgFQjtaG2Nvc21p",
-            "Y2RlYWxlcnNoaXAvdmVoaWNsZS92MaoCG0Nvc21pY0RlYWxlcnNoaXAuVmVo",
-            "aWNsZS5WMWIGcHJvdG8z"));
+            "Y29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxGh9nb29nbGUvcHJvdG9idWYv",
+            "dGltZXN0YW1wLnByb3RvIjQKB1ZlaGljbGUSDAoEbWFrZRgBIAEoCRINCgVt",
+            "b2RlbBgCIAEoCRIMCgR5ZWFyGAMgASgFIpkCChJJbnZlbnRvcmllZFZlaGlj",
+            "bGUSEgoKdmVoaWNsZV9pZBgBIAEoCRIsCghhZGRlZF9hdBgCIAEoCzIaLmdv",
+            "b2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgDIAEoCzIa",
+            "Lmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASNQoHdmVoaWNsZRgEIAEoCzIk",
+            "LmNvc21pY2RlYWxlcnNoaXAudmVoaWNsZS52MS5WZWhpY2xlEjoKBnN0YXR1",
+            "cxgFIAEoDjIqLmNvc21pY2RlYWxlcnNoaXAudmVoaWNsZS52MS5WZWhpY2xl",
+            "U3RhdHVzEg4KBmF2YXRhchgGIAEoCRIOCgZpbWFnZXMYByADKAkqaAoNVmVo",
+            "aWNsZVN0YXR1cxIeChpWRUhJQ0xFX1NUQVRVU19VTlNQRUNJRklFRBAAEhwK",
+            "GFZFSElDTEVfU1RBVFVTX0FWQUlMQUJMRRABEhkKFVZFSElDTEVfU1RBVFVT",
+            "X0xFQVNFRBACQjtaG2Nvc21pY2RlYWxlcnNoaXAvdmVoaWNsZS92MaoCG0Nv",
+            "c21pY0RlYWxlcnNoaXAuVmVoaWNsZS5WMWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.Vehicle), global::CosmicDealership.Vehicle.V1.Vehicle.Parser, new[]{ "Make", "Model", "Year" }, null, null, null, null)
+          new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::CosmicDealership.Vehicle.V1.VehicleStatus), }, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.Vehicle), global::CosmicDealership.Vehicle.V1.Vehicle.Parser, new[]{ "Make", "Model", "Year" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.InventoriedVehicle), global::CosmicDealership.Vehicle.V1.InventoriedVehicle.Parser, new[]{ "VehicleId", "AddedAt", "UpdatedAt", "Vehicle", "Status", "Avatar", "Images" }, null, null, null, null)
           }));
     }
     #endregion
 
   }
+  #region Enums
+  public enum VehicleStatus {
+    [pbr::OriginalName("VEHICLE_STATUS_UNSPECIFIED")] Unspecified = 0,
+    [pbr::OriginalName("VEHICLE_STATUS_AVAILABLE")] Available = 1,
+    [pbr::OriginalName("VEHICLE_STATUS_LEASED")] Leased = 2,
+  }
+
+  #endregion
+
   #region Messages
   public sealed partial class Vehicle : pb::IMessage<Vehicle> {
     private static readonly pb::MessageParser<Vehicle> _parser = new pb::MessageParser<Vehicle>(() => new Vehicle());
@@ -76,7 +95,7 @@ namespace CosmicDealership.Vehicle.V1 {
     }
 
     /// <summary>Field number for the "make" field.</summary>
-    public const int MakeFieldNumber = 2;
+    public const int MakeFieldNumber = 1;
     private string make_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Make {
@@ -87,7 +106,7 @@ namespace CosmicDealership.Vehicle.V1 {
     }
 
     /// <summary>Field number for the "model" field.</summary>
-    public const int ModelFieldNumber = 3;
+    public const int ModelFieldNumber = 2;
     private string model_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Model {
@@ -98,7 +117,7 @@ namespace CosmicDealership.Vehicle.V1 {
     }
 
     /// <summary>Field number for the "year" field.</summary>
-    public const int YearFieldNumber = 4;
+    public const int YearFieldNumber = 3;
     private int year_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Year {
@@ -147,15 +166,15 @@ namespace CosmicDealership.Vehicle.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       if (Make.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(10);
         output.WriteString(Make);
       }
       if (Model.Length != 0) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(18);
         output.WriteString(Model);
       }
       if (Year != 0) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(24);
         output.WriteInt32(Year);
       }
       if (_unknownFields != null) {
@@ -206,16 +225,326 @@ namespace CosmicDealership.Vehicle.V1 {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 18: {
+          case 10: {
             Make = input.ReadString();
             break;
           }
-          case 26: {
+          case 18: {
             Model = input.ReadString();
             break;
           }
-          case 32: {
+          case 24: {
             Year = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  /// <summary>
+  /// InventoriedVehicle is a vehicle that has been added to the dealership inventory.
+  /// </summary>
+  public sealed partial class InventoriedVehicle : pb::IMessage<InventoriedVehicle> {
+    private static readonly pb::MessageParser<InventoriedVehicle> _parser = new pb::MessageParser<InventoriedVehicle>(() => new InventoriedVehicle());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<InventoriedVehicle> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::CosmicDealership.Vehicle.V1.VehicleReflection.Descriptor.MessageTypes[1]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public InventoriedVehicle() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public InventoriedVehicle(InventoriedVehicle other) : this() {
+      vehicleId_ = other.vehicleId_;
+      addedAt_ = other.addedAt_ != null ? other.addedAt_.Clone() : null;
+      updatedAt_ = other.updatedAt_ != null ? other.updatedAt_.Clone() : null;
+      vehicle_ = other.vehicle_ != null ? other.vehicle_.Clone() : null;
+      status_ = other.status_;
+      avatar_ = other.avatar_;
+      images_ = other.images_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public InventoriedVehicle Clone() {
+      return new InventoriedVehicle(this);
+    }
+
+    /// <summary>Field number for the "vehicle_id" field.</summary>
+    public const int VehicleIdFieldNumber = 1;
+    private string vehicleId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string VehicleId {
+      get { return vehicleId_; }
+      set {
+        vehicleId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "added_at" field.</summary>
+    public const int AddedAtFieldNumber = 2;
+    private global::Google.Protobuf.WellKnownTypes.Timestamp addedAt_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Protobuf.WellKnownTypes.Timestamp AddedAt {
+      get { return addedAt_; }
+      set {
+        addedAt_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "updated_at" field.</summary>
+    public const int UpdatedAtFieldNumber = 3;
+    private global::Google.Protobuf.WellKnownTypes.Timestamp updatedAt_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Protobuf.WellKnownTypes.Timestamp UpdatedAt {
+      get { return updatedAt_; }
+      set {
+        updatedAt_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "vehicle" field.</summary>
+    public const int VehicleFieldNumber = 4;
+    private global::CosmicDealership.Vehicle.V1.Vehicle vehicle_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::CosmicDealership.Vehicle.V1.Vehicle Vehicle {
+      get { return vehicle_; }
+      set {
+        vehicle_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "status" field.</summary>
+    public const int StatusFieldNumber = 5;
+    private global::CosmicDealership.Vehicle.V1.VehicleStatus status_ = global::CosmicDealership.Vehicle.V1.VehicleStatus.Unspecified;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::CosmicDealership.Vehicle.V1.VehicleStatus Status {
+      get { return status_; }
+      set {
+        status_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "avatar" field.</summary>
+    public const int AvatarFieldNumber = 6;
+    private string avatar_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Avatar {
+      get { return avatar_; }
+      set {
+        avatar_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "images" field.</summary>
+    public const int ImagesFieldNumber = 7;
+    private static readonly pb::FieldCodec<string> _repeated_images_codec
+        = pb::FieldCodec.ForString(58);
+    private readonly pbc::RepeatedField<string> images_ = new pbc::RepeatedField<string>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<string> Images {
+      get { return images_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as InventoriedVehicle);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(InventoriedVehicle other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (VehicleId != other.VehicleId) return false;
+      if (!object.Equals(AddedAt, other.AddedAt)) return false;
+      if (!object.Equals(UpdatedAt, other.UpdatedAt)) return false;
+      if (!object.Equals(Vehicle, other.Vehicle)) return false;
+      if (Status != other.Status) return false;
+      if (Avatar != other.Avatar) return false;
+      if(!images_.Equals(other.images_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (VehicleId.Length != 0) hash ^= VehicleId.GetHashCode();
+      if (addedAt_ != null) hash ^= AddedAt.GetHashCode();
+      if (updatedAt_ != null) hash ^= UpdatedAt.GetHashCode();
+      if (vehicle_ != null) hash ^= Vehicle.GetHashCode();
+      if (Status != global::CosmicDealership.Vehicle.V1.VehicleStatus.Unspecified) hash ^= Status.GetHashCode();
+      if (Avatar.Length != 0) hash ^= Avatar.GetHashCode();
+      hash ^= images_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (VehicleId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(VehicleId);
+      }
+      if (addedAt_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(AddedAt);
+      }
+      if (updatedAt_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(UpdatedAt);
+      }
+      if (vehicle_ != null) {
+        output.WriteRawTag(34);
+        output.WriteMessage(Vehicle);
+      }
+      if (Status != global::CosmicDealership.Vehicle.V1.VehicleStatus.Unspecified) {
+        output.WriteRawTag(40);
+        output.WriteEnum((int) Status);
+      }
+      if (Avatar.Length != 0) {
+        output.WriteRawTag(50);
+        output.WriteString(Avatar);
+      }
+      images_.WriteTo(output, _repeated_images_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (VehicleId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(VehicleId);
+      }
+      if (addedAt_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(AddedAt);
+      }
+      if (updatedAt_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(UpdatedAt);
+      }
+      if (vehicle_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Vehicle);
+      }
+      if (Status != global::CosmicDealership.Vehicle.V1.VehicleStatus.Unspecified) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Status);
+      }
+      if (Avatar.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Avatar);
+      }
+      size += images_.CalculateSize(_repeated_images_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(InventoriedVehicle other) {
+      if (other == null) {
+        return;
+      }
+      if (other.VehicleId.Length != 0) {
+        VehicleId = other.VehicleId;
+      }
+      if (other.addedAt_ != null) {
+        if (addedAt_ == null) {
+          AddedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+        }
+        AddedAt.MergeFrom(other.AddedAt);
+      }
+      if (other.updatedAt_ != null) {
+        if (updatedAt_ == null) {
+          UpdatedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+        }
+        UpdatedAt.MergeFrom(other.UpdatedAt);
+      }
+      if (other.vehicle_ != null) {
+        if (vehicle_ == null) {
+          Vehicle = new global::CosmicDealership.Vehicle.V1.Vehicle();
+        }
+        Vehicle.MergeFrom(other.Vehicle);
+      }
+      if (other.Status != global::CosmicDealership.Vehicle.V1.VehicleStatus.Unspecified) {
+        Status = other.Status;
+      }
+      if (other.Avatar.Length != 0) {
+        Avatar = other.Avatar;
+      }
+      images_.Add(other.images_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            VehicleId = input.ReadString();
+            break;
+          }
+          case 18: {
+            if (addedAt_ == null) {
+              AddedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            input.ReadMessage(AddedAt);
+            break;
+          }
+          case 26: {
+            if (updatedAt_ == null) {
+              UpdatedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            input.ReadMessage(UpdatedAt);
+            break;
+          }
+          case 34: {
+            if (vehicle_ == null) {
+              Vehicle = new global::CosmicDealership.Vehicle.V1.Vehicle();
+            }
+            input.ReadMessage(Vehicle);
+            break;
+          }
+          case 40: {
+            Status = (global::CosmicDealership.Vehicle.V1.VehicleStatus) input.ReadEnum();
+            break;
+          }
+          case 50: {
+            Avatar = input.ReadString();
+            break;
+          }
+          case 58: {
+            images_.AddEntriesFrom(input, _repeated_images_codec);
             break;
           }
         }

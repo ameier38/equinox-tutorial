@@ -7,6 +7,12 @@ open GraphqlApi.Vehicle.Types
 open GraphqlApi.Vehicle.Client
 open FSharp.Data.GraphQL.Types
 
+let PageTokenInvalidType =
+    Define.Object<Message>(name = "PageTokenInvalid", fields = [ Define.AutoField("message", String) ])
+
+let PageSizeInvalidType =
+    Define.Object<Message>(name = "PageSizeInvalid", fields = [ Define.AutoField("message", String) ])
+
 let VehicleAlreadyExistsType =
     Define.Object<Message>(name = "VehicleAlreadyExists", fields = [ Define.AutoField("message", String) ])
 
@@ -40,27 +46,36 @@ let vehicleIdInputField =
         typedef = ID,
         description = "Unique identifier for the vehicle")
 
+let VehicleStatusType =
+    Define.Enum<CosmicDealership.Vehicle.V1.VehicleStatus>(
+        name="VehicleStatus",
+        description="Status of a vehicle",
+        options=[
+            Define.EnumValue("Unknown", CosmicDealership.Vehicle.V1.VehicleStatus.Unspecified)
+            Define.EnumValue("Available", CosmicDealership.Vehicle.V1.VehicleStatus.Available)
+            Define.EnumValue("Leased", CosmicDealership.Vehicle.V1.VehicleStatus.Leased)
+        ])
+
 let VehicleType =
-    Define.Object<Vehicle>(
-        name = "Vehicle",
-        description = "A space vehicle",
-        fields = [
-            Define.Field("_id", ID, fun _ v -> v._id.ToString())
-            Define.AutoField("vehicleId", ID)
+    Define.Object<CosmicDealership.Vehicle.V1.Vehicle>(
+        name="Vehicle",
+        description="A vehicle",
+        fields=[
             Define.AutoField("make", String)
             Define.AutoField("model", String)
             Define.AutoField("year", Int)
-            Define.AutoField("status", String)
         ])
 
-let VehiclesType =
-    Define.Object<Vehicles>(
-        name = "Vehicles",
+let InventoriedVehicleType =
+    Define.Object<CosmicDealership.Vehicle.V1.InventoriedVehicle>(
+        name = "InventoriedVehicle",
+        description = "A vehicle in inventory",
         fields = [
-            Define.AutoField("vehicles", ListOf VehicleType)
-            Define.AutoField("totalCount", Int)
-            Define.AutoField("prevPageToken", ID)
-            Define.AutoField("nextPageToken", ID)
+            Define.AutoField("vehicleId", ID)
+            Define.Field("addedAt", Date, resolve=(fun _ v -> v.AddedAt.ToDateTime()))
+            Define.Field("updatedAt", Date, resolve=(fun _ v -> v.UpdatedAt.ToDateTime()))
+            Define.AutoField("vehicle", VehicleType)
+            Define.AutoField("status", VehicleStatusType)
         ])
 
 let ListVehiclesInputType =
@@ -71,21 +86,38 @@ let ListVehiclesInputType =
             pageSizeInputField
         ])
 
+let ListVehiclesSuccessType =
+    Define.Object<CosmicDealership.Vehicle.V1.ListVehiclesSuccess>(
+        name="ListVehiclesSuccess",
+        description="Successful list vehicles response",
+        fields=[
+            Define.AutoField("vehicles", ListOf InventoriedVehicleType)
+            Define.AutoField("totalCount", Int)
+            Define.AutoField("nextPageToken", ID)
+        ])
+
+type ListVehiclesResponseCase = CosmicDealership.Vehicle.V1.ListVehiclesResponse.ResponseOneofCase
+
 let ListVehiclesResponseType =
-    Define.Union(
+    Define.Union<CosmicDealership.Vehicle.V1.ListVehiclesResponse, obj>(
         name = "ListVehiclesResponse",
-        options = [VehiclesType; PermissionDeniedType],
-        resolveValue = (fun o ->
-            match o with
-            | ListVehiclesResponse.Vehicles vehicles -> box vehicles
-            | ListVehiclesResponse.PermissionDenied msg -> box msg
+        options = [ListVehiclesSuccessType; PageTokenInvalidType; PageSizeInvalidType; PermissionDeniedType],
+        resolveType = (fun res ->
+            match res.ResponseCase with
+            | ListVehiclesResponseCase.Success -> upcast ListVehiclesSuccessType
+            | ListVehiclesResponseCase.PageTokenInvalid -> upcast PageTokenInvalidType
+            | ListVehiclesResponseCase.PageSizeInvalid -> upcast PageSizeInvalidType
+            | ListVehiclesResponseCase.PermissionDenied -> upcast PermissionDeniedType
+            | other -> failwithf "invalid ListVehiclesResponse: %A" other
         ),
-        resolveType = (fun o ->
-            match o with
-            | ListVehiclesResponse.Vehicles _ -> upcast VehiclesType
-            | ListVehiclesResponse.PermissionDenied _ -> upcast PermissionDeniedType
-        )
-    )
+        resolveValue = (fun res ->
+            match res.ResponseCase with
+            | ListVehiclesResponseCase.Success -> box res.Success
+            | ListVehiclesResponseCase.PageTokenInvalid -> box { message = res.PageTokenInvalid }
+            | ListVehiclesResponseCase.PageSizeInvalid -> box { message = res.PageSizeInvalid }
+            | ListVehiclesResponseCase.PermissionDenied -> box { message = res.PermissionDenied }
+            | other -> failwithf "invalid ListVehiclesResponse: %A" other
+        ))
 
 let listVehicles
     (vehicleClient:VehicleClient) =
@@ -102,12 +134,33 @@ let listVehicles
             vehicleClient.ListVehicles(user, input)
         ))
 
+type ListAvailableVehiclesResponseCase = CosmicDealership.Vehicle.V1.ListAvailableVehiclesResponse.ResponseOneofCase
+
+let ListAvailableVehiclesResponseType =
+    Define.Union<CosmicDealership.Vehicle.V1.ListAvailableVehiclesResponse, obj>(
+        name = "ListAvailableVehiclesResponse",
+        options = [ListVehiclesSuccessType; PageTokenInvalidType; PageSizeInvalidType],
+        resolveType = (fun res ->
+            match res.ResponseCase with
+            | ListAvailableVehiclesResponseCase.Success -> upcast ListVehiclesSuccessType
+            | ListAvailableVehiclesResponseCase.PageTokenInvalid -> upcast PageTokenInvalidType
+            | ListAvailableVehiclesResponseCase.PageSizeInvalid -> upcast PageSizeInvalidType
+            | other -> failwithf "invalid ListAvailableVehiclesResponse: %A" other
+        ),
+        resolveValue = (fun res ->
+            match res.ResponseCase with
+            | ListAvailableVehiclesResponseCase.Success -> box res.Success
+            | ListAvailableVehiclesResponseCase.PageTokenInvalid -> box { message = res.PageTokenInvalid }
+            | ListAvailableVehiclesResponseCase.PageSizeInvalid -> box { message = res.PageSizeInvalid }
+            | other -> failwithf "invalid ListAvailableVehiclesResponse: %A" other
+        ))
+
 let listAvailableVehicles
     (vehicleClient:VehicleClient) =
     Define.Field(
         name = "listAvailableVehicles",
         description = "List available vehicles",
-        typedef = VehiclesType,
+        typedef = ListAvailableVehiclesResponseType,
         args = [Define.Input("input", ListVehiclesInputType)],
         resolve = (fun ctx _ ->
             let input = ctx.Arg<ListVehiclesInput>("input")
@@ -119,23 +172,26 @@ let GetVehicleInputType =
         name = "GetVehicleInput",
         fields = [vehicleIdInputField])
 
+type GetVehicleResponseCase = CosmicDealership.Vehicle.V1.GetVehicleResponse.ResponseOneofCase
+
 let GetVehicleResponseType =
-    Define.Union<GetVehicleResponse,obj>(
+    Define.Union<CosmicDealership.Vehicle.V1.GetVehicleResponse,obj>(
         name = "GetVehicleResponse",
-        options = [VehicleType; VehicleNotFoundType; PermissionDeniedType],
+        options = [InventoriedVehicleType; VehicleNotFoundType; PermissionDeniedType],
         resolveType = (fun res ->
-            match res with
-            | GetVehicleResponse.Vehicle _ -> upcast VehicleType
-            | GetVehicleResponse.VehicleNotFound _ -> upcast VehicleNotFoundType
-            | GetVehicleResponse.PermissionDenied _ -> upcast PermissionDeniedType
+            match res.ResponseCase with
+            | GetVehicleResponseCase.Success -> upcast InventoriedVehicleType
+            | GetVehicleResponseCase.VehicleNotFound -> upcast VehicleNotFoundType
+            | GetVehicleResponseCase.PermissionDenied -> upcast PermissionDeniedType
+            | other -> failwithf "invalid GetVehicleResponse: %A" other
         ),
         resolveValue = (fun res ->
-            match res with
-            | GetVehicleResponse.Vehicle vehicle -> box vehicle
-            | GetVehicleResponse.VehicleNotFound msg -> box msg
-            | GetVehicleResponse.PermissionDenied msg -> box msg
-        )
-    )
+            match res.ResponseCase with
+            | GetVehicleResponseCase.Success -> box res.Success
+            | GetVehicleResponseCase.VehicleNotFound -> box { message = res.VehicleNotFound }
+            | GetVehicleResponseCase.PermissionDenied -> box { message = res.PermissionDenied }
+            | other -> failwithf "invalid GetVehicleResponse: %A" other
+        ))
 
 let getVehicle
     (vehicleClient:VehicleClient) =
@@ -152,21 +208,25 @@ let getVehicle
             vehicleClient.GetVehicle(user, input)
         ))
 
+type GetAvailableVehicleResponseCase = CosmicDealership.Vehicle.V1.GetAvailableVehicleResponse.ResponseOneofCase
+
 let GetAvailableVehicleResponseType =
-    Define.Union<GetAvailableVehicleResponse,obj>(
+    Define.Union<CosmicDealership.Vehicle.V1.GetAvailableVehicleResponse,obj>(
         name = "GetAvailableVehicleResponse",
-        options = [VehicleType; VehicleNotFoundType; PermissionDeniedType],
+        options = [InventoriedVehicleType; VehicleNotFoundType],
         resolveType = (fun res ->
-            match res with
-            | GetAvailableVehicleResponse.Vehicle _ -> upcast VehicleType
-            | GetAvailableVehicleResponse.VehicleNotFound _ -> upcast VehicleNotFoundType
+            match res.ResponseCase with
+            | GetAvailableVehicleResponseCase.Success -> upcast InventoriedVehicleType
+            | GetAvailableVehicleResponseCase.VehicleNotFound -> upcast VehicleNotFoundType
+            | other -> failwithf "invalid GetAvailableVehicleResponse: %A" other
         ),
         resolveValue = (fun res ->
-            match res with
-            | GetAvailableVehicleResponse.Vehicle vehicle -> box vehicle
-            | GetAvailableVehicleResponse.VehicleNotFound msg -> box msg
-        )
-    )
+            match res.ResponseCase with
+            | GetAvailableVehicleResponseCase.Success -> box res.Success
+            | GetAvailableVehicleResponseCase.VehicleNotFound -> box { message = res.VehicleNotFound }
+            | other -> failwithf "invalid GetAvailableVehicleResponse: %A" other
+        ))
+
 
 let getAvailableVehicle
     (vehicleClient:VehicleClient) =
@@ -178,8 +238,7 @@ let getAvailableVehicle
         resolve = (fun ctx _ ->
             let input = ctx.Arg<GetVehicleInput>("input")
             vehicleClient.GetAvailableVehicle(input)
-        )
-    )
+        ))
 
 let AddVehicleInputType =
     Define.InputObject<VehicleInput>(
@@ -324,6 +383,49 @@ let updateVehicleAvatar
             vehicleClient.UpdateAvatar(user, input)
         ))
 
+let RemoveVehicleAvatarInputType =
+    Define.InputObject<RemoveVehicleAvatarInput>(
+        name="RemoveVehicleAvatarInput",
+        fields=[
+            vehicleIdInputField
+        ])
+
+type RemoveVehicleAvatarResponseCase = CosmicDealership.Vehicle.V1.RemoveAvatarResponse.ResponseOneofCase
+
+let RemoveVehicleAvatarResponseType =
+    Define.Union<CosmicDealership.Vehicle.V1.RemoveAvatarResponse, obj>(
+        name="RemoveVehicleAvatarResponse",
+        options=[SuccessType; VehicleNotFoundType; PermissionDeniedType],
+        resolveType=(fun o ->
+            match o.ResponseCase with
+            | RemoveVehicleAvatarResponseCase.Success -> upcast SuccessType
+            | RemoveVehicleAvatarResponseCase.VehicleNotFound -> upcast VehicleNotFoundType
+            | RemoveVehicleAvatarResponseCase.PermissionDenied -> upcast PermissionDeniedType
+            | other -> failwithf "invalid response case: %A" other
+        ),
+        resolveValue=(fun o ->
+            match o.ResponseCase with
+            | RemoveVehicleAvatarResponseCase.Success -> box { message = o.Success }
+            | RemoveVehicleAvatarResponseCase.VehicleNotFound -> box { message = o.VehicleNotFound } 
+            | RemoveVehicleAvatarResponseCase.PermissionDenied -> box { message = o.PermissionDenied }
+            | other -> failwithf "invalid response case: %A" other
+        ))
+
+let removeVehicleAvatar
+    (vehicleClient:VehicleClient) =
+    Define.Field(
+        name="removeVehicleAvatar",
+        description="Remove a vehicle's avatar",
+        typedef=RemoveVehicleAvatarResponseType,
+        args = [Define.Input("input", RemoveVehicleAvatarInputType)],
+        resolve = (fun ctx _ ->
+            let user = 
+                ctx.Context.Metadata
+                |> User.fromMetadata
+            let input = ctx.Arg<RemoveVehicleAvatarInput>("input")
+            vehicleClient.RemoveAvatar(user, input)
+        ))
+
 let AddVehicleImageInputType =
     Define.InputObject<AddVehicleImageInput>(
         name = "AddVehicleImageInput",
@@ -404,6 +506,21 @@ let RemoveVehicleImageResponseType =
             | RemoveVehicleImageResponseCase.ImageInvalid -> box { message = o.ImageInvalid }
             | RemoveVehicleImageResponseCase.PermissionDenied -> box { message = o.PermissionDenied }
             | other -> failwithf "invalid response case: %A" other
+        ))
+
+let removeVehicleImage
+    (vehicleClient:VehicleClient) =
+    Define.Field(
+        name = "removeVehicleImage",
+        description = "Remove a vehicle image",
+        typedef = RemoveVehicleImageResponseType,
+        args = [Define.Input("input", RemoveVehicleImageInputType)],
+        resolve = (fun ctx _ ->
+            let user = 
+                ctx.Context.Metadata
+                |> User.fromMetadata
+            let input = ctx.Arg<RemoveVehicleImageInput>("input")
+            vehicleClient.RemoveImage(user, input)
         ))
 
 let RemoveVehicleInputType =

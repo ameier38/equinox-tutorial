@@ -9,13 +9,15 @@ query GetVehicle($input: GetVehicleInput!) {
             __typename
             message
         }
-        ... on Vehicle {
+        ... on InventoriedVehicle {
             __typename
             vehicleId
-            make
-            model
-            year
             status
+            vehicle {
+                make
+                model
+                year
+            }
         }
     }
 }

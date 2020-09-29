@@ -23,7 +23,10 @@ let PrivateMutation
         fields = [
             addVehicle vehicleClient
             updateVehicle vehicleClient
+            updateVehicleAvatar vehicleClient
+            removeVehicleAvatar vehicleClient
             addVehicleImage vehicleClient
+            removeVehicleImage vehicleClient
             removeVehicle vehicleClient
         ])
 
