@@ -3,17 +3,17 @@ namespace GraphQL
 open Auth0
 open Fable.SimpleHttp
 open Feliz
-open PublicApi
-open PrivateApi
+open PublicClient
+open PrivateClient
 
 type GraphQLProviderValue =
-    { publicApi: PublicApiGraphqlClient
-      privateApi: PrivateApiGraphqlClient }
+    { publicClient: PublicGraphqlClient
+      privateClient: PrivateGraphqlClient }
 
 module private GraphQL =
     let defaultProviderValue =
-        { publicApi = PublicApiGraphqlClient("http://localhost:4000/public")
-          privateApi = PrivateApiGraphqlClient("http://localhost:4000") }
+        { publicClient = PublicGraphqlClient("http://localhost:4000/public")
+          privateClient = PrivateGraphqlClient("http://localhost:4000") }
 
     let GraphQLContext = React.createContext("GraphQLContext", defaultProviderValue)
 
@@ -36,8 +36,8 @@ module private GraphQL =
 
             React.useEffectOnce(getToken >> Async.StartImmediate)
             let providerValue =
-                { publicApi = PublicApiGraphqlClient(props.publicUrl)
-                  privateApi = PrivateApiGraphqlClient(props.privateUrl, [Header ("Authorization", bearer)]) }
+                { publicClient = PublicGraphqlClient(props.publicUrl)
+                  privateClient = PrivateGraphqlClient(props.privateUrl, [Header ("Authorization", bearer)]) }
             React.contextProvider(GraphQLContext, providerValue, props.children)
         )
 

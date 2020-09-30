@@ -1,4 +1,4 @@
-namespace PublicApi
+namespace PublicClient
 
 open Fable.SimpleHttp
 open Fable.SimpleJson
@@ -7,8 +7,8 @@ type GraphqlInput<'T> = { query: string; variables: Option<'T> }
 type GraphqlSuccessResponse<'T> = { data: 'T }
 type GraphqlErrorResponse = { errors: ErrorType list }
 
-type PublicApiGraphqlClient(url: string, headers: Header list) =
-    new(url: string) = PublicApiGraphqlClient(url, [ ])
+type PublicGraphqlClient(url: string, headers: Header list) =
+    new(url: string) = PublicGraphqlClient(url, [ ])
 
     member _.GetAvailableVehicle(input: GetAvailableVehicle.InputVariables) =
         async {
@@ -20,13 +20,19 @@ type PublicApiGraphqlClient(url: string, headers: Header list) =
                             __typename
                             message
                         }
-                        ... on VehicleState {
+                        ... on InventoriedVehicle {
                             __typename
                             vehicleId
-                            make
-                            model
-                            year
+                            addedAt
+                            updatedAt
+                            vehicle {
+                                make
+                                model
+                                year
+                            }
                             status
+                            avatar
+                            images
                         }
                     }
                 }
@@ -53,17 +59,33 @@ type PublicApiGraphqlClient(url: string, headers: Header list) =
         async {
             let query = """
                 query ListAvailableVehicles($input:ListVehiclesInput!) {
-                  listAvailableVehicles(input: $input) {
-                    vehicles {
-                      vehicleId
-                      make
-                      model
-                      status
+                    listAvailableVehicles(input: $input) {
+                        __typename
+                        ... on PageTokenInvalid {
+                            __typename
+                            message
+                        }
+                        ... on PageSizeInvalid {
+                            __typename
+                            message
+                        }
+                        ... on ListVehiclesSuccess {
+                            __typename
+                            totalCount
+                            nextPageToken
+                            vehicles {
+                                vehicleId
+                                addedAt
+                                avatar
+                                status
+                                vehicle {
+                                    make
+                                    model
+                                    year
+                                } 
+                            }
+                        }
                     }
-                    nextPageToken
-                    prevPageToken
-                    totalCount
-                  }
                 }
                 
             """

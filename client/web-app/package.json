@@ -11,10 +11,10 @@
     }
   },
   "scripts": {
-    "startCustomer": "webpack-dev-server --mode development --entry ./src/CustomerApp/CustomerApp.fsproj",
-    "buildCustomer": "webpack --mode production --entry ./src/CustomerApp/CustomerApp.fsproj",
-    "startAdmin": "webpack-dev-server --mode development --entry ./src/AdminApp/AdminApp.fsproj",
-    "buildAdmin": "webpack --mode production --entry ./src/AdminApp/AdminApp.fsproj"
+    "startCustomerApp": "webpack-dev-server --mode development --entry ./src/CustomerApp/CustomerApp.fsproj",
+    "buildCustomerApp": "webpack --mode production --entry ./src/CustomerApp/CustomerApp.fsproj",
+    "startAdminApp": "webpack-dev-server --mode development --entry ./src/AdminApp/AdminApp.fsproj",
+    "buildAdminApp": "webpack --mode production --entry ./src/AdminApp/AdminApp.fsproj"
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.8.1",

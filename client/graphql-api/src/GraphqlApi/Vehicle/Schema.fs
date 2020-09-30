@@ -76,6 +76,8 @@ let InventoriedVehicleType =
             Define.Field("updatedAt", Date, resolve=(fun _ v -> v.UpdatedAt.ToDateTime()))
             Define.AutoField("vehicle", VehicleType)
             Define.AutoField("status", VehicleStatusType)
+            Define.AutoField("avatar", String)
+            Define.AutoField("images", ListOf String)
         ])
 
 let ListVehiclesInputType =

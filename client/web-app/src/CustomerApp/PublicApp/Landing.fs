@@ -6,7 +6,7 @@ open Feliz.MaterialUI
 open Feliz.Router
 open Feliz.UseDeferred
 open GraphQL
-open PublicApi
+open PublicClient
 
 let jumbotronImage = Image.load "../images/cosmos.jpg"
 let rocketImage = Image.load "../images/rocket.svg"
@@ -79,14 +79,14 @@ let jumbotron =
     )
 
 let vehicles =
-    React.functionComponent(fun _ ->
+    React.functionComponent<unit>(fun _ ->
         let c = useStyles()
         let theme = Styles.useTheme()
         let isGteMd = Hooks.useMediaQuery(theme.breakpoints.upMd)
-        let (pageToken, setPageToken) = React.useState("")
+        let (pageToken, setPageToken) = React.useState<string option>(None)
         let (pageSize, setPageSize) = React.useState(10)
-        let { publicApi = gql } = React.useGQL()
-        let input = { pageToken = Some pageToken; pageSize = Some pageSize }
+        let { publicClient = gql } = React.useGQL()
+        let input = { pageToken = pageToken; pageSize = Some pageSize }
         let data = React.useDeferred(gql.ListAvailableVehicles { input = input }, [||])
         Mui.container [
             container.disableGutters (not isGteMd)
@@ -137,37 +137,42 @@ let vehicles =
                                     ]
                                 ]
                         | Deferred.Resolved (Ok { listAvailableVehicles = res }) ->
-                            Log.debug ("vehicles", res.vehicles)
-                            for vehicle in res.vehicles do
-                                let makeModel = sprintf "%s %s" vehicle.make vehicle.model
-                                yield Mui.grid [
-                                    prop.className c.item
-                                    prop.key vehicle.vehicleId
-                                    grid.item true
-                                    grid.xs._12
-                                    grid.md._4
-                                    grid.children [
-                                        Mui.card [
-                                            prop.className c.clickable
-                                            prop.onClick (fun evt ->
-                                                evt.preventDefault()
-                                                Router.navigatePath("vehicles", vehicle.vehicleId)
-                                            )
-                                            card.children [
-                                                Mui.cardContent [
-                                                    Mui.typography [
-                                                        typography.variant.h6
-                                                        prop.text makeModel
-                                                    ]
-                                                    Mui.typography [
-                                                        typography.variant.body2
-                                                        prop.text (sprintf "This vehicle is %s" vehicle.status)
+                            match res with
+                            | ListAvailableVehicles.ListAvailableVehiclesResponse.ListVehiclesSuccess success ->
+                                Log.debug ("vehicles", success.vehicles)
+                                for inventoriedVehicle in success.vehicles do
+                                    let makeModel = sprintf "%s %s" inventoriedVehicle.vehicle.make inventoriedVehicle.vehicle.model
+                                    yield Mui.grid [
+                                        prop.className c.item
+                                        prop.key inventoriedVehicle.vehicleId
+                                        grid.item true
+                                        grid.xs._12
+                                        grid.md._4
+                                        grid.children [
+                                            Mui.card [
+                                                prop.className c.clickable
+                                                prop.onClick (fun evt ->
+                                                    evt.preventDefault()
+                                                    Router.navigatePath("vehicles", inventoriedVehicle.vehicleId)
+                                                )
+                                                card.children [
+                                                    Mui.cardContent [
+                                                        Mui.typography [
+                                                            typography.variant.h6
+                                                            prop.text makeModel
+                                                        ]
+                                                        Mui.typography [
+                                                            typography.variant.body2
+                                                            prop.text (sprintf "This vehicle is %A" inventoriedVehicle.status)
+                                                        ]
                                                     ]
                                                 ]
                                             ]
                                         ]
                                     ]
-                                ]
+                            | ListAvailableVehicles.ListAvailableVehiclesResponse.PageTokenInvalid { message = msg }
+                            | ListAvailableVehicles.ListAvailableVehiclesResponse.PageSizeInvalid { message = msg } ->
+                                Log.error msg
                     ]
                 ]
             ]

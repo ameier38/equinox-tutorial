@@ -5,13 +5,19 @@ query GetAvailableVehicle($input:GetVehicleInput!) {
             __typename
             message
         }
-        ... on VehicleState {
+        ... on InventoriedVehicle {
             __typename
             vehicleId
-            make
-            model
-            year
+            addedAt
+            updatedAt
+            vehicle {
+                make
+                model
+                year
+            }
             status
+            avatar
+            images
         }
     }
 }

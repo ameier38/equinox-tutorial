@@ -113,8 +113,8 @@ module JsonConverter =
 
 type GraphQLQueryHandler<'R>(executor: Executor<'R>) =
     let jsonOptions = JsonSerializerSettings(ContractResolver = CamelCasePropertyNamesContractResolver())
-    do jsonOptions.Converters.Add(JsonConverter.GraphQLQueryConverter(executor))
     do jsonOptions.Converters.Add(JsonConverter.OptionConverter())
+    do jsonOptions.Converters.Add(JsonConverter.GraphQLQueryConverter(executor))
 
     member _.ExecuteAsync(executionPlan:ExecutionPlan, ?variables:Map<string,obj>) =
         match variables with

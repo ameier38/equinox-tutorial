@@ -11,7 +11,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.fsproj" />
-    <ProjectReference Include="..\PrivateApi\PrivateApi.fsproj" />
+    <ProjectReference Include="..\PrivateClient\PrivateClient.fsproj" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

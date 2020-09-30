@@ -47,6 +47,10 @@ let main argv =
     let configureApp (application: IApplicationBuilder) =
         application
             .UseAuthentication()
+            .UseCors(fun corsBuilder ->
+                corsBuilder.AllowAnyHeader() |> ignore
+                corsBuilder.AllowAnyMethod() |> ignore
+                corsBuilder.AllowAnyOrigin() |> ignore)
             .UseGiraffe(app)
 
     let configureServices (services: IServiceCollection) =

@@ -1,13 +1,29 @@
 query ListAvailableVehicles($input:ListVehiclesInput!) {
-  listAvailableVehicles(input: $input) {
-    vehicles {
-      vehicleId
-      make
-      model
-      status
+    listAvailableVehicles(input: $input) {
+        __typename
+        ... on PageTokenInvalid {
+            __typename
+            message
+        }
+        ... on PageSizeInvalid {
+            __typename
+            message
+        }
+        ... on ListVehiclesSuccess {
+            __typename
+            totalCount
+            nextPageToken
+            vehicles {
+                vehicleId
+                addedAt
+                avatar
+                status
+                vehicle {
+                    make
+                    model
+                    year
+                } 
+            }
+        }
     }
-    nextPageToken
-    prevPageToken
-    totalCount
-  }
 }

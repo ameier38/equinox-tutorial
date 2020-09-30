@@ -10,19 +10,18 @@ open System
 open System.Text
 
 module PageToken =
-    let tryDecode (token:string) =
+    let validate (pageToken:string) =
         try
-            if isNull token then Ok None
-            else
-                token
-                |> Convert.FromBase64String
-                |> Encoding.UTF8.GetString
-                |> ObjectId.Parse
-                |> Some
-                |> Ok
+            let pageToken = if isNull pageToken then None else Some pageToken
+            pageToken
+            |> Option.map (
+                Convert.FromBase64String
+                >> Encoding.UTF8.GetString
+                >> ObjectId.Parse)
+            |> Ok
         with ex ->
-            Log.Error(ex, "failed to parse token: {Token}", token)
-            Error (sprintf "token invalid: %s" token) 
+            Log.Error(ex, "failed to parse page token: {PageToken}", pageToken)
+            Error (sprintf "page token invalid: %s" pageToken) 
     let encode (oid:ObjectId option) =
         match oid with
         | Some oid ->
@@ -32,10 +31,12 @@ module PageToken =
         | None -> ""
 
 module PageSize =
-    let validate (pageSize:int) =
-        if pageSize = 0 then Ok 10
-        elif pageSize > 50 then sprintf "invalid page size: %i; page size must <= 50" pageSize |> Error
-        else Ok pageSize
+    let validate (pageSize:Nullable<int>) =
+        match Option.ofNullable pageSize with
+        | Some ps when ps <= 0 -> sprintf "invalid page size: %i; page size must be > 0" ps |> Error
+        | Some ps when ps > 50 -> sprintf "invalid page size: %i; page size must <= 50" ps |> Error
+        | Some ps -> Ok ps
+        | None -> Ok 10
 
 module InventoriedVehicleDto =
     let toProto (dto:Dto.InventoriedVehicleDto) =
@@ -78,7 +79,7 @@ type VehicleQueryServiceImpl(store:Store) =
             try
                 log.Debug("listing vehicles {@Request}", req)
                 let authorizeResult = authorize req.User "list:vehicles"
-                let pageTokenResult = PageToken.tryDecode req.PageToken
+                let pageTokenResult = PageToken.validate req.PageToken
                 let pageSizeResult = PageSize.validate req.PageSize
                 match authorizeResult, pageTokenResult, pageSizeResult with
                 | Ok _, Ok pageToken, Ok pageSize ->
@@ -101,7 +102,7 @@ type VehicleQueryServiceImpl(store:Store) =
                                 .ToList()
                         let lastId =
                             vehiclesCollection.Find(statusFilter)
-                                .SortByDescending(fun v -> box v._id)
+                                .SortByDescending(fun v -> upcast v._id)
                                 .Limit(Nullable(1))
                                 .ToList()
                             |> Seq.head
@@ -138,7 +139,7 @@ type VehicleQueryServiceImpl(store:Store) =
         async {
             try
                 log.Debug("listing available vehicles {@Request}", req)
-                let pageTokenResult = PageToken.tryDecode req.PageToken
+                let pageTokenResult = PageToken.validate req.PageToken
                 let pageSizeResult = PageSize.validate req.PageSize
                 match pageTokenResult, pageSizeResult with
                 | Ok pageToken, Ok pageSize ->
@@ -161,7 +162,7 @@ type VehicleQueryServiceImpl(store:Store) =
                                 .ToList()
                         let lastId =
                             vehiclesCollection.Find(statusFilter)
-                                .SortByDescending(fun v -> box v._id)
+                                .SortByDescending(fun v -> upcast v._id)
                                 .Limit(Nullable(1))
                                 .ToList()
                             |> Seq.head

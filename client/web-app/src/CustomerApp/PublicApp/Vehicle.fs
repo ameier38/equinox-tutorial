@@ -4,10 +4,9 @@ open Elmish
 open Feliz
 open Feliz.MaterialUI
 open Feliz.UseDeferred
-open Feliz.UseElmish
 open FSharp.UMX
 open GraphQL
-open PublicApi
+open PublicClient
 
 let useStyles = Styles.makeStyles(fun styles _ ->
     {|
@@ -26,13 +25,17 @@ type VehicleProps =
 let render =
     React.functionComponent<VehicleProps>(fun props ->
         let c = useStyles()
-        let { publicApi = gql } = React.useGQL()
+        let theme = Styles.useTheme()
+        let isGteMd = Hooks.useMediaQuery(theme.breakpoints.upMd)
+        let { publicClient = gql } = React.useGQL()
         let input: GetAvailableVehicle.InputVariables =
             { input =
                 { vehicleId = UMX.untag props.vehicleId } }
         let data = React.useDeferred(gql.GetAvailableVehicle(input), [||])
         Mui.container [
             prop.className c.root
+            container.disableGutters (not isGteMd)
+            container.maxWidth.md
             container.children [
                 Mui.card [
                     card.children [
@@ -65,13 +68,13 @@ let render =
                             ]
                         | Deferred.Resolved (Ok { getAvailableVehicle = res }) ->
                             match res with
-                            | GetAvailableVehicle.GetVehicleResponse.VehicleNotFound { message = msg } ->
+                            | GetAvailableVehicle.GetAvailableVehicleResponse.VehicleNotFound { message = msg } ->
                                 Log.debug msg
                                 Mui.card [
                                     Error.renderError ()
                                 ]
-                            | GetAvailableVehicle.GetVehicleResponse.VehicleState vehicle ->
-                                let makeModel = sprintf "%s %s" vehicle.make vehicle.model
+                            | GetAvailableVehicle.GetAvailableVehicleResponse.InventoriedVehicle inventoriedVehicle ->
+                                let makeModel = sprintf "%s %s" inventoriedVehicle.vehicle.make inventoriedVehicle.vehicle.model
                                 Mui.card [
                                     card.children [
                                         Mui.cardContent [
@@ -82,7 +85,7 @@ let render =
                                             ]
                                             Mui.typography [
                                                 typography.variant.body2
-                                                prop.text (sprintf "This vehicle is %s" vehicle.status)
+                                                prop.text (sprintf "This vehicle is %A" inventoriedVehicle.status)
                                             ]
                                         ]
                                     ]

@@ -20,27 +20,27 @@ let clean = BuildTask.create "Clean" [] {
     |> Shell.cleanDirs 
 }
 
-let cleanPublicApi = BuildTask.create "CleanPublicApi" [] {
-    Shell.cleanDir "src/PublicApi"
+let cleanPublicClient = BuildTask.create "CleanPublicClient" [] {
+    Shell.cleanDir "src/PublicClient"
 }
 
-let generatePublicApi = BuildTask.create "GeneratePublicApi" [cleanPublicApi] {
-    // reads from `publicApi.json` and generates the public api client projet
-    snowflaqe ["--config"; "publicApi.json"; "--generate"]
+let generatePublicClient = BuildTask.create "GeneratePublicClient" [cleanPublicClient] {
+    // reads from `snowflaqePublic.json` and generates the public api client projet
+    snowflaqe ["--config"; "snowflaqePublic.json"; "--generate"]
 }
 
-let cleanPrivateApi = BuildTask.create "CleanPrivateApi" [] {
+let cleanPrivateClient = BuildTask.create "CleanPrivateApi" [] {
     Shell.cleanDir "src/PrivateApi"
 }
 
-let generatePrivateApi = BuildTask.create "GeneratePrivateApi" [cleanPrivateApi] {
-    // reads from `privateApi.json` and generates the private api client projet
-    snowflaqe ["--config"; "privateApi.json"; "--generate"]
+let generatePrivateClient = BuildTask.create "GeneratePrivateApi" [cleanPrivateClient] {
+    // reads from `snowflaqePrivate.json` and generates the private api client projet
+    snowflaqe ["--config"; "snowflaqePrivate.json"; "--generate"]
 }
 
-let generate = BuildTask.createEmpty "Generate" [generatePublicApi; generatePrivateApi]
+let generate = BuildTask.createEmpty "GenerateClients" [generatePublicClient; generatePrivateClient]
 
-BuildTask.create "Restore" [clean.IfNeeded] {
+BuildTask.create "Restore" [clean] {
     !! "src/**/*.*proj"
     |> Seq.iter (DotNet.restore id)
 }
@@ -54,20 +54,20 @@ BuildTask.create "Install" [] {
     Npm.install id
 }
 
-BuildTask.create "ServeCustomer" [] {
-    Npm.run "startCustomer" id
+BuildTask.create "StartCustomerApp" [] {
+    Npm.run "startCustomerApp" id
 }
 
-BuildTask.create "ServeAdmin" [] {
-    Npm.run "startAdmin" id
+BuildTask.create "StartAdminApp" [] {
+    Npm.run "startAdminApp" id
 }
 
-BuildTask.create "BuildCustomer" [clean; generate] {
-    Npm.run "buildCustomer" id
+BuildTask.create "BuildCustomerApp" [clean; generate] {
+    Npm.run "buildCustomerApp" id
 }
 
-BuildTask.create "BuildAdmin" [clean; generate] {
-    Npm.run "buildAdmin" id
+BuildTask.create "BuildAdminApp" [clean; generate] {
+    Npm.run "buildAdminApp" id
 }
 
 BuildTask.create "TestIntegrations" [] {

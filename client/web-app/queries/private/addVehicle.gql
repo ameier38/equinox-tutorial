@@ -1,3 +1,21 @@
 mutation AddVehicle($input:AddVehicleInput!) {
-  addVehicle(input: $input)
+  addVehicle(input: $input) {
+      __typename
+      ... on Success {
+          __typename
+          message
+      }
+      ... on VehicleAlreadyExists {
+          __typename
+          message
+      }
+      ... on VehicleInvalid {
+          __typename
+          message
+      }
+      ... on PermissionDenied {
+          __typename
+          message
+      }
+  }
 }

@@ -27,48 +27,51 @@ namespace CosmicDealership.Vehicle.V1 {
             "Cjdjb3NtaWNkZWFsZXJzaGlwL3ZlaGljbGUvdjEvdmVoaWNsZV9xdWVyeV9z",
             "ZXJ2aWNlLnByb3RvEhtjb3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEaKWNv",
             "c21pY2RlYWxlcnNoaXAvdmVoaWNsZS92MS92ZWhpY2xlLnByb3RvGiNjb3Nt",
-            "aWNkZWFsZXJzaGlwL3VzZXIvdjEvdXNlci5wcm90byKGAQoTTGlzdFZlaGlj",
-            "bGVzU3VjY2VzcxJBCgh2ZWhpY2xlcxgBIAMoCzIvLmNvc21pY2RlYWxlcnNo",
-            "aXAudmVoaWNsZS52MS5JbnZlbnRvcmllZFZlaGljbGUSEwoLdG90YWxfY291",
-            "bnQYAiABKAMSFwoPbmV4dF9wYWdlX3Rva2VuGAMgASgJImoKE0xpc3RWZWhp",
-            "Y2xlc1JlcXVlc3QSLAoEdXNlchgBIAEoCzIeLmNvc21pY2RlYWxlcnNoaXAu",
-            "dXNlci52MS5Vc2VyEhIKCnBhZ2VfdG9rZW4YAiABKAkSEQoJcGFnZV9zaXpl",
-            "GAMgASgFIr8BChRMaXN0VmVoaWNsZXNSZXNwb25zZRJDCgdzdWNjZXNzGAEg",
-            "ASgLMjAuY29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxLkxpc3RWZWhpY2xl",
-            "c1N1Y2Nlc3NIABIcChJwYWdlX3Rva2VuX2ludmFsaWQYAiABKAlIABIbChFw",
-            "YWdlX3NpemVfaW52YWxpZBgDIAEoCUgAEhsKEXBlcm1pc3Npb25fZGVuaWVk",
-            "GAQgASgJSABCCgoIcmVzcG9uc2UiRQocTGlzdEF2YWlsYWJsZVZlaGljbGVz",
-            "UmVxdWVzdBISCgpwYWdlX3Rva2VuGAIgASgJEhEKCXBhZ2Vfc2l6ZRgDIAEo",
-            "BSKrAQodTGlzdEF2YWlsYWJsZVZlaGljbGVzUmVzcG9uc2USQwoHc3VjY2Vz",
-            "cxgBIAEoCzIwLmNvc21pY2RlYWxlcnNoaXAudmVoaWNsZS52MS5MaXN0VmVo",
-            "aWNsZXNTdWNjZXNzSAASHAoScGFnZV90b2tlbl9pbnZhbGlkGAIgASgJSAAS",
-            "GwoRcGFnZV9zaXplX2ludmFsaWQYAyABKAlIAEIKCghyZXNwb25zZSJVChFH",
-            "ZXRWZWhpY2xlUmVxdWVzdBIsCgR1c2VyGAEgASgLMh4uY29zbWljZGVhbGVy",
-            "c2hpcC51c2VyLnYxLlVzZXISEgoKdmVoaWNsZV9pZBgCIAEoCSKeAQoSR2V0",
-            "VmVoaWNsZVJlc3BvbnNlEkIKB3N1Y2Nlc3MYASABKAsyLy5jb3NtaWNkZWFs",
-            "ZXJzaGlwLnZlaGljbGUudjEuSW52ZW50b3JpZWRWZWhpY2xlSAASGwoRdmVo",
-            "aWNsZV9ub3RfZm91bmQYAiABKAlIABIbChFwZXJtaXNzaW9uX2RlbmllZBgD",
-            "IAEoCUgAQgoKCHJlc3BvbnNlIjAKGkdldEF2YWlsYWJsZVZlaGljbGVSZXF1",
-            "ZXN0EhIKCnZlaGljbGVfaWQYAiABKAkiigEKG0dldEF2YWlsYWJsZVZlaGlj",
-            "bGVSZXNwb25zZRJCCgdzdWNjZXNzGAEgASgLMi8uY29zbWljZGVhbGVyc2hp",
-            "cC52ZWhpY2xlLnYxLkludmVudG9yaWVkVmVoaWNsZUgAEhsKEXZlaGljbGVf",
-            "bm90X2ZvdW5kGAIgASgJSABCCgoIcmVzcG9uc2UylQQKE1ZlaGljbGVRdWVy",
-            "eVNlcnZpY2UScwoMTGlzdFZlaGljbGVzEjAuY29zbWljZGVhbGVyc2hpcC52",
-            "ZWhpY2xlLnYxLkxpc3RWZWhpY2xlc1JlcXVlc3QaMS5jb3NtaWNkZWFsZXJz",
-            "aGlwLnZlaGljbGUudjEuTGlzdFZlaGljbGVzUmVzcG9uc2USjgEKFUxpc3RB",
-            "dmFpbGFibGVWZWhpY2xlcxI5LmNvc21pY2RlYWxlcnNoaXAudmVoaWNsZS52",
-            "MS5MaXN0QXZhaWxhYmxlVmVoaWNsZXNSZXF1ZXN0GjouY29zbWljZGVhbGVy",
-            "c2hpcC52ZWhpY2xlLnYxLkxpc3RBdmFpbGFibGVWZWhpY2xlc1Jlc3BvbnNl",
-            "Em0KCkdldFZlaGljbGUSLi5jb3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEu",
-            "R2V0VmVoaWNsZVJlcXVlc3QaLy5jb3NtaWNkZWFsZXJzaGlwLnZlaGljbGUu",
-            "djEuR2V0VmVoaWNsZVJlc3BvbnNlEogBChNHZXRBdmFpbGFibGVWZWhpY2xl",
-            "EjcuY29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxLkdldEF2YWlsYWJsZVZl",
-            "aGljbGVSZXF1ZXN0GjguY29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxLkdl",
-            "dEF2YWlsYWJsZVZlaGljbGVSZXNwb25zZUI7Whtjb3NtaWNkZWFsZXJzaGlw",
-            "L3ZlaGljbGUvdjGqAhtDb3NtaWNEZWFsZXJzaGlwLlZlaGljbGUuVjFiBnBy",
-            "b3RvMw=="));
+            "aWNkZWFsZXJzaGlwL3VzZXIvdjEvdXNlci5wcm90bxoeZ29vZ2xlL3Byb3Rv",
+            "YnVmL3dyYXBwZXJzLnByb3RvIoYBChNMaXN0VmVoaWNsZXNTdWNjZXNzEkEK",
+            "CHZlaGljbGVzGAEgAygLMi8uY29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYx",
+            "LkludmVudG9yaWVkVmVoaWNsZRITCgt0b3RhbF9jb3VudBgCIAEoAxIXCg9u",
+            "ZXh0X3BhZ2VfdG9rZW4YAyABKAkipQEKE0xpc3RWZWhpY2xlc1JlcXVlc3QS",
+            "LAoEdXNlchgBIAEoCzIeLmNvc21pY2RlYWxlcnNoaXAudXNlci52MS5Vc2Vy",
+            "EjAKCnBhZ2VfdG9rZW4YAiABKAsyHC5nb29nbGUucHJvdG9idWYuU3RyaW5n",
+            "VmFsdWUSLgoJcGFnZV9zaXplGAMgASgLMhsuZ29vZ2xlLnByb3RvYnVmLklu",
+            "dDMyVmFsdWUivwEKFExpc3RWZWhpY2xlc1Jlc3BvbnNlEkMKB3N1Y2Nlc3MY",
+            "ASABKAsyMC5jb3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEuTGlzdFZlaGlj",
+            "bGVzU3VjY2Vzc0gAEhwKEnBhZ2VfdG9rZW5faW52YWxpZBgCIAEoCUgAEhsK",
+            "EXBhZ2Vfc2l6ZV9pbnZhbGlkGAMgASgJSAASGwoRcGVybWlzc2lvbl9kZW5p",
+            "ZWQYBCABKAlIAEIKCghyZXNwb25zZSKAAQocTGlzdEF2YWlsYWJsZVZlaGlj",
+            "bGVzUmVxdWVzdBIwCgpwYWdlX3Rva2VuGAIgASgLMhwuZ29vZ2xlLnByb3Rv",
+            "YnVmLlN0cmluZ1ZhbHVlEi4KCXBhZ2Vfc2l6ZRgDIAEoCzIbLmdvb2dsZS5w",
+            "cm90b2J1Zi5JbnQzMlZhbHVlIqsBCh1MaXN0QXZhaWxhYmxlVmVoaWNsZXNS",
+            "ZXNwb25zZRJDCgdzdWNjZXNzGAEgASgLMjAuY29zbWljZGVhbGVyc2hpcC52",
+            "ZWhpY2xlLnYxLkxpc3RWZWhpY2xlc1N1Y2Nlc3NIABIcChJwYWdlX3Rva2Vu",
+            "X2ludmFsaWQYAiABKAlIABIbChFwYWdlX3NpemVfaW52YWxpZBgDIAEoCUgA",
+            "QgoKCHJlc3BvbnNlIlUKEUdldFZlaGljbGVSZXF1ZXN0EiwKBHVzZXIYASAB",
+            "KAsyHi5jb3NtaWNkZWFsZXJzaGlwLnVzZXIudjEuVXNlchISCgp2ZWhpY2xl",
+            "X2lkGAIgASgJIp4BChJHZXRWZWhpY2xlUmVzcG9uc2USQgoHc3VjY2VzcxgB",
+            "IAEoCzIvLmNvc21pY2RlYWxlcnNoaXAudmVoaWNsZS52MS5JbnZlbnRvcmll",
+            "ZFZlaGljbGVIABIbChF2ZWhpY2xlX25vdF9mb3VuZBgCIAEoCUgAEhsKEXBl",
+            "cm1pc3Npb25fZGVuaWVkGAMgASgJSABCCgoIcmVzcG9uc2UiMAoaR2V0QXZh",
+            "aWxhYmxlVmVoaWNsZVJlcXVlc3QSEgoKdmVoaWNsZV9pZBgCIAEoCSKKAQob",
+            "R2V0QXZhaWxhYmxlVmVoaWNsZVJlc3BvbnNlEkIKB3N1Y2Nlc3MYASABKAsy",
+            "Ly5jb3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEuSW52ZW50b3JpZWRWZWhp",
+            "Y2xlSAASGwoRdmVoaWNsZV9ub3RfZm91bmQYAiABKAlIAEIKCghyZXNwb25z",
+            "ZTKVBAoTVmVoaWNsZVF1ZXJ5U2VydmljZRJzCgxMaXN0VmVoaWNsZXMSMC5j",
+            "b3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEuTGlzdFZlaGljbGVzUmVxdWVz",
+            "dBoxLmNvc21pY2RlYWxlcnNoaXAudmVoaWNsZS52MS5MaXN0VmVoaWNsZXNS",
+            "ZXNwb25zZRKOAQoVTGlzdEF2YWlsYWJsZVZlaGljbGVzEjkuY29zbWljZGVh",
+            "bGVyc2hpcC52ZWhpY2xlLnYxLkxpc3RBdmFpbGFibGVWZWhpY2xlc1JlcXVl",
+            "c3QaOi5jb3NtaWNkZWFsZXJzaGlwLnZlaGljbGUudjEuTGlzdEF2YWlsYWJs",
+            "ZVZlaGljbGVzUmVzcG9uc2USbQoKR2V0VmVoaWNsZRIuLmNvc21pY2RlYWxl",
+            "cnNoaXAudmVoaWNsZS52MS5HZXRWZWhpY2xlUmVxdWVzdBovLmNvc21pY2Rl",
+            "YWxlcnNoaXAudmVoaWNsZS52MS5HZXRWZWhpY2xlUmVzcG9uc2USiAEKE0dl",
+            "dEF2YWlsYWJsZVZlaGljbGUSNy5jb3NtaWNkZWFsZXJzaGlwLnZlaGljbGUu",
+            "djEuR2V0QXZhaWxhYmxlVmVoaWNsZVJlcXVlc3QaOC5jb3NtaWNkZWFsZXJz",
+            "aGlwLnZlaGljbGUudjEuR2V0QXZhaWxhYmxlVmVoaWNsZVJlc3BvbnNlQjta",
+            "G2Nvc21pY2RlYWxlcnNoaXAvdmVoaWNsZS92MaoCG0Nvc21pY0RlYWxlcnNo",
+            "aXAuVmVoaWNsZS5WMWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::CosmicDealership.Vehicle.V1.VehicleReflection.Descriptor, global::CosmicDealership.User.V1.UserReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::CosmicDealership.Vehicle.V1.VehicleReflection.Descriptor, global::CosmicDealership.User.V1.UserReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.ListVehiclesSuccess), global::CosmicDealership.Vehicle.V1.ListVehiclesSuccess.Parser, new[]{ "Vehicles", "TotalCount", "NextPageToken" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::CosmicDealership.Vehicle.V1.ListVehiclesRequest), global::CosmicDealership.Vehicle.V1.ListVehiclesRequest.Parser, new[]{ "User", "PageToken", "PageSize" }, null, null, null, null),
@@ -288,8 +291,8 @@ namespace CosmicDealership.Vehicle.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ListVehiclesRequest(ListVehiclesRequest other) : this() {
       user_ = other.user_ != null ? other.user_.Clone() : null;
-      pageToken_ = other.pageToken_;
-      pageSize_ = other.pageSize_;
+      PageToken = other.PageToken;
+      PageSize = other.PageSize;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -311,25 +314,29 @@ namespace CosmicDealership.Vehicle.V1 {
 
     /// <summary>Field number for the "page_token" field.</summary>
     public const int PageTokenFieldNumber = 2;
-    private string pageToken_ = "";
+    private static readonly pb::FieldCodec<string> _single_pageToken_codec = pb::FieldCodec.ForClassWrapper<string>(18);
+    private string pageToken_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string PageToken {
       get { return pageToken_; }
       set {
-        pageToken_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        pageToken_ = value;
       }
     }
 
+
     /// <summary>Field number for the "page_size" field.</summary>
     public const int PageSizeFieldNumber = 3;
-    private int pageSize_;
+    private static readonly pb::FieldCodec<int?> _single_pageSize_codec = pb::FieldCodec.ForStructWrapper<int>(26);
+    private int? pageSize_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int PageSize {
+    public int? PageSize {
       get { return pageSize_; }
       set {
         pageSize_ = value;
       }
     }
+
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
@@ -354,8 +361,8 @@ namespace CosmicDealership.Vehicle.V1 {
     public override int GetHashCode() {
       int hash = 1;
       if (user_ != null) hash ^= User.GetHashCode();
-      if (PageToken.Length != 0) hash ^= PageToken.GetHashCode();
-      if (PageSize != 0) hash ^= PageSize.GetHashCode();
+      if (pageToken_ != null) hash ^= PageToken.GetHashCode();
+      if (pageSize_ != null) hash ^= PageSize.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -373,13 +380,11 @@ namespace CosmicDealership.Vehicle.V1 {
         output.WriteRawTag(10);
         output.WriteMessage(User);
       }
-      if (PageToken.Length != 0) {
-        output.WriteRawTag(18);
-        output.WriteString(PageToken);
+      if (pageToken_ != null) {
+        _single_pageToken_codec.WriteTagAndValue(output, PageToken);
       }
-      if (PageSize != 0) {
-        output.WriteRawTag(24);
-        output.WriteInt32(PageSize);
+      if (pageSize_ != null) {
+        _single_pageSize_codec.WriteTagAndValue(output, PageSize);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -392,11 +397,11 @@ namespace CosmicDealership.Vehicle.V1 {
       if (user_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(User);
       }
-      if (PageToken.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(PageToken);
+      if (pageToken_ != null) {
+        size += _single_pageToken_codec.CalculateSizeWithTag(PageToken);
       }
-      if (PageSize != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(PageSize);
+      if (pageSize_ != null) {
+        size += _single_pageSize_codec.CalculateSizeWithTag(PageSize);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -415,11 +420,15 @@ namespace CosmicDealership.Vehicle.V1 {
         }
         User.MergeFrom(other.User);
       }
-      if (other.PageToken.Length != 0) {
-        PageToken = other.PageToken;
+      if (other.pageToken_ != null) {
+        if (pageToken_ == null || other.PageToken != "") {
+          PageToken = other.PageToken;
+        }
       }
-      if (other.PageSize != 0) {
-        PageSize = other.PageSize;
+      if (other.pageSize_ != null) {
+        if (pageSize_ == null || other.PageSize != 0) {
+          PageSize = other.PageSize;
+        }
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -440,11 +449,17 @@ namespace CosmicDealership.Vehicle.V1 {
             break;
           }
           case 18: {
-            PageToken = input.ReadString();
+            string value = _single_pageToken_codec.Read(input);
+            if (pageToken_ == null || value != "") {
+              PageToken = value;
+            }
             break;
           }
-          case 24: {
-            PageSize = input.ReadInt32();
+          case 26: {
+            int? value = _single_pageSize_codec.Read(input);
+            if (pageSize_ == null || value != 0) {
+              PageSize = value;
+            }
             break;
           }
         }
@@ -736,8 +751,8 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ListAvailableVehiclesRequest(ListAvailableVehiclesRequest other) : this() {
-      pageToken_ = other.pageToken_;
-      pageSize_ = other.pageSize_;
+      PageToken = other.PageToken;
+      PageSize = other.PageSize;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -748,25 +763,29 @@ namespace CosmicDealership.Vehicle.V1 {
 
     /// <summary>Field number for the "page_token" field.</summary>
     public const int PageTokenFieldNumber = 2;
-    private string pageToken_ = "";
+    private static readonly pb::FieldCodec<string> _single_pageToken_codec = pb::FieldCodec.ForClassWrapper<string>(18);
+    private string pageToken_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string PageToken {
       get { return pageToken_; }
       set {
-        pageToken_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        pageToken_ = value;
       }
     }
 
+
     /// <summary>Field number for the "page_size" field.</summary>
     public const int PageSizeFieldNumber = 3;
-    private int pageSize_;
+    private static readonly pb::FieldCodec<int?> _single_pageSize_codec = pb::FieldCodec.ForStructWrapper<int>(26);
+    private int? pageSize_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int PageSize {
+    public int? PageSize {
       get { return pageSize_; }
       set {
         pageSize_ = value;
       }
     }
+
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
@@ -789,8 +808,8 @@ namespace CosmicDealership.Vehicle.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (PageToken.Length != 0) hash ^= PageToken.GetHashCode();
-      if (PageSize != 0) hash ^= PageSize.GetHashCode();
+      if (pageToken_ != null) hash ^= PageToken.GetHashCode();
+      if (pageSize_ != null) hash ^= PageSize.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -804,13 +823,11 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (PageToken.Length != 0) {
-        output.WriteRawTag(18);
-        output.WriteString(PageToken);
+      if (pageToken_ != null) {
+        _single_pageToken_codec.WriteTagAndValue(output, PageToken);
       }
-      if (PageSize != 0) {
-        output.WriteRawTag(24);
-        output.WriteInt32(PageSize);
+      if (pageSize_ != null) {
+        _single_pageSize_codec.WriteTagAndValue(output, PageSize);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -820,11 +837,11 @@ namespace CosmicDealership.Vehicle.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (PageToken.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(PageToken);
+      if (pageToken_ != null) {
+        size += _single_pageToken_codec.CalculateSizeWithTag(PageToken);
       }
-      if (PageSize != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(PageSize);
+      if (pageSize_ != null) {
+        size += _single_pageSize_codec.CalculateSizeWithTag(PageSize);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -837,11 +854,15 @@ namespace CosmicDealership.Vehicle.V1 {
       if (other == null) {
         return;
       }
-      if (other.PageToken.Length != 0) {
-        PageToken = other.PageToken;
+      if (other.pageToken_ != null) {
+        if (pageToken_ == null || other.PageToken != "") {
+          PageToken = other.PageToken;
+        }
       }
-      if (other.PageSize != 0) {
-        PageSize = other.PageSize;
+      if (other.pageSize_ != null) {
+        if (pageSize_ == null || other.PageSize != 0) {
+          PageSize = other.PageSize;
+        }
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -855,11 +876,17 @@ namespace CosmicDealership.Vehicle.V1 {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 18: {
-            PageToken = input.ReadString();
+            string value = _single_pageToken_codec.Read(input);
+            if (pageToken_ == null || value != "") {
+              PageToken = value;
+            }
             break;
           }
-          case 24: {
-            PageSize = input.ReadInt32();
+          case 26: {
+            int? value = _single_pageSize_codec.Read(input);
+            if (pageSize_ == null || value != 0) {
+              PageSize = value;
+            }
             break;
           }
         }

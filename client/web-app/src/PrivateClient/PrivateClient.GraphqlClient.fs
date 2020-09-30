@@ -1,4 +1,4 @@
-namespace PrivateApi
+namespace PrivateClient
 
 open Fable.SimpleHttp
 open Fable.SimpleJson
@@ -7,14 +7,32 @@ type GraphqlInput<'T> = { query: string; variables: Option<'T> }
 type GraphqlSuccessResponse<'T> = { data: 'T }
 type GraphqlErrorResponse = { errors: ErrorType list }
 
-type PrivateApiGraphqlClient(url: string, headers: Header list) =
-    new(url: string) = PrivateApiGraphqlClient(url, [ ])
+type PrivateGraphqlClient(url: string, headers: Header list) =
+    new(url: string) = PrivateGraphqlClient(url, [ ])
 
     member _.AddVehicle(input: AddVehicle.InputVariables) =
         async {
             let query = """
                 mutation AddVehicle($input:AddVehicleInput!) {
-                  addVehicle(input: $input)
+                  addVehicle(input: $input) {
+                      __typename
+                      ... on Success {
+                          __typename
+                          message
+                      }
+                      ... on VehicleAlreadyExists {
+                          __typename
+                          message
+                      }
+                      ... on VehicleInvalid {
+                          __typename
+                          message
+                      }
+                      ... on PermissionDenied {
+                          __typename
+                          message
+                      }
+                  }
                 }
                 
             """
@@ -45,13 +63,23 @@ type PrivateApiGraphqlClient(url: string, headers: Header list) =
                             __typename
                             message
                         }
-                        ... on VehicleState {
+                        ... on PermissionDenied {
+                            __typename
+                            message
+                        }
+                        ... on InventoriedVehicle {
                             __typename
                             vehicleId
-                            make
-                            model
-                            year
+                            addedAt
+                            updatedAt
                             status
+                            vehicle {
+                                make
+                                model
+                                year
+                            }
+                            avatar
+                            images
                         }
                     }
                 }
@@ -79,15 +107,34 @@ type PrivateApiGraphqlClient(url: string, headers: Header list) =
             let query = """
                 query ListVehicles($input:ListVehiclesInput!) {
                     listVehicles(input:$input) {
-                        vehicles {
-                            vehicleId
-                            make
-                            model
-                            year
+                        __typename
+                        ... on PageTokenInvalid {
+                            __typename
+                            message
                         }
-                        totalCount
-                        nextPageToken
-                        prevPageToken
+                        ... on PageSizeInvalid {
+                            __typename
+                            message
+                        }
+                        ... on PermissionDenied {
+                            __typename
+                            message
+                        }
+                        ... on ListVehiclesSuccess {
+                            __typename
+                            totalCount
+                            nextPageToken
+                            vehicles {
+                                vehicleId
+                                avatar
+                                addedAt
+                                vehicle {
+                                    make
+                                    model
+                                    year
+                                }
+                            }
+                        }
                     }
                 }
                 

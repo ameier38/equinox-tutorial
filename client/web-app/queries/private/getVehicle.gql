@@ -5,13 +5,23 @@ query GetVehicle($input: GetVehicleInput!) {
             __typename
             message
         }
-        ... on VehicleState {
+        ... on PermissionDenied {
+            __typename
+            message
+        }
+        ... on InventoriedVehicle {
             __typename
             vehicleId
-            make
-            model
-            year
+            addedAt
+            updatedAt
             status
+            vehicle {
+                make
+                model
+                year
+            }
+            avatar
+            images
         }
     }
 }

@@ -7,6 +7,7 @@ option go_package = "cosmicdealership/vehicle/v1";
 
 import "cosmicdealership/vehicle/v1/vehicle.proto";
 import "cosmicdealership/user/v1/user.proto";
+import "google/protobuf/wrappers.proto";
 
 // Service to handle interactions with Vehicles.
 service VehicleQueryService {
@@ -28,8 +29,8 @@ message ListVehiclesSuccess {
 
 message ListVehiclesRequest {
   user.v1.User user = 1;
-  string page_token = 2;
-  int32 page_size = 3;
+  google.protobuf.StringValue page_token = 2;
+  google.protobuf.Int32Value page_size = 3;
 }
 
 message ListVehiclesResponse {
@@ -42,8 +43,8 @@ message ListVehiclesResponse {
 }
 
 message ListAvailableVehiclesRequest {
-  string page_token = 2;
-  int32 page_size = 3;
+  google.protobuf.StringValue page_token = 2;
+  google.protobuf.Int32Value page_size = 3;
 }
 
 message ListAvailableVehiclesResponse {

@@ -56,15 +56,43 @@ let listVehicles (user:CosmicDealership.User.V1.User) =
             let req =
                 match pageToken with
                 | Some pageToken ->
-                    CosmicDealership.Vehicle.V1.ListVehiclesRequest(User=user, PageToken=pageToken, PageSize=1)
+                    CosmicDealership.Vehicle.V1.ListVehiclesRequest(User=user, PageToken=pageToken, PageSize=Nullable(1))
                 | None ->
-                    CosmicDealership.Vehicle.V1.ListVehiclesRequest(User=user, PageSize=1)
+                    CosmicDealership.Vehicle.V1.ListVehiclesRequest(User=user, PageSize=Nullable(1))
             let res = vehicleQueryService.ListVehicles(req)
             match res.ResponseCase with
             | ListVehiclesResponseCase.Success ->
                 match res.Success.NextPageToken with
                 | "" -> yield! res.Success.Vehicles
-                | nextPageToken -> yield! recurse (Some nextPageToken)
+                | nextPageToken ->
+                    yield! res.Success.Vehicles
+                    yield! recurse (Some nextPageToken)
+            | _ -> failwith "error!"
+        }
+    recurse None
+
+type ListAvailableVehiclesResponseCase = CosmicDealership.Vehicle.V1.ListAvailableVehiclesResponse.ResponseOneofCase
+
+let listAvailableVehicles () =
+    let rec recurse (pageToken:string option) =
+        seq {
+            let req =
+                match pageToken with
+                | Some pageToken ->
+                    CosmicDealership.Vehicle.V1.ListAvailableVehiclesRequest(
+                        PageToken=pageToken,
+                        PageSize=Nullable(1))
+                | None ->
+                    CosmicDealership.Vehicle.V1.ListAvailableVehiclesRequest(
+                        PageSize=Nullable(1))
+            let res = vehicleQueryService.ListAvailableVehicles(req)
+            match res.ResponseCase with
+            | ListAvailableVehiclesResponseCase.Success ->
+                match res.Success.NextPageToken with
+                | "" -> yield! res.Success.Vehicles
+                | nextPageToken ->
+                    yield! res.Success.Vehicles
+                    yield! recurse (Some nextPageToken)
             | _ -> failwith "error!"
         }
     recurse None
@@ -185,6 +213,54 @@ let testRemoveVehicleDenied =
         |> Expect.equal "should have permission denied" expectedResponse
     }
 
+let testListVehicles =
+    ftest "list vehicles" {
+        let user = createUser ["add:vehicles"; "list:vehicles"]
+        let vehicleId1 = Guid.NewGuid().ToString("N")
+        let vehicle1 =
+            CosmicDealership.Vehicle.V1.Vehicle(
+                Make="Falcon",
+                Model="99",
+                Year=2016)
+        addVehicle user vehicleId1 vehicle1 |> ignore
+        let vehicleId2 = Guid.NewGuid().ToString("N")
+        let vehicle2 =
+            CosmicDealership.Vehicle.V1.Vehicle(
+                Make="Falcon",
+                Model="100",
+                Year=2016)
+        addVehicle user vehicleId2 vehicle2 |> ignore
+        Thread.Sleep 2000
+        let actualVehicles = listVehicles user
+        actualVehicles
+        |> Seq.map (fun v -> v.VehicleId)
+        |> Expect.sequenceContainsOrder "should contain vehicle id" [vehicleId1; vehicleId2]
+    }
+
+let testListAvailableVehicles =
+    ftest "list available vehicles" {
+        let user = createUser ["add:vehicles"]
+        let vehicleId1 = Guid.NewGuid().ToString("N")
+        let vehicle1 =
+            CosmicDealership.Vehicle.V1.Vehicle(
+                Make="Falcon",
+                Model="99",
+                Year=2016)
+        addVehicle user vehicleId1 vehicle1 |> ignore
+        let vehicleId2 = Guid.NewGuid().ToString("N")
+        let vehicle2 =
+            CosmicDealership.Vehicle.V1.Vehicle(
+                Make="Falcon",
+                Model="100",
+                Year=2016)
+        addVehicle user vehicleId2 vehicle2 |> ignore
+        Thread.Sleep 2000
+        let actualVehicles = listAvailableVehicles ()
+        actualVehicles
+        |> Seq.map (fun v -> v.VehicleId)
+        |> Expect.sequenceContainsOrder "should contain vehicle id" [vehicleId1; vehicleId2]
+    }
+
 [<Tests>]
 let testVehicleService =
     testList "VehicleService" [
@@ -192,6 +268,8 @@ let testVehicleService =
         testAddVehicleDenied
         testRemoveVehicle
         testRemoveVehicleDenied
+        testListVehicles
+        testListAvailableVehicles
     ]
 
 [<EntryPoint>]

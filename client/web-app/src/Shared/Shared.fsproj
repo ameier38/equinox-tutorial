@@ -11,8 +11,8 @@
     <Compile Include="Navigation.fs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PrivateApi\PrivateApi.fsproj" />
-    <ProjectReference Include="..\PublicApi\PublicApi.fsproj" />
+    <ProjectReference Include="..\PrivateClient\PrivateClient.fsproj" />
+    <ProjectReference Include="..\PublicClient\PublicClient.fsproj" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

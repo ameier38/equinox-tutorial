@@ -13,7 +13,7 @@ let pageTokenInputField =
     Define.Input(
         name = "pageToken", 
         typedef = Nullable ID,
-        description = "Token for page to retrieve; Empty string for first page")
+        description = "Token for page to retrieve")
 
 let SuccessType =
     Define.Object<Message>(name = "Success", fields = [ Define.AutoField("message", String) ])

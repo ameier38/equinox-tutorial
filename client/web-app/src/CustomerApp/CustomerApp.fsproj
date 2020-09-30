@@ -3,7 +3,6 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Config.fs" />
     <Compile Include="PublicApp/Landing.fs" />
     <Compile Include="PublicApp/Vehicle.fs" />
     <Compile Include="PrivateApp/Sidebar.fs" />
@@ -11,8 +10,8 @@
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PublicApi\PublicApi.fsproj" />
-    <ProjectReference Include="..\PrivateApi\PrivateApi.fsproj" />
+    <ProjectReference Include="..\PublicClient\PublicClient.fsproj" />
+    <ProjectReference Include="..\PrivateClient\PrivateClient.fsproj" />
     <ProjectReference Include="..\Shared\Shared.fsproj" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />

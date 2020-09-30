@@ -13,7 +13,7 @@ type VehicleClient
             let req =
                 CosmicDealership.Vehicle.V1.ListAvailableVehiclesRequest(
                     PageToken=(input.pageToken |> Option.defaultValue null),
-                    PageSize=(input.pageSize |> Option.defaultValue 10))
+                    PageSize=(input.pageSize |> Option.toNullable))
             vehicleQueryService.ListAvailableVehicles(req)
         with ex ->
             Log.Error(ex, "Error listing available vehicles")
@@ -25,7 +25,7 @@ type VehicleClient
                 CosmicDealership.Vehicle.V1.ListVehiclesRequest(
                     User=(User.toProto user),
                     PageToken=(input.pageToken |> Option.defaultValue null),
-                    PageSize=(input.pageSize |> Option.defaultValue 10))
+                    PageSize=(input.pageSize |> Option.toNullable))
             vehicleQueryService.ListVehicles(req)
         with ex ->
             Log.Error(ex, "Error listing vehicles")

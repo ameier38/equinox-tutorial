@@ -4,11 +4,10 @@
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="PrivateApi.Types.fs" />
-        <Compile Include="PrivateApi.AddVehicle.fs" />
-        <Compile Include="PrivateApi.GetVehicle.fs" />
-        <Compile Include="PrivateApi.ListVehicles.fs" />
-        <Compile Include="PrivateApi.GraphqlClient.fs" />
+        <Compile Include="PublicClient.Types.fs" />
+        <Compile Include="PublicClient.GetAvailableVehicle.fs" />
+        <Compile Include="PublicClient.ListAvailableVehicles.fs" />
+        <Compile Include="PublicClient.GraphqlClient.fs" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="*.fsproj; *.fs; *.js" PackagePath="fable\" />
