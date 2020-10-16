@@ -3,6 +3,7 @@ open Reactor
 open Serilog
 open Serilog.Events
 open System
+open System.IO
 open System.Threading
 
 [<EntryPoint>]
@@ -29,7 +30,15 @@ let main _ =
     Console.CancelKeyPress |> Event.add (fun _ ->
         Log.Information("shutting down...")
         cancellation.Cancel())
-    reactor.StartAsync(cancellation.Token)
-    |> Async.RunSynchronously
+    let lockFile = "/tmp/.lock"
+    try
+        File.WriteAllText(lockFile, String.Empty)
+        reactor.StartAsync(cancellation.Token)
+        |> Async.RunSynchronously
+    with ex ->
+        File.Delete(lockFile)
+        Log.Error(ex, "Error running application")
+        Log.CloseAndFlush()
+        raise ex
     Log.CloseAndFlush()
     0 // return an integer exit code

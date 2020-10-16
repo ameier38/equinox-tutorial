@@ -16,6 +16,6 @@ const iconObject = new digitalocean.SpacesBucketObject('icon', {
     key: 'icon.svg',
     source: iconPath,
     acl: 'public-read'
-}, {provider: config.digitalOceanProvider})
+}, { provider: config.digitalOceanProvider })
 
 export const iconUrl = pulumi.interpolate `https://${uploadBucket.bucketDomainName}/${iconObject.key}`

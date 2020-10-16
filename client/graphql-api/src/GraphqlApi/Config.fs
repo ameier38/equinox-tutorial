@@ -14,28 +14,6 @@ type VehicleReaderConfig =
         let port = Shared.Env.getEnv "VEHICLE_READER_PORT" "50052" |> int
         { Url = sprintf "%s:%i" host port }
 
-type MongoConfig =
-    { Url: string
-      Host: string
-      Port: int
-      User: string
-      Password: string
-      Database: string } with
-    static member Load(secretsDir:string) =
-        let getMongoSecret = Shared.Env.getSecret secretsDir "mongo"
-        let host = getMongoSecret "host" "MONGO_HOST" "localhost"
-        let port = getMongoSecret "port" "MONGO_PORT" "27017" |> int
-        let user = getMongoSecret "user" "MONGO_USER" "admin"
-        let password = getMongoSecret "password" "MONGO_PASSWORD" "changeit"
-        let url = sprintf "mongodb://%s:%i" host port
-        let database = getMongoSecret "database" "MONGO_DATABASE" "dealership"
-        { Url = url
-          Host = host
-          Port = port
-          User = user
-          Password = password
-          Database = database }
-
 type SeqConfig =
     { Url: string } with
     static member Load() =
@@ -46,16 +24,17 @@ type SeqConfig =
 type Auth0Config =
     { Audience: string
       Issuer: string
-      Secret: string } with
+      ClientSecret: string } with
     static member Load(secretsDir:string) =
-        let getSecret = Shared.Env.getSecret secretsDir "auth0"
-        let audience = getSecret "audience" "AUTH0_AUDIENCE" "https://cosmicdealership.com"
-        let issuer = getSecret "issuer" "AUTH0_ISSUER" "https://ameier38.auth0.com/"
+        let secretName = Shared.Env.getEnv "AUTH0_SECRET" "auth0"
+        let getSecret = Shared.Env.getSecret secretsDir secretName
+        let audience = Shared.Env.getEnv "AUTH0_AUDIENCE" "https://cosmicdealership.com"
+        let issuer = Shared.Env.getEnv "AUTH0_ISSUER" "https://ameier38.auth0.com/"
         // see README to generate test authentication key
-        let secret = getSecret "secret" "AUTH0_SECRET" "671f54ce0c540f78ffe1e26dcf9c2a047aea4fda"
+        let clientSecret = getSecret "secret" "AUTH0_CLIENT_SECRET" "671f54ce0c540f78ffe1e26dcf9c2a047aea4fda"
         { Audience = audience
           Issuer = issuer
-          Secret = secret }
+          ClientSecret = clientSecret }
 
 type ServerConfig =
     { Host: string
@@ -73,7 +52,6 @@ type Config =
       Auth0Config: Auth0Config
       VehicleProcessorConfig: VehicleProcessorConfig
       VehicleReaderConfig: VehicleReaderConfig
-      MongoConfig: MongoConfig
       SeqConfig: SeqConfig } with
     static member Load() =
         let secretsDir = Shared.Env.getEnv "SECRETS_DIR" "/var/secrets"
@@ -83,5 +61,4 @@ type Config =
           Auth0Config = Auth0Config.Load(secretsDir)
           VehicleProcessorConfig = VehicleProcessorConfig.Load()
           VehicleReaderConfig = VehicleReaderConfig.Load()
-          MongoConfig = MongoConfig.Load(secretsDir)
           SeqConfig = SeqConfig.Load() }

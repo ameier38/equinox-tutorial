@@ -14,18 +14,18 @@ let getLeasesScope = { value: 'get:leases', description: 'Can get a lease' }
 let createLeasesScope = { value: 'create:leases', description: 'Can create a lease' }
 let terminateLeasesScope = { value: 'terminate:leases', description: 'Can terminate a lease' }
 
-const webClient = new auth0.Client('web', {
-    name: 'Cosmic Dealership',
-    description: 'Web client for Cosmic Dealership',
+const webClient = new auth0.Client(`${name}-web`, {
+    name: `${name}-web`,
+    description: 'Web client',
     logoUri: iconUrl,
     appType: 'spa',
     callbacks: [
         'http://localhost:3000',
-        `https://${config.dnsConfig.tld}`,
+        `https://${config.dnsConfig.zone}`,
     ],
     allowedLogoutUrls: [
         'http://localhost:3000',
-        `https://${config.dnsConfig.tld}`,
+        `https://${config.dnsConfig.zone}`,
     ],
 }, { provider: config.auth0Provider })
 
@@ -40,25 +40,24 @@ const databaseConnection = new auth0.Connection('database', {
 
 const setRolesRuleScript = `
 function setRolesToUser(user, context, callback) {
-  const assignedRoles = (context.authorization || {}).roles;
-  // Roles should only be set to verified users.
-  if (!user.email || !user.email_verified) {
+const assignedRoles = (context.authorization || {}).roles;
+// Roles should only be set to verified users.
+if (!user.email || !user.email_verified) {
     return callback(null, user, context);
-  }
+}
 
-  user.app_metadata = user.app_metadata || {};
+user.app_metadata = user.app_metadata || {};
 
-  user.app_metadata.roles = assignedRoles;
-  auth0.users.updateAppMetadata(user.user_id, user.app_metadata)
+user.app_metadata.roles = assignedRoles;
+auth0.users.updateAppMetadata(user.user_id, user.app_metadata)
     .then(function () {
-      context.idToken[\`${config.dnsConfig.tld}/roles\`] = user.app_metadata.roles;
-      callback(null, user, context);
+    context.idToken[\`${config.dnsConfig.zone}/roles\`] = user.app_metadata.roles;
+    callback(null, user, context);
     })
     .catch(function (err) {
-      callback(err);
+    callback(err);
     });
-}
-`
+}`
 
 const setRolesRule = new auth0.Rule('set-roles', {
     name: 'Set Roles',
@@ -67,9 +66,9 @@ const setRolesRule = new auth0.Rule('set-roles', {
     order: 0
 }, { provider: config.auth0Provider })
 
-const graphqlResourceServer = new auth0.ResourceServer('graphql', {
-    name: 'Cosmic Dealership GraphQL API',
-    identifier: `https://graphql.${config.dnsConfig.tld}`,
+const dealershipResourceServer = new auth0.ResourceServer('dealership', {
+    name: 'Cosmic Dealership',
+    identifier: `https://${config.dnsConfig.zone}`,
     // turns on RBAC
     enforcePolicies: true,
     // includes 'permissions' claim
@@ -88,29 +87,6 @@ const graphqlResourceServer = new auth0.ResourceServer('graphql', {
     ]
 }, { provider: config.auth0Provider })
 
-const graphqlTestApplication = new auth0.Client('graphql-test', {
-    name: 'Cosmic Dealership GraphQL Test Application',
-    appType: 'non_interactive',
-    tokenEndpointAuthMethod: 'client_secret_post',
-})
-
-const graphqlTestApplicationGrant = new auth0.ClientGrant('graphql-test', {
-    clientId: graphqlTestApplication.id,
-    audience: graphqlResourceServer.identifier.apply(identifier => identifier || ''),
-    scopes: [
-        listVehiclesScope,
-        getVehiclesScope,
-        addVehiclesScope,
-        removeVehiclesScope,
-        leaseVehiclesScope,
-        returnVehiclesScope,
-        listLeasesScope,
-        getLeasesScope,
-        createLeasesScope,
-        terminateLeasesScope
-    ].map(scope => scope.value)
-})
-
 const customerRole = new auth0.Role('cosmic-dealership-customer', {
     name: 'Cosmic Dealership Customer',
     description: 'A customer of Cosmic Dealership',
@@ -123,7 +99,7 @@ const customerRole = new auth0.Role('cosmic-dealership-customer', {
         getLeasesScope
     ].map(scope => ({
         name: scope.value,
-        resourceServerIdentifier: graphqlResourceServer.identifier
+        resourceServerIdentifier: dealershipResourceServer.identifier
     } as auth0.types.input.RolePermission))
 }, { provider: config.auth0Provider })
 
@@ -143,6 +119,6 @@ const adminRole = new auth0.Role('cosmic-dealership-admin', {
         terminateLeasesScope
     ].map(scope => ({
         name: scope.value,
-        resourceServerIdentifier: graphqlResourceServer.identifier
+        resourceServerIdentifier: dealershipResourceServer.identifier
     } as auth0.types.input.RolePermission))
 }, { provider: config.auth0Provider })

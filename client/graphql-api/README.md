@@ -41,7 +41,7 @@ Then copy the generated files and build the Proto project.
 fake build -t UpdateProtos
 ```
 
-### Generate authentication key
+### Generate test authentication key
 ```
 echo -n test | openssl sha1 -hmac key
 ```

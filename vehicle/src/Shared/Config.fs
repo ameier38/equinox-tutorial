@@ -24,14 +24,15 @@ type MongoConfig =
       Password: string
       Database: string } with
     static member Load(secretsDir:string) =
-        let getMongoSecret = Env.getSecret secretsDir "mongo"
-        let host = getMongoSecret "host" "MONGO_HOST" "localhost"
-        let port = getMongoSecret "port" "MONGO_PORT" "27017" |> int
-        let replicaSet = getMongoSecret "replica-set" "MONGO_REPLICA_SET" "rs0"
-        let user = getMongoSecret "user" "MONGO_USER" "admin"
-        let password = getMongoSecret "password" "MONGO_PASSWORD" "changeit"
+        let secretName = Env.getEnv "MONGO_SECRET" "mongo"
+        let getSecret = Env.getSecret secretsDir secretName
+        let host = Env.getEnv "MONGO_HOST" "localhost"
+        let port = Env.getEnv "MONGO_PORT" "27017" |> int
+        let replicaSet = Env.getEnv "MONGO_REPLICA_SET" "rs0"
+        let user = getSecret "user" "MONGO_USER" "admin"
+        let password = getSecret "password" "MONGO_PASSWORD" "changeit"
         let url = sprintf "mongodb://%s:%i" host port
-        let database = getMongoSecret "database" "MONGO_DATABASE" "dealership"
+        let database = Env.getEnv "MONGO_DATABASE" "dealership"
         { Url = url
           Host = host
           Port = port
@@ -45,12 +46,13 @@ type EventStoreConfig =
       User: string
       Password: string } with
     static member Load(secretsDir:string) =
-        let getEventStoreSecret = Env.getSecret secretsDir "eventstore"
-        let scheme = getEventStoreSecret "scheme" "EVENTSTORE_SCHEME" "tcp"
-        let host = getEventStoreSecret "host" "EVENTSTORE_HOST" "localhost"
-        let port = getEventStoreSecret "port" "EVENTSTORE_PORT" "1113"
-        let user = getEventStoreSecret "user" "EVENTSTORE_USER" "admin"
-        let password = getEventStoreSecret "password" "EVENTSTORE_PASSWORD" "changeit"
+        let secretName = Env.getEnv "EVENTSTORE_SECRET" "eventstore"
+        let getSecret = Env.getSecret secretsDir secretName
+        let scheme = Env.getEnv "EVENTSTORE_SCHEME" "tcp"
+        let host = Env.getEnv "EVENTSTORE_HOST" "localhost"
+        let port = Env.getEnv "EVENTSTORE_PORT" "1113"
+        let user = getSecret "user" "EVENTSTORE_USER" "admin"
+        let password = getSecret "password" "EVENTSTORE_PASSWORD" "changeit"
         let url = sprintf "%s://%s:%s" scheme host port
         { Url = url
           User = user

@@ -61,7 +61,7 @@ let main argv =
                 opts.DefaultAuthenticateScheme <- JwtBearerDefaults.AuthenticationScheme
                 opts.DefaultChallengeScheme <- JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(fun opts ->
-                let signingKey = SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.Auth0Config.Secret))
+                let signingKey = SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.Auth0Config.ClientSecret))
                 let tokenValidationParams =
                     TokenValidationParameters(
                         ValidateIssuer = true,

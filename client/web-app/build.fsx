@@ -62,11 +62,11 @@ BuildTask.create "StartAdminApp" [] {
     Npm.run "startAdminApp" id
 }
 
-BuildTask.create "BuildCustomerApp" [clean; generate] {
+BuildTask.create "BuildCustomerApp" [] {
     Npm.run "buildCustomerApp" id
 }
 
-BuildTask.create "BuildAdminApp" [clean; generate] {
+BuildTask.create "BuildAdminApp" [] {
     Npm.run "buildAdminApp" id
 }
 
