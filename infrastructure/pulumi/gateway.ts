@@ -9,12 +9,12 @@ type GatewayArgs = {
 }
 
 export class Gateway extends pulumi.ComponentResource {
-    serviceHost: pulumi.Output<string>
-    servicePort: pulumi.Output<number>
+    internalHost: pulumi.Output<string>
+    internalPort: pulumi.Output<number>
     loadBalancerHost: pulumi.Output<string>
 
     constructor(name:string, args:GatewayArgs, opts:pulumi.ComponentResourceOptions) {
-        super('infrastructure:Gateway', name, {}, opts)
+        super('cosmicdealership:Gateway', name, {}, opts)
 
         const chart = new k8s.helm.v3.Chart(name, {
             repo: 'datawire',
@@ -40,18 +40,18 @@ export class Gateway extends pulumi.ComponentResource {
             }
         }, { parent: this })
 
-        this.serviceHost =
+        this.internalHost =
             pulumi.all([chart, args.namespace.metadata.name])
             .apply(([chart, namespace]) => chart.getResourceProperty('v1/Service', namespace, `${name}-ambassador`, 'metadata'))
             .apply(meta => `${meta.name}.${meta.namespace}.svc.cluster.local`)
 
-        this.servicePort =
+        this.internalPort =
             pulumi.all([chart, args.namespace.metadata.name])
             .apply(([chart, namespace]) => chart.getResourceProperty('v1/Service', namespace, `${name}-ambassador`, 'spec'))
-            .apply(spec => spec.ports.find(port => port.name === 'http')?.port)
+            .apply(spec => spec.ports.find(port => port.name === 'http')!.port)
 
         this.loadBalancerHost =
-            pulumi.all([chart, args.namespace])
+            pulumi.all([chart, args.namespace.metadata.name])
             .apply(([chart, namespace]) =>
                 chart.getResourceProperty('v1/Service', namespace, `${name}-ambassador`, 'status')
                 .apply(status => status.loadBalancer.ingress[0].hostname))
@@ -61,4 +61,4 @@ export class Gateway extends pulumi.ComponentResource {
 export const externalGateway = new Gateway('external', {
     chartVersion: '6.5.9',
     namespace: infrastructureNamespace
-}, {provider: config.k8sProvider })
+}, { provider: config.k8sProvider })

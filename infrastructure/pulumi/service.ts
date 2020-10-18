@@ -9,14 +9,15 @@ type BackendType = 'grpc' | 'http' | 'console'
 
 type ServiceArgs = {
     context: pulumi.Input<string>
+    backendType: BackendType
     dockerfile: pulumi.Input<string>
-    target: pulumi.Input<string>
+    buildTarget: pulumi.Input<string>
+    buildArgs: Record<string,pulumi.Input<string>>
     namespace: k8s.core.v1.Namespace
     registry: Registry
     imagePullSecret: k8s.core.v1.Secret
     secrets: k8s.core.v1.Secret[]
     env: Record<string,pulumi.Input<string>>
-    backendType: BackendType
 }
 
 export class Service extends pulumi.ComponentResource {
@@ -24,14 +25,15 @@ export class Service extends pulumi.ComponentResource {
     internalPort?: pulumi.Output<number>
 
     constructor(name:string, args:ServiceArgs, opts:pulumi.ComponentResourceOptions) {
-        super('infrastructure:Service', name, {}, opts)
+        super('cosmicdealership:Service', name, {}, opts)
 
         const image = new docker.Image(name, {
             imageName: pulumi.interpolate `${args.registry.imageRegistry.server}/${name}`,
             build: {
                 context: args.context,
                 dockerfile: args.dockerfile,
-                target: args.target
+                target: args.buildTarget,
+                args: args.buildArgs
             },
             registry: args.registry.imageRegistry
         }, { parent: this })
@@ -58,7 +60,7 @@ export class Service extends pulumi.ComponentResource {
             this.internalPort =
                 pulumi.all([chart, args.namespace.metadata.name])
                 .apply(([chart, namespace]) => chart.getResourceProperty('v1/Service', namespace, name, 'spec'))
-                .apply(spec => spec.ports.find(port => port.name === args.backendType)?.port)
+                .apply(spec => spec.ports.find(port => port.name === args.backendType)!.port)
         }
 
         this.registerOutputs({

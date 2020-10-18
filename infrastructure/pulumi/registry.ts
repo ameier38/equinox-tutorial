@@ -1,20 +1,14 @@
 import * as pulumi from '@pulumi/pulumi'
 import * as digitalocean from '@pulumi/digitalocean'
 import * as docker from '@pulumi/docker'
-import * as k8s from '@pulumi/kubernetes'
 import * as config from './config'
-import { dealershipNamespace } from './k8s'
-
-type RegistryArgs = {
-    secretNamespace: k8s.core.v1.Namespace
-}
 
 export class Registry extends pulumi.ComponentResource {
     dockerCredentials: pulumi.Output<string>
     imageRegistry: pulumi.Output<docker.ImageRegistry>
 
-    constructor(name:string, args:RegistryArgs, opts:pulumi.ComponentResourceOptions) {
-        super('infrastructure:Registry', name, {}, opts)
+    constructor(name:string, opts:pulumi.ComponentResourceOptions) {
+        super('cosmicdealership:Registry', name, {}, opts)
 
         const registry = new digitalocean.ContainerRegistry(name, {}, { parent: this })
         
@@ -44,6 +38,4 @@ export class Registry extends pulumi.ComponentResource {
     }
 }
 
-export const registry = new Registry('dealership', {
-    secretNamespace: dealershipNamespace
-}, { providers: [ config.digitalOceanProvider, config.k8sProvider ] })
+export const registry = new Registry('dealership', { provider: config.digitalOceanProvider })

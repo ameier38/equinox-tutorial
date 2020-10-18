@@ -30,8 +30,8 @@ type Auth0Config =
         let getSecret = Shared.Env.getSecret secretsDir secretName
         let audience = Shared.Env.getEnv "AUTH0_AUDIENCE" "https://cosmicdealership.com"
         let issuer = Shared.Env.getEnv "AUTH0_ISSUER" "https://ameier38.auth0.com/"
-        // see README to generate test authentication key
-        let clientSecret = getSecret "secret" "AUTH0_CLIENT_SECRET" "671f54ce0c540f78ffe1e26dcf9c2a047aea4fda"
+        // see README to generate test client secret
+        let clientSecret = getSecret "client-secret" "AUTH0_CLIENT_SECRET" "671f54ce0c540f78ffe1e26dcf9c2a047aea4fda"
         { Audience = audience
           Issuer = issuer
           ClientSecret = clientSecret }

@@ -1,13 +1,33 @@
 import * as k8s from '@pulumi/kubernetes'
 import * as pulumi from '@pulumi/pulumi'
 import * as config from './config'
-import { infrastructureNamespace, dealershipNamespace } from './k8s'
+import { infrastructureNamespace } from './k8s'
+
+function generateInitdbScript(users:config.MongoUser[]) {
+    const scripts = users.map(user => {
+        const permissions = user.permissions.map(permission => {
+            return `{ role: "${permission.role}", db: "${permission.database}" }`
+        }).join(',')
+        return `
+db.createUser(
+  {
+    user: "${user.name}",
+    pwd: "${user.password}",
+    roles: [${permissions}]
+  }
+)
+`
+    }).join('\n')
+    return scripts
+}
 
 type MongoArgs = {
     chartVersion: pulumi.Input<string>
     namespace: k8s.core.v1.Namespace
-    user: pulumi.Input<string>
-    password: pulumi.Input<string>
+    adminUser: pulumi.Input<string>
+    adminPassword: pulumi.Input<string>
+    database: pulumi.Input<string>
+    users: config.MongoUser[]
 }
 
 export class Mongo extends pulumi.ComponentResource {
@@ -15,10 +35,9 @@ export class Mongo extends pulumi.ComponentResource {
     internalPort: pulumi.Output<number>
 
     constructor(name:string, args:MongoArgs, opts:pulumi.ComponentResourceOptions) {
-        super('infrastructure:Mongo', name, {}, opts)
+        super('cosmicdealership:Mongo', name, {}, opts)
 
         const chart = new k8s.helm.v3.Chart(name, {
-            repo: 'bitnami',
             chart: 'mongodb',
             fetchOpts: {
                 repo: 'https://charts.bitnami.com/bitnami'
@@ -28,9 +47,13 @@ export class Mongo extends pulumi.ComponentResource {
                 architecture: 'replicaset',
                 auth: {
                     enabled: true,
-                    rootPassword: args.password,
-                    username: args.user,
-                    password: args.password
+                    rootPassword: args.adminPassword,
+                    username: args.adminUser,
+                    password: args.adminPassword,
+                    database: args.database
+                },
+                initdbScripts: {
+                    'createUsers.js': generateInitdbScript(args.users)
                 }
             }
         }, { parent: this })
@@ -43,7 +66,7 @@ export class Mongo extends pulumi.ComponentResource {
         this.internalPort =
             pulumi.all([chart, args.namespace.metadata.name])
             .apply(([chart, namespace]) => chart.getResourceProperty('v1/Service', namespace, `${name}-mongodb`, 'spec'))
-            .apply(spec => spec.ports.find(port => port.name === 'mongodb')?.port)
+            .apply(spec => spec.ports.find(port => port.name === 'mongodb')!.port)
 
         this.registerOutputs({
             internalHost: this.internalHost,
@@ -55,6 +78,8 @@ export class Mongo extends pulumi.ComponentResource {
 export const mongo = new Mongo('dealership', {
     chartVersion: '9.2.4',
     namespace: infrastructureNamespace,
-    user: config.mongoConfig.user,
-    password: config.mongoConfig.password
+    adminUser: config.mongoConfig.adminUser,
+    adminPassword: config.mongoConfig.adminPassword,
+    database: config.mongoConfig.database,
+    users: config.mongoConfig.users
 }, { provider: config.k8sProvider })

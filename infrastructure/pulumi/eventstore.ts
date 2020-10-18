@@ -1,15 +1,66 @@
 import * as k8s from '@pulumi/kubernetes'
 import * as pulumi from '@pulumi/pulumi'
+import { v4 as uuidv4 } from 'uuid'
 import * as config from './config'
-import { Client } from './client'
-import { dealershipNamespace } from './k8s'
-import { externalGateway } from './gateway'
-import { zone } from './cloudflare'
+import { infrastructureNamespace } from './k8s'
+
+function generateInitdbScript(endpoint:string, adminPassword:string, users:config.EventStoreUser[]) {
+    const adminsGroup = '$admins'
+    const systemUsers = ['$admin', '$ops']
+    const readUsers = users.filter(user => ['read', 'readWrite'].includes(user.role)).map(user => user.name)
+    const writeUsers = users.filter(user => ['readWrite'].includes(user.role)).map(user => user.name)
+
+    const createUsers = users.map(user =>
+        JSON.stringify({
+            loginName: user.name,
+            password: user.password
+        })
+    ).map(data => 
+        `curl -f ${endpoint}/users/ -u admin:${adminPassword} -d '${data}' -H 'content-type:application/json'`
+    ).join('\n')
+
+    const defaultAcl = JSON.stringify([{
+        eventId: uuidv4(),
+        eventType: 'update-default-acl',
+        data: {
+            '$userStreamAcl': {
+                '$r': [...systemUsers, ...readUsers],
+                '$w': [...systemUsers, ...writeUsers],
+                '$d': systemUsers,
+                '$mr': systemUsers,
+                '$mw': systemUsers,
+            },
+            '$systemStreamAcl': {
+                '$r': adminsGroup,
+                '$w': adminsGroup,
+                '$d': adminsGroup,
+                '$mr': adminsGroup,
+                '$mw': adminsGroup
+            }
+        }
+    }])
+    return `#!/bin/bash
+set -e
+
+echo 'creating users...'
+${createUsers}
+echo 'done creating users'
+echo 'updating default acl...'
+curl \
+    -f \
+    -u admin:${adminPassword} \
+    -H 'content-type:application/vnd.eventstore.events+json' \
+    -d '${defaultAcl}' ${endpoint}/streams/%24settings
+echo 'done updating default acl'
+echo 'initdb completed'
+`
+}
 
 type EventStoreArgs = {
     chartVersion: pulumi.Input<string>
     namespace: k8s.core.v1.Namespace
-    password: pulumi.Input<string>
+    adminPassword: pulumi.Input<string>
+    users: config.EventStoreUser[]
 }
 
 export class EventStore extends pulumi.ComponentResource {
@@ -17,10 +68,9 @@ export class EventStore extends pulumi.ComponentResource {
     internalPort: pulumi.Output<number>
 
     constructor(name:string, args:EventStoreArgs, opts:pulumi.ComponentResourceOptions) {
-        super('infrastructure:EventStore', name, {}, opts)
+        super('cosmicdealership:EventStore', name, {}, opts)
 
         const chart = new k8s.helm.v3.Chart(name, {
-            repo: 'eventstore',
             chart: 'eventstore',
             version: args.chartVersion,
             fetchOpts: {
@@ -33,7 +83,7 @@ export class EventStore extends pulumi.ComponentResource {
                     enabled: true
                 },
                 admin: {
-                    password: args.password
+                    password: args.adminPassword
                 },
                 resources: {
                     requests: { cpu: '500m', memory: '500Mi' },
@@ -50,27 +100,59 @@ export class EventStore extends pulumi.ComponentResource {
         this.internalPort =
             pulumi.all([chart, args.namespace.metadata.name])
             .apply(([chart, namespace]) => chart.getResourceProperty('v1/Service', namespace, `${name}-eventstore`, 'spec'))
-            .apply(spec => spec.ports.find(port => port.name === 'ext-http-port')?.port)
+            .apply(spec => spec.ports.find(port => port.name === 'ext-http-port')!.port)
+
+
+        const endpoint = pulumi.interpolate `http://${this.internalHost}:${this.internalPort}`
+
+        const initdbScript = pulumi
+            .all([endpoint, args.adminPassword])
+            .apply(([endpoint, adminPassword]) =>
+                generateInitdbScript(endpoint, adminPassword, args.users))
+
+        const initdbConfigMap = new k8s.core.v1.ConfigMap(`${name}-initdb`, {
+            metadata: { namespace: args.namespace.metadata.name },
+            data: {
+                'initdb.sh': initdbScript
+            }
+        }, { parent: this })
+
+        new k8s.batch.v1.Job(`${name}-initdb`, {
+            metadata: { namespace: args.namespace.metadata.name },
+            spec: {
+                backoffLimit: 2,
+                ttlSecondsAfterFinished: 100,
+                template: {
+                    spec: {
+                        restartPolicy: 'Never',
+                        containers: [{
+                            name: 'initdb',
+                            image: 'tutum/curl',
+                            command: ['/usr/local/scripts/initdb.sh'],
+                            volumeMounts: [{
+                                name: 'initdb',
+                                mountPath: '/usr/local/scripts',
+                            }]
+                        }],
+                        volumes: [{
+                            name: 'initdb',
+                            configMap: { name: initdbConfigMap.metadata.name, defaultMode: 484 },
+                        }]
+                    }
+                }
+            }
+        }, { parent: this })
 
         this.registerOutputs({
             internalHost: this.internalHost,
-            internalPort: this.internalPort
+            internalPort: this.internalPort,
         })
     }
 }
 
 export const eventstore = new EventStore('dealership', {
     chartVersion: '0.2.5',
-    namespace: dealershipNamespace,
-    password: config.eventstoreConfig.password
+    namespace: infrastructureNamespace,
+    adminPassword: config.eventstoreConfig.adminPassword,
+    users: [config.vehicleProcessorEventStoreUser, config.vehicleReactorEventStoreUser]
 }, { provider: config.k8sProvider })
-
-export const eventstoreClient = new Client('eventstore', {
-    namespace: dealershipNamespace,
-    gateway: externalGateway,
-    zone: zone,
-    subdomain: 'eventstore',
-    authUrl: config.auth0Config.domain,
-    serviceHost: eventstore.internalHost,
-    servicePort: eventstore.internalPort
-}, { providers: [ config.k8sProvider, config.cloudflareProvider, config.auth0Provider ] })

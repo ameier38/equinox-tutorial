@@ -1,10 +1,7 @@
 import * as k8s from '@pulumi/kubernetes'
 import * as pulumi from '@pulumi/pulumi'
 import * as config from './config'
-import { Client } from './client'
-import { dealershipNamespace } from './k8s'
-import { externalGateway } from './gateway'
-import { zone } from './cloudflare'
+import { monitoringNamespace } from './k8s'
 
 type SeqArgs = {
     chartVersion: pulumi.Input<string>
@@ -17,10 +14,9 @@ export class Seq extends pulumi.ComponentResource {
     internalUiPort: pulumi.Output<number>
 
     constructor(name:string, args:SeqArgs, opts:pulumi.ComponentResourceOptions) {
-        super('infrastructure:Seq', name, {}, opts)
+        super('cosmicdealership:Seq', name, {}, opts)
 
         const chart = new k8s.helm.v3.Chart(name, {
-            repo: 'stable',
             chart: 'seq',
             version: args.chartVersion,
             fetchOpts: {
@@ -37,12 +33,12 @@ export class Seq extends pulumi.ComponentResource {
         this.internalIngestionPort =
             pulumi.all([chart, args.namespace.metadata.name])
             .apply(([chart, namespace]) => chart.getResourceProperty('v1/Service', namespace, `${name}-seq`, 'spec'))
-            .apply(spec => spec.ports.find(port => port.name === 'ingestion')?.port)
+            .apply(spec => spec.ports.find(port => port.name === 'ingestion')!.port)
 
         this.internalUiPort =
             pulumi.all([chart, args.namespace.metadata.name])
             .apply(([chart, namespace]) => chart.getResourceProperty('v1/Service', namespace, `${name}-seq`, 'spec'))
-            .apply(spec => spec.ports.find(port => port.name === 'ui')?.port)
+            .apply(spec => spec.ports.find(port => port.name === 'ui')!.port)
 
         this.registerOutputs({
             internalHost: this.internalHost,
@@ -52,17 +48,7 @@ export class Seq extends pulumi.ComponentResource {
     }
 }
 
-export const seq = new Seq('dealership', {
-    chartVersion: '2.3.0',
-    namespace: dealershipNamespace
-}, { provider: config.k8sProvider })
-
-export const seqClient = new Client('seq', {
-    namespace: dealershipNamespace,
-    gateway: externalGateway,
-    zone: zone,
-    subdomain: 'seq',
-    authUrl: config.auth0Config.domain,
-    serviceHost: seq.internalHost,
-    servicePort: seq.internalUiPort
-}, { providers: [ config.k8sProvider, config.cloudflareProvider, config.auth0Provider ] })
+// export const seq = new Seq('dealership', {
+//     chartVersion: '2.3.0',
+//     namespace: monitoringNamespace,
+// }, { provider: config.k8sProvider })
