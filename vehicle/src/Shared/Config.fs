@@ -20,8 +20,8 @@ type MongoConfig =
       Host: string
       Port: int
       ReplicaSet: string
-      User: string
-      Password: string
+      User: Secret
+      Password: Secret
       Database: string } with
     static member Load(secretsDir:string) =
         let secretName = Env.getEnv "MONGO_SECRET" "mongo"
@@ -31,8 +31,12 @@ type MongoConfig =
         let replicaSet = Env.getEnv "MONGO_REPLICA_SET" "rs0"
         let user = getSecret "user" "MONGO_USER" "admin"
         let password = getSecret "password" "MONGO_PASSWORD" "changeit"
-        let url = sprintf "mongodb://%s:%i" host port
         let database = Env.getEnv "MONGO_DATABASE" "dealership"
+        let addresses =
+            host.Split(",")
+            |> Array.map (fun host -> sprintf "%s:%i" host port)
+            |> String.concat ","
+        let url = sprintf "mongodb://%s/?replicaSet=%s" addresses replicaSet
         { Url = url
           Host = host
           Port = port
@@ -43,8 +47,8 @@ type MongoConfig =
 
 type EventStoreConfig =
     { Url: string
-      User: string
-      Password: string } with
+      User: Secret
+      Password: Secret } with
     static member Load(secretsDir:string) =
         let secretName = Env.getEnv "EVENTSTORE_SECRET" "eventstore"
         let getSecret = Env.getSecret secretsDir secretName

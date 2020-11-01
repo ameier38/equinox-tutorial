@@ -1,8 +1,15 @@
 ﻿namespace Shared
 
 open FSharp.UMX
+open Serilog
 open System
 open System.IO
+
+type Secret = private Secret of string
+
+module Secret =
+    let fromString (s:string) = Secret s
+    let value (Secret s) = s
 
 module Guid =
     let inline toStringN (x: Guid<'t>) =
@@ -41,11 +48,16 @@ module Url =
 module Env = 
     let getEnv (key:string) (defaultValue:string) =
         match Environment.GetEnvironmentVariable(key) with
-        | value when String.IsNullOrEmpty(value) -> defaultValue
+        | value when String.IsNullOrEmpty(value) ->
+            Log.Warning("Environment variable '{Env}' does not exist; using default value '{DefaultValue}'", key, defaultValue)
+            defaultValue
         | value -> value
     let getSecret (secretsDir:string) (secretName:string) (secretKey:string) (defaultEnv:string) (defaultValue:string) =
         let secretPath = Path.Combine(secretsDir, secretName, secretKey)
         if File.Exists(secretPath) then
             File.ReadAllText(secretPath).Trim()
+            |> Secret.fromString
         else
+            Log.Warning("Secret path '{SecretPath}' does not exist; using environment variable '{Env}'", secretPath, defaultEnv)
             getEnv defaultEnv defaultValue
+            |> Secret.fromString

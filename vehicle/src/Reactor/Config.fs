@@ -4,14 +4,10 @@ open Shared
 
 type Config =
     { AppName: string
-      Debug: bool
-      SeqConfig: SeqConfig
       MongoConfig: MongoConfig
       EventStoreConfig: EventStoreConfig } with
-    static member Load() =
+    static member Load(appName:string) =
         let secretsDir = Env.getEnv "SECRETS_DIR" "/var/secrets"
-        { AppName = "Vehicle Reactor"
-          Debug = (Env.getEnv "DEBUG" "true").ToLower() = "true"
-          SeqConfig = SeqConfig.Load()
+        { AppName = appName
           MongoConfig = MongoConfig.Load(secretsDir)
           EventStoreConfig = EventStoreConfig.Load(secretsDir) }

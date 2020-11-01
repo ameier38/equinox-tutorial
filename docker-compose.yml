@@ -6,6 +6,8 @@ services:
       ACCEPT_EULA: "Y"
     ports:
       - "8081:80"
+    networks:
+      - cosmicdealership
   minio:
     image: minio/minio
     command: ["server", "/data"]
@@ -14,28 +16,35 @@ services:
       MINIO_SECRET_KEY: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
     ports: 
       - "9000:9000"
+    networks:
+      - cosmicdealership
   eventstore:
-    image: eventstore/eventstore:release-5.0.8
+    image: eventstore/eventstore:release-5.0.9
     ports:
       - "2113:2113"
       - "1113:1113"
     environment:
       EVENTSTORE_START_STANDARD_PROJECTIONS: "True"
       EVENTSTORE_RUN_PROJECTIONS: All
+      EVENTSTORE_GOSSIP_ON_SINGLE_NODE: "True"
+      EVENTSTORE_CLUSTER_DNS: eventstore
+      EVENTSTORE_EXT_IP_ADVERTISE_AS: 10.5.0.5
+    networks:
+      cosmicdealership:
+        ipv4_address: 10.5.0.5
   mongo:
-    image: mongo:4.2
-    command: ["mongod", "--replSet", "rs0"]
+    image: bitnami/mongodb:4.4
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: changeit
+      MONGODB_ROOT_PASSWORD: changeit
+      MONGODB_REPLICA_SET_MODE: primary
+      MONGODB_REPLICA_SET_NAME: rs0
+      MONGODB_REPLICA_SET_KEY: changeit
     ports: 
       - "27017:27017"
-    healthcheck:
-      test: test $$(echo "rs.initiate().ok || rs.status().ok" | mongo -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --quiet) -eq 1
-      interval: 10s
-      start_period: 30s
+    networks:
+      - cosmicdealership
   upload-api:
-    build: ./client/upload-api
+    build: ./upload-api
     ports: 
       - "8082:8080"
     environment: 
@@ -51,60 +60,67 @@ services:
     depends_on: 
       - seq
       - minio
+    networks:
+      - cosmicdealership
   vehicle-processor:
     build:
-      context: ./vehicle
+      context: vehicle
       dockerfile: deploy/processor.Dockerfile
-      target: runner
     ports:
       - "50051:50051"
     environment:
       DEBUG: "true"
       SERVER_PORT: 50051
+      EVENTSTORE_SCHEME: discover
       EVENTSTORE_HOST: eventstore
+      EVENTSTORE_PORT: 2113
       SEQ_HOST: seq
     depends_on:
       - seq
       - eventstore
+    networks:
+      - cosmicdealership
   vehicle-reactor:
     build:
-      context: ./vehicle
+      context: vehicle
       dockerfile: deploy/reactor.Dockerfile
-      target: runner
     environment: 
       DEBUG: "true"
       EVENTSTORE_HOST: eventstore
       MONGO_HOST: mongo
+      MONGO_USER: root
+      MONGO_PASSWORD: changeit
       MONGO_REPLICA_SET: rs0
       SEQ_HOST: seq
     depends_on: 
       - seq
       - eventstore
       - mongo
-      - vehicle-processor
+    networks:
+      - cosmicdealership
   vehicle-reader:
     build:
-      context: ./vehicle
+      context: vehicle
       dockerfile: deploy/reader.Dockerfile
-      target: runner
     ports:
       - "50052:50052"
     environment: 
       DEBUG: "true"
       SERVER_PORT: 50052
       MONGO_HOST: mongo
+      MONGO_USER: root
+      MONGO_PASSWORD: changeit
       MONGO_REPLICA_SET: rs0
       SEQ_HOST: seq
     depends_on: 
       - seq
       - eventstore
       - mongo
-      - vehicle-processor
-      - vehicle-reactor
+    networks:
+      - cosmicdealership
   graphql-api:
     build:
-      context: ./client/graphql-api
-      target: runner
+      context: graphql-api
     ports:
       - "4000:4000"
     environment:
@@ -117,18 +133,30 @@ services:
       SEQ_HOST: seq
     depends_on: 
       - vehicle-processor
+      - vehicle-reactor
       - vehicle-reader
+    networks:
+      - cosmicdealership
   web-app:
     build:
-      context: ./client/web-app
+      context: web-app
+      dockerfile: deploy/customer.Dockerfile
     environment:
-      GRAPHQL_API_HOST: localhost
-      GRAPHQL_API_PORT: 4000
+      GRAPHQL_HOST: localhost
+      GRAPHQL_PORT: 4000
     volumes:
-      - ./fable-web-app:/app
+      - ./web-app:/app
       - /app/node_modules
     ports:
-      - "3000:3000"
+      - "8080:8080"
       - "35729:35729"
     depends_on:
       - graphql-api
+
+networks:
+  cosmicdealership:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.5.0.0/16
+          gateway: 10.5.0.1

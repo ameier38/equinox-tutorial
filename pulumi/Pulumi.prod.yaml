@@ -1,0 +1,36 @@
+config:
+  auth0:adminEmail:
+    secure: AAABAEYv/sklizHOmfQYMQib0FhkZXcthBSsiTH1FgmbixFMuv8S3cQKNIAltomWV38=
+  auth0:adminPassword:
+    secure: AAABACq3gkzo5x4U0KDAHAoS6B9X3xpxDNyx9IarvuPAA4agHHDu2j2NEkiUjSwvhvqaXA+h2W0=
+  auth0:clientId:
+    secure: AAABAAesTXUn3azATBo1Q5TwDEclZUOROhsF+jO3ZzAFeGGo+7zGQK4WmqIoYiVg3VVCLe7nPc26ij4J+Sy31g==
+  auth0:clientSecret:
+    secure: AAABAESlr8cAqRoaq+pWGzdl1tX3d8BZOTZsUKhB2WpJFnDComPGkT9gUn++0UQc2cfgIWVkC5DZVLJ4fSsHbYTjnquGKhg7fiuQB44FI/6kR8gJzm/PudL+WnL9Zn/e
+  auth0:domain: cosmicdealership.us.auth0.com
+  cloudflare:apiKey:
+    secure: AAABAKTyQAo/k9d4H4GSukENFeCHyJCetcMkFMgj0UmKRbuUVj4G/uRG0BR3zbrme1adxCAwziMEYrL8eiU3VPVmCH+z
+  cloudflare:email:
+    secure: AAABACKkoA/SmrlDkdSkqO9OoJobsMI5esCFggUd1z7OtHmj0abYmDBY0VgIgoRC1xA=
+  digitalocean:spacesAccessId:
+    secure: AAABAN5JlYrC/bXAbUuwtcbOc8y3oZSlB0B1XgqOVGBdRbw1X8HyzhU3o6r1RLvzZ0uXMg==
+  digitalocean:spacesSecretKey:
+    secure: AAABAA3B+RkVv4Dt7xqWOYlmhBUW5Ryyucq5FFWwU5fEDiOh2LklFJ2bqDlFAlMY2AdB23rupZ6nnugWB1FBjlThi+m84I1ofaSw
+  digitalocean:token:
+    secure: AAABAL1990khV7eZEUvIEDSMhqK7OM3ZTbAsmcp+i76eJgExtF6qf+zGV2CDkoJvtfj5jtgU45SwA2Z7+JER5u8JDSeMN2erFd1AysXNv/Cfl3pmpa2v9AIn6JGmqva2
+  dns:zone: cosmicdealership.com
+  eventstore:adminPassword:
+    secure: AAABAJNc3zw+wgHyN6qT6YbDx7i6qS655z9c5i8eib4NKrepR1jtBg==
+  eventstore:readerPassword:
+    secure: AAABAMifMuqhGPFTseIHapajY9mq17GBJZDL0OJMnzfb3oMGnz7y7gl2leuhQGwEU99eg0v37WA=
+  eventstore:writerPassword:
+    secure: AAABAH5ucWrqSGRwQ1IT3+/m1A0m501wSiLIbTMFmiDUSd1MtJtfFPbeZrx899mnnwvjOMsuGyQ=
+  mongo:readerPassword:
+    secure: AAABAPpkb+e1av67h8mj16L5mliTilP6s4ZA8GydOfLmLPtxAWTgpaRdkweeRFE6ktE21x5FUAA=
+  mongo:replicaSetKey:
+    secure: AAABAFfyv6f46AbjXlvVFVWZ7iRvtf+6drXpLCxyPxEegVzFgkHXOlfd
+  mongo:replicaSetName: rs0
+  mongo:rootPassword:
+    secure: AAABANHpmHyL/k0sHhRH1GH1NYf+YpkViC6RtZBSgfSBuMGmrp8FaA==
+  mongo:writerPassword:
+    secure: AAABAK+qnfaYkG+4svb0J6av77umq35x+8hRt7hSsDslljNZYAz49FmSdQxL3wFsGY+2FbTVeds=

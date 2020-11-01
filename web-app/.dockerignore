@@ -1,0 +1,7 @@
+.fable
+.fake
+.ionide
+.paket
+paket-files
+node_modules
+.env

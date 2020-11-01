@@ -1,4 +1,5 @@
 FSharp.Core
 FSharp.UMX
 MongoDB.Driver
+Serilog
 TypeShape

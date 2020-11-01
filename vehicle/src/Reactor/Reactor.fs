@@ -15,12 +15,12 @@ module VehicleStatus =
     let leased = "Leased"
     let removed = "Removed"
 
-type Reactor(documentStore:Store.DocumentStore, eventStore:Store.EventStore) =
+type Reactor(mongo:Store.Mongo, eventStore:Store.EventStore) =
     let vehiclesCollectionName = "vehicles"
     // ref: https://eventstore.com/docs/projections/system-projections/index.html?tabs=tabid-5#by-category
     let stream = UMX.tag<stream> "$ce-Vehicle"
     let codec = FsCodec.NewtonsoftJson.Codec.Create<VehicleEvent>()
-    let vehicleCollection = documentStore.GetCollection(vehiclesCollectionName)
+    let vehicleCollection = mongo.GetCollection(vehiclesCollectionName)
     let log = Log.ForContext<Reactor>()
 
     let addVehicle (session:IClientSessionHandle, timestamp:DateTimeOffset, vehicleId:VehicleId, vehicle:Vehicle) =
@@ -167,15 +167,15 @@ type Reactor(documentStore:Store.DocumentStore, eventStore:Store.EventStore) =
                             let newStatus = VehicleStatus.available
                             do! setVehicleStatus (session, timestamp, payload.VehicleId, newStatus)
                     | None -> ()
-                    do! documentStore.UpdateCheckpointAsync(session, vehiclesCollectionName, event.Index)
+                    do! mongo.UpdateCheckpointAsync(session, vehiclesCollectionName, event.Index)
                 }
-            documentStore.TransactAsync(work)
+            mongo.TransactAsync(work)
 
     let subscription = Subscription(vehiclesCollectionName, stream, handleEvent, eventStore)
 
     member _.StartAsync(cancellationToken:CancellationToken) =
         async {
-            let! rawCheckpoint = documentStore.GetCheckpointAsync(vehiclesCollectionName)
+            let! rawCheckpoint = mongo.GetCheckpointAsync(vehiclesCollectionName)
             let checkpoint = 
                 match rawCheckpoint with
                 | Some checkpoint -> Checkpoint.StreamPosition checkpoint

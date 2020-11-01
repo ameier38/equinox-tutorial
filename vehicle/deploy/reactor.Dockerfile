@@ -21,7 +21,7 @@ ENV DOTNET_CLI_TELEMETRY_OPTOUT 1
 
 # install dotnet tools
 RUN dotnet tool install -g fake-cli && \
-    dotnet tool install -g paket
+    dotnet tool install -g paket --version 5.250.0
 
 # add tools to PATH
 ENV PATH="$PATH:/root/.dotnet/tools"

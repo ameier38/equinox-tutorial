@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Config.fs" />
+    <Compile Include="Infrastructure.fs" />
+    <Compile Include="Common/Types.fs" />
+    <Compile Include="Common/Schema.fs" />
+    <Compile Include="Vehicle/Types.fs" />
+    <Compile Include="Vehicle/Client.fs" />
+    <Compile Include="Vehicle/Schema.fs" />
+    <Compile Include="Root.fs" />
+    <Compile Include="HttpHandlers.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Proto\Proto.csproj" />
+    <ProjectReference Include="..\Shared\Shared.fsproj" />
+  </ItemGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
+</Project>
