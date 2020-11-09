@@ -1,10 +1,10 @@
-version 5.250.0
+version 5.251.0
 
 source https://www.nuget.org/api/v2
 storage: none
 
 nuget Expecto
-nuget FSharp.Core 4.7.0
+nuget FSharp.Core 4.7.2
 nuget FSharp.Data.GraphQL.Server
 nuget FSharp.Data.GraphQL.Client
 nuget FSharp.UMX
@@ -25,8 +25,9 @@ nuget System.IdentityModel.Tokens.Jwt
 group Fake
     source https://www.nuget.org/api/v2
     storage: none
-    nuget FSharp.Core 4.7.0
+    nuget FSharp.Core 4.7.2
     nuget BlackFox.Fake.BuildTask
     nuget Fake.DotNet.Cli
     nuget Fake.IO.FileSystem
     nuget Fake.Core.Target 
+    nuget NuGet.Packaging 5.6.0

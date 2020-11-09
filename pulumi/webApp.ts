@@ -12,6 +12,7 @@ import { zone } from './zone'
 type WebAppArgs = {
     zoneId: pulumi.Input<string>
     authDomain: pulumi.Input<string>
+    acmeEmail: pulumi.Input<string>
     clientId: pulumi.Input<string>
     audience: pulumi.Input<string> 
     namespace: pulumi.Input<string>
@@ -34,7 +35,7 @@ class WebApp extends pulumi.ComponentResource {
             zoneId: args.zoneId,
             // NB: root
             name: '@',
-            type: 'CNAME',
+            type: 'A',
             value: args.loadBalancerAddress
         }, { parent: this })
 
@@ -52,7 +53,7 @@ class WebApp extends pulumi.ComponentResource {
             imageName: pulumi.interpolate `${args.registryEndpoint}/cosmicdealership/${name}-web-app`,
             build: {
                 context: path.join(config.root, 'web-app'),
-                dockerfile: path.join(config.root, 'web-app', 'docker', 'customer.Dockerfile'),
+                dockerfile: path.join(config.root, 'web-app', 'deploy', 'customer.Dockerfile'),
                 target: 'runner',
                 args: {
                     APP_SCHEME: 'https',
@@ -64,7 +65,8 @@ class WebApp extends pulumi.ComponentResource {
                     GRAPHQL_API_SCHEME: 'https',
                     GRAPHQL_API_HOST: args.graphqlApiHost,
                     GRAPHQL_API_PORT: '80'
-                }
+                },
+                env: { DOCKER_BUILDKIT: '1' }
             },
             registry: args.imageRegistry
         }, { parent: this })
@@ -78,10 +80,12 @@ class WebApp extends pulumi.ComponentResource {
             },
             namespace: args.namespace,
             values: {
+                nameOverride: chartName,
                 fullnameOverride: chartName,
                 image: image.imageName,
                 imagePullSecrets: [registrySecret.metadata.name],
-                backendType: 'http'
+                backendType: 'http',
+                containerPort: 3000
             }
         }, { parent: this })
 
@@ -95,15 +99,28 @@ class WebApp extends pulumi.ComponentResource {
             .apply(([chart, namespace]) => chart.getResourceProperty('v1/Service', namespace, chartName, 'spec'))
             .apply(spec => spec.ports.find(port => port.name === 'http')!.port)
 
+        // NB: generates certificate
+        new k8s.apiextensions.CustomResource(`${name}-web-app`, {
+            apiVersion: 'getambassador.io/v2',
+            kind: 'Host',
+            metadata: { namespace: args.namespace },
+            spec: {
+                hostname: this.host,
+                acmeProvider: {
+                    email: args.acmeEmail
+                }
+            }
+        }, { parent: this })
+
         // NB: specifies how to direct incoming requests
-        new k8s.apiextensions.CustomResource(name, {
+        new k8s.apiextensions.CustomResource(`${name}-web-app`, {
             apiVersion: 'getambassador.io/v2',
             kind: 'Mapping',
             metadata: { namespace: args.namespace },
             spec: {
                 prefix: '/',
                 host: this.host,
-                service: pulumi.interpolate `${this.internalPort}:${this.internalPort}`
+                service: pulumi.interpolate `${this.internalHost}:${this.internalPort}`
             }
         }, { parent: this })
 
@@ -121,6 +138,7 @@ class WebApp extends pulumi.ComponentResource {
 //     imageRegistry: config.imageRegistry,
 //     dockerCredentials: config.dockerCredentials,
 //     authDomain: config.auth0Config.domain,
+//     acmeEmail: config.acmeEmail,
 //     clientId: identityProvider.webAppClientId,
 //     audience: config.audience,
 //     zoneId: zone.id,

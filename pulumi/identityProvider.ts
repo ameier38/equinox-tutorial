@@ -1,7 +1,7 @@
 import * as auth0 from '@pulumi/auth0'
 import * as pulumi from '@pulumi/pulumi'
 import * as config from './config'
-import { iconUrl } from './bucket'
+// import { iconUrl } from './bucket'
 
 type Scope = {
     value: string
@@ -50,9 +50,10 @@ export class IdentityProvider extends pulumi.ComponentResource {
 
         // NB: used by web app to get token for user
         const webAppClient = new auth0.Client(`${name}-web-app`, {
-            name: `${name}-web-app`,
+            name: args.zone,
             logoUri: args.iconUrl,
             appType: 'spa',
+            tokenEndpointAuthMethod: 'none',
             callbacks: [
                 'http://localhost:3000',
                 pulumi.interpolate `https://${args.zone}`,
@@ -61,6 +62,14 @@ export class IdentityProvider extends pulumi.ComponentResource {
                 'http://localhost:3000',
                 pulumi.interpolate `https://${args.zone}`,
             ],
+            webOrigins: [
+                'http://localhost:3000',
+                pulumi.interpolate `https://${args.zone}`
+            ],
+            grantTypes: ['authorization_code'],
+            jwtConfiguration: {
+                alg: 'RS256'
+            }
         }, { provider: config.auth0Provider })
 
         this.webAppClientId = webAppClient.clientId
@@ -74,14 +83,17 @@ export class IdentityProvider extends pulumi.ComponentResource {
                 // NB: pulumi client id, required to create users
                 args.clientId,
                 webAppClient.clientId
-            ]
-        }, { parent: this })
+            ],
+            options: {
+                disableSignup: true
+            }
+        }, { parent: this, deleteBeforeReplace: true })
 
-        new auth0.ClientGrant(`${name}-gateway`, {
+        new auth0.ClientGrant(`${name}-web-app`, {
             clientId: webAppClient.clientId,
             audience: args.audience,
             scopes: ['openid', 'email', 'profile'],
-        }, { parent: this })
+        }, { parent: this, deleteBeforeReplace: true })
 
         new auth0.Rule(`${name}-set-roles`, {
             name: 'Set Roles',
@@ -93,6 +105,7 @@ export class IdentityProvider extends pulumi.ComponentResource {
         // NB: used to specify exposed scopes
         // ref: https://auth0.com/docs/authorization/apis
         const resourceServer = new auth0.ResourceServer(name, {
+            name: args.zone,
             identifier: args.audience,
             // NB: turns on RBAC
             enforcePolicies: true,
@@ -101,23 +114,23 @@ export class IdentityProvider extends pulumi.ComponentResource {
             scopes: [...args.customerScopes, ...args.adminScopes]
         }, { parent: this })
         
-        new auth0.Role('cosmic-dealership-customer', {
-            name: 'Cosmic Dealership Customer',
+        const customerRole = new auth0.Role('customer', {
+            name: 'customer',
             description: 'A customer of Cosmic Dealership',
             permissions: args.customerScopes.map(scope => ({
                 name: scope.value,
                 resourceServerIdentifier: resourceServer.identifier
             } as auth0.types.input.RolePermission))
-        }, { parent: this })
+        }, { parent: this, deleteBeforeReplace: true })
 
-        const adminRole = new auth0.Role('cosmic-dealership-admin', {
-            name: 'Cosmic Dealership Admin',
+        const adminRole = new auth0.Role('admin', {
+            name: 'admin',
             description: 'An administrator of Cosmic Dealership',
             permissions: args.adminScopes.map(scope => ({
                 name: scope.value,
                 resourceServerIdentifier: resourceServer.identifier
             } as auth0.types.input.RolePermission))
-        }, { parent: this })
+        }, { parent: this, deleteBeforeReplace: true })
 
         new auth0.User('admin', {
             name: 'admin',
@@ -126,7 +139,16 @@ export class IdentityProvider extends pulumi.ComponentResource {
             connectionName: connection.name,
             password: config.auth0Config.adminPassword,
             roles: [adminRole.id]
-        }, { provider: config.auth0Provider })
+        }, { parent: this, deleteBeforeReplace: true })
+
+        new auth0.User('test', {
+            name: 'test',
+            email: 'test@cosmicdealership.com',
+            emailVerified: true,
+            connectionName: connection.name,
+            password: '?&x2Z@^%gLn}-A#nK4EBLu@j',
+            roles: [customerRole.id]
+        }, { parent: this })
 
         this.registerOutputs({
             webAppClientId: this.webAppClientId,
@@ -146,7 +168,7 @@ export const identityProvider = new IdentityProvider(config.env, {
     zone: config.zone,
     audience: config.audience,
     clientId: config.auth0Config.clientId,
-    iconUrl: iconUrl,
+    iconUrl: '',
     adminScopes: [
         listVehiclesScope,
         getVehiclesScope,

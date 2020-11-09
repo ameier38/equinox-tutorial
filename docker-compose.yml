@@ -1,5 +1,21 @@
-version: '3.4'
+version: '3.7'
+
+x-fsharp-args: &fsharp-args
+  FAKE_VERSION: 5.20.4-alpha.1642
+  PAKET_VERSION: 5.251.0
+
 services:
+  dev:
+    build:
+      context: .
+      args:
+        <<: *fsharp-args
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    networks:
+      - cosmicdealership
+    volumes:
+      - .:/workspace
+      - ~/.nuget/packages:/root/.nuget/packages
   seq:
     image: datalust/seq:5.1
     environment:
@@ -66,6 +82,8 @@ services:
     build:
       context: vehicle
       dockerfile: deploy/processor.Dockerfile
+      args:
+        <<: *fsharp-args
     ports:
       - "50051:50051"
     environment:
@@ -84,6 +102,8 @@ services:
     build:
       context: vehicle
       dockerfile: deploy/reactor.Dockerfile
+      args:
+        <<: *fsharp-args
     environment: 
       DEBUG: "true"
       EVENTSTORE_HOST: eventstore
@@ -102,11 +122,13 @@ services:
     build:
       context: vehicle
       dockerfile: deploy/reader.Dockerfile
+      args:
+        <<: *fsharp-args
     ports:
-      - "50052:50052"
+      - "50052:50051"
     environment: 
       DEBUG: "true"
-      SERVER_PORT: 50052
+      SERVER_PORT: 50051
       MONGO_HOST: mongo
       MONGO_USER: root
       MONGO_PASSWORD: changeit
@@ -121,37 +143,61 @@ services:
   graphql-api:
     build:
       context: graphql-api
+      target: runner
     ports:
       - "4000:4000"
     environment:
       DEBUG: "true"
+      APP_ENV: dev
+      SECRETS_DIR: /run/secrets
       SERVER_PORT: 4000
       VEHICLE_PROCESSOR_HOST: vehicle-processor
       VEHICLE_PROCESSOR_PORT: 50051
       VEHICLE_READER_HOST: vehicle-reader
-      VEHICLE_READER_PORT: 50052
+      VEHICLE_READER_PORT: 50051
       SEQ_HOST: seq
+    secrets:
+      - source: oauth-cert
+        target: oauth/cert.pem
     depends_on: 
       - vehicle-processor
       - vehicle-reactor
       - vehicle-reader
     networks:
       - cosmicdealership
+  test-graphql-api:
+    build:
+      context: graphql-api
+      target: tester
+    environment:
+      SECRETS_DIR: /run/secrets
+      GRAPHQL_HOST: graphql-api
+      GRAPHQL_PORT: 4000
+    secrets:
+      - source: oauth-private-key
+        target: oauth/private-key.pem
+    depends_on: 
+      - graphql-api
+    networks:
+      - cosmicdealership
   web-app:
     build:
       context: web-app
-      dockerfile: deploy/customer.Dockerfile
     environment:
       GRAPHQL_HOST: localhost
       GRAPHQL_PORT: 4000
-    volumes:
-      - ./web-app:/app
-      - /app/node_modules
     ports:
-      - "8080:8080"
-      - "35729:35729"
+      - "3000:3000"
     depends_on:
       - graphql-api
+  docs:
+    build:
+      context: docs
+      target: builder
+    volumes: 
+      - .:/docs
+    ports: 
+      - 8000:8000
 
 networks:
   cosmicdealership:
@@ -160,3 +206,9 @@ networks:
       config:
         - subnet: 10.5.0.0/16
           gateway: 10.5.0.1
+
+secrets:
+  oauth-cert:
+    file: /dev/secrets/cosmicdealership/oauth/cert.pem
+  oauth-private-key:
+    file: /dev/secrets/cosmicdealership/oauth/private-key.pem

@@ -1,64 +1,75 @@
 namespace GraphqlApi
 
+open Shared
+open System.IO
+
+[<RequireQualifiedAccess>]
+type AppEnv =
+    | Dev
+    | Prod
+
 type VehicleProcessorConfig =
     { Url: string } with
     static member Load() =
-        let host = Shared.Env.getEnv "VEHICLE_PROCESSOR_HOST" "localhost"
-        let port = Shared.Env.getEnv "VEHICLE_PROCESSOR_PORT" "50051" |> int
+        let host = Env.getEnv "VEHICLE_PROCESSOR_HOST" "localhost"
+        let port = Env.getEnv "VEHICLE_PROCESSOR_PORT" "50051" |> int
         { Url = sprintf "%s:%i" host port }
 
 type VehicleReaderConfig =
     { Url: string } with
     static member Load() =
-        let host = Shared.Env.getEnv "VEHICLE_READER_HOST" "localhost"
-        let port = Shared.Env.getEnv "VEHICLE_READER_PORT" "50052" |> int
+        let host = Env.getEnv "VEHICLE_READER_HOST" "localhost"
+        let port = Env.getEnv "VEHICLE_READER_PORT" "50052" |> int
         { Url = sprintf "%s:%i" host port }
 
 type SeqConfig =
     { Url: string } with
     static member Load() =
-        let host = Shared.Env.getEnv "SEQ_HOST" "localhost" 
-        let port = Shared.Env.getEnv "SEQ_PORT" "5341" |> int
+        let host = Env.getEnv "SEQ_HOST" "localhost" 
+        let port = Env.getEnv "SEQ_PORT" "5341" |> int
         { Url = sprintf "http://%s:%d" host port }
 
-type AuthConfig =
+type OAuthConfig =
     { Audience: string
       Issuer: string
-      ClientSecret: string } with
+      CertPath: string } with
     static member Load(secretsDir:string) =
-        let secretName = Shared.Env.getEnv "AUTH_SECRET" "auth0"
-        let getSecret = Shared.Env.getSecret secretsDir secretName
-        let audience = Shared.Env.getEnv "AUTH_AUDIENCE" "https://cosmicdealership.com"
-        let issuer = Shared.Env.getEnv "AUTH_ISSUER" "https://cosmicdealership.auth0.com/"
-        // see README to generate test client secret
-        let clientSecret = getSecret "client-secret" "AUTH0_CLIENT_SECRET" "671f54ce0c540f78ffe1e26dcf9c2a047aea4fda"
+        let secretName = Env.getEnv "OAUTH_SECRET" "oauth"
+        let audience = Env.getEnv "OAUTH_AUDIENCE" "https://cosmicdealership.com"
+        let issuer = Env.getEnv "OAUTH_ISSUER" "https://cosmicdealership.us.auth0.com/"
+        let certPath = Path.Join(secretsDir, secretName, "cert.pem")
         { Audience = audience
           Issuer = issuer
-          ClientSecret = clientSecret }
+          CertPath = certPath }
 
 type ServerConfig =
     { Host: string
       Port: int } with
     static member Load() =
-        let host = Shared.Env.getEnv "SERVER_HOST" "0.0.0.0" 
-        let port = Shared.Env.getEnv "SERVER_PORT" "4000" |> int
+        let host = Env.getEnv "SERVER_HOST" "0.0.0.0" 
+        let port = Env.getEnv "SERVER_PORT" "4000" |> int
         { Host = host
           Port = port }
 
 type Config =
-    { AppName: string
-      Debug: bool
+    { Debug: bool
+      AppEnv: AppEnv
       ServerConfig: ServerConfig
-      AuthConfig: AuthConfig
+      OAuthConfig: OAuthConfig
       VehicleProcessorConfig: VehicleProcessorConfig
       VehicleReaderConfig: VehicleReaderConfig
       SeqConfig: SeqConfig } with
     static member Load() =
-        let secretsDir = Shared.Env.getEnv "SECRETS_DIR" "/var/secrets"
-        { AppName = "GraphQL Server"
-          Debug = Shared.Env.getEnv "DEBUG" "true" |> bool.Parse
+        let secretsDir = Env.getEnv "SECRETS_DIR" "/var/secrets"
+        let appEnv =
+            match Env.getEnv "APP_ENV" "dev" with
+            | "dev" -> AppEnv.Dev
+            | "prod" -> AppEnv.Prod
+            | other -> failwithf "%s is not a valid app env" other
+        { Debug = Env.getEnv "DEBUG" "false" |> bool.Parse
+          AppEnv = appEnv
           ServerConfig = ServerConfig.Load()
-          AuthConfig = AuthConfig.Load(secretsDir)
+          OAuthConfig = OAuthConfig.Load(secretsDir)
           VehicleProcessorConfig = VehicleProcessorConfig.Load()
           VehicleReaderConfig = VehicleReaderConfig.Load()
           SeqConfig = SeqConfig.Load() }

@@ -57,8 +57,9 @@ export class VehicleReactor extends pulumi.ComponentResource {
             imageName: pulumi.interpolate `${args.registryEndpoint}/cosmicdealership/${name}-vehicle-reactor`,
             build: {
                 context: path.join(config.root, 'vehicle'),
-                dockerfile: path.join(config.root, 'vehicle', 'docker', 'reactor.Dockerfile'),
-                target: 'runner'
+                dockerfile: path.join(config.root, 'vehicle', 'deploy', 'reactor.Dockerfile'),
+                target: 'runner',
+                env: { DOCKER_BUILDKIT: '1' }
             },
             registry: args.imageRegistry
         }, { parent: this })
@@ -72,6 +73,7 @@ export class VehicleReactor extends pulumi.ComponentResource {
             },
             namespace: args.namespace,
             values: {
+                nameOverride: chartName,
                 fullnameOverride: chartName,
                 image: image.imageName,
                 imagePullSecrets: [registrySecret.metadata.name],
@@ -84,6 +86,7 @@ export class VehicleReactor extends pulumi.ComponentResource {
                     MONGO_SECRET: mongoSecret.metadata.name,
                     MONGO_HOST: args.mongoHost,
                     MONGO_PORT: args.mongoPort,
+                    MONGO_DATABASE: args.mongoDatabase,
                     SEQ_HOST: args.seqHost,
                     SEQ_PORT: args.seqPort
                 },
@@ -96,20 +99,20 @@ export class VehicleReactor extends pulumi.ComponentResource {
     }
 }
 
-// export const vehicleReactor = new VehicleReactor('v1', {
-//     namespace: cosmicdealershipNamespace.metadata.name,
-//     registryEndpoint: config.registryEndpoint,
-//     imageRegistry: config.imageRegistry,
-//     dockerCredentials: config.dockerCredentials,
-//     eventstoreHost: eventstore.internalHost,
-//     eventstorePort: eventstore.internalPort.apply(p => `${p}`),
-//     eventstoreUser: config.eventstoreReader.name,
-//     eventstorePassword: config.eventstoreReader.password,
-//     mongoHost: mongo.internalHost,
-//     mongoPort: mongo.internalPort.apply(p => `${p}`),
-//     mongoDatabase: config.mongoConfig.database,
-//     mongoUser: config.mongoWriter.name,
-//     mongoPassword: config.mongoWriter.password,
-//     seqHost: config.seqInternalHost,
-//     seqPort: config.seqInternalPort.apply(p => `${p}`)
-// }, { provider: config.k8sProvider })
+export const vehicleReactor = new VehicleReactor('v1', {
+    namespace: cosmicdealershipNamespace.metadata.name,
+    registryEndpoint: config.registryEndpoint,
+    imageRegistry: config.imageRegistry,
+    dockerCredentials: config.dockerCredentials,
+    eventstoreHost: eventstore.internalHost,
+    eventstorePort: eventstore.internalPort.apply(p => `${p}`),
+    eventstoreUser: config.eventstoreReader.name,
+    eventstorePassword: config.eventstoreReader.password,
+    mongoHost: mongo.internalHost,
+    mongoPort: mongo.internalPort.apply(p => `${p}`),
+    mongoDatabase: config.mongoConfig.database,
+    mongoUser: config.mongoWriter.name,
+    mongoPassword: config.mongoWriter.password,
+    seqHost: config.seqInternalHost,
+    seqPort: config.seqInternalPort.apply(p => `${p}`)
+}, { provider: config.k8sProvider })

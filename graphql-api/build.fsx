@@ -90,8 +90,23 @@ BuildTask.create "Publish" [] {
         "src/GraphqlApi/GraphqlApi.fsproj"
 }
 
+BuildTask.create "PublishIntegrationTests" [] {
+    Trace.trace "Publishing Integration Tests..."
+    // ref: https://docs.microsoft.com/en-us/dotnet/core/rid-catalog
+    let runtime =
+        if Environment.isLinux then "linux-x64"
+        elif Environment.isWindows then "win-x64"
+        elif Environment.isMacOS then "osx-x64"
+        else failwithf "environment not supported"
+    DotNet.publish (fun args ->
+        { args with
+            OutputPath = Some "src/IntegrationTests/out"
+            Runtime = Some runtime })
+        "src/IntegrationTests/IntegrationTests.fsproj"
+}
+
 BuildTask.create "Serve" [] {
-    DotNet.exec id "run" "--project src/GraphqlApi/GraphqlApi.fsproj"
+    DotNet.exec id "watch" "--project src/GraphqlApi/GraphqlApi.fsproj run"
     |> ignore
 }
 

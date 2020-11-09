@@ -1,4 +1,4 @@
-version 5.250.0
+version 5.251.0
 
 source https://www.nuget.org/api/v2
 storage: none
@@ -11,7 +11,7 @@ nuget EventStore.Client
 nuget protobuf-net 2.4
 nuget FsCodec
 nuget FsCodec.NewtonsoftJson
-nuget FSharp.Core 4.7.0
+nuget FSharp.Core 4.7.2
 nuget FSharp.UMX
 nuget FSharp.Control.AsyncSeq
 nuget Google.Api.CommonProtos
@@ -28,8 +28,9 @@ nuget Serilog.Sinks.Seq
 group Build
     storage none
     source https://api.nuget.org/v3/index.json
-    nuget FSharp.Core 4.7.0
+    nuget FSharp.Core 4.7.2
     nuget Fake.DotNet.Cli
     nuget Fake.IO.FileSystem
     nuget Fake.Core.Target
     nuget BlackFox.Fake.BuildTask
+    nuget NuGet.Packaging 5.6.0

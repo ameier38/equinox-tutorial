@@ -1,5 +1,6 @@
 import * as k8s from '@pulumi/kubernetes'
 import * as pulumi from '@pulumi/pulumi'
+import * as path from 'path'
 import * as config from './config'
 import { cosmicdealershipNamespace } from './namespace'
 
@@ -174,7 +175,7 @@ export class EventStore extends pulumi.ComponentResource {
 }
 
 export const eventstore = new EventStore(config.env, {
-    chartVersion: '0.1.0',
+    chartVersion: '0.1.1',
     namespace: cosmicdealershipNamespace.metadata.name,
     adminPassword: config.eventstoreConfig.adminPassword,
     users: config.eventstoreConfig.users

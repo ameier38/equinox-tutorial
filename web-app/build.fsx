@@ -50,24 +50,21 @@ BuildTask.create "RestoreTests" [clean.IfNeeded] {
     |> Seq.iter (DotNet.restore id)
 }
 
-BuildTask.create "StartCustomerApp" [] {
-    Npm.run "startCustomerApp" id
+BuildTask.create "Start" [] {
+    Npm.run "start" id
 }
 
-BuildTask.create "StartAdminApp" [] {
-    Npm.run "startAdminApp" id
-}
-
-BuildTask.create "BuildCustomerApp" [] {
-    Npm.run "buildCustomerApp" id
-}
-
-BuildTask.create "BuildAdminApp" [] {
-    Npm.run "buildAdminApp" id
+BuildTask.create "Build" [] {
+    Npm.run "build" id
 }
 
 BuildTask.create "TestIntegrations" [] {
     let result = DotNet.exec id "run" "--project src/IntegrationTests/IntegrationTests.fsproj"
+    if not result.OK then failwithf "Error! %A" result.Errors
+}
+
+BuildTask.create "TestIntegrationsHeadless" [] {
+    let result = DotNet.exec id "run" "--project src/IntegrationTests/IntegrationTests.fsproj --headless"
     if not result.OK then failwithf "Error! %A" result.Errors
 }
 

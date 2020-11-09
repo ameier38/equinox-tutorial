@@ -8,23 +8,25 @@ const webpack = require("webpack");
 
 module.exports = (env, argv) => {
     const mode = argv.mode
-    const entry = argv.entry
-    console.log(mode)
 
     return {
-        mode: "none",
-        entry: entry,
+        mode: mode,
+        entry: './src/App/App.fsproj',
         output: {
             path: path.join(__dirname, "dist"),
             filename: "main.js",
         },
         devServer: {
-            contentBase: "dist",
+            contentBase: path.join(__dirname, "dist"),
             port: 3000,
             hot: true,
             inline: true,
-            // required so that webpack will go to index.html on not found
+            // NB: required so that webpack will go to index.html on not found
             historyApiFallback: true
+        },
+        // NB: so webpack works with docker
+        watchOptions: {
+            poll: true
         },
         plugins: mode === 'development' ?
             [
@@ -47,7 +49,12 @@ module.exports = (env, argv) => {
             rules: [
                 { 
                     test: /\.fs(x|proj)?$/,
-                    use: "fable-loader"
+                    use: {
+                        loader: "fable-loader",
+                        options: {
+                            define: mode === "development" ? ["DEVELOPMENT"] : []
+                        }
+                    },
                 },
                 {
                     test: /\.(png|jpe?g|gif|svg)$/i,

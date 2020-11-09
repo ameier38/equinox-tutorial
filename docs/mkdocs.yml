@@ -1,0 +1,12 @@
+site_name: Cosmic Dealership
+dev_addr: '0.0.0.0:8000'
+theme:
+  name: material
+  palette:
+    primary: purple
+  logo: etc/rocket.svg
+  favicon: etc/rocket.svg
+plugins:
+  - search
+  - awesome-pages:
+      collapse_single_pages: true

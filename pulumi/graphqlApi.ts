@@ -6,8 +6,8 @@ import * as path from 'path'
 import * as config from './config'
 import { identityProvider } from './identityProvider'
 import { cosmicdealershipNamespace } from './namespace'
-// import { vehicleProcessor } from './vehicleProcessor'
-// import { vehicleReader } from './vehicleReader'
+import { vehicleProcessor } from './vehicleProcessor'
+import { vehicleReader } from './vehicleReader'
 import { zone } from './zone'
 
 type GraphqlApiArgs = {
@@ -19,6 +19,7 @@ type GraphqlApiArgs = {
     zoneId: pulumi.Input<string>
     subdomain: pulumi.Input<string>
     loadBalancerAddress: pulumi.Input<string>
+    acmeEmail: pulumi.Input<string>
     seqHost: pulumi.Input<string>
     seqPort: pulumi.Input<string>
     vehicleProcessorHost: pulumi.Input<string>
@@ -64,7 +65,8 @@ export class GraphqlApi extends pulumi.ComponentResource {
             imageName: pulumi.interpolate `${args.registryEndpoint}/cosmicdealership/${name}-graphql-api`,
             build: {
                 context: path.join(config.root, 'graphql-api'),
-                target: 'runner'
+                target: 'runner',
+                env: { DOCKER_BUILDKIT: '1' }
             },
             registry: args.imageRegistry
         }, { parent: this })
@@ -78,6 +80,7 @@ export class GraphqlApi extends pulumi.ComponentResource {
             },
             namespace: args.namespace,
             values: {
+                nameOverride: chartName,
                 fullnameOverride: chartName,
                 image: image.imageName,
                 imagePullSecrets: [registrySecret.metadata.name],
@@ -101,13 +104,26 @@ export class GraphqlApi extends pulumi.ComponentResource {
 
         this.internalHost =
             pulumi.all([chart, args.namespace])
-            .apply(([chart, namespace]) => chart.getResourceProperty('v1/Service', namespace, name, 'metadata'))
+            .apply(([chart, namespace]) => chart.getResourceProperty('v1/Service', namespace, chartName, 'metadata'))
             .apply(meta => `${meta.name}.${meta.namespace}.svc.cluster.local`)
 
         this.internalPort =
             pulumi.all([chart, args.namespace])
-            .apply(([chart, namespace]) => chart.getResourceProperty('v1/Service', namespace, name, 'spec'))
+            .apply(([chart, namespace]) => chart.getResourceProperty('v1/Service', namespace, chartName, 'spec'))
             .apply(spec => spec.ports.find(port => port.name === 'http')!.port)
+
+        // NB: generates certificate
+        new k8s.apiextensions.CustomResource(`${name}-graphql-api`, {
+            apiVersion: 'getambassador.io/v2',
+            kind: 'Host',
+            metadata: { namespace: args.namespace },
+            spec: {
+                hostname: this.host,
+                acmeProvider: {
+                    email: args.acmeEmail
+                }
+            }
+        }, { parent: this })
 
         // NB: specifies how to direct incoming requests
         new k8s.apiextensions.CustomResource(`${name}-graphql-api`, {
@@ -117,7 +133,7 @@ export class GraphqlApi extends pulumi.ComponentResource {
             spec: {
                 prefix: '/',
                 host: this.host,
-                service: pulumi.interpolate `${this.internalPort}:${this.internalPort}`
+                service: pulumi.interpolate `${this.internalHost}:${this.internalPort}`
             }
         }, { parent: this })
 
@@ -138,6 +154,7 @@ export class GraphqlApi extends pulumi.ComponentResource {
 //     zoneId: zone.id,
 //     subdomain: 'graphql',
 //     loadBalancerAddress: config.loadBalancerAddress,
+//     acmeEmail: config.acmeEmail,
 //     seqHost: config.seqInternalHost,
 //     seqPort: config.seqInternalPort.apply(p => `${p}`),
 //     vehicleProcessorHost: vehicleProcessor.internalHost,

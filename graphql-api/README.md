@@ -1,23 +1,10 @@
 # GraphQL API
 Main client facing API.
 
-## Development
+## Setup
+Open the project using [VS Code Remote Containers](https://code.visualstudio.com/docs/remote/containers).
 
-### Setup
-1. Install the [.NET SDK](https://andrewmeier.dev/win-dev#dotnet).
-2. Install [FAKE](https://andrewmeier.dev/win-dev#fake).
-3. Install [Paket](https://andrewmeier.dev/win-dev#paket).
-4. Add tools path to `PATH`.
-    _Linux/macOS_
-    ```shell
-    export PATH = "$PATH:$HOME/.dotnet/tools"
-    ```
-    _Windows Powershell_
-    ```powershell
-    $env:PATH += ";C:/Users/<user>/.dotnet/tools"
-    ```
-5. Install [GraphQL Playground](https://github.com/prisma-labs/graphql-playground)
-> Used for interactively running queries.
+![reopen-in-container](./etc/reopen-in-container.png)
 
 ## Testing
 Start the server locally for integration tests.
@@ -61,4 +48,5 @@ echo -n test | openssl sha1 -hmac key
 - [System.IdentityModel.Tokens.Jwt](https://docs.microsoft.com/en-us/dotnet/api/system.identitymodel.tokens.jwt?view=azure-dotnet)
 - [Validating Jwt Tokens](https://dotnetcoretutorials.com/2020/01/15/creating-and-validating-jwt-tokens-in-asp-net-core/)
 - [HS256 vs. RS256](https://blog.authrocket.com/blog/2017/4/jwt-signing-hs256-vs-rs256)
+- [ASP.NET Token Authentication](https://developer.okta.com/blog/2018/03/23/token-authentication-aspnetcore-complete-guide)
 - [MongoDB Pagination](https://www.codementor.io/@arpitbhayani/fast-and-efficient-pagination-in-mongodb-9095flbqr)

@@ -1,0 +1,5 @@
+**/node_modules
+**/paket-files
+**/.paket
+**/.ionide
+**/.fake

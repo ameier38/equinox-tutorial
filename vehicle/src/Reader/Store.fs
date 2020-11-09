@@ -20,7 +20,7 @@ type Store(mongoConfig:MongoConfig) =
             Credential=credential)
     do Log.Debug("Connectiong to Mongo at {Url}", mongoConfig.Url)
     let mongo = MongoClient(settings)
-    let db = mongo.GetDatabase("dealership")
+    let db = mongo.GetDatabase(mongoConfig.Database)
 
     member _.GetCollection<'T>(name:string) = db.GetCollection<'T>(name)
 

@@ -2,11 +2,9 @@
 Protobuf definitions.
 
 ## Setup
-It is easiest to use VS Code with remote containers. This opens
-VS Code inside a pre-configured Docker container with all the 
-necessary dependencies installed.
+Open the project in [VS Code Remote Containers](https://code.visualstudio.com/docs/remote/containers).
 
-![reopen-in-container](./etc/images/reopen-in-container.png)
+![reopen-in-container](./etc/reopen-in-container.png)
 
 ## Usage
 Create a new `.proto` file.

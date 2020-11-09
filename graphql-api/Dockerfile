@@ -1,4 +1,7 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 as builder
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 as base
+
+ARG FAKE_VERSION=5.20.4-alpha.1642
+ARG PAKET_VERSION=5.251.0
 
 # install locales
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y locales
@@ -18,11 +21,13 @@ ENV LC_ALL en_US.UTF-8
 WORKDIR /app
 
 # install tools
-RUN dotnet tool install fake-cli -g && \
-    dotnet tool install paket -g
+RUN dotnet tool install fake-cli -g --version ${FAKE_VERSION} \
+    && dotnet tool install paket -g --version ${PAKET_VERSION}
 
 # add tools to path
 ENV PATH="$PATH:/root/.dotnet/tools"
+
+FROM base as builder
 
 # install dependencies
 COPY paket.dependencies .
@@ -33,6 +38,15 @@ RUN paket install
 COPY build.fsx .
 COPY src src
 RUN fake build -t Publish
+RUN fake build -t PublishIntegrationTests
+
+FROM mcr.microsoft.com/dotnet/core/runtime:3.1 as tester
+
+WORKDIR /app
+
+COPY --from=builder /app/src/IntegrationTests/out .
+
+ENTRYPOINT [ "dotnet", "IntegrationTests.dll" ]
 
 FROM mcr.microsoft.com/dotnet/core/runtime:3.1 as runner
 

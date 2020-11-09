@@ -13,9 +13,9 @@ config:
   cloudflare:email:
     secure: AAABACKkoA/SmrlDkdSkqO9OoJobsMI5esCFggUd1z7OtHmj0abYmDBY0VgIgoRC1xA=
   digitalocean:spacesAccessId:
-    secure: AAABAN5JlYrC/bXAbUuwtcbOc8y3oZSlB0B1XgqOVGBdRbw1X8HyzhU3o6r1RLvzZ0uXMg==
+    secure: AAABAAiguDumix7Eb+3dpqcAS/6TABW9EPUbLcoZktt62wnCu+TpNMHC2/N2u107ND6rFA==
   digitalocean:spacesSecretKey:
-    secure: AAABAA3B+RkVv4Dt7xqWOYlmhBUW5Ryyucq5FFWwU5fEDiOh2LklFJ2bqDlFAlMY2AdB23rupZ6nnugWB1FBjlThi+m84I1ofaSw
+    secure: AAABAFNfNef6sG5TIaOjz255T9S2iy5PN7i3wiipIqa5sQ+1cFDclqnLd2BNTFnQ9WixYOb0ocXLzEC5VCnNU+kZQWNyEuLh6JOv
   digitalocean:token:
     secure: AAABAL1990khV7eZEUvIEDSMhqK7OM3ZTbAsmcp+i76eJgExtF6qf+zGV2CDkoJvtfj5jtgU45SwA2Z7+JER5u8JDSeMN2erFd1AysXNv/Cfl3pmpa2v9AIn6JGmqva2
   dns:zone: cosmicdealership.com

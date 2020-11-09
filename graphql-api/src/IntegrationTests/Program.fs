@@ -5,38 +5,56 @@ open PublicClient
 open Microsoft.IdentityModel.Tokens
 open Shared
 open System
+open System.IO
 open System.IdentityModel.Tokens
 open System.Net.Http
 open System.Security.Claims
-open System.Text
+open System.Security.Cryptography
+open System.Text.RegularExpressions
 
-let host = Env.getEnv "GRAPHQL_API_HOST" "localhost" 
-let port = Env.getEnv "GRAPHQL_API_PORT" "4000" |> int
+let host = Env.getEnv "GRAPHQL_HOST" "localhost" 
+let port = Env.getEnv "GRAPHQL_PORT" "4000" |> int
 let url = sprintf "http://%s:%i" host port
+let secretsDir = Env.getEnv "SECRETS_DIR" "/dev/secrets/cosmicdealership"
+let privateKeyPath = Path.Join(secretsDir, "oauth", "private-key.pem")
+if not (File.Exists(privateKeyPath)) then failwithf "%s does not exist" privateKeyPath
 
-// NB: You can also use jwt.io; add a 'permissions' array claim to the payload with desired permissions (e.g. "add:vehicles")
-let generateToken (permissions:string list) =
+type TokenFactory(privateKeyPath:string) =
     let tokenHandler = Jwt.JwtSecurityTokenHandler()
-    let claims = [| for permission in permissions -> Claim("permissions", permission) |]
-    // NB: see README to generate the test authentication key
-    let signingKey = SymmetricSecurityKey(Encoding.UTF8.GetBytes("671f54ce0c540f78ffe1e26dcf9c2a047aea4fda"))
+    let privateKey = File.ReadAllText(privateKeyPath)
+    let pattern = @"-----BEGIN RSA PRIVATE KEY-----(.+)-----END RSA PRIVATE KEY-----"
+    let signingKey =
+        match Regex.Match(privateKey, pattern, RegexOptions.Singleline) with
+        | m when m.Success ->
+            let rsa = RSA.Create()
+            let contents = m.Groups.Item(1).Value.Replace("\n", String.Empty)
+            let data = ReadOnlySpan(Convert.FromBase64String(contents))
+            rsa.ImportRSAPrivateKey(data) |> ignore
+            RsaSecurityKey(rsa)
+        | _ -> failwithf "invalid private key"
     let signingCreds =
         SigningCredentials(
             key = signingKey,
-            algorithm = SecurityAlgorithms.HmacSha256)
-    let token =
-        Jwt.JwtSecurityToken(
-            issuer = "https://cosmicdealership.auth0.com/",
-            audience = "https://cosmicdealership.com",
-            claims = claims,
-            expires = Nullable(DateTime.UtcNow.AddHours(1.0)),
-            signingCredentials = signingCreds)
-    let token = tokenHandler.WriteToken(token)
-    printfn "token: %s" token
-    token
+            algorithm = SecurityAlgorithms.RsaSha256)
+    
+    member _.GenerateToken(permissions:string list) =
+        let claims = [| for permission in permissions -> Claim("permissions", permission) |]
+        let token =
+            Jwt.JwtSecurityToken(
+                issuer = "https://cosmicdealership.us.auth0.com/",
+                audience = "https://cosmicdealership.com",
+                claims = claims,
+                notBefore = Nullable(DateTime.UtcNow),
+                expires = Nullable(DateTime.UtcNow.AddHours(1.0)),
+                signingCredentials = signingCreds)
+        let token = tokenHandler.WriteToken(token)
+        printfn "token: %s" token
+        token
+
+let tokenFactory = TokenFactory(privateKeyPath)
 
 let getPrivateClient (permissions:string list) =
-    let token = generateToken permissions
+    let token = tokenFactory.GenerateToken(permissions)
     let bearer = sprintf "Bearer %s" token
     let httpClient = new HttpClient()
     httpClient.DefaultRequestHeaders.Add("Authorization", bearer)
@@ -45,6 +63,8 @@ let getPrivateClient (permissions:string list) =
 let getPublicClient () =
     let httpClient = new HttpClient()
     PublicGraphqlClient(url, httpClient)
+
+let sleep = Async.Sleep 1000
 
 let testAddVehicle =
     testAsync "add vehicle" {
@@ -60,7 +80,7 @@ let testAddVehicle =
         match! client.AddVehicleAsync(input) with
         | Ok ({ addVehicle = AddVehicle.AddVehicleResponse.Success { message = msg } }) -> printfn "success: %s" msg
         | error -> failwithf "error: %A" error
-        do! Async.Sleep(2000)
+        do! sleep
         let input: GetVehicle.InputVariables =
             { input = { vehicleId = vehicleId }}
         match! client.GetVehicleAsync(input) with
@@ -102,7 +122,7 @@ let testUpdateVehicle =
         match! client.UpdateVehicleAsync(input) with
         | Ok { updateVehicle = UpdateVehicle.UpdateVehicleResponse.Success { message = msg }} -> printfn "success: %s" msg
         | error -> failwithf "error: %A" error
-        do! Async.Sleep(2000)
+        do! sleep
         let input: GetVehicle.InputVariables =
             { input = { vehicleId = vehicleId }}
         match! client.GetVehicleAsync(input) with
@@ -141,7 +161,7 @@ let testRemoveVehicle =
         match! client.RemoveVehicleAsync(input) with
         | Ok { removeVehicle = RemoveVehicle.RemoveVehicleResponse.Success { message = msg }} -> printfn "success: %s" msg
         | error -> failwithf "error: %A" error
-        do! Async.Sleep(2000)
+        do! sleep
         let input: GetVehicle.InputVariables =
             { input = { vehicleId = vehicleId }}
         match! client.GetVehicleAsync(input) with

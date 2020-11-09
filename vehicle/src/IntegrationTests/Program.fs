@@ -5,14 +5,14 @@ open Shared
 open System
 open System.Threading
 
-let vehicleProcessorHost = Env.getEnv "VEHICLE_PROCESSOR_HOST" "localhost"
+let vehicleProcessorHost = Env.getEnv "VEHICLE_PROCESSOR_HOST" "vehicle-processor"
 let vehicleProcessorPort = Env.getEnv "VEHICLE_PROCESSOR_PORT" "50051" |> int
 let vehicleProcessorChannelTarget = sprintf "%s:%d" vehicleProcessorHost vehicleProcessorPort
 let vehicleProcessorChannel = Channel(vehicleProcessorChannelTarget, ChannelCredentials.Insecure)
 let vehicleCommandService = CosmicDealership.Vehicle.V1.VehicleCommandService.VehicleCommandServiceClient(vehicleProcessorChannel)
 
-let vehicleReaderHost = Env.getEnv "VEHICLE_READER_HOST" "localhost"
-let vehicleReaderPort = Env.getEnv "VEHICLE_READER_PORT" "50052" |> int
+let vehicleReaderHost = Env.getEnv "VEHICLE_READER_HOST" "vehicle-reader"
+let vehicleReaderPort = Env.getEnv "VEHICLE_READER_PORT" "50051" |> int
 let vehicleReaderChannelTarget = sprintf "%s:%d" vehicleReaderHost vehicleReaderPort
 let vehicleReaderChannel = Channel(vehicleReaderChannelTarget, ChannelCredentials.Insecure)
 let vehicleQueryService = CosmicDealership.Vehicle.V1.VehicleQueryService.VehicleQueryServiceClient(vehicleReaderChannel)
@@ -214,7 +214,7 @@ let testRemoveVehicleDenied =
     }
 
 let testListVehicles =
-    ftest "list vehicles" {
+    test "list vehicles" {
         let user = createUser ["add:vehicles"; "list:vehicles"]
         let vehicleId1 = Guid.NewGuid().ToString("N")
         let vehicle1 =
@@ -238,7 +238,7 @@ let testListVehicles =
     }
 
 let testListAvailableVehicles =
-    ftest "list available vehicles" {
+    test "list available vehicles" {
         let user = createUser ["add:vehicles"]
         let vehicleId1 = Guid.NewGuid().ToString("N")
         let vehicle1 =

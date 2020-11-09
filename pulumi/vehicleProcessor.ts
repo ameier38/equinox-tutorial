@@ -46,8 +46,9 @@ export class VehicleProcessor extends pulumi.ComponentResource {
             imageName: pulumi.interpolate `${args.registryEndpoint}/cosmicdealership/${name}-vehicle-processor`,
             build: {
                 context: path.join(config.root, 'vehicle'),
-                dockerfile: path.join(config.root, 'vehicle', 'docker', 'processor.Dockerfile'),
-                target: 'runner'
+                dockerfile: path.join(config.root, 'vehicle', 'deploy', 'processor.Dockerfile'),
+                target: 'runner',
+                env: { DOCKER_BUILDKIT: '1' }
             },
             registry: args.imageRegistry
         }, { parent: this })
@@ -61,6 +62,7 @@ export class VehicleProcessor extends pulumi.ComponentResource {
             },
             namespace: args.namespace,
             values: {
+                nameOverride: chartName,
                 fullnameOverride: chartName,
                 image: image.imageName,
                 imagePullSecrets: [registrySecret.metadata.name],
@@ -68,7 +70,7 @@ export class VehicleProcessor extends pulumi.ComponentResource {
                 containerPort: 50051,
                 env: {
                     EVENTSTORE_SECRET: eventstoreSecret.metadata.name,
-                    EVENTSTORE_SCHEME: 'tcp',
+                    EVENTSTORE_SCHEME: 'discover',
                     EVENTSTORE_HOST: args.eventstoreHost,
                     EVENTSTORE_PORT: args.eventstorePort,
                     SEQ_HOST: args.seqHost,

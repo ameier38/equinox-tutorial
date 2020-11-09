@@ -31,7 +31,7 @@ type MongoConfig =
         let replicaSet = Env.getEnv "MONGO_REPLICA_SET" "rs0"
         let user = getSecret "user" "MONGO_USER" "admin"
         let password = getSecret "password" "MONGO_PASSWORD" "changeit"
-        let database = Env.getEnv "MONGO_DATABASE" "dealership"
+        let database = Env.getEnv "MONGO_DATABASE" "test"
         let addresses =
             host.Split(",")
             |> Array.map (fun host -> sprintf "%s:%i" host port)

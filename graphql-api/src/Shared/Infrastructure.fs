@@ -7,6 +7,11 @@ open System.Text.RegularExpressions
 open Google.Protobuf.WellKnownTypes
 open Google.Type
 
+type Secret<'T> = private Secret of 'T 
+module Secret =
+    let create (x:'T) = Secret x
+    let value (Secret x) = x
+
 module String =
     let fromBytes (bytes:byte[]) =
         Encoding.UTF8.GetString(bytes)
@@ -39,8 +44,10 @@ module Env =
         let secretPath = Path.Combine(secretsDir, secretName, secretKey)
         if File.Exists(secretPath) then
             File.ReadAllText(secretPath).Trim()
+            |> Secret.create
         else
             getEnv defaultEnv defaultValue
+            |> Secret.create
 
 module Regex =
     let (|Match|_|) (pattern:string) (s:string) =

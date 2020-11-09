@@ -47,8 +47,9 @@ export class VehicleReader extends pulumi.ComponentResource {
             imageName: pulumi.interpolate `${args.registryEndpoint}/cosmicdealership/${name}-vehicle-reader`,
             build: {
                 context: path.join(config.root, 'vehicle'),
-                dockerfile: path.join(config.root, 'vehicle', 'docker', 'reader.Dockerfile'),
-                target: 'runner'
+                dockerfile: path.join(config.root, 'vehicle', 'deploy', 'reader.Dockerfile'),
+                target: 'runner',
+                env: { DOCKER_BUILDKIT: '1' }
             },
             registry: args.imageRegistry
         }, { parent: this })
@@ -62,6 +63,7 @@ export class VehicleReader extends pulumi.ComponentResource {
             },
             namespace: args.namespace,
             values: {
+                nameOverride: chartName,
                 fullnameOverride: chartName,
                 image: image.imageName,
                 imagePullSecrets: [registrySecret.metadata.name],
@@ -94,16 +96,16 @@ export class VehicleReader extends pulumi.ComponentResource {
     }
 }
 
-// export const vehicleReader = new VehicleReader('v1', {
-//     namespace: cosmicdealershipNamespace.metadata.name,
-//     registryEndpoint: config.registryEndpoint,
-//     imageRegistry: config.imageRegistry,
-//     dockerCredentials: config.dockerCredentials,
-//     mongoHost: mongo.internalHost,
-//     mongoPort: mongo.internalPort.apply(p => `${p}`),
-//     mongoDatabase: config.mongoConfig.database,
-//     mongoUser: config.mongoReader.name,
-//     mongoPassword: config.mongoReader.password,
-//     seqHost: config.seqInternalHost,
-//     seqPort: config.seqInternalPort.apply(p => `${p}`)
-// }, { provider: config.k8sProvider })
+export const vehicleReader = new VehicleReader('v1', {
+    namespace: cosmicdealershipNamespace.metadata.name,
+    registryEndpoint: config.registryEndpoint,
+    imageRegistry: config.imageRegistry,
+    dockerCredentials: config.dockerCredentials,
+    mongoHost: mongo.internalHost,
+    mongoPort: mongo.internalPort.apply(p => `${p}`),
+    mongoDatabase: config.mongoConfig.database,
+    mongoUser: config.mongoReader.name,
+    mongoPassword: config.mongoReader.password,
+    seqHost: config.seqInternalHost,
+    seqPort: config.seqInternalPort.apply(p => `${p}`)
+}, { provider: config.k8sProvider })

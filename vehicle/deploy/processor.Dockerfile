@@ -1,5 +1,8 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 as builder
 
+ARG FAKE_VERSION=5.20.4-alpha.1642
+ARG PAKET_VERSION=5.251.0
+
 # install locales
 RUN DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
@@ -20,8 +23,8 @@ WORKDIR /app
 ENV DOTNET_CLI_TELEMETRY_OPTOUT 1
 
 # install dotnet tools
-RUN dotnet tool install -g fake-cli && \
-    dotnet tool install -g paket --version 5.250.0
+RUN dotnet tool install -g fake-cli --version ${FAKE_VERSION} \
+    && dotnet tool install -g paket --version ${PAKET_VERSION}
 
 # add tools to PATH
 ENV PATH="$PATH:/root/.dotnet/tools"

@@ -2,15 +2,11 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.112.0/containers/dotnetcore-3.1-fsharp
 {
 	"name": "protos",
-	"dockerFile": "../Dockerfile",
+	"dockerFile": "../../Dockerfile",
 
 	// Set *default* container specific settings.json values on container create.
-	//
-	// .NET Core is now the default for F# in .NET Core 3.0+
-	// However, .NET Core scripting is not the default yet. Set that to true.
 	"settings": {
 		"terminal.integrated.shell.linux": "/bin/bash",
-		"FSharp.useSdkScripts":true,
         "protoc": {
             "path": "/usr/local/bin/protoc",
             "compile_on_save": false,
@@ -23,7 +19,8 @@
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
-		"Ionide.Ionide-fsharp",
+        "ionide.ionide-fsharp",
+        "ionide.ionide-paket",
         "zxh404.vscode-proto3"
 	],
 
@@ -31,7 +28,7 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "rm -rf .fake && fake build",
+	"postCreateCommand": "rm -rf .fake && rm -rf .paket && rm -rf paket-files",
 
 	// Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
 	// "remoteUser": "vscode"
