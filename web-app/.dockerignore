@@ -2,6 +2,8 @@
 .fake
 .ionide
 .paket
+.env
 paket-files
 node_modules
-.env
+bin
+out

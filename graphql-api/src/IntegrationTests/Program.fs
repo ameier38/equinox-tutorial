@@ -17,11 +17,12 @@ let port = Env.getEnv "GRAPHQL_PORT" "4000" |> int
 let url = sprintf "http://%s:%i" host port
 let secretsDir = Env.getEnv "SECRETS_DIR" "/dev/secrets/cosmicdealership"
 let privateKeyPath = Path.Join(secretsDir, "oauth", "private-key.pem")
-if not (File.Exists(privateKeyPath)) then failwithf "%s does not exist" privateKeyPath
 
 type TokenFactory(privateKeyPath:string) =
     let tokenHandler = Jwt.JwtSecurityTokenHandler()
-    let privateKey = File.ReadAllText(privateKeyPath)
+    let privateKey = 
+        if not (File.Exists(privateKeyPath)) then failwithf "%s does not exist" privateKeyPath
+        else File.ReadAllText(privateKeyPath)
     let pattern = @"-----BEGIN RSA PRIVATE KEY-----(.+)-----END RSA PRIVATE KEY-----"
     let signingKey =
         match Regex.Match(privateKey, pattern, RegexOptions.Singleline) with
@@ -38,14 +39,15 @@ type TokenFactory(privateKeyPath:string) =
             algorithm = SecurityAlgorithms.RsaSha256)
     
     member _.GenerateToken(permissions:string list) =
+        let now = DateTime.UtcNow.Date
         let claims = [| for permission in permissions -> Claim("permissions", permission) |]
         let token =
             Jwt.JwtSecurityToken(
                 issuer = "https://cosmicdealership.us.auth0.com/",
                 audience = "https://cosmicdealership.com",
                 claims = claims,
-                notBefore = Nullable(DateTime.UtcNow),
-                expires = Nullable(DateTime.UtcNow.AddHours(1.0)),
+                notBefore = Nullable(now),
+                expires = Nullable(now.AddDays(2.0)),
                 signingCredentials = signingCreds)
         let token = tokenHandler.WriteToken(token)
         printfn "token: %s" token
@@ -70,6 +72,7 @@ let testAddVehicle =
     testAsync "add vehicle" {
         let permissions = ["add:vehicles"; "get:vehicles"]
         let client = getPrivateClient permissions
+        do! sleep
         let vehicleId = Guid.NewGuid().ToString("N")
         let input: AddVehicle.InputVariables =
             { input =
@@ -103,6 +106,7 @@ let testUpdateVehicle =
     testAsync "update vehicle" {
         let permissions = ["add:vehicles"; "get:vehicles"; "update:vehicles"]
         let client = getPrivateClient permissions
+        do! sleep
         let vehicleId = Guid.NewGuid().ToString("N")
         let input: AddVehicle.InputVariables =
             { input =
@@ -145,6 +149,7 @@ let testRemoveVehicle =
     testAsync "remove vehicle" {
         let permissions = ["add:vehicles"; "get:vehicles"; "remove:vehicles"]
         let client = getPrivateClient permissions
+        do! sleep
         let vehicleId = Guid.NewGuid().ToString("N")
         let input: AddVehicle.InputVariables =
             { input =

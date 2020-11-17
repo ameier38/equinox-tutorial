@@ -12,7 +12,7 @@ type GetVehicleInput =
       vehicleId: string }
 
 type ListVehiclesInput =
-    { /// Token for page to retrieve; Empty string for first page
+    { /// Token for page to retrieve
       pageToken: Option<string>
       /// Maximum number of items in a page
       pageSize: Option<int> }

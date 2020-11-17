@@ -2,6 +2,7 @@
 .ionide
 .fake
 .paket
+.fable
 paket-files
 node_modules
 obj

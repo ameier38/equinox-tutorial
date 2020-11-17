@@ -8,10 +8,11 @@ const webpack = require("webpack");
 
 module.exports = (env, argv) => {
     const mode = argv.mode
+    const entry = argv.entry
 
     return {
         mode: mode,
-        entry: './src/App/App.fsproj',
+        entry: entry,
         output: {
             path: path.join(__dirname, "dist"),
             filename: "main.js",
@@ -49,12 +50,7 @@ module.exports = (env, argv) => {
             rules: [
                 { 
                     test: /\.fs(x|proj)?$/,
-                    use: {
-                        loader: "fable-loader",
-                        options: {
-                            define: mode === "development" ? ["DEVELOPMENT"] : []
-                        }
-                    },
+                    use: "fable-loader"
                 },
                 {
                     test: /\.(png|jpe?g|gif|svg)$/i,

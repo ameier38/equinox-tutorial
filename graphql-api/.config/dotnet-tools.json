@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "fake-cli": {
+      "version": "5.20.4-alpha.1642",
+      "commands": [
+        "fake"
+      ]
+    },
+    "paket": {
+      "version": "5.255.0",
+      "commands": [
+        "paket"
+      ]
+    },
+    "snowflaqe": {
+      "version": "1.13.0",
+      "commands": [
+        "snowflaqe"
+      ]
+    }
+  }
+}

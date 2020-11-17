@@ -36,14 +36,12 @@ module Profile =
           Role = Role.fromDto dto.``https://cosmicdealership.com/roles``  }
 
 type User =
-    | Unauthenticated
+    | Anonymous
     | Authenticated of Profile
 
 type Auth0ProviderValue =
-    { isLoading: bool
-      isAuthenticated: bool
-      user: User
-      getToken: unit -> Async<string>
+    { user: AsyncOperation<User>
+      getToken: unit -> Async<AccessToken>
       login: unit -> unit
       logout: unit -> unit }
 
@@ -72,26 +70,22 @@ module private Auth0Interop =
           domain: string
           clientId: string
           redirectUri: string
-          audience: string }
+          audience: string
+          defaultOnRedirectCallback: unit -> unit }
 
     let Auth0Client: IAuth0ClientStatic = importMember "@auth0/auth0-spa-js"
 
-    let defaultOnRedirectCallback () = history.replaceState((), document.title, window.location.pathname)
-
     let defaultAuth0Context =
-        { isLoading = true
-          isAuthenticated = false
-          user = Unauthenticated
+        { user = Unresolved
           getToken = fun () -> failwithf "Auth0 not initialized"
-          login = id<unit>
-          logout = id<unit> }
+          login = fun () -> failwithf "Auth0 not initialized"
+          logout = fun () -> failwithf "Auth0 not initialized" }
 
     let Auth0Context = React.createContext("Auth0Context", defaultAuth0Context)
 
     let provider =
         React.functionComponent<Auth0ProviderProps>("Auth0Provider", fun props ->
-            let (isLoading, setIsLoading) = React.useState(true)
-            let (user, setUser) = React.useState<User>(Unauthenticated)
+            let user, setUser = React.useState<AsyncOperation<User>>(Unresolved)
             let opts: Auth0ClientOptions =
                 { domain = props.domain
                   client_id = props.clientId
@@ -105,34 +99,33 @@ module private Auth0Interop =
                     try
                         if window.location.search.Contains("code=") then
                             do! auth0Client.handleRedirectCallback()
-                            defaultOnRedirectCallback()
+                            props.defaultOnRedirectCallback()
                         let! isAuthenticated = auth0Client.isAuthenticated()
                         if isAuthenticated then
                             let! profileDto = auth0Client.getUser()
                             let profile = Profile.fromDto profileDto
                             Log.debug (sprintf "profile: %A" profile)
-                            setUser(Authenticated profile)
+                            setUser(Resolved(Authenticated profile))
                         else
-                            setUser(Unauthenticated)
-                        setIsLoading(false)
+                            setUser(Resolved(Anonymous))
                     with ex ->
                         Log.error(ex)
-                        setUser(Unauthenticated)
-                        setIsLoading(false)
                 }
             
             React.useEffectOnce(init >> Promise.start)
 
-            let getToken () = auth0Client.getTokenSilently() |> Async.AwaitPromise
+            let getToken () =
+                promise {
+                    let! token = auth0Client.getTokenSilently()
+                    return UMX.tag<accessToken> token
+                } |> Async.AwaitPromise
 
             let login () = auth0Client.loginWithRedirect()
 
             let logout () = auth0Client.logout()
 
             let providerValue =
-                { isLoading = isLoading
-                  isAuthenticated = match user with Authenticated _ -> true | Unauthenticated -> false
-                  user = user
+                { user = user
                   getToken = getToken
                   login = login
                   logout = logout }
@@ -144,6 +137,7 @@ type Auth0Property =
     | ClientId of string
     | RedirectUri of string
     | Audience of string
+    | DefaultOnRedirectCallback of (unit -> unit)
     | Children of ReactElement list
 
 type Auth0 =
@@ -151,6 +145,7 @@ type Auth0 =
     static member clientId = ClientId
     static member redirectUri = RedirectUri
     static member audience = Audience
+    static member defaultOnRedirectCallback = DefaultOnRedirectCallback
     static member children = Children
     static member provider (props:Auth0Property list) : ReactElement =
         let defaultProps: Auth0Interop.Auth0ProviderProps =
@@ -158,7 +153,8 @@ type Auth0 =
               domain = ""
               clientId = ""
               redirectUri = ""
-              audience = "" }
+              audience = ""
+              defaultOnRedirectCallback = id }
         let modifiedProps =
             (defaultProps, props)
             ||> List.fold (fun state prop ->
@@ -167,6 +163,7 @@ type Auth0 =
                 | ClientId clientId -> { state with clientId = clientId }
                 | RedirectUri redirectUri -> { state with redirectUri = redirectUri }
                 | Audience audience -> { state with audience = audience }
+                | DefaultOnRedirectCallback callback -> { state with defaultOnRedirectCallback = callback }
                 | Children children -> { state with children = children })
         Auth0Interop.provider modifiedProps
         

@@ -128,6 +128,7 @@ type PrivateGraphqlClient(url: string, headers: Header list) =
                                 vehicleId
                                 avatar
                                 addedAt
+                                status
                                 vehicle {
                                     make
                                     model

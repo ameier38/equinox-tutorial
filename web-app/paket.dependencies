@@ -17,7 +17,7 @@ nuget Feliz.MaterialUI.MaterialTable
 nuget Feliz.Router
 nuget Feliz.UseDeferred
 nuget Feliz.UseElmish
-nuget FSharp.Core 4.7.0
+nuget FSharp.Core 4.7.2
 nuget FSharp.UMX
 nuget Selenium.WebDriver.ChromeDriver 86.0.4240.2200
 
@@ -25,7 +25,7 @@ nuget Selenium.WebDriver.ChromeDriver 86.0.4240.2200
 group Build
     storage none
     source https://api.nuget.org/v3/index.json
-    nuget FSharp.Core 4.7.0
+    nuget FSharp.Core 4.7.2
     nuget Fake.DotNet.Cli
     nuget Fake.JavaScript.Npm
     nuget Fake.IO.FileSystem

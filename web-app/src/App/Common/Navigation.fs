@@ -1,14 +1,9 @@
 module Navigation
 
 open Auth0
-open Fable.Core.JsInterop
 open Feliz
 open Feliz.MaterialUI
 open Feliz.Router
-
-module Icon =
-    let dashboard: string =
-        importDefault "@material-ui/icons/Dashboard"
 
 let useStyles =
     Styles.makeStyles (fun styles theme ->
@@ -27,15 +22,54 @@ let useStyles =
                ]
            loginButton =
                styles.create [
-                   style.color theme.palette.primary.contrastText
+                   style.color.white
                ] |})
 
 type NavigationProps = { transparent: bool }
 
+let homeButton =
+    React.functionComponent<unit>(fun _ ->
+        let c = useStyles()
+        Mui.button [
+            prop.className c.navHomeButton
+            prop.onClick (fun e ->
+                e.preventDefault ()
+                Router.navigatePath (""))
+            button.variant.text
+            button.children [ "Cosmic Dealership" ]
+        ]
+    )
+
+let loginButton =
+    React.functionComponent(fun (props: {| isAuthenticated: bool; login: unit -> unit; logout: unit -> unit |}) ->
+        let c = useStyles()
+        Mui.button [
+            prop.className c.loginButton
+            prop.onClick (fun e ->
+                e.preventDefault()
+                if props.isAuthenticated then props.logout() else props.login())
+            button.children [
+                if props.isAuthenticated then "Logout" else "Login"
+            ]
+        ]
+    )
+
+let signupButton =
+    React.functionComponent(fun (props: {| login: unit -> unit |}) ->
+        Mui.button [
+            prop.onClick (fun e ->
+                e.preventDefault()
+                props.login())
+            button.variant.contained
+            button.color.primary
+            button.children [ "Signup" ]
+        ]
+    )
+
 let render =
     React.functionComponent<NavigationProps> (fun props ->
-        let c = useStyles ()
-        let auth0 = React.useAuth0 ()
+        let c = useStyles()
+        let auth0 = React.useAuth0()
         Mui.appBar [
             appBar.elevation 0
             appBar.square true
@@ -49,34 +83,15 @@ let render =
                             prop.className c.navContainer
                             container.maxWidth.md
                             container.children [
-                                Mui.button [
-                                    prop.className c.navHomeButton
-                                    prop.onClick (fun e ->
-                                        e.preventDefault ()
-                                        Router.navigatePath (""))
-                                    button.variant.text
-                                    button.children [ "Cosmic Dealership" ]
-                                ]
-                                if not auth0.isLoading then
+                                homeButton()
+                                match auth0.user with
+                                | Unresolved -> ()
+                                | Resolved user ->
+                                    let isAuthenticated = match user with Authenticated _ -> true | Anonymous -> false
                                     Html.div [
-                                        Mui.button [
-                                            prop.className c.loginButton
-                                            prop.onClick (fun e ->
-                                                e.preventDefault ()
-                                                if auth0.isAuthenticated then auth0.logout () else auth0.login ())
-                                            button.children [
-                                                if auth0.isAuthenticated then "Logout" else "Login"
-                                            ]
-                                        ]
-                                        if not auth0.isAuthenticated then
-                                            Mui.button [
-                                                prop.onClick (fun e ->
-                                                    e.preventDefault ()
-                                                    auth0.login ())
-                                                button.variant.contained
-                                                button.color.primary
-                                                button.children [ "Signup" ]
-                                            ]
+                                        loginButton ({| isAuthenticated = isAuthenticated; login = auth0.login; logout = auth0.logout |})
+                                        if not isAuthenticated then
+                                            signupButton ({| login = auth0.login |})
                                     ]
                             ]
                         ]

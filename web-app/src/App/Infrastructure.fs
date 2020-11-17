@@ -7,6 +7,9 @@ open Fable.Core.JsInterop
 open Feliz
 open FSharp.UMX
 
+type [<Measure>] accessToken
+type AccessToken = string<accessToken>
+
 type [<Measure>] userId
 type UserId = string<userId>
 
@@ -34,6 +37,10 @@ type LeaseId = string<leaseId>
 type [<Measure>] audience
 type Audience = string<audience>
 
+type AsyncOperation<'T> =
+    | Unresolved
+    | Resolved of 'T
+
 [<RequireQualifiedAccess>]
 module Env =
     [<Emit("process.env[$0] ? process.env[$0] : $1")>]
@@ -45,14 +52,14 @@ module Log =
         Fable.Core.JS.console.info(msg)
 
     let debug (msg:obj) =
-        #if DEVELOPMENT
+        #if DEBUG
         Fable.Core.JS.console.info(msg)
         #else
         ()
         #endif
 
     let error (error:obj) =
-        #if DEVELOPMENT
+        #if DEBUG
         Fable.Core.JS.console.error(error)
         #else
         ()

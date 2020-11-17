@@ -11,25 +11,22 @@
     }
   },
   "scripts": {
-    "start": "webpack-dev-server --mode development",
-    "build": "webpack --mode production"
+    "start": "webpack-dev-server --mode development --entry ./src/App/App.fsproj",
+    "build": "webpack --mode production --entry ./src/App/App.fsproj"
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.8.1",
     "@material-ui/core": "^4.9.10",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.49",
-    "graphql-hooks": "^4.4.4",
-    "lodash": "^4.17.20",
-    "material-table": "^1.69.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "dotenv-webpack": "^1.7.0",
-    "fable-compiler": "^2.4.15",
-    "fable-loader": "^2.1.8",
+    "fable-compiler": "^2.13.0",
+    "fable-loader": "^2.1.9",
     "file-loader": "^6.0.0",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11",

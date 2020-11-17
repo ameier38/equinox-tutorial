@@ -21,6 +21,7 @@ query ListVehicles($input:ListVehiclesInput!) {
                 vehicleId
                 avatar
                 addedAt
+                status
                 vehicle {
                     make
                     model

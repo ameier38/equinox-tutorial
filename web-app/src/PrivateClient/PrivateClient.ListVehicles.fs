@@ -27,6 +27,7 @@ type InventoriedVehicle =
     { vehicleId: string
       avatar: string
       addedAt: System.DateTime
+      status: VehicleStatus
       vehicle: Vehicle }
 
 /// Successful list vehicles response

@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Infrastructure.fs" />
@@ -8,6 +8,10 @@
     <Compile Include="Hooks/Auth0.fs" />
     <Compile Include="Hooks/GraphQL.fs" />
     <Compile Include="Common/Navigation.fs" />
+    <Compile Include="Common/PageContainer.fs" />
+    <Compile Include="Common/Grid.fs" />
+    <Compile Include="Page/Loading.fs" />
+    <Compile Include="Page/NotFound.fs" />
     <Compile Include="Page/Landing.fs" />
     <Compile Include="Page/Vehicle.fs" />
     <Compile Include="Page/Vehicles.fs" />

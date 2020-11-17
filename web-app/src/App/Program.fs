@@ -3,8 +3,7 @@ module Program
 open Elmish
 open Elmish.React
 
-// NB: set in fable-loader options in webpack config
-#if DEVELOPMENT
+#if DEBUG
 open Elmish.HMR
 #endif
 

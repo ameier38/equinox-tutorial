@@ -148,7 +148,7 @@ services:
       - "4000:4000"
     environment:
       DEBUG: "true"
-      APP_ENV: dev
+      APP_ENV: prod
       SECRETS_DIR: /run/secrets
       SERVER_PORT: 4000
       VEHICLE_PROCESSOR_HOST: vehicle-processor
@@ -190,9 +190,9 @@ services:
       - "3000:3000"
     depends_on:
       - graphql-api
-  docs:
+  handbook:
     build:
-      context: docs
+      context: handbook
       target: builder
     volumes: 
       - .:/docs

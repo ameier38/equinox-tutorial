@@ -5,53 +5,74 @@ open Elmish
 open Feliz
 open Feliz.Router
 open Feliz.MaterialUI
-open Feliz.UseElmish
 open FSharp.UMX
 open GraphQL
 
+type Url =
+    | Root
+    | Vehicles
+    | Vehicle of VehicleId
+    | Loading
+    | NotFound
 module Url =
-    let (|Root|Vehicle|Vehicles|NotFound|) (segments: string list) =
+    let parse (segments: string list) =
+        Log.debug ("parse", segments)
         match segments with
         | ["vehicles"; vehicleId ] -> Vehicle (vehicleId |> UMX.tag<vehicleId>)
         | ["vehicles"] -> Vehicles
         | [] -> Root
+        | (Route.Query ["code", _; "state", _])::_ -> Loading
         | _ -> NotFound
+    let (|Parsed|) (segments: string list) = parse segments
 
 type State =
-    { CurrentUrl: string list }
+    { CurrentUrl: Url }
 
 type Msg =
     | UrlChanged of string list
+    | NavigateToLanding
+    | NavigateToVehicles
 
 let init () =
-    let currentUrl = Router.currentUrl()
-    let initialState =
-        { CurrentUrl  = currentUrl }
+    let currentUrl = Router.currentPath() |> Url.parse
+    let initialState = { CurrentUrl  = currentUrl }
+    Log.debug ("init", initialState)
     initialState, Cmd.none
 
 let update (msg:Msg) (state:State): State * Cmd<Msg> =
-    printfn "%A" Config.appConfig
+    Log.debug ("update", msg)
     match msg with
-    | UrlChanged url ->
-        match url with
-        | Url.NotFound -> state, Cmd.ofMsg(UrlChanged [])
-        | _ -> { state with CurrentUrl = url }, Cmd.none
+    | UrlChanged (Url.Parsed url) ->
+        { state with CurrentUrl = url }, Cmd.none
+    | NavigateToLanding ->
+        state, Cmd.navigatePath "/"
+    | NavigateToVehicles ->
+        state, Cmd.navigatePath "/vehicles"
 
 let renderPage =
-    React.functionComponent(fun _ ->
+    React.functionComponent(fun (props:{| currentUrl: Url; dispatch: Msg -> unit |}) ->
         let auth0 = React.useAuth0()
-        let state, dispatch = React.useElmish(init, update, [||])
-        match state.CurrentUrl with
-        | Url.Root
-        | Url.Vehicles ->
-            match auth0.user with
-            | Authenticated ({ Role = Admin }) ->
-                Page.Vehicles.render ()
-            | _ ->
-                Page.Landing.render ()
-        | Url.Vehicle vehicleId ->
+        match props.currentUrl, auth0.user with
+        | Loading, _ ->
+            Page.Loading.render()
+        | _, Unresolved ->
+            Page.Loading.render()
+        | Root, Resolved (Authenticated ({ Role = Admin })) ->
+            props.dispatch NavigateToVehicles
+            Page.Loading.render()
+        | Root, Resolved (Authenticated ({ Role = Customer }))
+        | Root, Resolved (Anonymous) ->
+            Page.Landing.render()
+        | Vehicles, Resolved (Authenticated ({ Role = Admin })) ->
+            Page.Vehicles.render()
+        | Vehicles, Resolved (Authenticated ({ Role = Customer }))
+        | Vehicles, Resolved (Anonymous) ->
+            props.dispatch NavigateToLanding
+            Page.Loading.render()
+        | Vehicle vehicleId, _ ->
             Page.Vehicle.render { vehicleId = vehicleId }
-        | Url.NotFound -> Html.div "Page not found"
+        | NotFound, _ ->
+            Page.NotFound.render {| navigateToLanding = (fun () -> props.dispatch NavigateToLanding) |}
     )
 
 let theme = Styles.createMuiTheme([
@@ -74,6 +95,7 @@ let render (state:State) (dispatch:Msg -> unit) =
                 Auth0.clientId Config.authConfig.ClientId
                 Auth0.redirectUri Config.appConfig.Url
                 Auth0.audience Config.authConfig.Audience
+                Auth0.defaultOnRedirectCallback (fun () -> dispatch NavigateToLanding)
                 Auth0.children [
                     GraphQL.provider [
                         GraphQL.publicUrl Config.graphqlConfig.PublicUrl
@@ -84,7 +106,7 @@ let render (state:State) (dispatch:Msg -> unit) =
                                 themeProvider.children [
                                     Navigation.render
                                         { transparent = match state.CurrentUrl with Url.Root -> true | _ -> false }
-                                    renderPage()
+                                    renderPage ({| currentUrl = state.CurrentUrl; dispatch = dispatch |})
                                 ]
                             ]
                         ]

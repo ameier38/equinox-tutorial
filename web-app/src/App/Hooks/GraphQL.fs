@@ -3,19 +3,21 @@ namespace GraphQL
 open Auth0
 open Fable.SimpleHttp
 open Feliz
+open FSharp.UMX
 open PublicClient
 open PrivateClient
 
 type GraphQLProviderValue =
     { publicClient: PublicGraphqlClient
-      privateClient: PrivateGraphqlClient option }
+      createPrivateClient: AccessToken -> PrivateGraphqlClient }
 
 module private GraphQL =
-    let defaultProviderValue =
-        { publicClient = PublicGraphqlClient("http://localhost:4000/public")
-          privateClient = None }
 
-    let GraphQLContext = React.createContext("GraphQLContext", defaultProviderValue)
+    let defaultGraphQLProviderValue =
+        { publicClient = PublicGraphqlClient("http://localhost:4000/public")
+          createPrivateClient = fun _ -> PrivateGraphqlClient("http://localhost:4000") }
+
+    let GraphQLContext = React.createContext("GraphQLContext", defaultGraphQLProviderValue)
 
     type GraphQLProviderProps =
         { publicUrl: string
@@ -24,22 +26,11 @@ module private GraphQL =
 
     let provider =
         React.functionComponent<GraphQLProviderProps>(fun props ->
-            let auth0 = React.useAuth0()
-            let token, setToken = React.useState<string option>(None)
-            let getToken() = async {
-                let! token = auth0.getToken()
-                Log.debug (sprintf "GraphQL.token: %A" token)
-                setToken(Some token)
-            }
-            React.useEffect(getToken >> Async.StartImmediate, [|box auth0.isAuthenticated|])
-
             let providerValue =
                 { publicClient = PublicGraphqlClient(props.publicUrl)
-                  privateClient =
-                    token
-                    |> Option.map (fun token ->
-                        let bearer = sprintf "Bearer %s" token
-                        PrivateGraphqlClient(props.privateUrl, [Header ("Authorization", bearer)])) }
+                  createPrivateClient = fun token ->
+                    let bearer = sprintf "Bearer %s" (UMX.untag token)
+                    PrivateGraphqlClient(props.privateUrl, [Header ("Authorization", bearer)]) }
 
             React.contextProvider(GraphQLContext, providerValue, props.children)
         )

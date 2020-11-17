@@ -1,2 +1,0 @@
-# Cosmic Dealership
-WIP
