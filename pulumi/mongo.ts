@@ -45,6 +45,7 @@ export class Mongo extends pulumi.ComponentResource {
 
         const chart = new k8s.helm.v3.Chart(name, {
             chart: 'mongodb',
+            version: args.chartVersion,
             fetchOpts: {
                 repo: 'https://charts.bitnami.com/bitnami'
             },
@@ -62,6 +63,13 @@ export class Mongo extends pulumi.ComponentResource {
                 ],
                 initdbScripts: {
                     'init.sh': pulumi.output(args.rootPassword).apply(rootPassword => generateInitScript(rootPassword, args.users)) 
+                },
+                resources: {
+                    requests: {cpu: '250m', memory: '500Mi'},
+                    limits: {cpu: '500m', memory: '1Gi'}
+                },
+                nodeSelector: {
+                    'doks.digitalocean.com/node-pool': 'database'
                 }
             }
         }, { parent: this })
@@ -84,7 +92,7 @@ export class Mongo extends pulumi.ComponentResource {
 }
 
 export const mongo = new Mongo(config.env, {
-    chartVersion: '9.2.5',
+    chartVersion: '10.0.4',
     namespace: cosmicdealershipNamespace.metadata.name,
     rootPassword: config.mongoConfig.rootPassword,
     replicaSetName: config.mongoConfig.replicaSetName,

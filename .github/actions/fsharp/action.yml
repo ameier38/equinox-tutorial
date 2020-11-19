@@ -1,0 +1,15 @@
+name: F#
+description: Action to build F# projects
+inputs:
+  root:
+    description: Directory in which to run the action
+    required: true
+  target:
+    description: Build target to run
+    required: true
+runs:
+  using: docker
+  image: Dockerfile
+  args:
+    - ${{ inputs.root }}
+    - ${{ inputs.target }}

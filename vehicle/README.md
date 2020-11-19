@@ -1,27 +1,30 @@
 # Vehicle Service
 The vehicle service consists of two parts.
-1. **Processor**: A gRPC server to process vehicle commands.
-2. **Reactor**: A console application to react to vehicle events and update read models in MongoDB.
+1. **Processor**: A gRPC server to _process_ vehicle commands.
+2. **Reactor**: A console application to _react_ to vehicle events and update read models in MongoDB.
+3. **Reader**: A gRPC server to _read_ vehicle read models.
 
 ## Setup
-1. Install [.Net Core SDK](https://andrewmeier.dev/win-dev#dotnet)
-2. Install [FAKE](https://andrewmeier.dev/win-dev#fake)
-3. Install [Paket](https://andrewmeier.dev/win-dev#paket)
+1. Install [.Net Core SDK](https://andrewmeier.dev/win-dev#dotnet).
+2. Install tools.
+    ```shell
+    dotnet tool restore
+    ```
 
 ## Testing
 Run the unit tests.
 ```
-fake build -t TestUnits
+dotnet fake build -t TestUnits
 ```
 
 Bring up server and reactor for integration testing.
 ```
-docker-compose up -d --build vehicle-processor vehicle-reactor
+docker-compose up -d --build vehicle-processor vehicle-reactor vehicle-reader
 ```
 
 Run the integration tests.
 ```
-fake build -t TestIntegrations
+dotnet fake build -t TestIntegrations
 ```
 
 ## Resources

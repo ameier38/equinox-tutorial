@@ -17,14 +17,14 @@ type GraphQLConfig =
         { PublicUrl = publicUrl
           PrivateUrl = privateUrl }
 
-type AuthConfig =
+type OAuthConfig =
     { Domain: string
       ClientId: string
       Audience: string } with
     static member Load() =
-        let domain = Env.getEnv "AUTH_DOMAIN" "cosmicdealership.us.auth0.com"
-        let clientId = Env.getEnv "AUTH_CLIENT_ID" "test"
-        let audience = Env.getEnv "AUTH_AUDIENCE" "https://cosmicdealership.com"
+        let domain = Env.getEnv "OAUTH_DOMAIN" "cosmicdealership.us.auth0.com"
+        let clientId = Env.getEnv "OAUTH_CLIENT_ID" "test"
+        let audience = Env.getEnv "OAUTH_AUDIENCE" "https://cosmicdealership.com"
         { Domain = domain
           ClientId = clientId
           Audience = audience }
@@ -41,6 +41,6 @@ type AppConfig =
 
 let graphqlConfig = GraphQLConfig.Load()
 
-let authConfig = AuthConfig.Load()
+let oauthConfig = OAuthConfig.Load()
 
 let appConfig = AppConfig.Load()

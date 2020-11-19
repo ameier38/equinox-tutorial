@@ -1,8 +1,5 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 as builder
 
-ARG FAKE_VERSION=5.20.4-alpha.1642
-ARG PAKET_VERSION=5.251.0
-
 # install locales
 RUN DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
@@ -23,21 +20,18 @@ WORKDIR /app
 ENV DOTNET_CLI_TELEMETRY_OPTOUT 1
 
 # install dotnet tools
-RUN dotnet tool install -g fake-cli --version ${FAKE_VERSION} \
-    && dotnet tool install -g paket --version ${PAKET_VERSION}
-
-# add tools to PATH
-ENV PATH="$PATH:/root/.dotnet/tools"
+COPY .config .config
+RUN dotnet tool restore
 
 # install dependencies
 COPY paket.dependencies .
 COPY paket.lock .
-RUN paket install
+RUN dotnet paket install
 
 # copy everything else and build
 COPY build.fsx .
 COPY src src
-RUN fake build -t PublishReader
+RUN dotnet fake build -t PublishReader
 
 # download grpc-health-probe
 # ref: https://github.com/grpc-ecosystem/grpc-health-probe

@@ -12,7 +12,7 @@ export const env = pulumi.getStack()
 
 export const zone = 'cosmicdealership.com'
 
-export const audience = `https://${zone}`
+export const oauthAudience = `https://${zone}`
 
 const infrastructureStack = new pulumi.StackReference(`${env}-infrastructure-stack`, {
     name: `ameier38/infrastructure/${env}`
@@ -25,7 +25,7 @@ export const dockerCredentials = infrastructureStack.requireOutput('dockerCreden
 export const loadBalancerAddress = infrastructureStack.requireOutput('loadBalancerAddress').apply(o => o as string)
 export const seqInternalHost = infrastructureStack.requireOutput('seqInternalHost').apply(o => o as string)
 export const seqInternalPort = infrastructureStack.requireOutput('seqInternalPort').apply(o => o as number)
-const clusterId = infrastructureStack.requireOutput('clusterId').apply(o => o as string)
+const kubeconfig = infrastructureStack.requireOutput('kubeconfig').apply(o => o as string)
 
 const rawDigitalOceanConfig = new pulumi.Config('digitalocean')
 export const digitalOceanProvider = new digitalocean.Provider(`${env}-digitalocean-provider`, {
@@ -35,10 +35,9 @@ export const digitalOceanProvider = new digitalocean.Provider(`${env}-digitaloce
     spacesSecretKey: rawDigitalOceanConfig.require('spacesSecretKey')
 })
 
-const cluster = digitalocean.KubernetesCluster.get(`${env}-cluster`, clusterId, {}, { provider: digitalOceanProvider })
 
 export const k8sProvider = new k8s.Provider(`${env}-k8s-provider`, {
-    kubeconfig: cluster.kubeConfigs[0].rawConfig
+    kubeconfig: kubeconfig
 })
 
 export const gatewayConfig = {
@@ -56,10 +55,12 @@ export const auth0Config = {
     domain: rawAuth0Config.require('domain'),
     clientId: rawAuth0Config.require('clientId'),
     clientSecret: rawAuth0Config.require('clientSecret'),
-    adminEmail: rawAuth0Config.require('adminEmail'),
-    adminPassword: rawAuth0Config.require('adminPassword')
+    testAdminEmail: rawAuth0Config.require('testAdminEmail'),
+    testAdminPassword: rawAuth0Config.require('testAdminPassword'),
+    testCustomerEmail: rawAuth0Config.require('testCustomerEmail'),
+    testCustomerPassword: rawAuth0Config.require('testCustomerPassword')
 }
-export const authUrl = pulumi.interpolate `https://${auth0Config.domain}`
+export const oauthIssuer = pulumi.interpolate `https://${auth0Config.domain}`
 export const auth0Provider = new auth0.Provider(`${env}-auth0-provider`, {
     domain: auth0Config.domain,
     clientId: auth0Config.clientId,

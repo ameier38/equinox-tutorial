@@ -27,7 +27,9 @@ export class VehicleReader extends pulumi.ComponentResource {
     constructor(name:string, args:VehicleReaderArgs, opts:pulumi.ComponentResourceOptions) {
         super('cosmicdealership:VehicleReader', name, {}, opts)
 
-        const registrySecret = new k8s.core.v1.Secret(`${name}-vehicle-reader-registry`, {
+        const identifier = `${name}-vehicle-reader`
+
+        const registrySecret = new k8s.core.v1.Secret(`${identifier}-registry`, {
             metadata: { namespace: args.namespace },
             type: 'kubernetes.io/dockerconfigjson',
             stringData: {
@@ -35,7 +37,7 @@ export class VehicleReader extends pulumi.ComponentResource {
             }
         }, { parent: this })
 
-        const mongoSecret = new k8s.core.v1.Secret(`${name}-vehicle-reader-mongo`, {
+        const mongoSecret = new k8s.core.v1.Secret(`${identifier}-mongo`, {
             metadata: { namespace: args.namespace },
             stringData: {
                 user: args.mongoUser,
@@ -44,18 +46,17 @@ export class VehicleReader extends pulumi.ComponentResource {
         }, { parent: this })
 
         const image = new docker.Image(name, {
-            imageName: pulumi.interpolate `${args.registryEndpoint}/cosmicdealership/${name}-vehicle-reader`,
+            imageName: pulumi.interpolate `${args.registryEndpoint}/cosmicdealership/${identifier}`,
             build: {
                 context: path.join(config.root, 'vehicle'),
-                dockerfile: path.join(config.root, 'vehicle', 'deploy', 'reader.Dockerfile'),
+                dockerfile: path.join(config.root, 'vehicle', 'docker', 'reader.Dockerfile'),
                 target: 'runner',
                 env: { DOCKER_BUILDKIT: '1' }
             },
             registry: args.imageRegistry
         }, { parent: this })
 
-        const chartName = `${name}-vehicle-reader`
-        const chart = new k8s.helm.v3.Chart(name, {
+        const chart = new k8s.helm.v3.Chart(identifier, {
             chart: 'base-service',
             version: '0.1.2',
             fetchOpts: {
@@ -63,13 +64,14 @@ export class VehicleReader extends pulumi.ComponentResource {
             },
             namespace: args.namespace,
             values: {
-                nameOverride: chartName,
-                fullnameOverride: chartName,
+                nameOverride: identifier,
+                fullnameOverride: identifier,
                 image: image.imageName,
                 imagePullSecrets: [registrySecret.metadata.name],
                 backendType: 'grpc',
                 containerPort: 50051,
                 env: {
+                    DEBUG: 'true',
                     MONGO_SECRET: mongoSecret.metadata.name,
                     MONGO_HOST: args.mongoHost,
                     MONGO_PORT: args.mongoPort,
@@ -85,18 +87,18 @@ export class VehicleReader extends pulumi.ComponentResource {
 
         this.internalHost =
             pulumi.all([chart, args.namespace])
-            .apply(([chart, namespace]) => chart.getResourceProperty('v1/Service', namespace, chartName, 'metadata'))
+            .apply(([chart, namespace]) => chart.getResourceProperty('v1/Service', namespace, identifier, 'metadata'))
             .apply(meta => `${meta.name}.${meta.namespace}.svc.cluster.local`)
 
         this.internalPort =
             pulumi.all([chart, args.namespace])
-            .apply(([chart, namespace]) => chart.getResourceProperty('v1/Service', namespace, chartName, 'spec'))
+            .apply(([chart, namespace]) => chart.getResourceProperty('v1/Service', namespace, identifier, 'spec'))
             .apply(spec => spec.ports.find(port => port.name === 'grpc')!.port)
 
     }
 }
 
-export const vehicleReader = new VehicleReader('v1', {
+export const vehicleReader = new VehicleReader(config.env, {
     namespace: cosmicdealershipNamespace.metadata.name,
     registryEndpoint: config.registryEndpoint,
     imageRegistry: config.imageRegistry,

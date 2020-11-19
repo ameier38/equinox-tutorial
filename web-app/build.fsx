@@ -14,8 +14,6 @@ let run (command:string) (args:string list) =
 
 let snowflaqe = run "snowflaqe"
 
-let fable = run "fable"
-
 let clean = BuildTask.create "Clean" [] {
     !! "src/**/bin"
     ++ "src/**/obj"

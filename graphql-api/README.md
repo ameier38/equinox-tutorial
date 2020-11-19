@@ -2,14 +2,16 @@
 Main client facing API.
 
 ## Setup
-Open the project using [VS Code Remote Containers](https://code.visualstudio.com/docs/remote/containers).
-
-![reopen-in-container](./etc/reopen-in-container.png)
+1. Install [.Net Core SDK](https://dotnet.microsoft.com/download/dotnet-core/3.1).
+2. Install tools.
+    ```shell
+    dotnet tool restore
+    ```
 
 ## Testing
 Start the server locally for integration tests.
 ```
-docker-compose up -d --build graphql-api
+docker-compose up -d --build graphql
 ```
 
 Run the integration tests.
@@ -21,19 +23,11 @@ fake build -t TestIntegrations
 
 ### Updating protobuf files
 Update the protobuf files and generate the new outputs. 
-See [proto README](../proto/README.md) for instructions.
+See [protos README](../protos/README.md) for instructions.
 
 Then copy the generated files and build the Proto project.
 ```
 fake build -t UpdateProtos
-```
-
-### Generate test authentication key
-```
-echo -n test | openssl sha1 -hmac key
-```
-```
-671f54ce0c540f78ffe1e26dcf9c2a047aea4fda
 ```
 
 ## Resources

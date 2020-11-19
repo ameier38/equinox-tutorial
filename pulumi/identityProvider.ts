@@ -1,7 +1,7 @@
 import * as auth0 from '@pulumi/auth0'
 import * as pulumi from '@pulumi/pulumi'
 import * as config from './config'
-// import { iconUrl } from './bucket'
+import { iconUrl } from './bucket'
 
 type Scope = {
     value: string
@@ -34,10 +34,14 @@ function setRolesToUser(user, context, callback) {
 
 type IdentityProviderArgs = {
     zone: pulumi.Input<string>
-    audience: pulumi.Input<string>
+    oauthAudience: pulumi.Input<string>
     clientId: pulumi.Input<string>
     customerScopes: Scope[]
     adminScopes: Scope[]
+    testAdminEmail: pulumi.Input<string>
+    testAdminPassword: pulumi.Input<string>
+    testCustomerEmail: pulumi.Input<string>
+    testCustomerPassword: pulumi.Input<string>
     iconUrl: pulumi.Input<string>
 }
 
@@ -66,8 +70,13 @@ export class IdentityProvider extends pulumi.ComponentResource {
                 'http://localhost:3000',
                 pulumi.interpolate `https://${args.zone}`
             ],
+            allowedOrigins: [
+                'http://localhost:3000',
+                pulumi.interpolate `https://${args.zone}`
+            ],
             grantTypes: ['authorization_code'],
             jwtConfiguration: {
+                // NB: Auth0 JavaScript library only uses RS256
                 alg: 'RS256'
             }
         }, { provider: config.auth0Provider })
@@ -85,20 +94,24 @@ export class IdentityProvider extends pulumi.ComponentResource {
                 webAppClient.clientId
             ],
             options: {
-                disableSignup: true
-            }
+                disableSignup: true,
+                passwordPolicy: 'low',
+                passwordComplexityOptions: {
+                    minLength: 8
+                }
+            },
         }, { parent: this, deleteBeforeReplace: true })
 
         new auth0.ClientGrant(`${name}-web-app`, {
             clientId: webAppClient.clientId,
-            audience: args.audience,
+            audience: args.oauthAudience,
             scopes: ['openid', 'email', 'profile'],
         }, { parent: this, deleteBeforeReplace: true })
 
         new auth0.Rule(`${name}-set-roles`, {
             name: 'Set Roles',
             enabled: true,
-            script: pulumi.output(args.audience).apply(generateSetRolesRuleScript),
+            script: pulumi.output(args.oauthAudience).apply(generateSetRolesRuleScript),
             order: 0
         }, { parent: this })
 
@@ -106,7 +119,7 @@ export class IdentityProvider extends pulumi.ComponentResource {
         // ref: https://auth0.com/docs/authorization/apis
         const resourceServer = new auth0.ResourceServer(name, {
             name: args.zone,
-            identifier: args.audience,
+            identifier: args.oauthAudience,
             // NB: turns on RBAC
             enforcePolicies: true,
             // NB: includes 'permissions' claim
@@ -132,21 +145,21 @@ export class IdentityProvider extends pulumi.ComponentResource {
             } as auth0.types.input.RolePermission))
         }, { parent: this, deleteBeforeReplace: true })
 
-        new auth0.User('admin', {
-            name: 'admin',
-            email: config.auth0Config.adminEmail,
+        new auth0.User('test-admin', {
+            name: 'test-admin',
+            email: args.testAdminEmail,
             emailVerified: true,
             connectionName: connection.name,
-            password: config.auth0Config.adminPassword,
+            password: args.testAdminPassword,
             roles: [adminRole.id]
         }, { parent: this, deleteBeforeReplace: true })
 
-        new auth0.User('test', {
-            name: 'test',
-            email: 'test@cosmicdealership.com',
+        new auth0.User('test-customer', {
+            name: 'test-customer',
+            email: args.testCustomerEmail,
             emailVerified: true,
             connectionName: connection.name,
-            password: '?&x2Z@^%gLn}-A#nK4EBLu@j',
+            password: args.testCustomerPassword,
             roles: [customerRole.id]
         }, { parent: this })
 
@@ -166,9 +179,13 @@ let returnVehiclesScope = { value: 'return:vehicles', description: 'Can return a
 
 export const identityProvider = new IdentityProvider(config.env, {
     zone: config.zone,
-    audience: config.audience,
+    oauthAudience: config.oauthAudience,
     clientId: config.auth0Config.clientId,
-    iconUrl: '',
+    iconUrl: iconUrl,
+    testAdminEmail: config.auth0Config.testAdminEmail,
+    testAdminPassword: config.auth0Config.testAdminPassword,
+    testCustomerEmail: config.auth0Config.testCustomerEmail,
+    testCustomerPassword: config.auth0Config.testCustomerPassword,
     adminScopes: [
         listVehiclesScope,
         getVehiclesScope,

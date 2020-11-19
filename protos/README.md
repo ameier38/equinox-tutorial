@@ -1,6 +1,8 @@
 # Proto
 Protobuf definitions.
 
+See the [handbook](https://handbook.cosmicdealership.com) for more information.
+
 ## Setup
 Open the project in [VS Code Remote Containers](https://code.visualstudio.com/docs/remote/containers).
 

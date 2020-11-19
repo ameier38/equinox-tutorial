@@ -1,42 +1,46 @@
-name: Tutorial Pull Request
+name: Pull Request
 on: [pull_request]
 
 jobs:
   generate_protos:
-    # ref: https://github.com/actions/virtual-environments/issues/2
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v1
-      - name: Lint protos
-        uses: ./.github/actions/prototool
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Generate protos
+        run: docker-compose run --rm generate-protos
+      - name: Upload generated protos
+        uses: actions/upload-artifact@v2
         with:
-          # `root` will get translated into `INPUT_ROOT` env var
-          root: protos
-          args: lint
-      - name: Compile protos
-        uses: ./.github/actions/prototool
-        with:
-          root: protos
-          args: compile
-      - uses: ./.github/actions/prototool
-        with:
-          root: protos
-          args: generate
-  test_lease_api:
-    runs-on: ubuntu-16.04
+          name: protos
+          path: ./protos/gen
+          retention-days: 1
+  test:
+    runs-on: ubuntu-18.04
     needs: [generate_protos]
     steps:
-      - uses: actions/checkout@v1
-      - name: Start Lease API
-        run: docker-compose up -d --build lease-api
-      - name: Test Lease API
-        run: docker-compose run --rm test-lease-api
-  test_graphql_api:
-    runs-on: ubuntu-16.04
-    needs: [generate_protos,test_lease_api]
-    steps:
-      - uses: actions/checkout@v1
-      - name: Start Lease API and GraphQL API
-        run: docker-compose up -d --build graphql-api
-      - name: Test GraphQL API
-        run: docker-compose run --rm test-graphql-api
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Download protos
+        uses: actions/download-artifact@v2
+        with:
+          name: protos
+          path: ./protos/gen
+      - name: Update Vehicle Protos
+        run: ./.github/actions/fsharp
+        with:
+          root: vehicle
+          target: UpdateProtos
+      - name: Update GraphQL Protos
+        uses: ./.github/actions/fsharp
+        with:
+          root: graphql
+          target: UpdateProtos
+      - name: Build Services
+        run: docker-compose up -d --build
+      - name: Test Vehicle Integrations
+        run: docker-compose run --rm test-vehicle
+      - name: Test GraphQL Integrations
+        run: docker-compose run --rm test-graphql
+      - name: Test Web Integrations
+        run: docker-compose run --rm test-web

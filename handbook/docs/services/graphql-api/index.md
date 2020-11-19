@@ -24,9 +24,9 @@ If the timezone is something other than `Etc/UTC` then change the timezone.
 sudo dpkg-reconfigure tzdata
 ```
 
-![tzdata-none-of-the-above](../etc/tzdata-none-of-the-above.png)
+![tzdata-none-of-the-above](./images/tzdata-none-of-the-above.png)
 
-![tzdata-utc](../etc/tzdata-utc.png)
+![tzdata-utc](./images/tzdata-utc.png)
 
 Check the timezone.
 ```shell

@@ -26,7 +26,9 @@ export class VehicleProcessor extends pulumi.ComponentResource {
     constructor(name:string, args:VehicleProcessorArgs, opts:pulumi.ComponentResourceOptions) {
         super('cosmicdealership:VehicleProcessor', name, {}, opts)
 
-        const registrySecret = new k8s.core.v1.Secret(`${name}-vehicle-processor-registry`, {
+        const identifier = `${name}-vehicle-processor`
+
+        const registrySecret = new k8s.core.v1.Secret(`${identifier}-registry`, {
             metadata: { namespace: args.namespace },
             type: 'kubernetes.io/dockerconfigjson',
             stringData: {
@@ -34,7 +36,7 @@ export class VehicleProcessor extends pulumi.ComponentResource {
             }
         }, { parent: this })
 
-        const eventstoreSecret = new k8s.core.v1.Secret(`${name}-vehicle-processor-eventstore`, {
+        const eventstoreSecret = new k8s.core.v1.Secret(`${identifier}-eventstore`, {
             metadata: { namespace: args.namespace },
             stringData: {
                 user: args.eventstoreUser,
@@ -43,18 +45,17 @@ export class VehicleProcessor extends pulumi.ComponentResource {
         }, { parent: this })
 
         const image = new docker.Image(name, {
-            imageName: pulumi.interpolate `${args.registryEndpoint}/cosmicdealership/${name}-vehicle-processor`,
+            imageName: pulumi.interpolate `${args.registryEndpoint}/cosmicdealership/${identifier}`,
             build: {
                 context: path.join(config.root, 'vehicle'),
-                dockerfile: path.join(config.root, 'vehicle', 'deploy', 'processor.Dockerfile'),
+                dockerfile: path.join(config.root, 'vehicle', 'docker', 'processor.Dockerfile'),
                 target: 'runner',
                 env: { DOCKER_BUILDKIT: '1' }
             },
             registry: args.imageRegistry
         }, { parent: this })
 
-        const chartName = `${name}-vehicle-processor`
-        const chart = new k8s.helm.v3.Chart(name, {
+        const chart = new k8s.helm.v3.Chart(identifier, {
             chart: 'base-service',
             version: '0.1.2',
             fetchOpts: {
@@ -62,13 +63,14 @@ export class VehicleProcessor extends pulumi.ComponentResource {
             },
             namespace: args.namespace,
             values: {
-                nameOverride: chartName,
-                fullnameOverride: chartName,
+                nameOverride: identifier,
+                fullnameOverride: identifier,
                 image: image.imageName,
                 imagePullSecrets: [registrySecret.metadata.name],
                 backendType: 'grpc',
                 containerPort: 50051,
                 env: {
+                    DEBUG: 'true',
                     EVENTSTORE_SECRET: eventstoreSecret.metadata.name,
                     EVENTSTORE_SCHEME: 'discover',
                     EVENTSTORE_HOST: args.eventstoreHost,
@@ -84,12 +86,12 @@ export class VehicleProcessor extends pulumi.ComponentResource {
 
         this.internalHost =
             pulumi.all([chart, args.namespace])
-            .apply(([chart, namespace]) => chart.getResourceProperty('v1/Service', namespace, chartName, 'metadata'))
+            .apply(([chart, namespace]) => chart.getResourceProperty('v1/Service', namespace, identifier, 'metadata'))
             .apply(meta => `${meta.name}.${meta.namespace}.svc.cluster.local`)
 
         this.internalPort =
             pulumi.all([chart, args.namespace])
-            .apply(([chart, namespace]) => chart.getResourceProperty('v1/Service', namespace, chartName, 'spec'))
+            .apply(([chart, namespace]) => chart.getResourceProperty('v1/Service', namespace, identifier, 'spec'))
             .apply(spec => spec.ports.find(port => port.name === 'grpc')!.port)
 
 
@@ -100,7 +102,7 @@ export class VehicleProcessor extends pulumi.ComponentResource {
     }
 }
 
-export const vehicleProcessor = new VehicleProcessor('v1', {
+export const vehicleProcessor = new VehicleProcessor(config.env, {
     namespace: cosmicdealershipNamespace.metadata.name,
     registryEndpoint: config.registryEndpoint,
     imageRegistry: config.imageRegistry,

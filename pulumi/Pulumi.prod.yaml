@@ -1,23 +1,25 @@
 config:
-  auth0:adminEmail:
-    secure: AAABAEYv/sklizHOmfQYMQib0FhkZXcthBSsiTH1FgmbixFMuv8S3cQKNIAltomWV38=
-  auth0:adminPassword:
-    secure: AAABACq3gkzo5x4U0KDAHAoS6B9X3xpxDNyx9IarvuPAA4agHHDu2j2NEkiUjSwvhvqaXA+h2W0=
   auth0:clientId:
     secure: AAABAAesTXUn3azATBo1Q5TwDEclZUOROhsF+jO3ZzAFeGGo+7zGQK4WmqIoYiVg3VVCLe7nPc26ij4J+Sy31g==
   auth0:clientSecret:
     secure: AAABAESlr8cAqRoaq+pWGzdl1tX3d8BZOTZsUKhB2WpJFnDComPGkT9gUn++0UQc2cfgIWVkC5DZVLJ4fSsHbYTjnquGKhg7fiuQB44FI/6kR8gJzm/PudL+WnL9Zn/e
   auth0:domain: cosmicdealership.us.auth0.com
+  auth0:testAdminEmail: admin@cosmicdealership.com
+  auth0:testAdminPassword:
+    secure: AAABAKTp4CWdy6S9yLDjbosPw2lgh2Lq/ldjo+MGbPOsFue5iChYZg==
+  auth0:testCustomerEmail: customer@cosmicdealership.com
+  auth0:testCustomerPassword:
+    secure: AAABACdLtilr/rxmndyffjvAUmYqoOYBLckYD7I0RYkaF7x1s8CQ7A==
   cloudflare:apiKey:
     secure: AAABAKTyQAo/k9d4H4GSukENFeCHyJCetcMkFMgj0UmKRbuUVj4G/uRG0BR3zbrme1adxCAwziMEYrL8eiU3VPVmCH+z
   cloudflare:email:
     secure: AAABACKkoA/SmrlDkdSkqO9OoJobsMI5esCFggUd1z7OtHmj0abYmDBY0VgIgoRC1xA=
   digitalocean:spacesAccessId:
-    secure: AAABAAiguDumix7Eb+3dpqcAS/6TABW9EPUbLcoZktt62wnCu+TpNMHC2/N2u107ND6rFA==
+    secure: AAABAPEU7koMfIz+epmWobJiVX6a9M5WS4qaEIn8Je44hzZqBMUJDDMK57Cy5PyVD2Tbew==
   digitalocean:spacesSecretKey:
-    secure: AAABAFNfNef6sG5TIaOjz255T9S2iy5PN7i3wiipIqa5sQ+1cFDclqnLd2BNTFnQ9WixYOb0ocXLzEC5VCnNU+kZQWNyEuLh6JOv
+    secure: AAABACkN7eEfbqfM0xUAzqGBJTU+8Y9P/7ojGVgw5ybp9keygUifwhHWumnH9WWpYABr0e3a+uJXnodJx2U9k0q3otao73vBPHwJ
   digitalocean:token:
-    secure: AAABAL1990khV7eZEUvIEDSMhqK7OM3ZTbAsmcp+i76eJgExtF6qf+zGV2CDkoJvtfj5jtgU45SwA2Z7+JER5u8JDSeMN2erFd1AysXNv/Cfl3pmpa2v9AIn6JGmqva2
+    secure: AAABAE5ZmYfF3VpMLjfhlrLIvYJZ5NHGvdsOVvlLP/HcNb0ZVdCpOA9TLDnRi/KRY3FIu/MxTkaycuuZfcg0wIIFyYNhSfDvOPqJ8lOx4HyHWb95GpLdQNOzOd0OyZjJ
   dns:zone: cosmicdealership.com
   eventstore:adminPassword:
     secure: AAABAJNc3zw+wgHyN6qT6YbDx7i6qS655z9c5i8eib4NKrepR1jtBg==

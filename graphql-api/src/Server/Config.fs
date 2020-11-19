@@ -32,6 +32,7 @@ type SeqConfig =
 type OAuthConfig =
     { Audience: string
       Issuer: string
+      // NB: only used for development
       CertPath: string } with
     static member Load(secretsDir:string) =
         let secretName = Env.getEnv "OAUTH_SECRET" "oauth"

@@ -108,11 +108,16 @@ export class EventStore extends pulumi.ComponentResource {
                     enabled: true
                 },
                 eventStoreConfig: {
-                    EVENTSTORE_GOSSIP_ON_SINGLE_NODE: 'True'
+                    EVENTSTORE_GOSSIP_ON_SINGLE_NODE: 'True',
+                    EVENTSTORE_START_STANDARD_PROJECTIONS: "True",
+                    EVENTSTORE_RUN_PROJECTIONS: "All"
                 },
                 resources: {
                     requests: { cpu: '250m', memory: '500Mi' },
-                    limits: { cpu: '500m', memory: '500Mi' }
+                    limits: { cpu: '500m', memory: '1Gi' }
+                },
+                nodeSelector: {
+                    'doks.digitalocean.com/node-pool': 'database'
                 }
             }
         }, { parent: this })
@@ -175,7 +180,7 @@ export class EventStore extends pulumi.ComponentResource {
 }
 
 export const eventstore = new EventStore(config.env, {
-    chartVersion: '0.1.1',
+    chartVersion: '0.1.2',
     namespace: cosmicdealershipNamespace.metadata.name,
     adminPassword: config.eventstoreConfig.adminPassword,
     users: config.eventstoreConfig.users

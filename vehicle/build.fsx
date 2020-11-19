@@ -88,6 +88,11 @@ BuildTask.create "PublishReader" [testUnits] {
     publish "Reader"
 }
 
+BuildTask.create "PublishIntegrationTests" [] {
+    Trace.trace "Publishing Integration Tests..."
+    publish "IntegrationTests"
+}
+
 BuildTask.create "RunProcessor" [] {
     DotNet.exec id "run" "--project src/Processor/Processor.fsproj"
     |> ignore

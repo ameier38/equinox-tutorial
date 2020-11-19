@@ -4,8 +4,8 @@ theme:
   name: material
   palette:
     primary: purple
-  logo: etc/rocket.svg
-  favicon: etc/rocket.svg
+  logo: assets/images/rocket.svg
+  favicon: assets/images/rocket.svg
 plugins:
   - search
   - awesome-pages:

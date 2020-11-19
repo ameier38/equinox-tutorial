@@ -14,7 +14,8 @@ open System.Text.RegularExpressions
 
 let host = Env.getEnv "GRAPHQL_HOST" "localhost" 
 let port = Env.getEnv "GRAPHQL_PORT" "4000" |> int
-let url = sprintf "http://%s:%i" host port
+// let url = sprintf "http://%s:%i" host port
+let url = "https://graphql.cosmicdealership.com"
 let secretsDir = Env.getEnv "SECRETS_DIR" "/dev/secrets/cosmicdealership"
 let privateKeyPath = Path.Join(secretsDir, "oauth", "private-key.pem")
 
@@ -49,7 +50,8 @@ type TokenFactory(privateKeyPath:string) =
                 notBefore = Nullable(now),
                 expires = Nullable(now.AddDays(2.0)),
                 signingCredentials = signingCreds)
-        let token = tokenHandler.WriteToken(token)
+        // let token = tokenHandler.WriteToken(token)
+        let token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ijk2M1pCSl8zVEg1ZklYVzZjazJ0OCJ9.eyJpc3MiOiJodHRwczovL2Nvc21pY2RlYWxlcnNoaXAudXMuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDVmYTQyYmVhOWJhNDUzMDA2OWVjNzkxMyIsImF1ZCI6WyJodHRwczovL2Nvc21pY2RlYWxlcnNoaXAuY29tIiwiaHR0cHM6Ly9jb3NtaWNkZWFsZXJzaGlwLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2MDU2NDc1MDEsImV4cCI6MTYwNTczMzkwMSwiYXpwIjoib1FEWTF5dEMxekJraEc5R01TQlZVQXlwb3dWeEJkWVciLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwicGVybWlzc2lvbnMiOlsiYWRkOnZlaGljbGVzIiwiZ2V0OnZlaGljbGVzIiwibGVhc2U6dmVoaWNsZSIsImxpc3Q6dmVoaWNsZXMiLCJyZW1vdmU6dmVoaWNsZXMiLCJyZXR1cm46dmVoaWNsZXMiXX0.m-rQROQns5mULWOUWLpyU2JLiZbDkGWSJkNneKFskvg2ZpNR2Ut4XeoDvyfWNYDU5f7uipk8f8Q3mlD-gSG0tXP2ILdcKy_FWoWaGXiQMrR-tPudhi9XKS3avyrPk3dvXTtzbYBIrWDe77Yho7eoN0Cwob28os0z2WJRrk7g-hZAJlKPWEgdomra_k-iPdDxqHb5U-m5uIQ9q1ASbCSDJ9iJuHkcQYSEFzPT5SwRgChL5oQ7BWW2WoUEe9xpG6cl21WydJUau7qbgqexpuTcVv8IGtenXa-NAS-X4LT2Czs9AuVWEKx25UJpmBkSCp6lt-qxPvWIKMIO0vvAVfwihA"
         printfn "token: %s" token
         token
 

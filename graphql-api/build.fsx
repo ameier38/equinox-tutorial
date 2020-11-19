@@ -52,7 +52,7 @@ BuildTask.create "UpdateProtos" [copyGenerated] {
 
 BuildTask.create "Restore" [] {
     Trace.trace "Restoring..."
-    [ "src/GraphqlApi/GraphqlApi.fsproj"
+    [ "src/Server/Server.fsproj"
       "src/IntegrationTests/IntegrationTests.fsproj" ]
     |> List.iter (DotNet.restore id)
 }
@@ -85,9 +85,9 @@ BuildTask.create "Publish" [] {
         else failwithf "environment not supported"
     DotNet.publish (fun args ->
         { args with
-            OutputPath = Some "src/GraphqlApi/out"
+            OutputPath = Some "src/Server/out"
             Runtime = Some runtime })
-        "src/GraphqlApi/GraphqlApi.fsproj"
+        "src/Server/Server.fsproj"
 }
 
 BuildTask.create "PublishIntegrationTests" [] {
@@ -106,7 +106,7 @@ BuildTask.create "PublishIntegrationTests" [] {
 }
 
 BuildTask.create "Serve" [] {
-    DotNet.exec id "watch" "--project src/GraphqlApi/GraphqlApi.fsproj run"
+    DotNet.exec id "watch" "--project src/Server/Server.fsproj run"
     |> ignore
 }
 

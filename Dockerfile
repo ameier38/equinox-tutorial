@@ -1,8 +1,5 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1
 
-ARG FAKE_VERSION=5.20.4-alpha.1642
-ARG PAKET_VERSION=5.251.0
-
 # Avoid warnings by switching to noninteractive
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -54,14 +51,14 @@ RUN mkdir /tmp/go && \
     tar -C /usr/local -xzf /tmp/go/go.tar.gz && \
     rm -rf /tmp/go
 
-# Download buf
+# Install buf
 # ref: https://buf.build/docs/introduction
 RUN curl -sSL \
         https://github.com/bufbuild/buf/releases/download/v${BUF_VERSION}/buf-$(uname -s)-$(uname -m) \
         -o /usr/local/bin/buf && \
     chmod +x /usr/local/bin/buf
 
-# Download protocol buffer compiler (protoc) and well known type definitions
+# Install protocol buffer compiler (protoc) and well known type definitions
 # ref: https://github.com/protocolbuffers/protobuf/releases
 RUN mkdir /tmp/protoc && \
     curl -sSL \
@@ -94,12 +91,6 @@ RUN mkdir /tmp/grpc_tools && \
 # ref: https://github.com/protocolbuffers/protobuf-go
 RUN go get google.golang.org/grpc@v${GO_GRPC_PLUGIN_VERSION} && \
     go get google.golang.org/protobuf/cmd/protoc-gen-go@v${GO_PLUGIN_VERSION}
-
-# install dotnet tools
-RUN dotnet tool install -g fake-cli --version ${FAKE_VERSION} \
-    && dotnet tool install -g paket --version ${PAKET_VERSION} \
-    && dotnet tool install -g femto \
-    && dotnet tool install -g snowflaqe
 
 # Switch back to dialog for any ad-hoc use of apt-get
 ENV DEBIAN_FRONTEND=dialog

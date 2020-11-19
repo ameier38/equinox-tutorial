@@ -1,15 +1,9 @@
 version: '3.7'
 
-x-fsharp-args: &fsharp-args
-  FAKE_VERSION: 5.20.4-alpha.1642
-  PAKET_VERSION: 5.251.0
-
 services:
   dev:
     build:
       context: .
-      args:
-        <<: *fsharp-args
     command: /bin/sh -c "while sleep 1000; do :; done"
     networks:
       - cosmicdealership
@@ -59,6 +53,11 @@ services:
       - "27017:27017"
     networks:
       - cosmicdealership
+  generate-protos:
+    build: ./protos
+    command: Generate
+    volumes: 
+      - ./protos:/work
   upload-api:
     build: ./upload-api
     ports: 
@@ -81,9 +80,7 @@ services:
   vehicle-processor:
     build:
       context: vehicle
-      dockerfile: deploy/processor.Dockerfile
-      args:
-        <<: *fsharp-args
+      dockerfile: docker/processor.Dockerfile
     ports:
       - "50051:50051"
     environment:
@@ -101,9 +98,7 @@ services:
   vehicle-reactor:
     build:
       context: vehicle
-      dockerfile: deploy/reactor.Dockerfile
-      args:
-        <<: *fsharp-args
+      dockerfile: docker/reactor.Dockerfile
     environment: 
       DEBUG: "true"
       EVENTSTORE_HOST: eventstore
@@ -121,9 +116,7 @@ services:
   vehicle-reader:
     build:
       context: vehicle
-      dockerfile: deploy/reader.Dockerfile
-      args:
-        <<: *fsharp-args
+      dockerfile: docker/reader.Dockerfile
     ports:
       - "50052:50051"
     environment: 
@@ -140,10 +133,25 @@ services:
       - mongo
     networks:
       - cosmicdealership
+  test-vehicle:
+    build:
+      context: vehicle
+      dockerfile: docker/tester.Dockerfile
+    environment: 
+      VEHICLE_PROCESSOR_HOST: vehicle-processor
+      VEHICLE_PROCESSOR_PORT: 50051
+      VEHICLE_READER_HOST: vehicle-reader
+      VEHICLE_READER_PORT: 50051
+    depends_on: 
+      - vehicle-processor
+      - vehicle-reactor
+      - vehicle-reader
+    networks:
+      - cosmicdealership
   graphql-api:
     build:
       context: graphql-api
-      target: runner
+      dockerfile: docker/graphql.Dockerfile
     ports:
       - "4000:4000"
     environment:
@@ -168,7 +176,7 @@ services:
   test-graphql-api:
     build:
       context: graphql-api
-      target: tester
+      dockerfile: docker/tester.Dockerfile
     environment:
       SECRETS_DIR: /run/secrets
       GRAPHQL_HOST: graphql-api
@@ -193,9 +201,10 @@ services:
   handbook:
     build:
       context: handbook
-      target: builder
-    volumes: 
-      - .:/docs
+      # target: base
+    # volumes: 
+    #   - ./handbook/docs:/docs/docs
+    #   - ./handbook/mkdocs.yml:/docs/mkdocs.yml
     ports: 
       - 8000:8000
 

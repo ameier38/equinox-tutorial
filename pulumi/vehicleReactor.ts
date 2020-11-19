@@ -29,7 +29,9 @@ export class VehicleReactor extends pulumi.ComponentResource {
     constructor(name:string, args:VehicleReactorArgs, opts:pulumi.ComponentResourceOptions) {
         super('cosmicdealership:VehicleReactor', name, {}, opts)
 
-        const registrySecret = new k8s.core.v1.Secret(`${name}-vehicle-reactor-registry`, {
+        const identifier = `${name}-vehicle-reactor`
+
+        const registrySecret = new k8s.core.v1.Secret(`${identifier}-registry`, {
             metadata: { namespace: args.namespace },
             type: 'kubernetes.io/dockerconfigjson',
             stringData: {
@@ -37,7 +39,7 @@ export class VehicleReactor extends pulumi.ComponentResource {
             }
         }, { parent: this })
 
-        const eventstoreSecret = new k8s.core.v1.Secret(`${name}-vehicle-reactor-eventstore`, {
+        const eventstoreSecret = new k8s.core.v1.Secret(`${identifier}-eventstore`, {
             metadata: { namespace: args.namespace },
             stringData: {
                 user: args.eventstoreUser,
@@ -45,7 +47,7 @@ export class VehicleReactor extends pulumi.ComponentResource {
             }
         }, { parent: this })
 
-        const mongoSecret = new k8s.core.v1.Secret(`${name}-vehicle-reactor-mongo`, {
+        const mongoSecret = new k8s.core.v1.Secret(`${identifier}-mongo`, {
             metadata: { namespace: args.namespace },
             stringData: {
                 user: args.mongoUser,
@@ -54,18 +56,17 @@ export class VehicleReactor extends pulumi.ComponentResource {
         }, { parent: this })
 
         const image = new docker.Image(name, {
-            imageName: pulumi.interpolate `${args.registryEndpoint}/cosmicdealership/${name}-vehicle-reactor`,
+            imageName: pulumi.interpolate `${args.registryEndpoint}/cosmicdealership/${identifier}`,
             build: {
                 context: path.join(config.root, 'vehicle'),
-                dockerfile: path.join(config.root, 'vehicle', 'deploy', 'reactor.Dockerfile'),
+                dockerfile: path.join(config.root, 'vehicle', 'docker', 'reactor.Dockerfile'),
                 target: 'runner',
                 env: { DOCKER_BUILDKIT: '1' }
             },
             registry: args.imageRegistry
         }, { parent: this })
 
-        const chartName = `${name}-vehicle-reactor`
-        new k8s.helm.v3.Chart(name, {
+        new k8s.helm.v3.Chart(identifier, {
             chart: 'base-service',
             version: '0.1.2',
             fetchOpts: {
@@ -73,12 +74,13 @@ export class VehicleReactor extends pulumi.ComponentResource {
             },
             namespace: args.namespace,
             values: {
-                nameOverride: chartName,
-                fullnameOverride: chartName,
+                nameOverride: identifier,
+                fullnameOverride: identifier,
                 image: image.imageName,
                 imagePullSecrets: [registrySecret.metadata.name],
                 backendType: 'console',
                 env: {
+                    DEBUG: 'true',
                     EVENTSTORE_SECRET: eventstoreSecret.metadata.name,
                     EVENTSTORE_SCHEME: 'discover',
                     EVENTSTORE_HOST: args.eventstoreHost,
@@ -99,7 +101,7 @@ export class VehicleReactor extends pulumi.ComponentResource {
     }
 }
 
-export const vehicleReactor = new VehicleReactor('v1', {
+export const vehicleReactor = new VehicleReactor(config.env, {
     namespace: cosmicdealershipNamespace.metadata.name,
     registryEndpoint: config.registryEndpoint,
     imageRegistry: config.imageRegistry,

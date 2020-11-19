@@ -43,7 +43,7 @@ type Auth0ProviderValue =
     { user: AsyncOperation<User>
       getToken: unit -> Async<AccessToken>
       login: unit -> unit
-      logout: unit -> unit }
+      logout: string -> unit }
 
 [<RequireQualifiedAccess>]
 module private Auth0Interop =
@@ -53,13 +53,18 @@ module private Auth0Interop =
           redirect_uri: string
           audience: string }
 
+    // ref: https://auth0.github.io/auth0-spa-js/interfaces/logoutoptions.html
+    type LogoutOptions =
+        { client_id: string
+          returnTo: string }
+
     type IAuth0Client =
         abstract member loginWithRedirect: unit -> unit
         abstract member handleRedirectCallback: unit -> JS.Promise<unit>
         abstract member isAuthenticated: unit -> JS.Promise<bool>
         abstract member getUser: unit -> JS.Promise<ProfileDto>
         abstract member getTokenSilently: unit -> JS.Promise<string>
-        abstract member logout: unit -> unit
+        abstract member logout: LogoutOptions -> unit
 
     type IAuth0ClientStatic =
         [<Emit("new $0($1)")>]
@@ -77,9 +82,9 @@ module private Auth0Interop =
 
     let defaultAuth0Context =
         { user = Unresolved
-          getToken = fun () -> failwithf "Auth0 not initialized"
-          login = fun () -> failwithf "Auth0 not initialized"
-          logout = fun () -> failwithf "Auth0 not initialized" }
+          getToken = fun _ -> failwithf "Auth0 not initialized"
+          login = fun _ -> failwithf "Auth0 not initialized"
+          logout = fun _ -> failwithf "Auth0 not initialized" }
 
     let Auth0Context = React.createContext("Auth0Context", defaultAuth0Context)
 
@@ -122,7 +127,7 @@ module private Auth0Interop =
 
             let login () = auth0Client.loginWithRedirect()
 
-            let logout () = auth0Client.logout()
+            let logout (returnTo:string) = auth0Client.logout({client_id = props.clientId; returnTo = returnTo})
 
             let providerValue =
                 { user = user

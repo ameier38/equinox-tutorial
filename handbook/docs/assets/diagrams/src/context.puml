@@ -1,0 +1,14 @@
+@startuml context 
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+title [System Context] Cosmic Dealership
+
+Person(admin, "Administrator", "An administrator of the Cosmic Dealership")
+Person(customer, "Customer", "A customer of the Cosmic Dealership")
+System(dealership, "Cosmic Dealership", "Allows users to buy and lease spaceships")
+System_Ext(auth0, "Auth0", "Authenticates users")
+Rel(admin, dealership, "Creates and updates vehicles; Approves purchases and leases", "HTTPS")
+Rel(customer, dealership, "Views, leases, and purchases vehicles", "HTTPS")
+Rel(dealership, auth0, "Authenticates users", "HTTPS")
+
+@enduml

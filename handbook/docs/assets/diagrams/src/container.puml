@@ -1,0 +1,30 @@
+@startuml container
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title [Container] Cosmic Dealership
+
+Person(admin, "Administrator", "An administrator of the Cosmic Dealership")
+Person(customer, "Customer", "A customer of the Cosmic Dealership")
+System_Boundary(dealership, "Cosmic Dealership") {
+    Container(web_app, "Web App", "F#, Fable, nginx")
+    Container(graphql, "GraphQL API", "F#, ASP.NET, Giraffe")
+    Container(vehicle_processor, "Vehicle Processor", "F#, gRPC")
+    Container(vehicle_reactor, "Vehicle Reactor", "F#")
+    Container(vehicle_reader, "Vehicle Reader", "F#, gRPC")
+    ContainerDb(eventstore, "EventStoreDB", "Event")
+    ContainerDb(mongo, "MongoDB", "Document")
+}
+System_Ext(auth0, "Auth0", "Authenticates users")
+Rel(admin, web_app, "Creates and updates vehicles; Approves purchases and leases", "HTTP")
+Rel(customer, web_app, "Views, leases, and purchases vehicles", "HTTP")
+Rel(web_app, graphql, "Makes API calls to", "HTTPS")
+Rel(web_app, auth0, "Redirects to login", "HTTPS")
+Rel(graphql, vehicle_processor, "Commands", "gRPC")
+Rel(graphql, vehicle_reader, "Queries", "gRPC")
+Rel(vehicle_processor, eventstore, "Stores events in", "TCP")
+Rel(vehicle_reader, mongo, "Reads models from", "TCP")
+Rel(vehicle_reactor, eventstore, "Subscribes to", "TCP")
+Rel(vehicle_reactor, mongo, "Maintains models in", "TCP")
+Rel(graphql, auth0, "Verifies access token", "HTTPS")
+
+@enduml

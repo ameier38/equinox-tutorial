@@ -89,7 +89,10 @@ let render =
                                 | Resolved user ->
                                     let isAuthenticated = match user with Authenticated _ -> true | Anonymous -> false
                                     Html.div [
-                                        loginButton ({| isAuthenticated = isAuthenticated; login = auth0.login; logout = auth0.logout |})
+                                        loginButton
+                                            {| isAuthenticated = isAuthenticated;
+                                               login = auth0.login;
+                                               logout = fun () -> auth0.logout(Config.appConfig.Url) |}
                                         if not isAuthenticated then
                                             signupButton ({| login = auth0.login |})
                                     ]

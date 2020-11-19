@@ -1,0 +1,16 @@
+version: v1beta1
+
+# NB: see Dockerfile for how plugin binaries are installed
+plugins:
+  - name: go
+    out: gen/go
+    path: /root/go/bin/protoc-gen-go
+  - name: go-grpc
+    out: gen/go
+    path: /root/go/bin/protoc-gen-go-grpc
+  # NB: uses protoc to generate stubs
+  - name: csharp
+    out: gen/csharp
+  - name: csharp-grpc
+    out: gen/csharp
+    path: /usr/local/bin/protoc-gen-csharp-grpc

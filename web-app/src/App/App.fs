@@ -91,10 +91,10 @@ let render (state:State) (dispatch:Msg -> unit) =
         router.children [
             Mui.cssBaseline []
             Auth0.provider [
-                Auth0.domain Config.authConfig.Domain
-                Auth0.clientId Config.authConfig.ClientId
+                Auth0.domain Config.oauthConfig.Domain
+                Auth0.clientId Config.oauthConfig.ClientId
                 Auth0.redirectUri Config.appConfig.Url
-                Auth0.audience Config.authConfig.Audience
+                Auth0.audience Config.oauthConfig.Audience
                 Auth0.defaultOnRedirectCallback (fun () -> dispatch NavigateToLanding)
                 Auth0.children [
                     GraphQL.provider [

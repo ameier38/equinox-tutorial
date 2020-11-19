@@ -5,22 +5,22 @@ import * as k8s from '@pulumi/kubernetes'
 import * as path from 'path'
 import * as config from './config'
 import { identityProvider } from './identityProvider'
-// import { graphqlApi } from './graphqlApi'
+import { graphqlApi } from './graphqlApi'
 import { cosmicdealershipNamespace } from './namespace'
 import { zone } from './zone'
 
 type WebAppArgs = {
     zoneId: pulumi.Input<string>
-    authDomain: pulumi.Input<string>
     acmeEmail: pulumi.Input<string>
-    clientId: pulumi.Input<string>
-    audience: pulumi.Input<string> 
+    oauthDomain: pulumi.Input<string>
+    oauthClientId: pulumi.Input<string>
+    oauthAudience: pulumi.Input<string> 
     namespace: pulumi.Input<string>
     registryEndpoint: pulumi.Input<string>
     imageRegistry: pulumi.Input<docker.ImageRegistry>
     dockerCredentials: pulumi.Input<string>
     loadBalancerAddress: pulumi.Input<string>
-    graphqlApiHost: pulumi.Input<string>
+    graphqlHost: pulumi.Input<string>
 }
 
 class WebApp extends pulumi.ComponentResource {
@@ -31,7 +31,9 @@ class WebApp extends pulumi.ComponentResource {
     constructor(name:string, args:WebAppArgs, opts:pulumi.ComponentResourceOptions) {
         super('cosmicdealership:WebApp', name, {}, opts)
 
-        const record = new cloudflare.Record(`${name}-web-app`, {
+        const identifier = `${name}-web-app`
+
+        const record = new cloudflare.Record(identifier, {
             zoneId: args.zoneId,
             // NB: root
             name: '@',
@@ -41,7 +43,7 @@ class WebApp extends pulumi.ComponentResource {
 
         this.host = record.hostname
 
-        const registrySecret = new k8s.core.v1.Secret(`${name}-web-app-registry`, {
+        const registrySecret = new k8s.core.v1.Secret(`${identifier}-registry`, {
             metadata: { namespace: args.namespace },
             type: 'kubernetes.io/dockerconfigjson',
             stringData: {
@@ -50,29 +52,27 @@ class WebApp extends pulumi.ComponentResource {
         }, { parent: this })
 
         const image = new docker.Image(name, {
-            imageName: pulumi.interpolate `${args.registryEndpoint}/cosmicdealership/${name}-web-app`,
+            imageName: pulumi.interpolate `${args.registryEndpoint}/cosmicdealership/${identifier}`,
             build: {
                 context: path.join(config.root, 'web-app'),
-                dockerfile: path.join(config.root, 'web-app', 'deploy', 'customer.Dockerfile'),
                 target: 'runner',
                 args: {
                     APP_SCHEME: 'https',
                     APP_HOST: this.host,
                     APP_PORT: '80',
-                    AUTH_DOMAIN: args.authDomain,
-                    AUTH_AUDIENCE: args.audience, 
-                    AUTH_CLIENT_ID: args.clientId,
-                    GRAPHQL_API_SCHEME: 'https',
-                    GRAPHQL_API_HOST: args.graphqlApiHost,
-                    GRAPHQL_API_PORT: '80'
+                    OAUTH_DOMAIN: args.oauthDomain,
+                    OAUTH_AUDIENCE: args.oauthAudience, 
+                    OAUTH_CLIENT_ID: args.oauthClientId,
+                    GRAPHQL_SCHEME: 'https',
+                    GRAPHQL_HOST: args.graphqlHost,
+                    GRAPHQL_PORT: '80'
                 },
                 env: { DOCKER_BUILDKIT: '1' }
             },
             registry: args.imageRegistry
         }, { parent: this })
 
-        const chartName = `${name}-web-app`
-        const chart = new k8s.helm.v3.Chart(name, {
+        const chart = new k8s.helm.v3.Chart(identifier, {
             chart: 'base-service',
             version: '0.1.2',
             fetchOpts: {
@@ -80,8 +80,8 @@ class WebApp extends pulumi.ComponentResource {
             },
             namespace: args.namespace,
             values: {
-                nameOverride: chartName,
-                fullnameOverride: chartName,
+                nameOverride: identifier,
+                fullnameOverride: identifier,
                 image: image.imageName,
                 imagePullSecrets: [registrySecret.metadata.name],
                 backendType: 'http',
@@ -91,16 +91,16 @@ class WebApp extends pulumi.ComponentResource {
 
         this.internalHost =
             pulumi.all([chart, args.namespace])
-            .apply(([chart, namespace]) => chart.getResourceProperty('v1/Service', namespace, chartName, 'metadata'))
+            .apply(([chart, namespace]) => chart.getResourceProperty('v1/Service', namespace, identifier, 'metadata'))
             .apply(meta => `${meta.name}.${meta.namespace}.svc.cluster.local`)
 
         this.internalPort =
             pulumi.all([chart, args.namespace])
-            .apply(([chart, namespace]) => chart.getResourceProperty('v1/Service', namespace, chartName, 'spec'))
+            .apply(([chart, namespace]) => chart.getResourceProperty('v1/Service', namespace, identifier, 'spec'))
             .apply(spec => spec.ports.find(port => port.name === 'http')!.port)
 
         // NB: generates certificate
-        new k8s.apiextensions.CustomResource(`${name}-web-app`, {
+        new k8s.apiextensions.CustomResource(identifier, {
             apiVersion: 'getambassador.io/v2',
             kind: 'Host',
             metadata: { namespace: args.namespace },
@@ -113,7 +113,7 @@ class WebApp extends pulumi.ComponentResource {
         }, { parent: this })
 
         // NB: specifies how to direct incoming requests
-        new k8s.apiextensions.CustomResource(`${name}-web-app`, {
+        new k8s.apiextensions.CustomResource(identifier, {
             apiVersion: 'getambassador.io/v2',
             kind: 'Mapping',
             metadata: { namespace: args.namespace },
@@ -132,16 +132,16 @@ class WebApp extends pulumi.ComponentResource {
     }
 }
 
-// export const webApp = new WebApp('v1', {
-//     namespace: cosmicdealershipNamespace.metadata.name,
-//     registryEndpoint: config.registryEndpoint,
-//     imageRegistry: config.imageRegistry,
-//     dockerCredentials: config.dockerCredentials,
-//     authDomain: config.auth0Config.domain,
-//     acmeEmail: config.acmeEmail,
-//     clientId: identityProvider.webAppClientId,
-//     audience: config.audience,
-//     zoneId: zone.id,
-//     graphqlApiHost: graphqlApi.host,
-//     loadBalancerAddress: config.loadBalancerAddress
-// }, { providers: [ config.k8sProvider, config.cloudflareProvider ]})
+export const webApp = new WebApp(config.env, {
+    namespace: cosmicdealershipNamespace.metadata.name,
+    registryEndpoint: config.registryEndpoint,
+    imageRegistry: config.imageRegistry,
+    dockerCredentials: config.dockerCredentials,
+    acmeEmail: config.acmeEmail,
+    oauthDomain: config.auth0Config.domain,
+    oauthClientId: identityProvider.webAppClientId,
+    oauthAudience: config.oauthAudience,
+    zoneId: zone.id,
+    graphqlHost: graphqlApi.host,
+    loadBalancerAddress: config.loadBalancerAddress
+}, { providers: [ config.k8sProvider, config.cloudflareProvider ]})
