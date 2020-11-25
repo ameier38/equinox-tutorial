@@ -2,6 +2,18 @@ name: Pull Request
 on: [pull_request]
 
 jobs:
+  load_secrets:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Create secrets directories
+        run: mkdir --parents /dev/secrets/cosmicdealership/oauth
+      - name: Write secrets
+        run: |
+          echo ${{secrets.OAUTH_CERT}} > /dev/secrets/cosmicdealership/oauth/cert.pem
+          echo ${{secrets.OAUTH_PRIVATE_KEY}} > /dev/secrets/cosmicdealership/oauth/private-key.pem
+          echo ${{secrets.OAUTH_TEST_USER_EMAIL}} > /dev/secrets/cosmicdealership/oauth/test-user-email
+          echo ${{secrets.OAUTH_TEST_USER_PASSWORD}} > /dev/secrets/cosmicdealership/oauth/test-user-password
+
   generate_protos:
     runs-on: ubuntu-18.04
     steps:
@@ -15,6 +27,7 @@ jobs:
           name: protos
           path: ./protos/gen
           retention-days: 1
+
   test:
     runs-on: ubuntu-18.04
     needs: [generate_protos]
@@ -37,10 +50,16 @@ jobs:
           root: graphql
           target: UpdateProtos
       - name: Build Services
-        run: docker-compose up -d --build
+        run: docker-compose up -d --build vehicle-processor vehicle-reactor vehicle-reader graphql-api
+        env:
+          APP_ENV: dev
       - name: Test Vehicle Integrations
         run: docker-compose run --rm test-vehicle
       - name: Test GraphQL Integrations
         run: docker-compose run --rm test-graphql
+      - name: Rebuild services
+        run: docker-compose up -d --build web-app
+        env:
+          APP_ENV: prod
       - name: Test Web Integrations
         run: docker-compose run --rm test-web

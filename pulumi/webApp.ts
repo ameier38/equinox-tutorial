@@ -5,7 +5,7 @@ import * as k8s from '@pulumi/kubernetes'
 import * as path from 'path'
 import * as config from './config'
 import { identityProvider } from './identityProvider'
-import { graphqlApi } from './graphqlApi'
+// import { graphqlApi } from './graphqlApi'
 import { cosmicdealershipNamespace } from './namespace'
 import { zone } from './zone'
 
@@ -55,6 +55,7 @@ class WebApp extends pulumi.ComponentResource {
             imageName: pulumi.interpolate `${args.registryEndpoint}/cosmicdealership/${identifier}`,
             build: {
                 context: path.join(config.root, 'web-app'),
+                dockerfile: path.join(config.root, 'web-app', 'docker', 'server.Dockerfile'),
                 target: 'runner',
                 args: {
                     APP_SCHEME: 'https',
@@ -132,16 +133,16 @@ class WebApp extends pulumi.ComponentResource {
     }
 }
 
-export const webApp = new WebApp(config.env, {
-    namespace: cosmicdealershipNamespace.metadata.name,
-    registryEndpoint: config.registryEndpoint,
-    imageRegistry: config.imageRegistry,
-    dockerCredentials: config.dockerCredentials,
-    acmeEmail: config.acmeEmail,
-    oauthDomain: config.auth0Config.domain,
-    oauthClientId: identityProvider.webAppClientId,
-    oauthAudience: config.oauthAudience,
-    zoneId: zone.id,
-    graphqlHost: graphqlApi.host,
-    loadBalancerAddress: config.loadBalancerAddress
-}, { providers: [ config.k8sProvider, config.cloudflareProvider ]})
+// export const webApp = new WebApp(config.env, {
+//     namespace: cosmicdealershipNamespace.metadata.name,
+//     registryEndpoint: config.registryEndpoint,
+//     imageRegistry: config.imageRegistry,
+//     dockerCredentials: config.dockerCredentials,
+//     acmeEmail: config.acmeEmail,
+//     oauthDomain: config.auth0Config.domain,
+//     oauthClientId: identityProvider.webAppClientId,
+//     oauthAudience: config.oauthAudience,
+//     zoneId: zone.id,
+//     graphqlHost: graphqlApi.host,
+//     loadBalancerAddress: config.loadBalancerAddress
+// }, { providers: [ config.k8sProvider, config.cloudflareProvider ]})

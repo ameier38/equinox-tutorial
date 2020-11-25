@@ -11,7 +11,7 @@
     }
   },
   "scripts": {
-    "start": "webpack-dev-server --mode development --entry ./src/App/App.fsproj",
+    "serve": "webpack-dev-server --mode development --entry ./src/App/App.fsproj",
     "build": "webpack --mode production --entry ./src/App/App.fsproj"
   },
   "dependencies": {

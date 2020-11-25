@@ -1,20 +1,15 @@
 # Cosmic Dealership Handbook
-Cosmic Dealership is the premier spaceship dealership in the Universe!
-This handbook provides all the information you need to run the different services.
+This handbook provides all the information you need to operate the Cosmic Dealership.
+It is inspired by the [GitLab Handbook](https://about.gitlab.com/handbook/).
 
-## Using Production Application
-If you would like to just use the application then head over to
-https://cosmicdealership.com. 
+## Company
 
-## C4 Model
-[C4 Model](https://c4model.com/) is a framework for visualizing
-software architecture. The diagrams below describes the Cosmic Dealership
-architecture.
+## Legal
 
-### Context
+## Finance
 
-![context](./assets/diagrams/out/context/context.png)
+## Product
 
-### Container
+## Engineering
 
-![container](./assets/diagrams/out/container/container.png)
+## Sales

@@ -114,12 +114,12 @@ class Handbook extends pulumi.ComponentResource {
     }
 }
 
-export const handbook = new Handbook(config.env, {
-    namespace: cosmicdealershipNamespace.metadata.name,
-    registryEndpoint: config.registryEndpoint,
-    imageRegistry: config.imageRegistry,
-    dockerCredentials: config.dockerCredentials,
-    acmeEmail: config.acmeEmail,
-    zoneId: zone.id,
-    loadBalancerAddress: config.loadBalancerAddress
-}, { providers: [ config.k8sProvider, config.cloudflareProvider ]})
+// export const handbook = new Handbook(config.env, {
+//     namespace: cosmicdealershipNamespace.metadata.name,
+//     registryEndpoint: config.registryEndpoint,
+//     imageRegistry: config.imageRegistry,
+//     dockerCredentials: config.dockerCredentials,
+//     acmeEmail: config.acmeEmail,
+//     zoneId: zone.id,
+//     loadBalancerAddress: config.loadBalancerAddress
+// }, { providers: [ config.k8sProvider, config.cloudflareProvider ]})

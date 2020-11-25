@@ -151,12 +151,12 @@ services:
   graphql-api:
     build:
       context: graphql-api
-      dockerfile: docker/graphql.Dockerfile
+      dockerfile: docker/server.Dockerfile
     ports:
       - "4000:4000"
     environment:
       DEBUG: "true"
-      APP_ENV: prod
+      APP_ENV:
       SECRETS_DIR: /run/secrets
       SERVER_PORT: 4000
       VEHICLE_PROCESSOR_HOST: vehicle-processor
@@ -164,9 +164,8 @@ services:
       VEHICLE_READER_HOST: vehicle-reader
       VEHICLE_READER_PORT: 50051
       SEQ_HOST: seq
-    secrets:
-      - source: oauth-cert
-        target: oauth/cert.pem
+    volumes:
+      - ./graphql-api/certs/oauth.crt:/run/secrets/oauth/oauth.crt
     depends_on: 
       - vehicle-processor
       - vehicle-reactor
@@ -181,9 +180,8 @@ services:
       SECRETS_DIR: /run/secrets
       GRAPHQL_HOST: graphql-api
       GRAPHQL_PORT: 4000
-    secrets:
-      - source: oauth-private-key
-        target: oauth/private-key.pem
+    volumes: 
+      - ./graphql-api/certs/oauth.key:/run/secrets/oauth/oauth.key
     depends_on: 
       - graphql-api
     networks:
@@ -191,20 +189,54 @@ services:
   web-app:
     build:
       context: web-app
-    environment:
-      GRAPHQL_HOST: localhost
-      GRAPHQL_PORT: 4000
+      dockerfile: docker/server.Dockerfile
+      args:
+        APP_SCHEME: https
+        APP_HOST: web-app.proxy
+        APP_PORT: 443
+        GRAPHQL_SCHEME: https
+        GRAPHQL_HOST: graphql-api.proxy
+        GRAPHQL_PORT: 443
+    networks:
+      - cosmicdealership
     ports:
       - "3000:3000"
     depends_on:
       - graphql-api
+  proxy:
+    build:
+      context: proxy
+    networks:
+      cosmicdealership:
+        aliases:
+          - web-app.proxy
+          - graphql-api.proxy
+    ports:
+      - "443:443"
+  chrome:
+    build:
+      context: ./chrome
+    ports: 
+      - "3001:3000"
+    networks:
+      - cosmicdealership
+  test-web-app:
+    build:
+      context: web-app
+      dockerfile: docker/tester.Dockerfile
+    environment:
+      CHROME_DIR: /usr/local/bin
+      WEB_APP_HOST: web-app
+      WEB_APP_PORT: 443
+    networks:
+      - cosmicdealership
   handbook:
     build:
       context: handbook
-      # target: base
-    # volumes: 
-    #   - ./handbook/docs:/docs/docs
-    #   - ./handbook/mkdocs.yml:/docs/mkdocs.yml
+      target: base
+    volumes: 
+      - ./handbook/docs:/docs/docs
+      - ./handbook/mkdocs.yml:/docs/mkdocs.yml
     ports: 
       - 8000:8000
 
@@ -215,9 +247,3 @@ networks:
       config:
         - subnet: 10.5.0.0/16
           gateway: 10.5.0.1
-
-secrets:
-  oauth-cert:
-    file: /dev/secrets/cosmicdealership/oauth/cert.pem
-  oauth-private-key:
-    file: /dev/secrets/cosmicdealership/oauth/private-key.pem

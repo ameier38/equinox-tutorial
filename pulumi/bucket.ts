@@ -3,7 +3,7 @@ import * as digitalocean from '@pulumi/digitalocean'
 import * as config from './config'
 import * as path from 'path'
 
-const iconPath = path.join(config.root, 'etc', 'images', 'rocket.svg')
+const iconPath = path.join(config.root, 'etc', 'images', 'rocket.png')
 
 const uploadBucket = new digitalocean.SpacesBucket('upload', {
     acl: 'public-read'
@@ -12,7 +12,7 @@ const uploadBucket = new digitalocean.SpacesBucket('upload', {
 const iconObject = new digitalocean.SpacesBucketObject('icon', {
     bucket: uploadBucket.name,
     region: digitalocean.Regions.NYC3,
-    key: 'icon.svg',
+    key: 'icon.png',
     source: iconPath,
     acl: 'public-read'
 }, { provider: config.digitalOceanProvider })

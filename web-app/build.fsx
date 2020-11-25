@@ -17,6 +17,7 @@ let snowflaqe = run "snowflaqe"
 let clean = BuildTask.create "Clean" [] {
     !! "src/**/bin"
     ++ "src/**/obj"
+    ++ "src/**/out"
     |> Shell.cleanDirs 
     !! "**/*.fs.js"
     |> File.deleteAll
@@ -52,8 +53,8 @@ BuildTask.create "RestoreTests" [clean.IfNeeded] {
     |> Seq.iter (DotNet.restore id)
 }
 
-BuildTask.create "Start" [] {
-    Npm.run "start" id
+BuildTask.create "Serve" [] {
+    Npm.run "serve" id
 }
 
 BuildTask.create "Build" [] {
@@ -68,6 +69,21 @@ BuildTask.create "TestIntegrations" [] {
 BuildTask.create "TestIntegrationsHeadless" [] {
     let result = DotNet.exec id "run" "--project src/IntegrationTests/IntegrationTests.fsproj --headless"
     if not result.OK then failwithf "Error! %A" result.Errors
+}
+
+BuildTask.create "PublishIntegrationTests" [] {
+    Trace.trace "Publishing Integration Tests..."
+    // ref: https://docs.microsoft.com/en-us/dotnet/core/rid-catalog
+    let runtime =
+        if Environment.isLinux then "linux-x64"
+        elif Environment.isWindows then "win-x64"
+        elif Environment.isMacOS then "osx-x64"
+        else failwithf "environment not supported"
+    DotNet.publish (fun args ->
+        { args with
+            OutputPath = Some "src/IntegrationTests/out"
+            Runtime = Some runtime })
+        "src/IntegrationTests/IntegrationTests.fsproj"
 }
 
 let _default = BuildTask.createEmpty "Default" []

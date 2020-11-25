@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1 as builder
 # set build variables
 ARG APP_SCHEME=http
 ARG APP_HOST=localhost
-ARG APP_PORT=8080
+ARG APP_PORT=3000
 ARG GRAPHQL_SCHEME=http
 ARG GRAPHQL_HOST=localhost
 ARG GRAPHQL_PORT=4000

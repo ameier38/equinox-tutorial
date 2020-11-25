@@ -24,7 +24,7 @@ RUN dotnet tool restore
 # install dependencies
 COPY paket.dependencies .
 COPY paket.lock .
-RUN paket install
+RUN dotnet paket install
 
 # copy everything else and build
 COPY build.fsx .

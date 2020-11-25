@@ -7,3 +7,4 @@ paket-files
 node_modules
 obj
 bin
+out

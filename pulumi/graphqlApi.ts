@@ -59,7 +59,7 @@ export class GraphqlApi extends pulumi.ComponentResource {
             imageName: pulumi.interpolate `${args.registryEndpoint}/cosmicdealership/${identifier}`,
             build: {
                 context: path.join(config.root, 'graphql-api'),
-                dockerfile: path.join(config.root, 'graphql-api', 'docker', 'graphql.Dockerfile'),
+                dockerfile: path.join(config.root, 'graphql-api', 'docker', 'server.Dockerfile'),
                 target: 'runner',
                 env: { DOCKER_BUILDKIT: '1' }
             },
@@ -138,21 +138,21 @@ export class GraphqlApi extends pulumi.ComponentResource {
     }
 }
 
-export const graphqlApi = new GraphqlApi(config.env, {
-    namespace: cosmicdealershipNamespace.metadata.name,
-    registryEndpoint: config.registryEndpoint,
-    imageRegistry: config.imageRegistry,
-    dockerCredentials: config.dockerCredentials,
-    zoneId: zone.id,
-    subdomain: 'graphql',
-    loadBalancerAddress: config.loadBalancerAddress,
-    acmeEmail: config.acmeEmail,
-    oauthAudience: config.oauthAudience,
-    oauthIssuer: config.oauthIssuer,
-    vehicleProcessorHost: vehicleProcessor.internalHost,
-    vehicleProcessorPort: vehicleProcessor.internalPort.apply(p => `${p}`),
-    vehicleReaderHost: vehicleReader.internalHost,
-    vehicleReaderPort: vehicleReader.internalPort.apply(p => `${p}`),
-    seqHost: config.seqInternalHost,
-    seqPort: config.seqInternalPort.apply(p => `${p}`)
-}, { providers: [ config.k8sProvider, config.cloudflareProvider, config.auth0Provider ]})
+// export const graphqlApi = new GraphqlApi(config.env, {
+//     namespace: cosmicdealershipNamespace.metadata.name,
+//     registryEndpoint: config.registryEndpoint,
+//     imageRegistry: config.imageRegistry,
+//     dockerCredentials: config.dockerCredentials,
+//     zoneId: zone.id,
+//     subdomain: 'graphql',
+//     loadBalancerAddress: config.loadBalancerAddress,
+//     acmeEmail: config.acmeEmail,
+//     oauthAudience: config.oauthAudience,
+//     oauthIssuer: config.oauthIssuer,
+//     vehicleProcessorHost: vehicleProcessor.internalHost,
+//     vehicleProcessorPort: vehicleProcessor.internalPort.apply(p => `${p}`),
+//     vehicleReaderHost: vehicleReader.internalHost,
+//     vehicleReaderPort: vehicleReader.internalPort.apply(p => `${p}`),
+//     seqHost: config.seqInternalHost,
+//     seqPort: config.seqInternalPort.apply(p => `${p}`)
+// }, { providers: [ config.k8sProvider, config.cloudflareProvider, config.auth0Provider ]})

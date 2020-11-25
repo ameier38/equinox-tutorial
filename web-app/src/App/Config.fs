@@ -1,7 +1,7 @@
 module Config
 
 let getPortComponent (port:string) =
-    if port = "80" || port = "" then ""
+    if port = "80" || port = "443" || port = "" then ""
     else sprintf ":%s" port
 
 type GraphQLConfig =

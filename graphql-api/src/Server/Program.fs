@@ -70,7 +70,7 @@ let main argv =
                 | AppEnv.Prod ->
                     opts.Authority <- config.OAuthConfig.Issuer
                     opts.Audience <- config.OAuthConfig.Audience
-                // NB: dev environment will use custom validation parameters since we will generate tokens
+                // NB: dev environment will use custom validation parameters since we will generate test tokens
                 | AppEnv.Dev ->
                     let cert = new X509Certificate2(config.OAuthConfig.CertPath)
                     let signingKey = X509SecurityKey(cert)

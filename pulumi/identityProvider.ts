@@ -59,19 +59,19 @@ export class IdentityProvider extends pulumi.ComponentResource {
             appType: 'spa',
             tokenEndpointAuthMethod: 'none',
             callbacks: [
-                'http://localhost:3000',
+                'https://web-app.proxy',
                 pulumi.interpolate `https://${args.zone}`,
             ],
             allowedLogoutUrls: [
-                'http://localhost:3000',
+                'https://web-app.proxy',
                 pulumi.interpolate `https://${args.zone}`,
             ],
             webOrigins: [
-                'http://localhost:3000',
+                'https://web-app.proxy',
                 pulumi.interpolate `https://${args.zone}`
             ],
             allowedOrigins: [
-                'http://localhost:3000',
+                'https://web-app.proxy',
                 pulumi.interpolate `https://${args.zone}`
             ],
             grantTypes: ['authorization_code'],
