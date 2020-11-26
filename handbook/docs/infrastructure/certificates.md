@@ -92,8 +92,8 @@ certificates for our sites.
     subjectAltName = @alt_names
 
     [alt_names]
-    DNS.1 = web-app.localhost
-    DNS.2 = graphql-api.localhost
+    DNS.1 = web-app.proxy
+    DNS.2 = graphql-api.proxy
     ```
 
 6. Create certificate for site.

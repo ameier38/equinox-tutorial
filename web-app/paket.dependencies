@@ -2,6 +2,7 @@ version 5.251.0
 storage none
 source https://api.nuget.org/v3/index.json
 
+nuget canopy
 nuget Expecto
 nuget Fable.Core
 nuget Fable.Browser.Dom
@@ -18,11 +19,7 @@ nuget Feliz.UseDeferred
 nuget Feliz.UseElmish
 nuget FSharp.Core 4.7.2
 nuget FSharp.UMX
-
-group IntegrationTests
-    source https://api.nuget.org/v3/index.json
-    nuget canopy
-    nuget Selenium.WebDriver.ChromeDriver 86.0.4240.2200
+nuget Selenium.WebDriver.ChromeDriver 87.0.4280.2000
 
 // [ FAKE GROUP ]
 group Build

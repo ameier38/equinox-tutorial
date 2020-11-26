@@ -5,15 +5,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Infrastructure.fs" />
+    <Compile Include="Config.fs" />
     <Compile Include="Program.fs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\..\packages\integrationtests\Selenium.WebDriver.ChromeDriver\driver\linux64\chromedriver">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\packages\integrationtests\Selenium.WebDriver.ChromeDriver\driver\win32\chromedriver.exe">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

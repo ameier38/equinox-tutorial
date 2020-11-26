@@ -1,15 +1,6 @@
 version: '3.7'
 
 services:
-  dev:
-    build:
-      context: .
-    command: /bin/sh -c "while sleep 1000; do :; done"
-    networks:
-      - cosmicdealership
-    volumes:
-      - .:/workspace
-      - ~/.nuget/packages:/root/.nuget/packages
   seq:
     image: datalust/seq:5.1
     environment:
@@ -225,9 +216,12 @@ services:
       context: web-app
       dockerfile: docker/tester.Dockerfile
     environment:
-      CHROME_DIR: /usr/local/bin
-      WEB_APP_HOST: web-app
-      WEB_APP_PORT: 443
+      CHROME_HOST: chrome
+      CHROME_PORT: 3000
+      CHROME_DRIVER_DIR: /usr/local/bin
+      CLIENT_SCHEME: https
+      CLIENT_HOST: web-app.proxy
+      CLIENT_PORT: 443
     networks:
       - cosmicdealership
   handbook:

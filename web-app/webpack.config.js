@@ -1,14 +1,23 @@
-// Note this only includes basic configuration for development mode.
-// For a more comprehensive configuration check:
-// https://github.com/fable-compiler/webpack-config-template
-
 const DotenvPlugin = require("dotenv-webpack")
+const HtmlWebpackPlugin = require("html-webpack-plugin")
 const path = require("path")
 const webpack = require("webpack");
 
 module.exports = (env, argv) => {
     const mode = argv.mode
     const entry = argv.entry
+
+    const htmlPlugin = new HtmlWebpackPlugin({
+        filename: 'index.html',
+        template: path.resolve('./src/App/index.html'),
+        favicon: path.resolve('./src/App/images/rocket.svg')
+    })
+
+    const dotenvPlugin = new DotenvPlugin({
+        path: path.join(__dirname, '.env'),
+        silent: true,
+        systemvars: true
+    })
 
     return {
         mode: mode,
@@ -31,20 +40,14 @@ module.exports = (env, argv) => {
         },
         plugins: mode === 'development' ?
             [
-                new DotenvPlugin({
-                    path: path.join(__dirname, '.env'),
-                    silent: true,
-                    systemvars: true
-                }),
+                dotenvPlugin,
+                htmlPlugin,
                 new webpack.HotModuleReplacementPlugin(),
             ]
             :
             [
-                new DotenvPlugin({
-                    path: path.join(__dirname, '.env'),
-                    silent: true,
-                    systemvars: true
-                }),
+                dotenvPlugin,
+                htmlPlugin,
             ],
         module: {
             rules: [

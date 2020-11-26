@@ -66,11 +66,6 @@ BuildTask.create "TestIntegrations" [] {
     if not result.OK then failwithf "Error! %A" result.Errors
 }
 
-BuildTask.create "TestIntegrationsHeadless" [] {
-    let result = DotNet.exec id "run" "--project src/IntegrationTests/IntegrationTests.fsproj --headless"
-    if not result.OK then failwithf "Error! %A" result.Errors
-}
-
 BuildTask.create "PublishIntegrationTests" [] {
     Trace.trace "Publishing Integration Tests..."
     // ref: https://docs.microsoft.com/en-us/dotnet/core/rid-catalog

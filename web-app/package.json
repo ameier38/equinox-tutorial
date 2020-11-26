@@ -28,6 +28,7 @@
     "fable-compiler": "^2.13.0",
     "fable-loader": "^2.1.9",
     "file-loader": "^6.0.0",
+    "html-webpack-plugin": "^4.5.0",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"

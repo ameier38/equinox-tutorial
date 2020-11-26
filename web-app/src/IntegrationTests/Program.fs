@@ -2,63 +2,38 @@
 open canopy.runner.classic
 open canopy.types
 open OpenQA.Selenium.Chrome
-open System
-open System.IO
 
-let getEnv (key:string) (defaultValue:string) =
-    match Environment.GetEnvironmentVariable(key) with
-    | value when String.IsNullOrEmpty(value) -> defaultValue
-    | value -> value
+let chromeConfig = Config.ChromeConfig.Load()
+let clientConfig = Config.ClientConfig.Load() 
 
-let getSecret (secretsDir:string) (secretName:string) (secretKey:string) (defaultValue:string) =
-    let secretPath = Path.Combine(secretsDir, secretName, secretKey)
-    if File.Exists(secretPath) then
-        File.ReadAllText(secretPath).Trim()
-    else
-        defaultValue
-
-let chromeDir = getEnv "CHROME_DIR" AppContext.BaseDirectory
-let testEmail = "customer@cosmicdealership.com"
-let testPassword = "changeit"
-let appHost = getEnv "WEB_APP_HOST" "web-app.proxy"
-let appUrl = sprintf "https://%s" appHost
-
-canopy.configuration.chromeDir <- chromeDir
-canopy.configuration.webdriverPort <- Some 4444
+canopy.configuration.chromeDir <- chromeConfig.DriverDir
 
 let startBrowser () =
     let chromeOptions = ChromeOptions()
     chromeOptions.AddArgument("--no-sandbox")
     chromeOptions.AddArgument("--headless")
-    let remote = Remote("http://chrome:3000/webdriver", chromeOptions.ToCapabilities())
+    let remote = Remote(chromeConfig.DriverUrl, chromeOptions.ToCapabilities())
     start remote
 
 let startApp () =
-    url appUrl
+    url clientConfig.Url
     waitForElement "#app"
 
-"test loaded" &&& fun _ ->
-    startApp()
-    if title() <> "Cosmic Dealership" then failwithf "wrong title"
-
 "test login" &&& fun _ ->
-    printfn "starting app..."
+    describe "starting app..."
     startApp()
-    sleep 5
-    let html = js "return document.documentElement.outerHTML" |> string
-    printfn "html: %s" html
-    printfn "clicking login..."
+    describe "clicking login..."
     click "Login"
     sleep 5
-    printfn "waiting for auth0 login..."
+    describe "waiting for auth0 login..."
     on "https://cosmicdealership.us.auth0.com"
     waitForElement "input[type='email']"
-    "input[type='email']" << testEmail
-    "input[type='password']" << testPassword
-    printfn "submitting credentials..."
+    "input[type='email']" << clientConfig.Email
+    "input[type='password']" << clientConfig.Password
+    describe "submitting credentials..."
     click "button[name='submit']"
     sleep 5
-    printfn "waiting for cosmicdealership..."
+    describe "waiting for cosmicdealership..."
     on "https://cosmicdealership.com"
     displayed "Logout"
 

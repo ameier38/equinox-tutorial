@@ -1,3 +1,2 @@
-group IntegrationTests
-    canopy
-    Selenium.WebDriver.ChromeDriver
+canopy
+Selenium.WebDriver.ChromeDriver
