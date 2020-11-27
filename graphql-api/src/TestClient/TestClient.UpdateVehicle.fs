@@ -1,14 +1,14 @@
 [<RequireQualifiedAccess>]
-module rec PrivateClient.AddVehicle
+module rec TestClient.UpdateVehicle
 
-type InputVariables = { input: AddVehicleInput }
+type InputVariables = { input: UpdateVehicleInput }
 
 type Success =
     { ///The name of the type
       __typename: string
       message: string }
 
-type VehicleAlreadyExists =
+type VehicleNotFound =
     { ///The name of the type
       __typename: string
       message: string }
@@ -24,12 +24,12 @@ type PermissionDenied =
       message: string }
 
 [<RequireQualifiedAccess>]
-type AddVehicleResponse =
+type UpdateVehicleResponse =
     | Success of success: Success
-    | VehicleAlreadyExists of vehiclealreadyexists: VehicleAlreadyExists
+    | VehicleNotFound of vehiclenotfound: VehicleNotFound
     | VehicleInvalid of vehicleinvalid: VehicleInvalid
     | PermissionDenied of permissiondenied: PermissionDenied
 
 type Query =
-    { /// Add a new vehicle
-      addVehicle: AddVehicleResponse }
+    { /// Update a vehicle
+      updateVehicle: UpdateVehicleResponse }

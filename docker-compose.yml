@@ -48,7 +48,12 @@ services:
     build: ./protos
     command: Generate
     volumes: 
-      - ./protos:/work
+      - ./protos/gen:/work/gen
+      - ./protos/proto:/work/proto
+      - ./protos/buf.gen.yaml:/work/buf.gen.yaml
+      - ./protos/buf.yaml:/work/buf.yaml
+      - ./protos/build.fsx:/work/build.fsx
+      - ./protos/build.fsx.lock:/work/build.fsx.lock
   upload-api:
     build: ./upload-api
     ports: 

@@ -10,10 +10,10 @@ nuget FSharp.Data.GraphQL.Client
 nuget FSharp.UMX
 nuget Giraffe
 nuget Google.Api.CommonProtos
-nuget Google.Protobuf 3.11.2
-nuget Grpc.Core 2.28.1
-nuget Grpc.Core.Api 2.28.1
-nuget Microsoft.AspNetCore.Authentication.JwtBearer
+nuget Google.Protobuf 3.13.0
+nuget Grpc.Core 2.33.1
+nuget Grpc.Core.Api 2.33.1
+nuget Microsoft.AspNetCore.Authentication.JwtBearer 3.1.10
 nuget MongoDB.Driver
 nuget Newtonsoft.Json
 nuget Serilog
@@ -30,4 +30,3 @@ group Fake
     nuget Fake.DotNet.Cli
     nuget Fake.IO.FileSystem
     nuget Fake.Core.Target 
-    nuget NuGet.Packaging 5.6.0

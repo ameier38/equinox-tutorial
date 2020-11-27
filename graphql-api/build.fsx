@@ -57,17 +57,10 @@ BuildTask.create "Restore" [] {
     |> List.iter (DotNet.restore id)
 }
 
-let generatePublicTestClient = BuildTask.create "GeneratePublicTestClient" [] {
-    Trace.trace "Generating public test client..."
-    snowflaqe ["--generate"; "--config"; "snowflaqePublic.json"]
+BuildTask.create "GenerateTestClient" [] {
+    Trace.trace "Generating test client..."
+    snowflaqe ["--generate"; "--config"; "snowflaqe.json"]
 }
-
-let generatePrivateTestClient = BuildTask.create "GeneratePrivateTestClient" [] {
-    Trace.trace "Generating private test client..."
-    snowflaqe ["--generate"; "--config"; "snowflaqePrivate.json"]
-}
-
-BuildTask.createEmpty "GenerateTestClients" [generatePublicTestClient; generatePrivateTestClient]
 
 BuildTask.create "TestIntegrations" [] {
     Trace.trace "Running integration tests..."

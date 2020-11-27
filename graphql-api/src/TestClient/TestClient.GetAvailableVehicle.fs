@@ -1,14 +1,9 @@
 [<RequireQualifiedAccess>]
-module rec PrivateClient.GetVehicle
+module rec TestClient.GetAvailableVehicle
 
 type InputVariables = { input: GetVehicleInput }
 
 type VehicleNotFound =
-    { ///The name of the type
-      __typename: string
-      message: string }
-
-type PermissionDenied =
     { ///The name of the type
       __typename: string
       message: string }
@@ -27,11 +22,10 @@ type InventoriedVehicle =
       vehicle: Vehicle }
 
 [<RequireQualifiedAccess>]
-type GetVehicleResponse =
+type GetAvailableVehicleResponse =
     | VehicleNotFound of vehiclenotfound: VehicleNotFound
-    | PermissionDenied of permissiondenied: PermissionDenied
     | InventoriedVehicle of inventoriedvehicle: InventoriedVehicle
 
 type Query =
-    { /// Get the state of a vehicle
-      getVehicle: GetVehicleResponse }
+    { /// Get the state of an available vehicle
+      getAvailableVehicle: GetAvailableVehicleResponse }

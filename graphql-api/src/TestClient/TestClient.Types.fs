@@ -1,4 +1,4 @@
-namespace rec PrivateClient
+namespace rec TestClient
 
 ///Status of a vehicle
 [<Fable.Core.StringEnum; RequireQualifiedAccess>]

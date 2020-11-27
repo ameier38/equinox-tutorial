@@ -7,10 +7,24 @@ open System.Text.RegularExpressions
 open Google.Protobuf.WellKnownTypes
 open Google.Type
 
+module Env = 
+    let getEnv (key:string) (defaultValue:string) =
+        match Environment.GetEnvironmentVariable(key) with
+        | value when String.IsNullOrEmpty(value) -> defaultValue
+        | value -> value
+
 type Secret<'T> = private Secret of 'T 
+    with member this.Value() = let (Secret value) = this in value
 module Secret =
     let create (x:'T) = Secret x
-    let value (Secret x) = x
+    let getSecret (secretsDir:string) (secretName:string) (secretKey:string) (defaultEnv:string) (defaultValue:string) =
+        let secretPath = Path.Combine(secretsDir, secretName, secretKey)
+        if File.Exists(secretPath) then
+            File.ReadAllText(secretPath).Trim()
+            |> create
+        else
+            Env.getEnv defaultEnv defaultValue
+            |> create
 
 module String =
     let fromBytes (bytes:byte[]) =
@@ -20,13 +34,13 @@ module String =
 
 module DateTime =
     let parse (s:string) = DateTime.Parse(s)
-    let toUtc (dt:DateTime) = DateTime.SpecifyKind(dt, DateTimeKind.Utc)
-    let toProtoTimestamp (dt:DateTime) = dt |> toUtc |> Timestamp.FromDateTime
-    let toProtoDate (dt:DateTime) = dt |> toUtc |> Date.FromDateTime
+    let toUtc (dt:System.DateTime) = DateTime.SpecifyKind(dt, DateTimeKind.Utc)
+    let toProtoTimestamp (dt:System.DateTime) = dt |> toUtc |> Timestamp.FromDateTime
+    let toProtoDate (dt:System.DateTime) = dt |> toUtc |> Date.FromDateTime
 
     module Operators =
-        let (!@) (dt:DateTime) = dt |> toProtoDate
-        let (!@@) (dt:DateTime) = dt |> toProtoTimestamp
+        let (!@) (dt:System.DateTime) = dt |> toProtoDate
+        let (!@@) (dt:System.DateTime) = dt |> toProtoTimestamp
 
 module Money =
     let fromDecimal (value:decimal) =
@@ -34,20 +48,6 @@ module Money =
 
     module Operators =
         let (!!) (value:float) = value |> decimal |> fromDecimal
-
-module Env = 
-    let getEnv (key:string) (defaultValue:string) =
-        match Environment.GetEnvironmentVariable(key) with
-        | value when String.IsNullOrEmpty(value) -> defaultValue
-        | value -> value
-    let getSecret (secretsDir:string) (secretName:string) (secretKey:string) (defaultEnv:string) (defaultValue:string) =
-        let secretPath = Path.Combine(secretsDir, secretName, secretKey)
-        if File.Exists(secretPath) then
-            File.ReadAllText(secretPath).Trim()
-            |> Secret.create
-        else
-            getEnv defaultEnv defaultValue
-            |> Secret.create
 
 module Regex =
     let (|Match|_|) (pattern:string) (s:string) =

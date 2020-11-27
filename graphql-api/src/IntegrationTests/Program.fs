@@ -1,31 +1,23 @@
 open Expecto
 open Expecto.Flip
-open PrivateClient
-open PublicClient
+open TestClient
 open Microsoft.IdentityModel.Tokens
 open Shared
 open System
-open System.IO
 open System.IdentityModel.Tokens
 open System.Net.Http
 open System.Security.Claims
 open System.Security.Cryptography
 open System.Text.RegularExpressions
 
-let host = Env.getEnv "GRAPHQL_HOST" "localhost" 
-let port = Env.getEnv "GRAPHQL_PORT" "4000" |> int
-let url = sprintf "http://%s:%i" host port
-let secretsDir = Env.getEnv "SECRETS_DIR" "/dev/secrets/cosmicdealership"
-let privateKeyPath = Path.Join(secretsDir, "oauth", "oauth.key")
+let graphqlConfig = Config.GraphqlConfig.Load()
+let oauthConfig = Config.OAuthConfig.Load()
 
-type TokenFactory(privateKeyPath:string) =
+type TokenFactory(oauthConfig:Config.OAuthConfig) =
     let tokenHandler = Jwt.JwtSecurityTokenHandler()
-    let privateKey = 
-        if not (File.Exists(privateKeyPath)) then failwithf "%s does not exist" privateKeyPath
-        else File.ReadAllText(privateKeyPath)
     let pattern = @"-----BEGIN RSA PRIVATE KEY-----(.+)-----END RSA PRIVATE KEY-----"
     let signingKey =
-        match Regex.Match(privateKey, pattern, RegexOptions.Singleline) with
+        match Regex.Match(oauthConfig.PrivateKey.Value(), pattern, RegexOptions.Singleline) with
         | m when m.Success ->
             let rsa = RSA.Create()
             let contents = m.Groups.Item(1).Value.Replace("\n", String.Empty)
@@ -43,8 +35,8 @@ type TokenFactory(privateKeyPath:string) =
         let claims = [| for permission in permissions -> Claim("permissions", permission) |]
         let token =
             Jwt.JwtSecurityToken(
-                issuer = "https://cosmicdealership.us.auth0.com/",
-                audience = "https://cosmicdealership.com",
+                issuer = oauthConfig.Issuer,
+                audience = oauthConfig.Audience,
                 claims = claims,
                 notBefore = Nullable(now),
                 expires = Nullable(now.AddDays(2.0)),
@@ -53,25 +45,21 @@ type TokenFactory(privateKeyPath:string) =
         printfn "token: %s" token
         token
 
-let tokenFactory = TokenFactory(privateKeyPath)
+let tokenFactory = TokenFactory(oauthConfig)
 
-let getPrivateClient (permissions:string list) =
+let getClient (permissions:string list) =
     let token = tokenFactory.GenerateToken(permissions)
     let bearer = sprintf "Bearer %s" token
     let httpClient = new HttpClient()
     httpClient.DefaultRequestHeaders.Add("Authorization", bearer)
-    PrivateGraphqlClient(url, httpClient)
-
-let getPublicClient () =
-    let httpClient = new HttpClient()
-    PublicGraphqlClient(url, httpClient)
+    TestGraphqlClient(graphqlConfig.Url, httpClient)
 
 let sleep = Async.Sleep 1000
 
 let testAddVehicle =
     testAsync "add vehicle" {
         let permissions = ["add:vehicles"; "get:vehicles"]
-        let client = getPrivateClient permissions
+        let client = getClient permissions
         do! sleep
         let vehicleId = Guid.NewGuid().ToString("N")
         let input: AddVehicle.InputVariables =
@@ -96,7 +84,7 @@ let testAddVehicle =
                       model = "9"
                       year = 2016
                   }
-                  status = PrivateClient.VehicleStatus.Available }
+                  status = VehicleStatus.Available }
             actualVehicle
             |> Expect.equal "should equal expected vehicle" expectedVehicle
         | error -> failwithf "error: %A" error
@@ -105,7 +93,7 @@ let testAddVehicle =
 let testUpdateVehicle =
     testAsync "update vehicle" {
         let permissions = ["add:vehicles"; "get:vehicles"; "update:vehicles"]
-        let client = getPrivateClient permissions
+        let client = getClient permissions
         do! sleep
         let vehicleId = Guid.NewGuid().ToString("N")
         let input: AddVehicle.InputVariables =
@@ -139,7 +127,7 @@ let testUpdateVehicle =
                       model = "10"
                       year = 2016
                   }
-                  status = PrivateClient.VehicleStatus.Available }
+                  status = VehicleStatus.Available }
             actualVehicle
             |> Expect.equal "should equal expected vehicle" expectedVehicle
         | error -> failwithf "error: %A" error
@@ -148,7 +136,7 @@ let testUpdateVehicle =
 let testRemoveVehicle =
     testAsync "remove vehicle" {
         let permissions = ["add:vehicles"; "get:vehicles"; "remove:vehicles"]
-        let client = getPrivateClient permissions
+        let client = getClient permissions
         do! sleep
         let vehicleId = Guid.NewGuid().ToString("N")
         let input: AddVehicle.InputVariables =

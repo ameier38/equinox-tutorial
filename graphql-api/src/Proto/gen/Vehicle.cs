@@ -26,18 +26,20 @@ namespace CosmicDealership.Vehicle.V1 {
           string.Concat(
             "Ciljb3NtaWNkZWFsZXJzaGlwL3ZlaGljbGUvdjEvdmVoaWNsZS5wcm90bxIb",
             "Y29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxGh9nb29nbGUvcHJvdG9idWYv",
-            "dGltZXN0YW1wLnByb3RvIjQKB1ZlaGljbGUSDAoEbWFrZRgBIAEoCRINCgVt",
-            "b2RlbBgCIAEoCRIMCgR5ZWFyGAMgASgFIpkCChJJbnZlbnRvcmllZFZlaGlj",
-            "bGUSEgoKdmVoaWNsZV9pZBgBIAEoCRIsCghhZGRlZF9hdBgCIAEoCzIaLmdv",
-            "b2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgDIAEoCzIa",
-            "Lmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASNQoHdmVoaWNsZRgEIAEoCzIk",
-            "LmNvc21pY2RlYWxlcnNoaXAudmVoaWNsZS52MS5WZWhpY2xlEjoKBnN0YXR1",
-            "cxgFIAEoDjIqLmNvc21pY2RlYWxlcnNoaXAudmVoaWNsZS52MS5WZWhpY2xl",
-            "U3RhdHVzEg4KBmF2YXRhchgGIAEoCRIOCgZpbWFnZXMYByADKAkqaAoNVmVo",
-            "aWNsZVN0YXR1cxIeChpWRUhJQ0xFX1NUQVRVU19VTlNQRUNJRklFRBAAEhwK",
-            "GFZFSElDTEVfU1RBVFVTX0FWQUlMQUJMRRABEhkKFVZFSElDTEVfU1RBVFVT",
-            "X0xFQVNFRBACQjtaG2Nvc21pY2RlYWxlcnNoaXAvdmVoaWNsZS92MaoCG0Nv",
-            "c21pY0RlYWxlcnNoaXAuVmVoaWNsZS5WMWIGcHJvdG8z"));
+            "dGltZXN0YW1wLnByb3RvIkcKB1ZlaGljbGUSEgoEbWFrZRgBIAEoCVIEbWFr",
+            "ZRIUCgVtb2RlbBgCIAEoCVIFbW9kZWwSEgoEeWVhchgDIAEoBVIEeWVhciLZ",
+            "AgoSSW52ZW50b3JpZWRWZWhpY2xlEh0KCnZlaGljbGVfaWQYASABKAlSCXZl",
+            "aGljbGVJZBI1CghhZGRlZF9hdBgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5U",
+            "aW1lc3RhbXBSB2FkZGVkQXQSOQoKdXBkYXRlZF9hdBgDIAEoCzIaLmdvb2ds",
+            "ZS5wcm90b2J1Zi5UaW1lc3RhbXBSCXVwZGF0ZWRBdBI+Cgd2ZWhpY2xlGAQg",
+            "ASgLMiQuY29zbWljZGVhbGVyc2hpcC52ZWhpY2xlLnYxLlZlaGljbGVSB3Zl",
+            "aGljbGUSQgoGc3RhdHVzGAUgASgOMiouY29zbWljZGVhbGVyc2hpcC52ZWhp",
+            "Y2xlLnYxLlZlaGljbGVTdGF0dXNSBnN0YXR1cxIWCgZhdmF0YXIYBiABKAlS",
+            "BmF2YXRhchIWCgZpbWFnZXMYByADKAlSBmltYWdlcypoCg1WZWhpY2xlU3Rh",
+            "dHVzEh4KGlZFSElDTEVfU1RBVFVTX1VOU1BFQ0lGSUVEEAASHAoYVkVISUNM",
+            "RV9TVEFUVVNfQVZBSUxBQkxFEAESGQoVVkVISUNMRV9TVEFUVVNfTEVBU0VE",
+            "EAJCO1obY29zbWljZGVhbGVyc2hpcC92ZWhpY2xlL3YxqgIbQ29zbWljRGVh",
+            "bGVyc2hpcC5WZWhpY2xlLlYxYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::CosmicDealership.Vehicle.V1.VehicleStatus), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -58,7 +60,11 @@ namespace CosmicDealership.Vehicle.V1 {
   #endregion
 
   #region Messages
-  public sealed partial class Vehicle : pb::IMessage<Vehicle> {
+  public sealed partial class Vehicle : pb::IMessage<Vehicle>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<Vehicle> _parser = new pb::MessageParser<Vehicle>(() => new Vehicle());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -165,6 +171,9 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (Make.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(Make);
@@ -180,7 +189,29 @@ namespace CosmicDealership.Vehicle.V1 {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Make.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Make);
+      }
+      if (Model.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Model);
+      }
+      if (Year != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(Year);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -219,6 +250,9 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -239,14 +273,45 @@ namespace CosmicDealership.Vehicle.V1 {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            Make = input.ReadString();
+            break;
+          }
+          case 18: {
+            Model = input.ReadString();
+            break;
+          }
+          case 24: {
+            Year = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 
   /// <summary>
   /// InventoriedVehicle is a vehicle that has been added to the dealership inventory.
   /// </summary>
-  public sealed partial class InventoriedVehicle : pb::IMessage<InventoriedVehicle> {
+  public sealed partial class InventoriedVehicle : pb::IMessage<InventoriedVehicle>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<InventoriedVehicle> _parser = new pb::MessageParser<InventoriedVehicle>(() => new InventoriedVehicle());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -408,6 +473,9 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (VehicleId.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(VehicleId);
@@ -436,7 +504,42 @@ namespace CosmicDealership.Vehicle.V1 {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (VehicleId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(VehicleId);
+      }
+      if (addedAt_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(AddedAt);
+      }
+      if (updatedAt_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(UpdatedAt);
+      }
+      if (vehicle_ != null) {
+        output.WriteRawTag(34);
+        output.WriteMessage(Vehicle);
+      }
+      if (Status != global::CosmicDealership.Vehicle.V1.VehicleStatus.Unspecified) {
+        output.WriteRawTag(40);
+        output.WriteEnum((int) Status);
+      }
+      if (Avatar.Length != 0) {
+        output.WriteRawTag(50);
+        output.WriteString(Avatar);
+      }
+      images_.WriteTo(ref output, _repeated_images_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -504,6 +607,9 @@ namespace CosmicDealership.Vehicle.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -549,7 +655,59 @@ namespace CosmicDealership.Vehicle.V1 {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            VehicleId = input.ReadString();
+            break;
+          }
+          case 18: {
+            if (addedAt_ == null) {
+              AddedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            input.ReadMessage(AddedAt);
+            break;
+          }
+          case 26: {
+            if (updatedAt_ == null) {
+              UpdatedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            input.ReadMessage(UpdatedAt);
+            break;
+          }
+          case 34: {
+            if (vehicle_ == null) {
+              Vehicle = new global::CosmicDealership.Vehicle.V1.Vehicle();
+            }
+            input.ReadMessage(Vehicle);
+            break;
+          }
+          case 40: {
+            Status = (global::CosmicDealership.Vehicle.V1.VehicleStatus) input.ReadEnum();
+            break;
+          }
+          case 50: {
+            Avatar = input.ReadString();
+            break;
+          }
+          case 58: {
+            images_.AddEntriesFrom(ref input, _repeated_images_codec);
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 

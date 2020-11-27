@@ -15,14 +15,44 @@ namespace CosmicDealership.Vehicle.V1 {
   {
     static readonly string __ServiceName = "cosmicdealership.vehicle.v1.VehicleQueryService";
 
-    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.ListVehiclesRequest> __Marshaller_cosmicdealership_vehicle_v1_ListVehiclesRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CosmicDealership.Vehicle.V1.ListVehiclesRequest.Parser.ParseFrom);
-    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.ListVehiclesResponse> __Marshaller_cosmicdealership_vehicle_v1_ListVehiclesResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CosmicDealership.Vehicle.V1.ListVehiclesResponse.Parser.ParseFrom);
-    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.ListAvailableVehiclesRequest> __Marshaller_cosmicdealership_vehicle_v1_ListAvailableVehiclesRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CosmicDealership.Vehicle.V1.ListAvailableVehiclesRequest.Parser.ParseFrom);
-    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.ListAvailableVehiclesResponse> __Marshaller_cosmicdealership_vehicle_v1_ListAvailableVehiclesResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CosmicDealership.Vehicle.V1.ListAvailableVehiclesResponse.Parser.ParseFrom);
-    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.GetVehicleRequest> __Marshaller_cosmicdealership_vehicle_v1_GetVehicleRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CosmicDealership.Vehicle.V1.GetVehicleRequest.Parser.ParseFrom);
-    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.GetVehicleResponse> __Marshaller_cosmicdealership_vehicle_v1_GetVehicleResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CosmicDealership.Vehicle.V1.GetVehicleResponse.Parser.ParseFrom);
-    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.GetAvailableVehicleRequest> __Marshaller_cosmicdealership_vehicle_v1_GetAvailableVehicleRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CosmicDealership.Vehicle.V1.GetAvailableVehicleRequest.Parser.ParseFrom);
-    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.GetAvailableVehicleResponse> __Marshaller_cosmicdealership_vehicle_v1_GetAvailableVehicleResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CosmicDealership.Vehicle.V1.GetAvailableVehicleResponse.Parser.ParseFrom);
+    static void __Helper_SerializeMessage(global::Google.Protobuf.IMessage message, grpc::SerializationContext context)
+    {
+      #if !GRPC_DISABLE_PROTOBUF_BUFFER_SERIALIZATION
+      if (message is global::Google.Protobuf.IBufferMessage)
+      {
+        context.SetPayloadLength(message.CalculateSize());
+        global::Google.Protobuf.MessageExtensions.WriteTo(message, context.GetBufferWriter());
+        context.Complete();
+        return;
+      }
+      #endif
+      context.Complete(global::Google.Protobuf.MessageExtensions.ToByteArray(message));
+    }
+
+    static class __Helper_MessageCache<T>
+    {
+      public static readonly bool IsBufferMessage = global::System.Reflection.IntrospectionExtensions.GetTypeInfo(typeof(global::Google.Protobuf.IBufferMessage)).IsAssignableFrom(typeof(T));
+    }
+
+    static T __Helper_DeserializeMessage<T>(grpc::DeserializationContext context, global::Google.Protobuf.MessageParser<T> parser) where T : global::Google.Protobuf.IMessage<T>
+    {
+      #if !GRPC_DISABLE_PROTOBUF_BUFFER_SERIALIZATION
+      if (__Helper_MessageCache<T>.IsBufferMessage)
+      {
+        return parser.ParseFrom(context.PayloadAsReadOnlySequence());
+      }
+      #endif
+      return parser.ParseFrom(context.PayloadAsNewBuffer());
+    }
+
+    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.ListVehiclesRequest> __Marshaller_cosmicdealership_vehicle_v1_ListVehiclesRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::CosmicDealership.Vehicle.V1.ListVehiclesRequest.Parser));
+    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.ListVehiclesResponse> __Marshaller_cosmicdealership_vehicle_v1_ListVehiclesResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::CosmicDealership.Vehicle.V1.ListVehiclesResponse.Parser));
+    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.ListAvailableVehiclesRequest> __Marshaller_cosmicdealership_vehicle_v1_ListAvailableVehiclesRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::CosmicDealership.Vehicle.V1.ListAvailableVehiclesRequest.Parser));
+    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.ListAvailableVehiclesResponse> __Marshaller_cosmicdealership_vehicle_v1_ListAvailableVehiclesResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::CosmicDealership.Vehicle.V1.ListAvailableVehiclesResponse.Parser));
+    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.GetVehicleRequest> __Marshaller_cosmicdealership_vehicle_v1_GetVehicleRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::CosmicDealership.Vehicle.V1.GetVehicleRequest.Parser));
+    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.GetVehicleResponse> __Marshaller_cosmicdealership_vehicle_v1_GetVehicleResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::CosmicDealership.Vehicle.V1.GetVehicleResponse.Parser));
+    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.GetAvailableVehicleRequest> __Marshaller_cosmicdealership_vehicle_v1_GetAvailableVehicleRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::CosmicDealership.Vehicle.V1.GetAvailableVehicleRequest.Parser));
+    static readonly grpc::Marshaller<global::CosmicDealership.Vehicle.V1.GetAvailableVehicleResponse> __Marshaller_cosmicdealership_vehicle_v1_GetAvailableVehicleResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::CosmicDealership.Vehicle.V1.GetAvailableVehicleResponse.Parser));
 
     static readonly grpc::Method<global::CosmicDealership.Vehicle.V1.ListVehiclesRequest, global::CosmicDealership.Vehicle.V1.ListVehiclesResponse> __Method_ListVehicles = new grpc::Method<global::CosmicDealership.Vehicle.V1.ListVehiclesRequest, global::CosmicDealership.Vehicle.V1.ListVehiclesResponse>(
         grpc::MethodType.Unary,

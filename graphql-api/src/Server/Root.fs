@@ -4,21 +4,22 @@ open FSharp.Data.GraphQL.Types
 open GraphqlApi.Vehicle.Client
 open GraphqlApi.Vehicle.Schema
 
-type PrivateRoot = { _empty: bool option }
-type PublicRoot = { _empty: bool option }
+type Root = { _empty: bool option }
 
-let PrivateQuery
+let Query
     (vehicleClient:VehicleClient) =
-    Define.Object<PrivateRoot>(
+    Define.Object<Root>(
         name = "Query",
         fields = [ 
+            listAvailableVehicles vehicleClient
+            getAvailableVehicle vehicleClient
             listVehicles vehicleClient
             getVehicle vehicleClient
         ])
 
-let PrivateMutation
+let Mutation
     (vehicleClient:VehicleClient) =
-    Define.Object<PrivateRoot>(
+    Define.Object<Root>(
         name = "Mutation",
         fields = [
             addVehicle vehicleClient
@@ -28,13 +29,4 @@ let PrivateMutation
             addVehicleImage vehicleClient
             removeVehicleImage vehicleClient
             removeVehicle vehicleClient
-        ])
-
-let PublicQuery
-    (vehicleClient:VehicleClient) =
-    Define.Object<PublicRoot>(
-        name = "Query",
-        fields = [ 
-            listAvailableVehicles vehicleClient
-            getAvailableVehicle vehicleClient
         ])

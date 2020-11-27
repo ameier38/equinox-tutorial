@@ -1,0 +1,8 @@
+{
+    "schema": "http://localhost:4000/schema",
+    "queries": "./src/IntegrationTests/queries",
+    "project": "TestClient",
+    "output": "./src/TestClient",
+    "overrideClientName": "TestGraphqlClient",
+    "target": "fsharp"
+}

@@ -1,7 +1,7 @@
 [<RequireQualifiedAccess>]
-module rec PrivateClient.UpdateVehicle
+module rec TestClient.AddVehicleImage
 
-type InputVariables = { input: UpdateVehicleInput }
+type InputVariables = { input: AddVehicleImageInput }
 
 type Success =
     { ///The name of the type
@@ -13,7 +13,12 @@ type VehicleNotFound =
       __typename: string
       message: string }
 
-type VehicleInvalid =
+type ImageInvalid =
+    { ///The name of the type
+      __typename: string
+      message: string }
+
+type MaxImageCountReached =
     { ///The name of the type
       __typename: string
       message: string }
@@ -24,12 +29,13 @@ type PermissionDenied =
       message: string }
 
 [<RequireQualifiedAccess>]
-type UpdateVehicleResponse =
+type AddVehicleImageResponse =
     | Success of success: Success
     | VehicleNotFound of vehiclenotfound: VehicleNotFound
-    | VehicleInvalid of vehicleinvalid: VehicleInvalid
+    | ImageInvalid of imageinvalid: ImageInvalid
+    | MaxImageCountReached of maximagecountreached: MaxImageCountReached
     | PermissionDenied of permissiondenied: PermissionDenied
 
 type Query =
-    { /// Update a vehicle
-      updateVehicle: UpdateVehicleResponse }
+    { /// Add image of vehicle
+      addVehicleImage: AddVehicleImageResponse }

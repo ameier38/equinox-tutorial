@@ -25,9 +25,10 @@ namespace CosmicDealership.User.V1 {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CiNjb3NtaWNkZWFsZXJzaGlwL3VzZXIvdjEvdXNlci5wcm90bxIYY29zbWlj",
-            "ZGVhbGVyc2hpcC51c2VyLnYxIiwKBFVzZXISDwoHdXNlcl9pZBgBIAEoCRIT",
-            "CgtwZXJtaXNzaW9ucxgCIAMoCUI1Whhjb3NtaWNkZWFsZXJzaGlwL3VzZXIv",
-            "djGqAhhDb3NtaWNEZWFsZXJzaGlwLlVzZXIuVjFiBnByb3RvMw=="));
+            "ZGVhbGVyc2hpcC51c2VyLnYxIkEKBFVzZXISFwoHdXNlcl9pZBgBIAEoCVIG",
+            "dXNlcklkEiAKC3Blcm1pc3Npb25zGAIgAygJUgtwZXJtaXNzaW9uc0I1Whhj",
+            "b3NtaWNkZWFsZXJzaGlwL3VzZXIvdjGqAhhDb3NtaWNEZWFsZXJzaGlwLlVz",
+            "ZXIuVjFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -38,7 +39,11 @@ namespace CosmicDealership.User.V1 {
 
   }
   #region Messages
-  public sealed partial class User : pb::IMessage<User> {
+  public sealed partial class User : pb::IMessage<User>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<User> _parser = new pb::MessageParser<User>(() => new User());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -130,6 +135,9 @@ namespace CosmicDealership.User.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (UserId.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(UserId);
@@ -138,7 +146,22 @@ namespace CosmicDealership.User.V1 {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (UserId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(UserId);
+      }
+      permissions_.WriteTo(ref output, _repeated_permissions_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -167,6 +190,9 @@ namespace CosmicDealership.User.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -183,7 +209,30 @@ namespace CosmicDealership.User.V1 {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            UserId = input.ReadString();
+            break;
+          }
+          case 18: {
+            permissions_.AddEntriesFrom(ref input, _repeated_permissions_codec);
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 

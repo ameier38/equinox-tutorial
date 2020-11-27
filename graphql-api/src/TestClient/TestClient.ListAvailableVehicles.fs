@@ -1,5 +1,5 @@
 [<RequireQualifiedAccess>]
-module rec PublicClient.ListAvailableVehicles
+module rec TestClient.ListAvailableVehicles
 
 type InputVariables = { input: ListVehiclesInput }
 

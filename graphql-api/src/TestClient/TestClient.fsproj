@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="TestClient.StringEnum.fs" />
+        <Compile Include="TestClient.Types.fs" />
+        <Compile Include="TestClient.AddVehicle.fs" />
+        <Compile Include="TestClient.AddVehicleImage.fs" />
+        <Compile Include="TestClient.GetAvailableVehicle.fs" />
+        <Compile Include="TestClient.GetVehicle.fs" />
+        <Compile Include="TestClient.ListAvailableVehicles.fs" />
+        <Compile Include="TestClient.ListVehicles.fs" />
+        <Compile Include="TestClient.RemoveVehicle.fs" />
+        <Compile Include="TestClient.UpdateVehicle.fs" />
+        <Compile Include="TestClient.GraphqlClient.fs" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Update="FSharp.Core" Version="4.7.0"/>
+        <PackageReference Include="Fable.Remoting.Json" Version="2.11.0" />
+    </ItemGroup>
+</Project>
+    

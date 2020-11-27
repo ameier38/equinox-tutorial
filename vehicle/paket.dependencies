@@ -15,10 +15,10 @@ nuget FSharp.Core 4.7.2
 nuget FSharp.UMX
 nuget FSharp.Control.AsyncSeq
 nuget Google.Api.CommonProtos
-nuget Google.Protobuf 3.11.2
-nuget Grpc.Core 2.28.1
-nuget Grpc.Core.Api 2.28.1
-nuget Grpc.HealthCheck 2.28.1
+nuget Google.Protobuf 3.13.0
+nuget Grpc.Core 2.33.1
+nuget Grpc.Core.Api 2.33.1
+nuget Grpc.HealthCheck 2.33.1
 nuget MongoDB.Driver
 nuget Serilog
 nuget Serilog.Sinks.Console
@@ -33,4 +33,3 @@ group Build
     nuget Fake.IO.FileSystem
     nuget Fake.Core.Target
     nuget BlackFox.Fake.BuildTask
-    nuget NuGet.Packaging 5.6.0

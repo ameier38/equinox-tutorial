@@ -9,10 +9,8 @@ open Microsoft.AspNetCore.Authentication.JwtBearer
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
 open Microsoft.IdentityModel.Tokens
-open Shared
 open Serilog
 open Serilog.Events
-open System.Text
 open System.Security.Cryptography.X509Certificates
 
 [<EntryPoint>]
@@ -34,19 +32,14 @@ let main argv =
     let vehicleQueryChannel = Channel(config.VehicleReaderConfig.Url, ChannelCredentials.Insecure)
     let vehicleQueryClient = CosmicDealership.Vehicle.V1.VehicleQueryService.VehicleQueryServiceClient(vehicleQueryChannel)
     let vehicleClient = VehicleClient(vehicleCommandClient, vehicleQueryClient)
-    let publicHandler =
-        let query = Root.PublicQuery vehicleClient
-        let schema = GraphQL.Schema(query)
-        let executor = GraphQL.Executor(schema)
-        GraphQLQueryHandler(executor)
-    let privateHandler =
-        let query = Root.PrivateQuery vehicleClient
-        let mutation = Root.PrivateMutation vehicleClient
+    let handler =
+        let query = Root.Query vehicleClient
+        let mutation = Root.Mutation vehicleClient
         let schema = GraphQL.Schema(query, mutation)
         let executor = GraphQL.Executor(schema)
         GraphQLQueryHandler(executor)
 
-    let app = HttpHandlers.app publicHandler privateHandler
+    let app = HttpHandlers.app handler
 
     let configureApp (application: IApplicationBuilder) =
         application

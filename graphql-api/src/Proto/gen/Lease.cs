@@ -27,33 +27,41 @@ namespace CosmicDealership.Lease.V1 {
             "CiVjb3NtaWNkZWFsZXJzaGlwL2xlYXNlL3YxL2xlYXNlLnByb3RvEhljb3Nt",
             "aWNkZWFsZXJzaGlwLmxlYXNlLnYxGh9nb29nbGUvcHJvdG9idWYvdGltZXN0",
             "YW1wLnByb3RvGhZnb29nbGUvdHlwZS9kYXRlLnByb3RvGhdnb29nbGUvdHlw",
-            "ZS9tb25leS5wcm90byJTCgRBc09uEikKBWFzX2F0GAEgASgLMhouZ29vZ2xl",
-            "LnByb3RvYnVmLlRpbWVzdGFtcBIgCgVhc19vZhgCIAEoCzIRLmdvb2dsZS50",
-            "eXBlLkRhdGUihwQKBUxlYXNlEhAKCGxlYXNlX2lkGAEgASgJEg8KB3VzZXJf",
-            "aWQYAiABKAkSEgoKdmVoaWNsZV9pZBgDIAEoCRIvCgthY2NlcHRlZF9hdBgE",
-            "IAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASJQoKc3RhcnRfZGF0",
-            "ZRgFIAEoCzIRLmdvb2dsZS50eXBlLkRhdGUSKAoNbWF0dXJpdHlfZGF0ZRgG",
-            "IAEoCzIRLmdvb2dsZS50eXBlLkRhdGUSFAoMbW9uZXlfZmFjdG9yGAcgASgB",
-            "EhYKDnNhbGVzX3RheF9yYXRlGAggASgBEikKDXZlaGljbGVfdmFsdWUYCSAB",
-            "KAsyEi5nb29nbGUudHlwZS5Nb25leRIyChZ2ZWhpY2xlX3Jlc2lkdWFsX3Zh",
-            "bHVlGAogASgLMhIuZ29vZ2xlLnR5cGUuTW9uZXkSKAoMZG93bl9wYXltZW50",
-            "GAsgASgLMhIuZ29vZ2xlLnR5cGUuTW9uZXkSKwoPbW9udGhseV9wYXltZW50",
-            "GAwgASgLMhIuZ29vZ2xlLnR5cGUuTW9uZXkSGAoQdmVoaWNsZV9vZG9tZXRl",
-            "chgNIAEoBRIWCg5taWxlc19wZXJfeWVhchgOIAEoBRIvChNtaWxlX292ZXJh",
-            "Z2VfY2hhcmdlGA8gASgLMhIuZ29vZ2xlLnR5cGUuTW9uZXkihAEKDkNyZWF0",
-            "ZWRQYXltZW50EhYKDnRyYW5zYWN0aW9uX2lkGAEgASgJEi4KCmNyZWF0ZWRf",
-            "YXQYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEioKDnBheW1l",
-            "bnRfYW1vdW50GAMgASgLMhIuZ29vZ2xlLnR5cGUuTW9uZXkiWAoOU2V0dGxl",
-            "ZFBheW1lbnQSFgoOdHJhbnNhY3Rpb25faWQYASABKAkSLgoKc2V0dGxlZF9h",
-            "dBgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAicwoPUmV0dXJu",
-            "ZWRQYXltZW50EhYKDnRyYW5zYWN0aW9uX2lkGAEgASgJEi8KC3JldHVybmVk",
-            "X2F0GAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIXCg9yZXR1",
-            "cm5lZF9yZWFzb24YAyABKAkimwEKD1JldHVybmVkVmVoaWNsZRISCgp2ZWhp",
-            "Y2xlX2lkGAEgASgJEi8KC3JldHVybmVkX2F0GAIgASgLMhouZ29vZ2xlLnBy",
-            "b3RvYnVmLlRpbWVzdGFtcBIYChB2ZWhpY2xlX29kb21ldGVyGAMgASgFEikK",
-            "DWRhbWFnZV9jaGFyZ2UYBCABKAsyEi5nb29nbGUudHlwZS5Nb25leUI3Whlj",
-            "b3NtaWNkZWFsZXJzaGlwL2xlYXNlL3YxqgIZQ29zbWljRGVhbGVyc2hpcC5M",
-            "ZWFzZS5WMWIGcHJvdG8z"));
+            "ZS9tb25leS5wcm90byJfCgRBc09uEi8KBWFzX2F0GAEgASgLMhouZ29vZ2xl",
+            "LnByb3RvYnVmLlRpbWVzdGFtcFIEYXNBdBImCgVhc19vZhgCIAEoCzIRLmdv",
+            "b2dsZS50eXBlLkRhdGVSBGFzT2Yi1gUKBUxlYXNlEhkKCGxlYXNlX2lkGAEg",
+            "ASgJUgdsZWFzZUlkEhcKB3VzZXJfaWQYAiABKAlSBnVzZXJJZBIdCgp2ZWhp",
+            "Y2xlX2lkGAMgASgJUgl2ZWhpY2xlSWQSOwoLYWNjZXB0ZWRfYXQYBCABKAsy",
+            "Gi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgphY2NlcHRlZEF0EjAKCnN0",
+            "YXJ0X2RhdGUYBSABKAsyES5nb29nbGUudHlwZS5EYXRlUglzdGFydERhdGUS",
+            "NgoNbWF0dXJpdHlfZGF0ZRgGIAEoCzIRLmdvb2dsZS50eXBlLkRhdGVSDG1h",
+            "dHVyaXR5RGF0ZRIhCgxtb25leV9mYWN0b3IYByABKAFSC21vbmV5RmFjdG9y",
+            "EiQKDnNhbGVzX3RheF9yYXRlGAggASgBUgxzYWxlc1RheFJhdGUSNwoNdmVo",
+            "aWNsZV92YWx1ZRgJIAEoCzISLmdvb2dsZS50eXBlLk1vbmV5Ugx2ZWhpY2xl",
+            "VmFsdWUSSAoWdmVoaWNsZV9yZXNpZHVhbF92YWx1ZRgKIAEoCzISLmdvb2ds",
+            "ZS50eXBlLk1vbmV5UhR2ZWhpY2xlUmVzaWR1YWxWYWx1ZRI1Cgxkb3duX3Bh",
+            "eW1lbnQYCyABKAsyEi5nb29nbGUudHlwZS5Nb25leVILZG93blBheW1lbnQS",
+            "OwoPbW9udGhseV9wYXltZW50GAwgASgLMhIuZ29vZ2xlLnR5cGUuTW9uZXlS",
+            "Dm1vbnRobHlQYXltZW50EikKEHZlaGljbGVfb2RvbWV0ZXIYDSABKAVSD3Zl",
+            "aGljbGVPZG9tZXRlchIkCg5taWxlc19wZXJfeWVhchgOIAEoBVIMbWlsZXNQ",
+            "ZXJZZWFyEkIKE21pbGVfb3ZlcmFnZV9jaGFyZ2UYDyABKAsyEi5nb29nbGUu",
+            "dHlwZS5Nb25leVIRbWlsZU92ZXJhZ2VDaGFyZ2UirQEKDkNyZWF0ZWRQYXlt",
+            "ZW50EiUKDnRyYW5zYWN0aW9uX2lkGAEgASgJUg10cmFuc2FjdGlvbklkEjkK",
+            "CmNyZWF0ZWRfYXQYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1w",
+            "UgljcmVhdGVkQXQSOQoOcGF5bWVudF9hbW91bnQYAyABKAsyEi5nb29nbGUu",
+            "dHlwZS5Nb25leVINcGF5bWVudEFtb3VudCJyCg5TZXR0bGVkUGF5bWVudBIl",
+            "Cg50cmFuc2FjdGlvbl9pZBgBIAEoCVINdHJhbnNhY3Rpb25JZBI5CgpzZXR0",
+            "bGVkX2F0GAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIJc2V0",
+            "dGxlZEF0Ip4BCg9SZXR1cm5lZFBheW1lbnQSJQoOdHJhbnNhY3Rpb25faWQY",
+            "ASABKAlSDXRyYW5zYWN0aW9uSWQSOwoLcmV0dXJuZWRfYXQYAiABKAsyGi5n",
+            "b29nbGUucHJvdG9idWYuVGltZXN0YW1wUgpyZXR1cm5lZEF0EicKD3JldHVy",
+            "bmVkX3JlYXNvbhgDIAEoCVIOcmV0dXJuZWRSZWFzb24i0QEKD1JldHVybmVk",
+            "VmVoaWNsZRIdCgp2ZWhpY2xlX2lkGAEgASgJUgl2ZWhpY2xlSWQSOwoLcmV0",
+            "dXJuZWRfYXQYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgpy",
+            "ZXR1cm5lZEF0EikKEHZlaGljbGVfb2RvbWV0ZXIYAyABKAVSD3ZlaGljbGVP",
+            "ZG9tZXRlchI3Cg1kYW1hZ2VfY2hhcmdlGAQgASgLMhIuZ29vZ2xlLnR5cGUu",
+            "TW9uZXlSDGRhbWFnZUNoYXJnZUI3Whljb3NtaWNkZWFsZXJzaGlwL2xlYXNl",
+            "L3YxqgIZQ29zbWljRGVhbGVyc2hpcC5MZWFzZS5WMWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, global::Google.Type.DateReflection.Descriptor, global::Google.Type.MoneyReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -72,7 +80,11 @@ namespace CosmicDealership.Lease.V1 {
   /// <summary>
   /// Date at which a lease is observed.
   /// </summary>
-  public sealed partial class AsOn : pb::IMessage<AsOn> {
+  public sealed partial class AsOn : pb::IMessage<AsOn>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<AsOn> _parser = new pb::MessageParser<AsOn>(() => new AsOn());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -165,6 +177,9 @@ namespace CosmicDealership.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (asAt_ != null) {
         output.WriteRawTag(10);
         output.WriteMessage(AsAt);
@@ -176,7 +191,25 @@ namespace CosmicDealership.Lease.V1 {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (asAt_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(AsAt);
+      }
+      if (asOf_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(AsOf);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -215,6 +248,9 @@ namespace CosmicDealership.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -237,14 +273,47 @@ namespace CosmicDealership.Lease.V1 {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            if (asAt_ == null) {
+              AsAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            input.ReadMessage(AsAt);
+            break;
+          }
+          case 18: {
+            if (asOf_ == null) {
+              AsOf = new global::Google.Type.Date();
+            }
+            input.ReadMessage(AsOf);
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 
   /// <summary>
   /// Lease.
   /// </summary>
-  public sealed partial class Lease : pb::IMessage<Lease> {
+  public sealed partial class Lease : pb::IMessage<Lease>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<Lease> _parser = new pb::MessageParser<Lease>(() => new Lease());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -519,6 +588,9 @@ namespace CosmicDealership.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (LeaseId.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(LeaseId);
@@ -582,7 +654,77 @@ namespace CosmicDealership.Lease.V1 {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (LeaseId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(LeaseId);
+      }
+      if (UserId.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(UserId);
+      }
+      if (VehicleId.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(VehicleId);
+      }
+      if (acceptedAt_ != null) {
+        output.WriteRawTag(34);
+        output.WriteMessage(AcceptedAt);
+      }
+      if (startDate_ != null) {
+        output.WriteRawTag(42);
+        output.WriteMessage(StartDate);
+      }
+      if (maturityDate_ != null) {
+        output.WriteRawTag(50);
+        output.WriteMessage(MaturityDate);
+      }
+      if (MoneyFactor != 0D) {
+        output.WriteRawTag(57);
+        output.WriteDouble(MoneyFactor);
+      }
+      if (SalesTaxRate != 0D) {
+        output.WriteRawTag(65);
+        output.WriteDouble(SalesTaxRate);
+      }
+      if (vehicleValue_ != null) {
+        output.WriteRawTag(74);
+        output.WriteMessage(VehicleValue);
+      }
+      if (vehicleResidualValue_ != null) {
+        output.WriteRawTag(82);
+        output.WriteMessage(VehicleResidualValue);
+      }
+      if (downPayment_ != null) {
+        output.WriteRawTag(90);
+        output.WriteMessage(DownPayment);
+      }
+      if (monthlyPayment_ != null) {
+        output.WriteRawTag(98);
+        output.WriteMessage(MonthlyPayment);
+      }
+      if (VehicleOdometer != 0) {
+        output.WriteRawTag(104);
+        output.WriteInt32(VehicleOdometer);
+      }
+      if (MilesPerYear != 0) {
+        output.WriteRawTag(112);
+        output.WriteInt32(MilesPerYear);
+      }
+      if (mileOverageCharge_ != null) {
+        output.WriteRawTag(122);
+        output.WriteMessage(MileOverageCharge);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -717,6 +859,9 @@ namespace CosmicDealership.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -809,14 +954,117 @@ namespace CosmicDealership.Lease.V1 {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            LeaseId = input.ReadString();
+            break;
+          }
+          case 18: {
+            UserId = input.ReadString();
+            break;
+          }
+          case 26: {
+            VehicleId = input.ReadString();
+            break;
+          }
+          case 34: {
+            if (acceptedAt_ == null) {
+              AcceptedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            input.ReadMessage(AcceptedAt);
+            break;
+          }
+          case 42: {
+            if (startDate_ == null) {
+              StartDate = new global::Google.Type.Date();
+            }
+            input.ReadMessage(StartDate);
+            break;
+          }
+          case 50: {
+            if (maturityDate_ == null) {
+              MaturityDate = new global::Google.Type.Date();
+            }
+            input.ReadMessage(MaturityDate);
+            break;
+          }
+          case 57: {
+            MoneyFactor = input.ReadDouble();
+            break;
+          }
+          case 65: {
+            SalesTaxRate = input.ReadDouble();
+            break;
+          }
+          case 74: {
+            if (vehicleValue_ == null) {
+              VehicleValue = new global::Google.Type.Money();
+            }
+            input.ReadMessage(VehicleValue);
+            break;
+          }
+          case 82: {
+            if (vehicleResidualValue_ == null) {
+              VehicleResidualValue = new global::Google.Type.Money();
+            }
+            input.ReadMessage(VehicleResidualValue);
+            break;
+          }
+          case 90: {
+            if (downPayment_ == null) {
+              DownPayment = new global::Google.Type.Money();
+            }
+            input.ReadMessage(DownPayment);
+            break;
+          }
+          case 98: {
+            if (monthlyPayment_ == null) {
+              MonthlyPayment = new global::Google.Type.Money();
+            }
+            input.ReadMessage(MonthlyPayment);
+            break;
+          }
+          case 104: {
+            VehicleOdometer = input.ReadInt32();
+            break;
+          }
+          case 112: {
+            MilesPerYear = input.ReadInt32();
+            break;
+          }
+          case 122: {
+            if (mileOverageCharge_ == null) {
+              MileOverageCharge = new global::Google.Type.Money();
+            }
+            input.ReadMessage(MileOverageCharge);
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 
   /// <summary>
   /// Created payment.
   /// </summary>
-  public sealed partial class CreatedPayment : pb::IMessage<CreatedPayment> {
+  public sealed partial class CreatedPayment : pb::IMessage<CreatedPayment>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<CreatedPayment> _parser = new pb::MessageParser<CreatedPayment>(() => new CreatedPayment());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -923,6 +1171,9 @@ namespace CosmicDealership.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (TransactionId.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(TransactionId);
@@ -938,7 +1189,29 @@ namespace CosmicDealership.Lease.V1 {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (TransactionId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(TransactionId);
+      }
+      if (createdAt_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(CreatedAt);
+      }
+      if (paymentAmount_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(PaymentAmount);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -983,6 +1256,9 @@ namespace CosmicDealership.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -1009,14 +1285,51 @@ namespace CosmicDealership.Lease.V1 {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            TransactionId = input.ReadString();
+            break;
+          }
+          case 18: {
+            if (createdAt_ == null) {
+              CreatedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            input.ReadMessage(CreatedAt);
+            break;
+          }
+          case 26: {
+            if (paymentAmount_ == null) {
+              PaymentAmount = new global::Google.Type.Money();
+            }
+            input.ReadMessage(PaymentAmount);
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 
   /// <summary>
   /// Settled payment.
   /// </summary>
-  public sealed partial class SettledPayment : pb::IMessage<SettledPayment> {
+  public sealed partial class SettledPayment : pb::IMessage<SettledPayment>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<SettledPayment> _parser = new pb::MessageParser<SettledPayment>(() => new SettledPayment());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1109,6 +1422,9 @@ namespace CosmicDealership.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (TransactionId.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(TransactionId);
@@ -1120,7 +1436,25 @@ namespace CosmicDealership.Lease.V1 {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (TransactionId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(TransactionId);
+      }
+      if (settledAt_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(SettledAt);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -1156,6 +1490,9 @@ namespace CosmicDealership.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -1175,14 +1512,44 @@ namespace CosmicDealership.Lease.V1 {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            TransactionId = input.ReadString();
+            break;
+          }
+          case 18: {
+            if (settledAt_ == null) {
+              SettledAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            input.ReadMessage(SettledAt);
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 
   /// <summary>
   /// Returned payment.
   /// </summary>
-  public sealed partial class ReturnedPayment : pb::IMessage<ReturnedPayment> {
+  public sealed partial class ReturnedPayment : pb::IMessage<ReturnedPayment>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<ReturnedPayment> _parser = new pb::MessageParser<ReturnedPayment>(() => new ReturnedPayment());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1289,6 +1656,9 @@ namespace CosmicDealership.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (TransactionId.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(TransactionId);
@@ -1304,7 +1674,29 @@ namespace CosmicDealership.Lease.V1 {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (TransactionId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(TransactionId);
+      }
+      if (returnedAt_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(ReturnedAt);
+      }
+      if (ReturnedReason.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(ReturnedReason);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -1346,6 +1738,9 @@ namespace CosmicDealership.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -1369,14 +1764,48 @@ namespace CosmicDealership.Lease.V1 {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            TransactionId = input.ReadString();
+            break;
+          }
+          case 18: {
+            if (returnedAt_ == null) {
+              ReturnedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            input.ReadMessage(ReturnedAt);
+            break;
+          }
+          case 26: {
+            ReturnedReason = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 
   /// <summary>
   /// Returned vehicle.
   /// </summary>
-  public sealed partial class ReturnedVehicle : pb::IMessage<ReturnedVehicle> {
+  public sealed partial class ReturnedVehicle : pb::IMessage<ReturnedVehicle>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<ReturnedVehicle> _parser = new pb::MessageParser<ReturnedVehicle>(() => new ReturnedVehicle());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1497,6 +1926,9 @@ namespace CosmicDealership.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (VehicleId.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(VehicleId);
@@ -1516,7 +1948,33 @@ namespace CosmicDealership.Lease.V1 {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (VehicleId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(VehicleId);
+      }
+      if (returnedAt_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(ReturnedAt);
+      }
+      if (VehicleOdometer != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(VehicleOdometer);
+      }
+      if (damageCharge_ != null) {
+        output.WriteRawTag(34);
+        output.WriteMessage(DamageCharge);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -1567,6 +2025,9 @@ namespace CosmicDealership.Lease.V1 {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -1597,7 +2058,44 @@ namespace CosmicDealership.Lease.V1 {
           }
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            VehicleId = input.ReadString();
+            break;
+          }
+          case 18: {
+            if (returnedAt_ == null) {
+              ReturnedAt = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            input.ReadMessage(ReturnedAt);
+            break;
+          }
+          case 24: {
+            VehicleOdometer = input.ReadInt32();
+            break;
+          }
+          case 34: {
+            if (damageCharge_ == null) {
+              DamageCharge = new global::Google.Type.Money();
+            }
+            input.ReadMessage(DamageCharge);
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 

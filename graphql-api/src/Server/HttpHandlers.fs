@@ -6,7 +6,6 @@ open FSharp.Data.GraphQL.Types
 open FSharp.UMX
 open Giraffe
 open Microsoft.AspNetCore.Http
-open Microsoft.AspNetCore.Authentication.JwtBearer
 open Microsoft.Net.Http.Headers
 open Serilog
 
@@ -14,9 +13,6 @@ type HttpHandler = HttpFunc -> HttpContext -> HttpFuncResult
 
 let setContentTypeAsJson : HttpHandler =
     setHttpHeader HeaderNames.ContentType "application/json"
-
-let mustBeLoggedIn : HttpHandler =
-    requiresAuthentication (challenge JwtBearerDefaults.AuthenticationScheme)
 
 let introspection
     (handler:GraphQLQueryHandler<'R>): HttpHandler =
@@ -54,7 +50,7 @@ let graphql
                     |> Seq.toList
                 let userId =
                     match ctx.User.Identity.Name with
-                    | s when isNull s -> ""
+                    | s when isNull s -> "anonymous"
                     | s -> s
                     |> UMX.tag<userId>
                 let user =
@@ -86,24 +82,15 @@ let graphql
         }
 
 let app
-    (publicHandler:GraphQLQueryHandler<Root.PublicRoot>)
-    (privateHandler:GraphQLQueryHandler<Root.PrivateRoot>) =
+    (handler:GraphQLQueryHandler<Root.Root>) =
     choose [
-        route "/public/graphiql" >=> htmlFile "./graphiql/public.html"
-        route "/public/schema" >=> choose [
-            POST >=> introspection publicHandler >=> setContentTypeAsJson
-        ]
-        route "/public" >=> choose [
-            GET >=> introspection publicHandler >=> setContentTypeAsJson
-            POST >=> graphql publicHandler >=> setContentTypeAsJson
-        ]
         route "/graphiql" >=> htmlFile "./graphiql/private.html"
         route "/schema" >=> choose [
-            POST >=> introspection privateHandler >=> setContentTypeAsJson
+            POST >=> introspection handler >=> setContentTypeAsJson
         ]
         route "/" >=> choose [
-            GET >=> introspection privateHandler >=> setContentTypeAsJson
-            POST >=> mustBeLoggedIn >=> graphql privateHandler >=> setContentTypeAsJson
+            GET >=> introspection handler >=> setContentTypeAsJson
+            POST >=> graphql handler >=> setContentTypeAsJson
         ]
         route "/healthz" >=> GET >=> Successful.OK "Healthy!"
         RequestErrors.NOT_FOUND "location not available"

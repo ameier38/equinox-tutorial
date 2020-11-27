@@ -28,7 +28,7 @@ let copyGenerated = BuildTask.create "CopyGenerated" [cleanProto] {
     let genDir =
         __SOURCE_DIRECTORY__ // vehicle
         |> Path.getDirectory // equinox-tutorial
-        </> "infrastructure" </> "protos" </> "gen" </> "csharp"
+        </> "protos" </> "gen" </> "csharp"
     if not (DirectoryInfo.exists (DirectoryInfo.ofPath genDir)) then failwithf "%s does not exist" genDir
     let targetDir = __SOURCE_DIRECTORY__ </> "src" </> "Proto" </> "gen"
     targetDir |> Shell.cleanDir

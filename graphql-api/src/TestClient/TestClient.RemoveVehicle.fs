@@ -1,5 +1,5 @@
 [<RequireQualifiedAccess>]
-module rec PrivateClient.RemoveVehicle
+module rec TestClient.RemoveVehicle
 
 type InputVariables = { input: RemoveVehicleInput }
 
